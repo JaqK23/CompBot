@@ -1,0 +1,1 @@
+EXTRACTNUMBERS_byHarryGross =LAMBDA(cell,TEXTSPLIT(cell,TEXTSPLIT(cell,SEQUENCE(10,,0),,1),,1));

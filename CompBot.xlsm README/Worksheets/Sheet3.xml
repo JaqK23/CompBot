@@ -1,0 +1,183 @@
+<?xml version="1.0"?>
+<?mso-application progid="Excel.Sheet"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:o="urn:schemas-microsoft-com:office:office"
+ xmlns:x="urn:schemas-microsoft-com:office:excel"
+ xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:html="http://www.w3.org/TR/REC-html40">
+ <Styles>
+  <Style ss:ID="Default" ss:Name="Normal">
+   <Alignment ss:Vertical="Bottom"/>
+   <Borders/>
+   <Font ss:FontName="Verdana" x:Family="Swiss" ss:Size="16" ss:Color="#000000"/>
+   <Interior/>
+   <NumberFormat/>
+   <Protection/>
+  </Style>
+  <Style ss:ID="s19" ss:Name="Comma">
+   <NumberFormat ss:Format="_-* #,##0.00_-;\-* #,##0.00_-;_-* &quot;-&quot;??_-;_-@_-"/>
+  </Style>
+  <Style ss:ID="s18" ss:Name="Explanatory Text">
+   <Font ss:FontName="Verdana" x:Family="Swiss" ss:Size="16" ss:Color="#7F7F7F"
+    ss:Italic="1"/>
+  </Style>
+  <Style ss:ID="s16" ss:Name="Heading 1">
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="3"
+     ss:Color="#156082"/>
+   </Borders>
+   <Font ss:FontName="Verdana" x:Family="Swiss" ss:Size="15" ss:Color="#0E2841"
+    ss:Bold="1"/>
+  </Style>
+  <Style ss:ID="s21" ss:Parent="s16">
+   <Alignment ss:Horizontal="CenterAcrossSelection" ss:Vertical="Bottom"/>
+  </Style>
+  <Style ss:ID="s22" ss:Parent="s18">
+   <Alignment ss:Horizontal="CenterAcrossSelection" ss:Vertical="Bottom"/>
+  </Style>
+  <Style ss:ID="s34">
+   <Alignment ss:Horizontal="Right" ss:Vertical="Bottom"/>
+  </Style>
+  <Style ss:ID="s35">
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"/>
+    <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1"/>
+    <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1"/>
+    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1"/>
+   </Borders>
+  </Style>
+  <Style ss:ID="s36">
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"/>
+    <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1"/>
+    <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1"/>
+    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1"/>
+   </Borders>
+   <Font ss:FontName="Verdana" x:Family="Swiss" ss:Size="16" ss:Color="#0000FF"/>
+   <Interior ss:Color="#FFFFCC" ss:Pattern="Solid"/>
+  </Style>
+  <Style ss:ID="s37" ss:Parent="s19">
+   <Font ss:FontName="Verdana" x:Family="Swiss" ss:Size="16" ss:Color="#000000"/>
+  </Style>
+ </Styles>
+ <Names>
+  <NamedRange ss:Name="_xlop.ShowAll_0" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.\\LambdaName" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.addr_col" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.cell" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.clean" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.cols" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.data_grid" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.grid" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.headers" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.items_grid" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.questions" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.result" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.rng" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.rows" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.ShowAll_0" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.text" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="ADDRESSES_byDiarmuidEarly"
+   ss:RefersTo="=LAMBDA(rng, ADDRESS(ROW(rng), COLUMN(rng), 4))"/>
+  <NamedRange ss:Name="CaseInputs"
+   ss:RefersTo="=LAMBDA(LET(&#10;   questions, FILTER(INDIRECT(&quot;Case!$B:$EE&quot;), ISNUMBER(INDIRECT(&quot;Case!$B:$B&quot;))),&#10;   result, IF(questions = 0, NA(), questions),&#10;   clean, HSTACK(TAKE(result, , 3), TAKE(result, , -COLUMNS(result) + 5)),&#10;   IFERROR(clean, &quot;&quot;)&#10;)&#10;)"/>
+  <NamedRange ss:Name="Decimal_Separator" ss:RefersTo="='Default Settings'!R5C2"/>
+  <NamedRange ss:Name="EXTRACTCHAR_byHarryGross"
+   ss:RefersTo="=LAMBDA(text, MID(text, SEQUENCE(, LEN(text), 1, 1), 1))"/>
+  <NamedRange ss:Name="EXTRACTNUMBERS_byHarryGross"
+   ss:RefersTo="=LAMBDA(cell,TEXTSPLIT(cell,TEXTSPLIT(cell,SEQUENCE(10,,0),,1),,1))"/>
+  <NamedRange ss:Name="Language" ss:RefersTo="='Default Settings'!R9C2"/>
+  <NamedRange ss:Name="List_Separator" ss:RefersTo="='Default Settings'!R7C2"/>
+  <NamedRange ss:Name="Thousands_Separator" ss:RefersTo="='Default Settings'!R6C2"/>
+  <NamedRange ss:Name="Use_System_Separators"
+   ss:RefersTo="='Default Settings'!R8C2"/>
+ </Names>
+ <Worksheet ss:Name="Default Settings">
+  <Table ss:ExpandedColumnCount="12" ss:ExpandedRowCount="9"
+   ss:DefaultColumnWidth="90" ss:DefaultRowHeight="19.5">
+   <Column ss:Width="195"/>
+   <Column ss:Width="108.75"/>
+   <Column ss:AutoFitWidth="0" ss:Width="30"/>
+   <Column ss:Width="137.25"/>
+   <Column ss:Width="108.75"/>
+   <Column ss:AutoFitWidth="0" ss:Width="14.25"/>
+   <Column ss:AutoFitWidth="0" ss:Width="97.5"/>
+   <Column ss:Width="101.25"/>
+   <Column ss:Width="180"/>
+   <Row ss:Height="21">
+    <Cell ss:StyleID="s21"><Data ss:Type="String">Default Settings Header</Data></Cell>
+    <Cell ss:StyleID="s21"/>
+    <Cell ss:StyleID="s21"/>
+    <Cell ss:StyleID="s21"/>
+    <Cell ss:StyleID="s21"/>
+    <Cell ss:StyleID="s21"/>
+    <Cell ss:StyleID="s21"/>
+    <Cell ss:StyleID="s21"/>
+    <Cell ss:StyleID="s21"/>
+    <Cell ss:StyleID="s21"/>
+    <Cell ss:StyleID="s21"/>
+    <Cell ss:StyleID="s21"/>
+   </Row>
+   <Row ss:Height="20.25">
+    <Cell ss:StyleID="s22"><Data ss:Type="String">To update settings run command &quot;Default Settings&quot;. Note this will not change Windows level settings, only Excel</Data></Cell>
+    <Cell ss:StyleID="s22"/>
+    <Cell ss:StyleID="s22"/>
+    <Cell ss:StyleID="s22"/>
+    <Cell ss:StyleID="s22"/>
+    <Cell ss:StyleID="s22"/>
+    <Cell ss:StyleID="s22"/>
+    <Cell ss:StyleID="s22"/>
+    <Cell ss:StyleID="s22"/>
+    <Cell ss:StyleID="s22"/>
+    <Cell ss:StyleID="s22"/>
+    <Cell ss:StyleID="s22"/>
+   </Row>
+   <Row ss:Index="4">
+    <Cell ss:Index="4"><Data ss:Type="String">English (UK/US)</Data></Cell>
+    <Cell><Data ss:Type="String">Afrikaans</Data></Cell>
+    <Cell ss:Index="7"><Data ss:Type="String">Example</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Decimal Separator</Data></Cell>
+    <Cell ss:StyleID="s36"><Data ss:Type="String">.</Data><NamedCell
+      ss:Name="Decimal_Separator"/></Cell>
+    <Cell ss:Index="4" ss:StyleID="s35"><Data ss:Type="String">.</Data></Cell>
+    <Cell ss:StyleID="s35"><Data ss:Type="String">,</Data></Cell>
+    <Cell ss:Index="7" ss:StyleID="s37"><Data ss:Type="Number">1000.23</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Thousands Separator</Data></Cell>
+    <Cell ss:StyleID="s36"><Data ss:Type="String">,</Data><NamedCell
+      ss:Name="Thousands_Separator"/></Cell>
+    <Cell ss:Index="4" ss:StyleID="s35"><Data ss:Type="String">,</Data></Cell>
+    <Cell ss:StyleID="s35"><Data ss:Type="String"> </Data></Cell>
+    <Cell ss:Index="7" ss:StyleID="s37"><Data ss:Type="Number">1000.23</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">List Separator</Data></Cell>
+    <Cell ss:StyleID="s36"><Data ss:Type="String">,</Data><NamedCell
+      ss:Name="List_Separator"/></Cell>
+    <Cell ss:Index="4" ss:StyleID="s35"><Data ss:Type="String">,</Data></Cell>
+    <Cell ss:StyleID="s35"><Data ss:Type="String">;</Data></Cell>
+    <Cell ss:Index="7" ss:Formula="=CONCAT(R[-2]C[-4],R[-2]C[-3],R[-2]C[-2])"><Data
+      ss:Type="String">.,</Data></Cell>
+    <Cell ss:Formula="=FORMULATEXT(RC[-1])"><Data ss:Type="String">=CONCAT(D9,E9,F9)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Use System Separators</Data></Cell>
+    <Cell ss:StyleID="s36"><Data ss:Type="Boolean">1</Data><NamedCell
+      ss:Name="Use_System_Separators"/></Cell>
+    <Cell ss:Index="4" ss:StyleID="s35"><Data ss:Type="Boolean">1</Data></Cell>
+    <Cell ss:StyleID="s35"><Data ss:Type="Boolean">0</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Language</Data></Cell>
+    <Cell ss:StyleID="s36"><Data ss:Type="String">English</Data><NamedCell
+      ss:Name="Language"/></Cell>
+    <Cell ss:Index="4" ss:StyleID="s35"><Data ss:Type="String">English</Data></Cell>
+    <Cell ss:StyleID="s35"><Data ss:Type="String">Afrikaans</Data></Cell>
+    <Cell ss:Index="7" ss:StyleID="s18"><Data ss:Type="String">Does not update anything - for notification message only</Data></Cell>
+   </Row>
+  </Table>
+ </Worksheet>
+</Workbook>

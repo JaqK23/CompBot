@@ -1,0 +1,7 @@
+CaseInputs =LAMBDA(LET(
+   questions, FILTER(INDIRECT("Case!$B:$EE"), ISNUMBER(INDIRECT("Case!$B:$B"))),
+   result, IF(questions = 0, NA(), questions),
+   clean, HSTACK(TAKE(result, , 3), TAKE(result, , -COLUMNS(result) + 5)),
+   IFERROR(clean, "")
+)
+);

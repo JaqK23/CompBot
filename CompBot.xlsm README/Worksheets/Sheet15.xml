@@ -1,0 +1,132 @@
+<?xml version="1.0"?>
+<?mso-application progid="Excel.Sheet"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:o="urn:schemas-microsoft-com:office:office"
+ xmlns:x="urn:schemas-microsoft-com:office:excel"
+ xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:html="http://www.w3.org/TR/REC-html40">
+ <Styles>
+  <Style ss:ID="Default" ss:Name="Normal">
+   <Alignment ss:Vertical="Bottom"/>
+   <Borders/>
+   <Font ss:FontName="Verdana" x:Family="Swiss" ss:Size="16" ss:Color="#000000"/>
+   <Interior/>
+   <NumberFormat/>
+   <Protection/>
+  </Style>
+  <Style ss:ID="s18" ss:Name="Explanatory Text">
+   <Font ss:FontName="Verdana" x:Family="Swiss" ss:Size="16" ss:Color="#7F7F7F"
+    ss:Italic="1"/>
+  </Style>
+  <Style ss:ID="s16" ss:Name="Heading 1">
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="3"
+     ss:Color="#156082"/>
+   </Borders>
+   <Font ss:FontName="Verdana" x:Family="Swiss" ss:Size="15" ss:Color="#0E2841"
+    ss:Bold="1"/>
+  </Style>
+  <Style ss:ID="s17" ss:Name="Heading 2">
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="3"
+     ss:Color="#64BEE6"/>
+   </Borders>
+   <Font ss:FontName="Verdana" x:Family="Swiss" ss:Size="13" ss:Color="#0E2841"
+    ss:Bold="1"/>
+  </Style>
+  <Style ss:ID="s21" ss:Parent="s16">
+   <Alignment ss:Horizontal="CenterAcrossSelection" ss:Vertical="Bottom"/>
+  </Style>
+  <Style ss:ID="s22" ss:Parent="s18">
+   <Alignment ss:Horizontal="CenterAcrossSelection" ss:Vertical="Bottom"/>
+  </Style>
+  <Style ss:ID="s23" ss:Parent="s17">
+   <Alignment ss:Horizontal="CenterAcrossSelection" ss:Vertical="Bottom"/>
+  </Style>
+  <Style ss:ID="s25">
+   <Alignment ss:Vertical="Bottom" ss:WrapText="1"/>
+  </Style>
+ </Styles>
+ <Names>
+  <NamedRange ss:Name="_xlop.ShowAll_0" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.\\LambdaName" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.addr_col" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.cell" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.clean" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.cols" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.data_grid" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.grid" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.headers" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.items_grid" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.questions" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.result" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.rng" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.rows" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.ShowAll_0" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.text" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="ADDRESSES_byDiarmuidEarly"
+   ss:RefersTo="=LAMBDA(rng, ADDRESS(ROW(rng), COLUMN(rng), 4))"/>
+  <NamedRange ss:Name="CaseInputs"
+   ss:RefersTo="=LAMBDA(LET(&#10;   questions, FILTER(INDIRECT(&quot;Case!$B:$EE&quot;), ISNUMBER(INDIRECT(&quot;Case!$B:$B&quot;))),&#10;   result, IF(questions = 0, NA(), questions),&#10;   clean, HSTACK(TAKE(result, , 3), TAKE(result, , -COLUMNS(result) + 5)),&#10;   IFERROR(clean, &quot;&quot;)&#10;)&#10;)"/>
+  <NamedRange ss:Name="EXTRACTCHAR_byHarryGross"
+   ss:RefersTo="=LAMBDA(text, MID(text, SEQUENCE(, LEN(text), 1, 1), 1))"/>
+  <NamedRange ss:Name="EXTRACTNUMBERS_byHarryGross"
+   ss:RefersTo="=LAMBDA(cell,TEXTSPLIT(cell,TEXTSPLIT(cell,SEQUENCE(10,,0),,1),,1))"/>
+ </Names>
+ <Worksheet ss:Name="Load Lambdas">
+  <Table ss:ExpandedColumnCount="9" ss:ExpandedRowCount="10"
+   ss:DefaultColumnWidth="90" ss:DefaultRowHeight="19.5">
+   <Column ss:Width="238.5"/>
+   <Column ss:Width="109.5"/>
+   <Column ss:AutoFitWidth="0" ss:Width="351"/>
+   <Column ss:Width="121.5"/>
+   <Column ss:AutoFitWidth="0" ss:Width="41.25" ss:Span="4"/>
+   <Row ss:Height="21">
+    <Cell ss:StyleID="s21"><Data ss:Type="String">Load Lambdas</Data></Cell>
+    <Cell ss:StyleID="s21"/>
+    <Cell ss:StyleID="s21"/>
+    <Cell ss:StyleID="s21"/>
+    <Cell ss:StyleID="s21"/>
+    <Cell ss:StyleID="s21"/>
+    <Cell ss:StyleID="s21"/>
+    <Cell ss:StyleID="s21"/>
+    <Cell ss:StyleID="s21"/>
+   </Row>
+   <Row ss:Height="20.25">
+    <Cell ss:StyleID="s22"><Data ss:Type="String">Import your lambdas from your own lambda library by clicking this icon or running the &quot;Import Lambdas From&quot; command</Data></Cell>
+    <Cell ss:StyleID="s22"/>
+    <Cell ss:StyleID="s22"/>
+    <Cell ss:StyleID="s22"/>
+    <Cell ss:StyleID="s22"/>
+    <Cell ss:StyleID="s22"/>
+    <Cell ss:StyleID="s22"/>
+    <Cell ss:StyleID="s22"/>
+    <Cell ss:StyleID="s22"/>
+   </Row>
+   <Row ss:Index="7" ss:Height="20.25">
+    <Cell ss:StyleID="s23"><Data ss:Type="String">Robot Commands</Data></Cell>
+    <Cell ss:StyleID="s23"/>
+    <Cell ss:StyleID="s23"/>
+    <Cell ss:StyleID="s23"/>
+    <Cell ss:StyleID="s23"/>
+    <Cell ss:StyleID="s23"/>
+    <Cell ss:StyleID="s23"/>
+    <Cell ss:StyleID="s23"/>
+    <Cell ss:StyleID="s23"/>
+   </Row>
+   <Row ss:Height="20.25"/>
+   <Row>
+    <Cell><Data ss:Type="String">Name</Data></Cell>
+    <Cell><Data ss:Type="String">Creator</Data></Cell>
+    <Cell><Data ss:Type="String">Description</Data></Cell>
+    <Cell><Data ss:Type="String">Parameters</Data></Cell>
+   </Row>
+   <Row ss:Height="39">
+    <Cell><Data ss:Type="String">Import Lambdas From</Data></Cell>
+    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
+    <Cell ss:StyleID="s25"><Data ss:Type="String">Opens a browser to navigate to a workbook with the lambdas to load</Data></Cell>
+    <Cell><Data ss:Type="String">N/A</Data></Cell>
+   </Row>
+  </Table>
+ </Worksheet>
+</Workbook>

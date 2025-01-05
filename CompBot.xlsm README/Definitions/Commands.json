@@ -1,0 +1,147 @@
+{
+  "Commands": [
+    {
+      "Name": "Backup Sheets in Workbook",
+      "Description": "Copy all sheets in workbook for backup",
+      "Type": "VBAMacroCommand",
+      "LaunchCodes": [
+        "BS"
+      ],
+      "MacroExpression": "modCaseSetup.Backup()",
+      "Tags": [
+        "Backup",
+        "WorkSheets",
+        "Sheets"
+      ],
+      "MacroWorkbookConnection": "ThisWorkbook"
+    },
+    {
+      "Name": "Create Blank Sheet",
+      "Description": "Creates a blank sheet named based on cell value (Sht otherwise)",
+      "Type": "VBAMacroCommand",
+      "LaunchCodes": [
+        "BS",
+        "CBS",
+        "S"
+      ],
+      "MacroExpression": "modMisc.CreateBlankSheet([[ActiveCell]])",
+      "Tags": [
+        "Sheet",
+        "Setup",
+        "Blank"
+      ],
+      "MacroWorkbookConnection": "ThisWorkbook"
+    },
+    {
+      "Name": "Create Case Inputs Sheet",
+      "Description": "Creates a case inputs sheet with the inputs for the current case",
+      "Type": "VBAMacroCommand",
+      "LaunchCodes": [
+        "CIS",
+        "IS"
+      ],
+      "MacroExpression": "modCaseSetup.CreateCaseInputsSheet([[ActiveCell]])",
+      "Tags": [
+        "Inputs",
+        "Case",
+        "Comp",
+        "Sheet"
+      ],
+      "MacroWorkbookConnection": "ThisWorkbook"
+    },
+    {
+      "Name": "Create Data Table",
+      "Description": "Creates a data table on the current sheet for level sheets \"L#\" or active cell = \"Example#\"",
+      "Type": "VBAMacroCommand",
+      "LaunchCodes": [
+        "CDT",
+        "DT"
+      ],
+      "MacroExpression": "modCaseSetup.CreateDataTable([[NewTableTargetToRight]])",
+      "Tags": [
+        "Data",
+        "Table",
+        "Generate",
+        "Create"
+      ]
+    },
+    {
+      "Name": "Create Level Sheets",
+      "Description": "Creates a sheet for each level in the Case sheet",
+      "Type": "VBAMacroCommand",
+      "LaunchCodes": [
+        "CL",
+        "CLS"
+      ],
+      "MacroExpression": "modCaseSetup.CreateLevelSheets()",
+      "Tags": [
+        "levels",
+        "Sheet",
+        "Setup"
+      ]
+    },
+    {
+      "Name": "Default Settings",
+      "Description": "Updates default settings to those in Default Settings sheet",
+      "Type": "VBAMacroCommand",
+      "LaunchCodes": [
+        "DS"
+      ],
+      "MacroExpression": "modMisc.DefaultSettings()",
+      "Tags": [
+        "Update",
+        "Default",
+        "Settings",
+        "International",
+        "Language"
+      ]
+    },
+    {
+      "Name": "Import Lambda Library",
+      "Description": "Imports CompBot's lambda collection into active workbook",
+      "Type": "VBAMacroCommand",
+      "LaunchCodes": [
+        "IL"
+      ],
+      "MacroExpression": "modImportLambdas.ImportAllLambdas(\"CompBot.xlsb\")",
+      "Tags": [
+        "Import",
+        "Lambda",
+        "Library",
+        "Workbook"
+      ],
+      "MacroWorkbookConnection": "Lambda Robot"
+    },
+    {
+      "Name": "Import Lambdas From",
+      "Description": "Import lambdas from a specified workbook",
+      "Type": "VBAMacroCommand",
+      "LaunchCodes": [
+        "ILF"
+      ],
+      "MacroExpression": "modLambdas.ImportLambdasFrom()",
+      "Tags": [
+        "Import",
+        "Lambda",
+        "External",
+        "Workbook",
+        "Library"
+      ]
+    },
+    {
+      "Name": "Setup Case",
+      "Description": "Setup case by running Backup and Level sheet creation",
+      "Type": "VBAMacroCommand",
+      "LaunchCodes": [
+        "SC"
+      ],
+      "MacroExpression": "modCaseSetup.Setup()",
+      "Tags": [
+        "Setup",
+        "Case",
+        "Levels",
+        "Sheets"
+      ]
+    }
+  ]
+}
