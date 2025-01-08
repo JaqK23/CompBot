@@ -19,6 +19,7 @@ Sub Setup()
     'backup all sheets
     Call Backup
     Call CreateLevelSheets
+    Call CreateBonusSheet
     Call CreateCaseInputsSheet("detailed")
 End Sub
 
@@ -77,8 +78,28 @@ Sub CreateLevelSheets()
     Dim rngNumbers As Range
     Dim objCell As Object
     Dim rngScore As Range
+    Dim intACol As Integer
+    Dim dicExcHdr As Object
+    Dim booHdrs As Boolean
+    Dim colColList As Collection
+    Dim intCol As Integer
+    Dim intEndCol As Integer
+    Dim rngHdrRow As Range
+    Dim rngCell As Range
+    Dim excludedHeaders As Object
+    Dim rngRow As Range
+    Dim strHeader As String
+    Dim varCol As Variant
+    Dim strCurrVal As String
     
+    'Initialize
     VBAInit
+    ' Initialize excluded headers as a dictionary
+    Set excludedHeaders = CreateObject("Scripting.Dictionary")
+    excludedHeaders.Add "Answer", True
+    excludedHeaders.Add "Level", True
+    excludedHeaders.Add "Points", True
+    'set up workbook and worksheet
     Set WB = ActiveWorkbook
     On Error Resume Next
     Set WS = WB.Worksheets("Case")
@@ -107,11 +128,16 @@ Sub CreateLevelSheets()
     'cycle through column B looking for "Level *" cells
     Set colLRows = New Collection
     
+    'cycle through column B of case sheet to find each level
+    'add level start row to collection colLRows
     Set rng = WS.UsedRange
     Set rngC2 = WS.Cells(1, 2).Resize(rng.Rows.Count, 1)
     For Each objCell In rngC2
+        strCurrVal = objCell.Value
         If Not IsEmpty(objCell.Value) Then
-            If objCell.Value Like "Level *" And objCell.Value <> "Level Code" Then
+            If (objCell.Value Like "Level *" Or objCell.Value Like "Section *") _
+            And strCurrVal <> "Level Code" And _
+            IsNumeric(Trim(Replace(Replace(strCurrVal, "Level", ""), "Section", ""))) Then
                 colLRows.Add objCell.Row
             End If
         End If
@@ -135,23 +161,85 @@ Sub CreateLevelSheets()
             intEndRow = WS.Cells(WS.Rows.Count, 2).End(xlUp).Row
         End If
         
+        '____________________COPY DATA________________________________________________
         'copy rows to new worksheet
         WS.Rows(intBegRow & ":" & intEndRow).Copy Destination:=WSNew.Rows(1)
+        WSNew.Calculate
         
-        'link answer cells to new cells in new sheet
+        '____________________COLUMN SETUP WITHIN SHEETS_______________________________
+        ' link answer cells to new cells in new sheet and mark input cells
+        ' get column numbers for answers and inputs
+        
+        ' Find the strHeader row with "Answer", "Level", or "Points"
+        For Each rngRow In WSNew.Rows(1 & ":" & intEndRow - intBegRow + 1)
+            Set rngHdrRow = rngRow.Find(What:="Answer", LookIn:=xlValues, LookAt:=xlWhole)
+            If Not rngHdrRow Is Nothing Then Exit For
+            Set rngHdrRow = rngRow.Find(What:="Level", LookIn:=xlValues, LookAt:=xlWhole)
+            If Not rngHdrRow Is Nothing Then Exit For
+            Set rngHdrRow = rngRow.Find(What:="Points", LookIn:=xlValues, LookAt:=xlWhole)
+            If Not rngHdrRow Is Nothing Then Exit For
+        Next rngRow
+        
+        ' If no strHeader row is found, tag boolean booHdrs
+        booHdrs = True
+        If rngHdrRow Is Nothing Then
+            booHdrs = False
+        End If
+        ' Identify non-matching columns after column B
+        Set colColList = New Collection
+        intACol = 5     'default value of 5 unless overwritten
+        intEndCol = 0
+        If booHdrs Then
+            For intCol = 3 To WSNew.UsedRange.Columns.Count + 2 ' Start after column B
+                strHeader = WSNew.Cells(rngHdrRow.Row, intCol).Value
+                If strHeader = "Answer" Then intACol = intCol
+                If Not excludedHeaders.Exists(strHeader) And strHeader <> "" Then
+                    colColList.Add intCol
+                    If intCol > intEndCol Then
+                        intEndCol = intCol
+                    End If
+                End If
+            Next intCol
+        End If
+        If intEndCol = 0 Then intEndCol = WSNew.UsedRange.Columns.Count + 2
+        
+        'loop through rows in level sheet and mark
         For intRow = intBegRow To intEndRow
+            'set answer lookups in Case sheet
             Set rngNumbers = WS.Cells(intRow, 2)
-            Set rngAnswers = WS.Cells(intRow, 5)
-            If Not IsEmpty(rngNumbers) And IsNumeric(rngNumbers) And IsEmpty(rngAnswers.Value) Then
+            Set rngAnswers = WS.Cells(intRow, intACol)
+            If IsError(WSNew.Cells(intRow - intBegRow + 1, intACol)) Then
+                WSNew.Cells(intRow - intBegRow + 1, intACol).Formula = ""
+            End If
+            If IsError(rngAnswers) Then GoTo LinkCase
+            If (Not IsEmpty(rngNumbers) And IsNumeric(rngNumbers) And _
+            IsEmpty(rngAnswers.Value)) Or InStr(rngAnswers.Formula, "#REF") > 0 Then
+LinkCase:
                 rngAnswers.Formula = "='" & WSNew.Name & "'!" & rngAnswers.Offset(1 - intBegRow).Address
             End If
+            
+            'set score lookups - assumed this is the column after "Answer"
             On Error GoTo SkipStep
-            If WSNew.Cells(intRow - intBegRow + 1, 6) <> "" Then
-                WSNew.Cells(intRow - intBegRow + 1, 6).Formula = "='Case'!" & rngAnswers.Offset(0, 1).Address
+
+            If IsError(WSNew.Cells(intRow - intBegRow + 1, intACol + 1)) Then
+                WSNew.Cells(intRow - intBegRow + 1, intACol + 1).Formula = "='Case'!" & rngAnswers.Offset(0, 1).Address
+            ElseIf WSNew.Cells(intRow - intBegRow + 1, intACol + 1) <> "" Then
+                WSNew.Cells(intRow - intBegRow + 1, intACol + 1).Formula = "='Case'!" & rngAnswers.Offset(0, 1).Address
             End If
 SkipStep:
-            
+            On Error GoTo 0
+            'mark as input cells for non-standard columns with values
+            If intRow - intBegRow + 1 > rngHdrRow.Row Then
+                For Each varCol In colColList
+                    Set rngCell = WSNew.Cells(intRow - intBegRow + 1, varCol)
+                    If Not IsEmpty(rngCell.Value) And rngCell.HasFormula = False Then
+                        Call MarkAsInputCells(rngCell, False)
+                    End If
+                Next varCol
+            End If
+
         Next intRow
+        
         'for workbooks with answers (for training), add the score at the top of each sheet
         If Not rngScore Is Nothing Then
             WSNew.Cells(1, 1).Formula = "='Case'!" & rngScore.Address
@@ -159,9 +247,175 @@ SkipStep:
         
     Next intCurr
     VBAFin
+    Application.Calculate
 End Sub
 
+'creates a bonus sheet with just the bonus info on
+'--------------------------------------------< OA Robot >--------------------------------------------
+' Command Name:           Create Bonus Sheet
+' Description:            Creates bonus sheet "B" with bonus questions
+' Macro Expression:       modCaseSetup.CreateBonusSheet()
+' Generated:              01/08/2025 04:37 PM
+'----------------------------------------------------------------------------------------------------
+Sub CreateBonusSheet()
+    Dim WB As Workbook
+    Dim WS As Worksheet
+    Dim WSNew As Worksheet
+    Dim strWS As String
+    Dim intLevels As Integer
+    Dim intCurr As Integer
+    Dim intRow As Integer
+    Dim intBegRow As Integer
+    Dim intEndRow As Integer
+    Dim colLRows As Collection
+    Dim rng As Range
+    Dim rngC2 As Range
+    Dim rngAnswers As Range
+    Dim rngNumbers As Range
+    Dim objCell As Object
+    Dim rngScore As Range
+    Dim intACol As Integer
+    Dim dicExcHdr As Object
+    Dim booHdrs As Boolean
+    Dim colColList As Collection
+    Dim intCol As Integer
+    Dim intEndCol As Integer
+    Dim rngHdrRow As Range
+    Dim rngCell As Range
+    Dim excludedHeaders As Object
+    Dim rngRow As Range
+    Dim strHeader As String
+    Dim varCol As Variant
+    Dim strCurrVal As String
+    
+    Dim intFound As Integer
+    
+    'Initialize
+    VBAInit
+    'set up workbook and worksheet
+    Set WB = ActiveWorkbook
+    On Error Resume Next
+    Set WS = WB.Worksheets("Case")
+    On Error GoTo 0
+    
+    'check if sheet exists, if not, prompt for a sheet name,
+    'if this doesn't exist, exit sub
+    If WS Is Nothing Then
+        strWS = InputBox("What is the case sheet called?")
+        On Error Resume Next
+        Set WS = WB.Worksheets(strWS)
+        On Error GoTo 0
+        If WS Is Nothing Then
+            MsgBox ("Sheet not found")
+            VBAFin
+            Exit Sub
+        End If
+    End If
+    
+    '___________________worksheet exists_____________________
+    'get current score cell
+    On Error Resume Next
+    Set rngScore = WS.UsedRange.Find("Current Score").Offset(1, 0)
+    On Error GoTo 0
+    
+    'cycle through column B looking for "Bonus Questions" cell
+    'cycle through column B of case sheet to find first level
+    
+    Set rng = WS.UsedRange
+    Set rngC2 = WS.Cells(1, 2).Resize(rng.Rows.Count, 1)
+    intFound = 0
+    For Each objCell In rngC2
+        strCurrVal = objCell.Value
+        If Not IsEmpty(objCell.Value) Then
+            If Trim(strCurrVal) = "Bonus Questions" Then
+                intBegRow = objCell.Row
+                intFound = intFound + 1
+            ElseIf (intFound = 1 And strCurrVal = "Questions") Or _
+            (objCell.Value Like "Level *" And strCurrVal <> "Level Code" And _
+            IsNumeric(Trim(Replace(strCurrVal, "Level", "")))) Then
+                intEndRow = objCell.Row
+                intFound = intFound + 1
+                If intFound = 2 Then Exit For
+            End If
+        End If
+    Next objCell
+    If intFound < 2 Then intBegRow = 1
+    
+    'create new worksheet for bonuses
+    Set WSNew = WB.Sheets.Add(After:=WB.Sheets(WS.Index))
+    WSNew.Name = "B"
+    
+    
+    '____________________COPY DATA________________________________________________
+    'copy rows to new worksheet
+    WS.Rows(intBegRow & ":" & intEndRow).Copy Destination:=WSNew.Rows(1)
+    WSNew.Calculate
+    
+    '____________________COLUMN SETUP WITHIN SHEETS_______________________________
+    ' link answer cells to new cells in new sheet and mark input cells
+    ' get column numbers for answers and inputs
+    
+    ' Find the strHeader row with "Answer", "Level", or "Points"
+    For Each rngRow In WSNew.Rows(1 & ":" & intEndRow - intBegRow + 1)
+        Set rngHdrRow = rngRow.Find(What:="Answer", LookIn:=xlValues, LookAt:=xlWhole)
+        If Not rngHdrRow Is Nothing Then Exit For
+        Set rngHdrRow = rngRow.Find(What:="Level", LookIn:=xlValues, LookAt:=xlWhole)
+        If Not rngHdrRow Is Nothing Then Exit For
+        Set rngHdrRow = rngRow.Find(What:="Points", LookIn:=xlValues, LookAt:=xlWhole)
+        If Not rngHdrRow Is Nothing Then Exit For
+    Next rngRow
+    
+    ' If no strHeader row is found, tag boolean booHdrs
+    booHdrs = True
+    If rngHdrRow Is Nothing Then
+        booHdrs = False
+    End If
+    'identify answer column and unmarked score column
+    intACol = 5     'default value of 5 unless overwritten
+    If booHdrs Then
+        For intCol = 3 To WSNew.UsedRange.Columns.Count + 2 ' Start after column B
+            strHeader = WSNew.Cells(rngHdrRow.Row, intCol).Value
+            If strHeader = "Answer" Then intACol = intCol
+        Next intCol
+    End If
+    intEndCol = WSNew.UsedRange.Columns.Count + 2
+    
+    'loop through rows in level sheet and mark
+    For intRow = intBegRow To intEndRow
+        'set answer lookups in Case sheet
+        Set rngNumbers = WS.Cells(intRow, 2)
+        Set rngAnswers = WS.Cells(intRow, intACol)
+        If IsError(WSNew.Cells(intRow - intBegRow + 1, intACol)) Then
+            WSNew.Cells(intRow - intBegRow + 1, intACol).Formula = ""
+        End If
+        If IsError(rngAnswers) Then GoTo LinkCase
+        If (Not IsEmpty(rngNumbers) And IsNumeric(Trim(Replace(rngNumbers, "Bonus", ""))) And _
+        IsEmpty(rngAnswers.Value)) Or InStr(rngAnswers.Formula, "#REF") > 0 Then
+LinkCase:
+            rngAnswers.Formula = "='" & WSNew.Name & "'!" & rngAnswers.Offset(1 - intBegRow).Address
+        End If
+        
+        'set score lookups - assumed this is the column after "Answer"
+        On Error GoTo SkipStep
 
+        If IsError(WSNew.Cells(intRow - intBegRow + 1, intACol + 1)) Then
+            WSNew.Cells(intRow - intBegRow + 1, intACol + 1).Formula = "='Case'!" & rngAnswers.Offset(0, 1).Address
+        ElseIf WSNew.Cells(intRow - intBegRow + 1, intACol + 1) <> "" Then
+            WSNew.Cells(intRow - intBegRow + 1, intACol + 1).Formula = "='Case'!" & rngAnswers.Offset(0, 1).Address
+        End If
+SkipStep:
+        On Error GoTo 0
+        
+    Next intRow
+    
+    'for workbooks with answers (for training), add the score at the top of each sheet
+    If Not rngScore Is Nothing Then
+        WSNew.Cells(1, 1).Formula = "='Case'!" & rngScore.Address
+    End If
+
+    VBAFin
+    Application.Calculate
+End Sub
 
 'creates a data table for the current level
 'Assumes either in a level sheet named in the format "L#" or in a cell with value "Example#"
@@ -299,7 +553,7 @@ Sub CreateDataTable(rngTarget As Range)
                 intBlnk = 0
                 strCol = Replace(Replace(Cells(1, intCol).Address, "1", ""), "$", "")
                 intInCnt = intInCnt + 1
-                'header
+                'strHeader
                 WS.Cells(intHdRow, intCol).Copy
                 WS.Cells(rngTarget.Row - 1, rngTarget.Column + intInCnt).PasteSpecial xlPasteAll
                 Application.CutCopyMode = False
@@ -340,6 +594,10 @@ NoMoreInputs:
                 WS.Cells(intRow, intACol).Formula = "=" & WS.Cells(rngTarget.Row + 3 + intCurrQ, rngTarget.Column + 1).Address(0, 0)
             End If
         Next intRow
+    End If
+    
+    If Not Application.Iteration Then
+        Call ToggleIterativeCalculation
     End If
     
     Erase intQs
@@ -387,11 +645,11 @@ Sub CreateCaseInputsSheet(Optional strDetailed As String = "")
     End If
     
     'worksheet exists
-    Set WSNew = WB.Sheets.Add(After:=WB.Sheets(WS.Index + 1))
+    Set WSNew = WB.Sheets.Add(After:=WB.Sheets(WS.Index))
     On Error Resume Next
     WSNew.Name = "CaseInputs"
     On Error GoTo 0
-    'freeze panes below header
+    'freeze panes below strHeader
     With ActiveWindow
         If .FreezePanes Then .FreezePanes = False
         .SplitColumn = 2
@@ -426,6 +684,7 @@ Sub DetailedInputs(WS As Worksheet, WSNew As Worksheet)
     Dim intRow As Integer
     Dim intCol As Integer
     Dim strHdr As String
+    Dim booVal As Boolean
     
     Set rngHdr = WSNew.Cells(2, 3)
     Set rngTarget = WSNew.Cells(3, 3)
@@ -452,18 +711,19 @@ Sub DetailedInputs(WS As Worksheet, WSNew As Worksheet)
             For intCol = 3 To intEndCol
                 strHdr = WS.Cells(intCurrExRow - 2, intCol).Value
                 strCV = WS.Cells(intCurrExRow, intCol).Value
-                If strCV <> "" And strHdr <> "Level" And strHdr <> "Points" And strHdr <> "Answer" Then
-                    'first header of first example
+                booVal = Not WS.Cells(intCurrExRow, intCol).HasFormula
+                If booVal And strCV <> "" And strHdr <> "Level" And strHdr <> "Points" And strHdr <> "Answer" Then
+                    'first strHeader of first example
                     If intInc = 0 Then
                         intInc = intInc + 1
                         ReDim strHeaders(1 To intInc)
                         strHeaders(intInc) = strHdr
-                        'add header to output sheet
+                        'add strHeader to output sheet
                         If strHdr <> "" Then WSNew.Cells(rngHdr.Row, rngHdr.Column + intInc - 1).Value = strHdr
                         ReDim intIncCols(1 To intInc)
                         intIncCols(intInc) = intCol
                     Else
-                        'find current header match and update column to output from
+                        'find current strHeader match and update column to output from
                         booHdr = False
                         For intHdr = 1 To intInc
                             If strHeaders(intHdr) = strHdr And intIncCols(intHdr) = 0 Then
@@ -478,7 +738,7 @@ Sub DetailedInputs(WS As Worksheet, WSNew As Worksheet)
                             ReDim Preserve intIncCols(intInc)
                             strHeaders(intInc) = strHdr
                             intIncCols(intInc) = intCol
-                            'add header to output sheet
+                            'add strHeader to output sheet
                             If strHdr <> "" Then WSNew.Cells(rngHdr.Row, rngHdr.Column + intInc - 1).Value = strHdr
                         End If
                     End If
@@ -499,3 +759,100 @@ Sub DetailedInputs(WS As Worksheet, WSNew As Worksheet)
     WSNew.UsedRange.Columns.AutoFit
     
 End Sub
+
+'--------------------------------------------< OA Robot >--------------------------------------------
+' Function:             SaveAnswersToLeft
+' Description:          Saves references to the selected cells in the green answer cells to the left on the same row.
+' Created By:           Erik Oehm
+' Source:               https://github.com/ExcelRobot/MEWC-Robot/blob/main/MEWC%20Robot.xlsm
+'----------------------------------------------------------------------------------------------------
+'--------------------------------------------< OA Robot >--------------------------------------------
+' Command Name:           Save Answers To Left
+' Description:            Saves references to the selected cells in the green answer cells to the left on the same row.
+' Macro Expression:       modCaseSetup.SaveAnswersToLeft()
+' Generated:              01/08/2025 01:34 PM
+'----------------------------------------------------------------------------------------------------
+Sub SaveAnswersToLeft()
+    Dim cell As Range
+    Dim greenCol As Integer
+    Dim dest As Range
+    
+    ' MEWC Answer Cell Green
+    Const MEWC_GREEN As Long = 3631104
+    
+    ' Find the green cell
+    For Each cell In Intersect(ActiveCell.EntireRow, ActiveSheet.UsedRange)
+        If cell.Interior.Color = MEWC_GREEN Then ' mewc answer cell green
+            greenCol = cell.Column
+            Exit For
+        End If
+    Next
+    
+    If greenCol <> 0 Then
+        Dim calcMode As Integer
+        On Error Resume Next
+        calcMode = Application.Calculation
+        Application.Calculation = xlCalculationManual
+        For Each cell In Selection
+            If Cells(cell.Row, greenCol).Interior.Color = MEWC_GREEN Then
+                Cells(cell.Row, greenCol).Formula = "=" & cell.Address(False, False)
+                If dest Is Nothing Then
+                    Set dest = Cells(cell.Row, greenCol)
+                Else
+                    Set dest = Union(dest, Cells(cell.Row, greenCol))
+                End If
+            End If
+        Next
+        Application.Calculation = calcMode
+        
+        ' if some green cells were saved to, select them and copy either those answers or the formula below.
+        If Not dest Is Nothing Then
+            dest.Select
+            If Left(dest(1).Offset(dest.Rows.Count + 1).Formula, 1) = "=" Then
+                dest(1).Offset(dest.Rows.Count + 1).Select
+            Else
+                dest.Select
+            End If
+            Selection.Copy
+        End If
+    End If
+End Sub
+
+'sub to allow editing and save a working copy of the active workbook
+'--------------------------------------------< OA Robot >--------------------------------------------
+' Command Name:           Enable Editing And Save Copy
+' Description:            Enable editing and save copy of file with suffix based on active cell (otherwise Working)
+' Macro Expression:       modCaseSetup.EnableEditingAndSaveCopy([[ActiveCell]])
+' Generated:              01/08/2025 05:11 PM
+'----------------------------------------------------------------------------------------------------
+Sub SaveCopy(Optional strSuff As String = "Working")
+    Dim WB As Workbook
+    Dim strPath As String
+
+    ' Set WB to the active workbook
+    Set WB = ActiveWorkbook
+    If IsError(strSuff) Then
+        strSuff = "Working"
+    ElseIf Len(strSuff) = 0 Then
+        strSuff = "Working"
+    End If
+    
+    ' Check if the workbook is open and writable
+    If WB Is Nothing Then
+        MsgBox "No active workbook found!", vbExclamation
+        Exit Sub
+    End If
+
+    ' Allow editing if the workbook is protected
+    If WB.ProtectStructure Then
+        WB.Unprotect ' Unprotect the workbook (password may be required if protected with one)
+    End If
+
+    ' Specify the path to save the copy
+    strPath = WB.Path & "\" & Replace(WB.Name, ".xlsx", "_" & strSuff & ".xlsx")
+    
+    ' Save a copy of the workbook
+    WB.SaveAs strPath
+    
+End Sub
+

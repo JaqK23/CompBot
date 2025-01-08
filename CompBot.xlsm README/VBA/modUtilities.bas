@@ -31,3 +31,101 @@ Function SheetExists(strSht As String) As Boolean
         End If
     Next WS
 End Function
+
+' --------------------------------------------< OA Robot >--------------------------------------------
+'  Name:                SanitizeRangeName
+'  Description:         Function to sanitize names for named ranges
+'  Credit:              Erik Oehm
+'  Source:              https://github.com/ExcelRobot/MEWC-Robot/blob/main/MEWC%20Robot.xlsm
+' ----------------------------------------------------------------------------------------------------
+Function SanitizeRangeName(proposedName As String) As String
+    Dim result As String
+    Dim i As Long
+    Dim char As String
+    Dim validFirstChars As String
+    Dim validChars As String
+    
+    ' If empty string, return default name
+    If Len(proposedName) = 0 Then
+        SanitizeRangeName = "Range1"
+        Exit Function
+    End If
+    
+    ' Initialize working string
+    result = proposedName
+    
+    ' Replace spaces with underscores
+    result = Replace(result, " ", "_")
+    
+    ' Define valid characters
+    validFirstChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ_\"
+    validChars = validFirstChars & "0123456789."
+    
+    ' Check and fix first character
+    char = UCase(Left(result, 1))
+    If InStr(validFirstChars, char) = 0 Then
+        ' If first char is a number, prepend "N_"
+        If IsNumeric(char) Then
+            result = "N_" & result
+        Else
+            ' Replace invalid first char with underscore
+            result = "_" & Mid(result, 2)
+        End If
+    End If
+    
+    ' Clean remaining characters
+    Dim sanitized As String
+    sanitized = Left(result, 1)
+    For i = 2 To Len(result)
+        char = Mid(result, i, 1)
+        ' Keep only valid characters
+        If InStr(validChars, UCase(char)) > 0 Then
+            sanitized = sanitized & char
+        Else
+            ' Replace invalid chars with underscore
+            sanitized = sanitized & "_"
+        End If
+    Next i
+    
+    ' Trim to 255 characters if needed
+    If Len(sanitized) > 255 Then
+        sanitized = Left(sanitized, 255)
+    End If
+    
+    ' Handle reserved words and cell references
+    result = sanitized
+    If Not IsValidRangeName(result) Then
+        ' Add prefix for reserved words or cell references
+        result = "RNG_" & result
+    End If
+    
+    ' Verify final result
+    If Not IsValidRangeName(result) Then
+        ' If still invalid, use a safe default
+        result = "Range_" & Format(Now, "yyyymmddhhnnss")
+    End If
+    
+    SanitizeRangeName = result
+End Function
+
+' --------------------------------------------< OA Robot >--------------------------------------------
+'  Name:                MarkAsInputCells
+'  Description:         Mark as input cells
+'  Credit:              Erik Oehm
+'  Source:              Lambda robot
+'  Notes:               JK 2025-01-08: Adjusted to not output to robot logs and set colors
+' ----------------------------------------------------------------------------------------------------
+Public Sub MarkAsInputCells(ByVal GivenRange As Range, Optional ByVal InteriorOnly As Boolean = True)
+
+    Dim INPUT_CELL_BACKGROUND_COLOR As Long
+    Dim INPUT_CELL_FONT_COLOR As Long
+    
+    INPUT_CELL_BACKGROUND_COLOR = 13434879
+    INPUT_CELL_FONT_COLOR = 16711680
+    
+    GivenRange.Interior.Color = INPUT_CELL_BACKGROUND_COLOR
+    If Not InteriorOnly Then
+        GivenRange.Font.Color = INPUT_CELL_FONT_COLOR
+    End If
+    
+End Sub

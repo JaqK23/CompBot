@@ -86,7 +86,7 @@
    ss:RefersTo="=LAMBDA(cell,TEXTSPLIT(cell,TEXTSPLIT(cell,SEQUENCE(10,,0),,1),,1))"/>
  </Names>
  <Worksheet ss:Name="Info">
-  <Table ss:ExpandedColumnCount="9" ss:ExpandedRowCount="28"
+  <Table ss:ExpandedColumnCount="9" ss:ExpandedRowCount="36"
    ss:DefaultColumnWidth="90" ss:DefaultRowHeight="19.5">
    <Column ss:StyleID="s32" ss:Width="237.75"/>
    <Column ss:StyleID="s32" ss:AutoFitWidth="0" ss:Width="174"/>
@@ -210,67 +210,123 @@
     <Cell><Data ss:Type="String">Launch Code</Data></Cell>
    </Row>
    <Row ss:Height="39">
-    <Cell><Data ss:Type="String">Create Blank Sheet</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Create Blank Sheet</Data></Cell>
     <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell><Data ss:Type="String">Creates a blank sheet named based on cell value (Sht otherwise)</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Creates a blank sheet named based on cell value (Sht otherwise)</Data></Cell>
     <Cell ss:StyleID="s33"><Data ss:Type="String">&quot;strWS&quot; - sheet name (optional) set as value of active cell</Data></Cell>
     <Cell><Data ss:Type="String">BS</Data></Cell>
    </Row>
    <Row ss:Height="58.5">
-    <Cell><Data ss:Type="String">Default Settings</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Default Settings</Data></Cell>
     <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
     <Cell ss:StyleID="s33"><Data ss:Type="String">Sets Default Settings as per the &quot;Default Settings&quot; sheet. &#10;Use this to reset Excel settings to your preferences. Base version is set up as per US English.</Data></Cell>
     <Cell ss:StyleID="s33"><Data ss:Type="String">As per &quot;Default Settings&quot; sheet</Data></Cell>
     <Cell><Data ss:Type="String">DS</Data></Cell>
    </Row>
+   <Row ss:Height="39">
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Save Copy of File</Data></Cell>
+    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Saves a copy of the file in the current location with the suffix &quot;_Working&quot; (for empty cell) or &quot;_[[ActiveCell]]&quot;</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">&quot;strShtSuff&quot; - suffix of file name (optional) set as value of active cell</Data></Cell>
+    <Cell><Data ss:Type="String">SA</Data></Cell>
+   </Row>
    <Row ss:Height="58.5">
-    <Cell><Data ss:Type="String">Import Lambdas From</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Name Used Ranges by Sheet Prefix</Data></Cell>
+    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Renames used range in sheets starting with text in active cell. Uses SanitizeRangeName function from &quot;MEWC Robot&quot; by Erik Oehm</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">&quot;strShtPref&quot; - Prefix of sheet name to process</Data></Cell>
+    <Cell><Data ss:Type="String">NURS</Data></Cell>
+   </Row>
+   <Row ss:Height="39">
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Name All Used Ranges</Data></Cell>
+    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Renames used range in all sheets. Uses SanitizeRangeName function from &quot;MEWC Robot&quot; by Erik Oehm</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">N/A</Data></Cell>
+    <Cell><Data ss:Type="String">NA</Data></Cell>
+   </Row>
+   <Row ss:Height="58.5">
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Import Lambdas From</Data></Cell>
     <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
     <Cell ss:StyleID="s33"><Data ss:Type="String">Opens a browser to navigate to a workbook with the lambdas to load. Use this as a one-off to set up your CompBot with your own lambdas.</Data></Cell>
     <Cell ss:StyleID="s33"><Data ss:Type="String">N/A</Data></Cell>
     <Cell><Data ss:Type="String">ILF</Data></Cell>
    </Row>
    <Row ss:Height="39">
-    <Cell><Data ss:Type="String">Import Lambdas</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Import Lambdas</Data></Cell>
     <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
     <Cell ss:StyleID="s33"><Data ss:Type="String">Loads lambdas held in CompBot to the active workbook - easy load for competitions</Data></Cell>
     <Cell ss:StyleID="s33"><Data ss:Type="String">N/A</Data></Cell>
     <Cell><Data ss:Type="String">IL</Data></Cell>
    </Row>
    <Row ss:Height="78">
-    <Cell><Data ss:Type="String">Setup Case</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Setup Case</Data></Cell>
     <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
     <Cell ss:StyleID="s33"><Data ss:Type="String">Sets up a case file by running the following VBA / commands together:&#10;* Backup Sheets&#10;* Create Level Sheets</Data></Cell>
     <Cell ss:StyleID="s33"><Data ss:Type="String">N/A</Data></Cell>
     <Cell><Data ss:Type="String">SC</Data></Cell>
    </Row>
-   <Row>
-    <Cell><Data ss:Type="String">Backup Sheets in Workbook</Data></Cell>
+   <Row ss:AutoFitHeight="0" ss:Height="52.5">
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Backup Sheets in Workbook</Data></Cell>
     <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell><Data ss:Type="String">Backs up all sheets in the active workbook</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Backs up all sheets in the active workbook</Data></Cell>
     <Cell ss:StyleID="s33"><Data ss:Type="String">N/A</Data></Cell>
-    <Cell><Data ss:Type="String">BS</Data></Cell>
+    <Cell><Data ss:Type="String">BU</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0" ss:Height="52.5">
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Create Bonus Sheet</Data></Cell>
+    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Creates a sheet for bonus questions in the Case sheet. </Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">N/A</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">CB&#10;CBS</Data></Cell>
    </Row>
    <Row ss:Height="78">
-    <Cell><Data ss:Type="String">Create Level Sheets</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Create Level Sheets</Data></Cell>
     <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
     <Cell ss:StyleID="s33"><Data ss:Type="String">Creates a sheet for each level in the Case sheet. &#10;By default this excludes data tables. To add a data table run Create Data Table command below when in a &quot;L#&quot; sheet or when on an &quot;Example#&quot; cell.</Data></Cell>
     <Cell ss:StyleID="s33"><Data ss:Type="String">N/A</Data></Cell>
     <Cell ss:StyleID="s33"><Data ss:Type="String">CL&#10;CLS</Data></Cell>
    </Row>
    <Row ss:Height="117">
-    <Cell><Data ss:Type="String">Create Case Input Sheet</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Create Case Input Sheet</Data></Cell>
     <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
     <Cell ss:StyleID="s33"><Data ss:Type="String">Creates a case inputs sheet with the inputs for the current case.&#10;By default this loads all columns from column B onwards into an array (excl E:F). &#10;If run on a cell with non-blank value, this will find headers and return only those that are not standard columns for Points, Answers, etc. Question number will still be included.</Data></Cell>
     <Cell ss:StyleID="s33"><Data ss:Type="String">N/A</Data></Cell>
     <Cell><Data ss:Type="String">CIS</Data></Cell>
    </Row>
    <Row ss:Height="58.5">
-    <Cell><Data ss:Type="String">Create Data Table</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Create Data Table</Data></Cell>
     <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Creates a data table on the current sheet for level sheets &quot;L#&quot; or active cell = &quot;Example#&quot;</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Creates a data table on the current sheet for level sheets &quot;L#&quot; or active cell = &quot;Example#&quot;&#10;Turns on iterative calculations.</Data></Cell>
     <Cell ss:StyleID="s33"><Data ss:Type="String">&quot;strQ&quot; - example number (optional) set as value of active cell if in format &quot;Example*&quot;</Data></Cell>
     <Cell ss:StyleID="s33"><Data ss:Type="String">DT&#10;CDT</Data></Cell>
+   </Row>
+   <Row ss:Height="39">
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Go To Similar Background Color</Data></Cell>
+    <Cell><Data ss:Type="String">Erik Oehm</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Select cells in selection with same background color as active cell</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">N/A</Data></Cell>
+    <Cell><Data ss:Type="String">SBC</Data></Cell>
+   </Row>
+   <Row ss:Height="78">
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Save Answers to Left</Data></Cell>
+    <Cell><Data ss:Type="String">Erik Oehm</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Saves references to the selected cells in the green answer cells to the left on the same row. &#10;Then copies either answers or the formula below for paste into solution.</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Active cell contains answers to copy</Data></Cell>
+    <Cell><Data ss:Type="String">SAL</Data></Cell>
+   </Row>
+   <Row ss:Height="39">
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Toggle Calc Mode</Data></Cell>
+    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Toggles calculation mode between manual and automatic. Status is set in StatusBar to not cause an interruption.</Data></Cell>
+    <Cell ss:StyleID="s33"/>
+    <Cell><Data ss:Type="String">TC</Data></Cell>
+   </Row>
+   <Row ss:Height="58.5">
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Toggle Iterative Calcs</Data></Cell>
+    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Ensures Calc Mode is Automatic and then turns on iterative calculations.&#10;Status is set in StatusBar to not cause an interruption.</Data></Cell>
+    <Cell ss:StyleID="s33"/>
+    <Cell><Data ss:Type="String">IC</Data></Cell>
    </Row>
   </Table>
  </Worksheet>

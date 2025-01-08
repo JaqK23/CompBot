@@ -5,13 +5,11 @@
       "Description": "Copy all sheets in workbook for backup",
       "Type": "VBAMacroCommand",
       "LaunchCodes": [
-        "BS"
+        "BU"
       ],
       "MacroExpression": "modCaseSetup.Backup()",
       "Tags": [
-        "Backup",
-        "WorkSheets",
-        "Sheets"
+        "Prep"
       ],
       "MacroWorkbookConnection": "ThisWorkbook"
     },
@@ -26,11 +24,22 @@
       ],
       "MacroExpression": "modMisc.CreateBlankSheet([[ActiveCell]])",
       "Tags": [
-        "Sheet",
-        "Setup",
-        "Blank"
+        "Prep"
       ],
       "MacroWorkbookConnection": "ThisWorkbook"
+    },
+    {
+      "Name": "Create Bonus Sheet",
+      "Description": "Creates bonus sheet \"B\" with bonus questions",
+      "Type": "VBAMacroCommand",
+      "LaunchCodes": [
+        "CB",
+        "CBS"
+      ],
+      "MacroExpression": "modCaseSetup.CreateBonusSheet()",
+      "Tags": [
+        "Prep"
+      ]
     },
     {
       "Name": "Create Case Inputs Sheet",
@@ -42,10 +51,7 @@
       ],
       "MacroExpression": "modCaseSetup.CreateCaseInputsSheet([[ActiveCell]])",
       "Tags": [
-        "Inputs",
-        "Case",
-        "Comp",
-        "Sheet"
+        "Prep"
       ],
       "MacroWorkbookConnection": "ThisWorkbook"
     },
@@ -59,10 +65,7 @@
       ],
       "MacroExpression": "modCaseSetup.CreateDataTable([[NewTableTargetToRight]])",
       "Tags": [
-        "Data",
-        "Table",
-        "Generate",
-        "Create"
+        "Prep"
       ]
     },
     {
@@ -75,9 +78,7 @@
       ],
       "MacroExpression": "modCaseSetup.CreateLevelSheets()",
       "Tags": [
-        "levels",
-        "Sheet",
-        "Setup"
+        "Prep"
       ]
     },
     {
@@ -89,11 +90,19 @@
       ],
       "MacroExpression": "modMisc.DefaultSettings()",
       "Tags": [
-        "Update",
-        "Default",
-        "Settings",
-        "International",
-        "Language"
+        "Settings"
+      ]
+    },
+    {
+      "Name": "Goto Similar Background Color",
+      "Description": "Goto similar background color.",
+      "Type": "VBAMacroCommand",
+      "LaunchCodes": [
+        "SBC"
+      ],
+      "MacroExpression": "modGoToSpecial.GotoSimilarBackgroundColor()",
+      "Tags": [
+        "GoTo"
       ]
     },
     {
@@ -105,10 +114,8 @@
       ],
       "MacroExpression": "modImportLambdas.ImportAllLambdas(\"CompBot.xlsb\")",
       "Tags": [
-        "Import",
-        "Lambda",
-        "Library",
-        "Workbook"
+        "LAMBDA",
+        "Prep"
       ],
       "MacroWorkbookConnection": "Lambda Robot"
     },
@@ -121,11 +128,57 @@
       ],
       "MacroExpression": "modLambdas.ImportLambdasFrom()",
       "Tags": [
-        "Import",
-        "Lambda",
-        "External",
-        "Workbook",
-        "Library"
+        "LAMBDA",
+        "Prep"
+      ]
+    },
+    {
+      "Name": "Name All Used Ranges",
+      "Description": "Renames used range in all sheets",
+      "Type": "VBAMacroCommand",
+      "LaunchCodes": [
+        "NA",
+        "NAUR"
+      ],
+      "MacroExpression": "modNames.NameAllUsedRanges()",
+      "Tags": [
+        "Name"
+      ]
+    },
+    {
+      "Name": "Name Used Ranges",
+      "Description": "Names used range in all sheets starting with the prefix as provided in the active cell",
+      "Type": "VBAMacroCommand",
+      "LaunchCodes": [
+        "NURS"
+      ],
+      "MacroExpression": "modNames.NameUsedRanges([[ActiveCell]])",
+      "Tags": [
+        "Name"
+      ]
+    },
+    {
+      "Name": "Save Answers To Left",
+      "Description": "Saves references to the selected cells in the green answer cells to the left on the same row.",
+      "Type": "VBAMacroCommand",
+      "LaunchCodes": [
+        "SAL"
+      ],
+      "MacroExpression": "modCaseSetup.SaveAnswersToLeft()",
+      "Tags": [
+        "Paste"
+      ]
+    },
+    {
+      "Name": "Save Copy of File",
+      "Description": "Enable editing and save copy of file with suffix based on active cell (otherwise Working)",
+      "Type": "VBAMacroCommand",
+      "LaunchCodes": [
+        "SA"
+      ],
+      "MacroExpression": "modCaseSetup.SaveCopy([[ActiveCell]])",
+      "Tags": [
+        "Prep"
       ]
     },
     {
@@ -137,10 +190,31 @@
       ],
       "MacroExpression": "modCaseSetup.Setup()",
       "Tags": [
-        "Setup",
-        "Case",
-        "Levels",
-        "Sheets"
+        "Prep"
+      ]
+    },
+    {
+      "Name": "Toggle Calculation Mode",
+      "Description": "Toggles calculation mode and places current mode notice in StatusBar",
+      "Type": "VBAMacroCommand",
+      "LaunchCodes": [
+        "TC"
+      ],
+      "MacroExpression": "modMisc.ToggleCalculationMode()",
+      "Tags": [
+        "Settings"
+      ]
+    },
+    {
+      "Name": "Toggle Iterative Calculation",
+      "Description": "Toggles iterative calculation and sets status in status bar",
+      "Type": "VBAMacroCommand",
+      "LaunchCodes": [
+        "IC"
+      ],
+      "MacroExpression": "modMisc.ToggleIterativeCalculation()",
+      "Tags": [
+        "Settings"
       ]
     }
   ]

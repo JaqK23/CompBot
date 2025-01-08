@@ -2,173 +2,62 @@
 
 **CompBot.xlsm** contains definitions for:
 
-[9 Robot Commands](#command-definitions)  
+[17 Robot Commands](#command-definitions)  
 
   
 
 ## Available Robot Commands
 
-[Backup](#backup) | [Blank](#blank) | [Case](#case) | [Comp](#comp) | [Create](#create) | [Data](#data) | [Default](#default) | [External](#external) | [Generate](#generate) | [Import](#import) | [Inputs](#inputs) | [International](#international) | [Lambda](#lambda) | [Language](#language) | [levels](#levels) | [Levels](#levels) | [Library](#library) | [Settings](#settings) | [Setup](#setup) | [Sheet](#sheet) | [Sheets](#sheets) | [Table](#table) | [Update](#update) | [Workbook](#workbook) | [WorkSheets](#worksheets)
+[GoTo](#goto) | [LAMBDA](#lambda) | [Name](#name) | [Paste](#paste) | [Prep](#prep) | [Settings](#settings)
 
-### Backup
+### GoTo
+
+| Name | Description |
+| --- | --- |
+| [Goto Similar Background Color](#goto-similar-background-color) | Goto similar background color. |
+
+### LAMBDA
+
+| Name | Description |
+| --- | --- |
+| [Import Lambda Library](#import-lambda-library) | Imports CompBot's lambda collection into active workbook |
+| [Import Lambdas From](#import-lambdas-from) | Import lambdas from a specified workbook |
+
+### Name
+
+| Name | Description |
+| --- | --- |
+| [Name All Used Ranges](#name-all-used-ranges) | Renames used range in all sheets |
+| [Name Used Ranges](#name-used-ranges) | Names used range in all sheets starting with the prefix as provided in the active cell |
+
+### Paste
+
+| Name | Description |
+| --- | --- |
+| [Save Answers To Left](#save-answers-to-left) | Saves references to the selected cells in the green answer cells to the left on the same row. |
+
+### Prep
 
 | Name | Description |
 | --- | --- |
 | [Backup Sheets in Workbook](#backup-sheets-in-workbook) | Copy all sheets in workbook for backup |
-
-### Blank
-
-| Name | Description |
-| --- | --- |
 | [Create Blank Sheet](#create-blank-sheet) | Creates a blank sheet named based on cell value (Sht otherwise) |
-
-### Case
-
-| Name | Description |
-| --- | --- |
+| [Create Bonus Sheet](#create-bonus-sheet) | Creates bonus sheet "B" with bonus questions |
 | [Create Case Inputs Sheet](#create-case-inputs-sheet) | Creates a case inputs sheet with the inputs for the current case |
-| [Setup Case](#setup-case) | Setup case by running Backup and Level sheet creation |
-
-### Comp
-
-| Name | Description |
-| --- | --- |
-| [Create Case Inputs Sheet](#create-case-inputs-sheet) | Creates a case inputs sheet with the inputs for the current case |
-
-### Create
-
-| Name | Description |
-| --- | --- |
 | [Create Data Table](#create-data-table) | Creates a data table on the current sheet for level sheets "L#" or active cell = "Example#" |
-
-### Data
-
-| Name | Description |
-| --- | --- |
-| [Create Data Table](#create-data-table) | Creates a data table on the current sheet for level sheets "L#" or active cell = "Example#" |
-
-### Default
-
-| Name | Description |
-| --- | --- |
-| [Default Settings](#default-settings) | Updates default settings to those in Default Settings sheet |
-
-### External
-
-| Name | Description |
-| --- | --- |
-| [Import Lambdas From](#import-lambdas-from) | Import lambdas from a specified workbook |
-
-### Generate
-
-| Name | Description |
-| --- | --- |
-| [Create Data Table](#create-data-table) | Creates a data table on the current sheet for level sheets "L#" or active cell = "Example#" |
-
-### Import
-
-| Name | Description |
-| --- | --- |
-| [Import Lambda Library](#import-lambda-library) | Imports CompBot's lambda collection into active workbook |
-| [Import Lambdas From](#import-lambdas-from) | Import lambdas from a specified workbook |
-
-### Inputs
-
-| Name | Description |
-| --- | --- |
-| [Create Case Inputs Sheet](#create-case-inputs-sheet) | Creates a case inputs sheet with the inputs for the current case |
-
-### International
-
-| Name | Description |
-| --- | --- |
-| [Default Settings](#default-settings) | Updates default settings to those in Default Settings sheet |
-
-### Lambda
-
-| Name | Description |
-| --- | --- |
-| [Import Lambda Library](#import-lambda-library) | Imports CompBot's lambda collection into active workbook |
-| [Import Lambdas From](#import-lambdas-from) | Import lambdas from a specified workbook |
-
-### Language
-
-| Name | Description |
-| --- | --- |
-| [Default Settings](#default-settings) | Updates default settings to those in Default Settings sheet |
-
-### levels
-
-| Name | Description |
-| --- | --- |
 | [Create Level Sheets](#create-level-sheets) | Creates a sheet for each level in the Case sheet |
-
-### Levels
-
-| Name | Description |
-| --- | --- |
-| [Setup Case](#setup-case) | Setup case by running Backup and Level sheet creation |
-
-### Library
-
-| Name | Description |
-| --- | --- |
 | [Import Lambda Library](#import-lambda-library) | Imports CompBot's lambda collection into active workbook |
 | [Import Lambdas From](#import-lambdas-from) | Import lambdas from a specified workbook |
+| [Save Copy of File](#save-copy-of-file) | Enable editing and save copy of file with suffix based on active cell (otherwise Working) |
+| [Setup Case](#setup-case) | Setup case by running Backup and Level sheet creation |
 
 ### Settings
 
 | Name | Description |
 | --- | --- |
 | [Default Settings](#default-settings) | Updates default settings to those in Default Settings sheet |
-
-### Setup
-
-| Name | Description |
-| --- | --- |
-| [Create Blank Sheet](#create-blank-sheet) | Creates a blank sheet named based on cell value (Sht otherwise) |
-| [Create Level Sheets](#create-level-sheets) | Creates a sheet for each level in the Case sheet |
-| [Setup Case](#setup-case) | Setup case by running Backup and Level sheet creation |
-
-### Sheet
-
-| Name | Description |
-| --- | --- |
-| [Create Blank Sheet](#create-blank-sheet) | Creates a blank sheet named based on cell value (Sht otherwise) |
-| [Create Case Inputs Sheet](#create-case-inputs-sheet) | Creates a case inputs sheet with the inputs for the current case |
-| [Create Level Sheets](#create-level-sheets) | Creates a sheet for each level in the Case sheet |
-
-### Sheets
-
-| Name | Description |
-| --- | --- |
-| [Backup Sheets in Workbook](#backup-sheets-in-workbook) | Copy all sheets in workbook for backup |
-| [Setup Case](#setup-case) | Setup case by running Backup and Level sheet creation |
-
-### Table
-
-| Name | Description |
-| --- | --- |
-| [Create Data Table](#create-data-table) | Creates a data table on the current sheet for level sheets "L#" or active cell = "Example#" |
-
-### Update
-
-| Name | Description |
-| --- | --- |
-| [Default Settings](#default-settings) | Updates default settings to those in Default Settings sheet |
-
-### Workbook
-
-| Name | Description |
-| --- | --- |
-| [Import Lambda Library](#import-lambda-library) | Imports CompBot's lambda collection into active workbook |
-| [Import Lambdas From](#import-lambdas-from) | Import lambdas from a specified workbook |
-
-### WorkSheets
-
-| Name | Description |
-| --- | --- |
-| [Backup Sheets in Workbook](#backup-sheets-in-workbook) | Copy all sheets in workbook for backup |
+| [Toggle Calculation Mode](#toggle-calculation-mode) | Toggles calculation mode and places current mode notice in StatusBar |
+| [Toggle Iterative Calculation](#toggle-iterative-calculation) | Toggles iterative calculation and sets status in status bar |
 
   
 
@@ -180,13 +69,13 @@
 
 *Copy all sheets in workbook for backup*
 
-`@CompBot.xlsm` `!VBA Macro Command` `#Backup` `#WorkSheets` `#Sheets`
+`@CompBot.xlsm` `!VBA Macro Command` `#Prep`
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | [modCaseSetup.Backup](./VBA/modCaseSetup.bas#L32)() |
+| Macro Expression | [modCaseSetup.Backup](./VBA/modCaseSetup.bas#L33)() |
 | Macro Workbook Connection | ThisWorkbook |
-| Launch Codes | ``` BS ``` |
+| Launch Codes | ``` BU ``` |
 
 [^Top](#oa-robot-definitions)
 
@@ -196,7 +85,7 @@
 
 *Creates a blank sheet named based on cell value (Sht otherwise)*
 
-`@CompBot.xlsm` `!VBA Macro Command` `#Sheet` `#Setup` `#Blank`
+`@CompBot.xlsm` `!VBA Macro Command` `#Prep`
 
 | Property | Value |
 | --- | --- |
@@ -208,15 +97,30 @@
 
   
 
+### Create Bonus Sheet
+
+*Creates bonus sheet "B" with bonus questions*
+
+`@CompBot.xlsm` `!VBA Macro Command` `#Prep`
+
+| Property | Value |
+| --- | --- |
+| Macro Expression | [modCaseSetup.CreateBonusSheet](./VBA/modCaseSetup.bas#L260)() |
+| Launch Codes | 1. ``` CB ``` 2. ``` CBS ``` |
+
+[^Top](#oa-robot-definitions)
+
+  
+
 ### Create Case Inputs Sheet
 
 *Creates a case inputs sheet with the inputs for the current case*
 
-`@CompBot.xlsm` `!VBA Macro Command` `#Inputs` `#Case` `#Comp` `#Sheet`
+`@CompBot.xlsm` `!VBA Macro Command` `#Prep`
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | [modCaseSetup.CreateCaseInputsSheet](./VBA/modCaseSetup.bas#L363)([[ActiveCell]]) |
+| Macro Expression | [modCaseSetup.CreateCaseInputsSheet](./VBA/modCaseSetup.bas#L621)([[ActiveCell]]) |
 | Macro Workbook Connection | ThisWorkbook |
 | Launch Codes | 1. ``` CIS ``` 2. ``` IS ``` |
 
@@ -228,11 +132,11 @@
 
 *Creates a data table on the current sheet for level sheets "L#" or active cell = "Example#"*
 
-`@CompBot.xlsm` `!VBA Macro Command` `#Data` `#Table` `#Generate` `#Create`
+`@CompBot.xlsm` `!VBA Macro Command` `#Prep`
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | [modCaseSetup.CreateDataTable](./VBA/modCaseSetup.bas#L175)([[NewTableTargetToRight]]) |
+| Macro Expression | [modCaseSetup.CreateDataTable](./VBA/modCaseSetup.bas#L429)([[NewTableTargetToRight]]) |
 | Launch Codes | 1. ``` CDT ``` 2. ``` DT ``` |
 
 [^Top](#oa-robot-definitions)
@@ -243,11 +147,11 @@
 
 *Creates a sheet for each level in the Case sheet*
 
-`@CompBot.xlsm` `!VBA Macro Command` `#levels` `#Sheet` `#Setup`
+`@CompBot.xlsm` `!VBA Macro Command` `#Prep`
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | [modCaseSetup.CreateLevelSheets](./VBA/modCaseSetup.bas#L63)() |
+| Macro Expression | [modCaseSetup.CreateLevelSheets](./VBA/modCaseSetup.bas#L64)() |
 | Launch Codes | 1. ``` CL ``` 2. ``` CLS ``` |
 
 [^Top](#oa-robot-definitions)
@@ -258,7 +162,7 @@
 
 *Updates default settings to those in Default Settings sheet*
 
-`@CompBot.xlsm` `!VBA Macro Command` `#Update` `#Default` `#Settings` `#International` `#Language`
+`@CompBot.xlsm` `!VBA Macro Command` `#Settings`
 
 | Property | Value |
 | --- | --- |
@@ -269,11 +173,26 @@
 
   
 
+### Goto Similar Background Color
+
+*Goto similar background color.*
+
+`@CompBot.xlsm` `!VBA Macro Command` `#GoTo`
+
+| Property | Value |
+| --- | --- |
+| Macro Expression | [modGoToSpecial.GotoSimilarBackgroundColor](./VBA/modGoToSpecial.bas#L15)() |
+| Launch Codes | ``` SBC ``` |
+
+[^Top](#oa-robot-definitions)
+
+  
+
 ### Import Lambda Library
 
 *Imports CompBot's lambda collection into active workbook*
 
-`@CompBot.xlsm` `!VBA Macro Command` `#Import` `#Lambda` `#Library` `#Workbook`
+`@CompBot.xlsm` `!VBA Macro Command` `#LAMBDA` `#Prep`
 
 | Property | Value |
 | --- | --- |
@@ -289,7 +208,7 @@
 
 *Import lambdas from a specified workbook*
 
-`@CompBot.xlsm` `!VBA Macro Command` `#Import` `#Lambda` `#External` `#Workbook` `#Library`
+`@CompBot.xlsm` `!VBA Macro Command` `#LAMBDA` `#Prep`
 
 | Property | Value |
 | --- | --- |
@@ -300,15 +219,105 @@
 
   
 
+### Name All Used Ranges
+
+*Renames used range in all sheets*
+
+`@CompBot.xlsm` `!VBA Macro Command` `#Name`
+
+| Property | Value |
+| --- | --- |
+| Macro Expression | [modNames.NameAllUsedRanges](./VBA/modNames.bas#L30)() |
+| Launch Codes | 1. ``` NA ``` 2. ``` NAUR ``` |
+
+[^Top](#oa-robot-definitions)
+
+  
+
+### Name Used Ranges
+
+*Names used range in all sheets starting with the prefix as provided in the active cell*
+
+`@CompBot.xlsm` `!VBA Macro Command` `#Name`
+
+| Property | Value |
+| --- | --- |
+| Macro Expression | [modNames.NameUsedRanges](./VBA/modNames.bas#L11)([[ActiveCell]]) |
+| Launch Codes | ``` NURS ``` |
+
+[^Top](#oa-robot-definitions)
+
+  
+
+### Save Answers To Left
+
+*Saves references to the selected cells in the green answer cells to the left on the same row.*
+
+`@CompBot.xlsm` `!VBA Macro Command` `#Paste`
+
+| Property | Value |
+| --- | --- |
+| Macro Expression | [modCaseSetup.SaveAnswersToLeft](./VBA/modCaseSetup.bas#L775)() |
+| Launch Codes | ``` SAL ``` |
+
+[^Top](#oa-robot-definitions)
+
+  
+
+### Save Copy of File
+
+*Enable editing and save copy of file with suffix based on active cell (otherwise Working)*
+
+`@CompBot.xlsm` `!VBA Macro Command` `#Prep`
+
+| Property | Value |
+| --- | --- |
+| Macro Expression | [modCaseSetup.SaveCopy](./VBA/modCaseSetup.bas#L828)([[ActiveCell]]) |
+| Launch Codes | ``` SA ``` |
+
+[^Top](#oa-robot-definitions)
+
+  
+
 ### Setup Case
 
 *Setup case by running Backup and Level sheet creation*
 
-`@CompBot.xlsm` `!VBA Macro Command` `#Setup` `#Case` `#Levels` `#Sheets`
+`@CompBot.xlsm` `!VBA Macro Command` `#Prep`
 
 | Property | Value |
 | --- | --- |
 | Macro Expression | [modCaseSetup.Setup](./VBA/modCaseSetup.bas#L18)() |
 | Launch Codes | ``` SC ``` |
+
+[^Top](#oa-robot-definitions)
+
+  
+
+### Toggle Calculation Mode
+
+*Toggles calculation mode and places current mode notice in StatusBar*
+
+`@CompBot.xlsm` `!VBA Macro Command` `#Settings`
+
+| Property | Value |
+| --- | --- |
+| Macro Expression | [modMisc.ToggleCalculationMode](./VBA/modMisc.bas#L122)() |
+| Launch Codes | ``` TC ``` |
+
+[^Top](#oa-robot-definitions)
+
+  
+
+### Toggle Iterative Calculation
+
+*Toggles iterative calculation and sets status in status bar*
+
+`@CompBot.xlsm` `!VBA Macro Command` `#Settings`
+
+| Property | Value |
+| --- | --- |
+| Macro Expression | [modMisc.ToggleIterativeCalculation](./VBA/modMisc.bas#L139)() |
+| Launch Codes | ``` IC ``` |
 
 [^Top](#oa-robot-definitions)

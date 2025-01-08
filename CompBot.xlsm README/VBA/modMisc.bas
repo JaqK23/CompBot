@@ -112,3 +112,39 @@ ErrorHandler:
 
 End Sub
 
+'Toggle calculation mode between manual and automatic
+'--------------------------------------------< OA Robot >--------------------------------------------
+' Command Name:           Toggle Calculation Mode
+' Description:            Toggles calculation mode and places current mode notice in StatusBar
+' Macro Expression:       modMisc.ToggleCalculationMode()
+' Generated:              01/08/2025 01:50 PM
+'----------------------------------------------------------------------------------------------------
+Sub ToggleCalculationMode()
+    If Application.Calculation = xlCalculationAutomatic Then
+        Application.Calculation = xlCalculationManual
+        Application.StatusBar = "Calculation mode is now set to Manual."
+    Else
+        Application.Calculation = xlCalculationAutomatic
+        Application.StatusBar = "Calculation mode is now set to Automatic."
+    End If
+End Sub
+
+'Toggle iterative calculation
+'--------------------------------------------< OA Robot >--------------------------------------------
+' Command Name:           Toggle Iterative Calculation
+' Description:            Toggles iterative calculation and sets status in status bar
+' Macro Expression:       modMisc.ToggleIterativeCalculation()
+' Generated:              01/08/2025 01:50 PM
+'----------------------------------------------------------------------------------------------------
+Sub ToggleIterativeCalculation()
+    If Application.Iteration Then
+        Application.Iteration = False
+        Application.StatusBar = "Iterative calculation is disabled."
+    Else
+        Application.Iteration = True
+        Application.MaxIterations = 1000 ' Adjust as needed
+        Application.MaxChange = 0.001 ' Adjust as needed
+        Application.StatusBar = "Iterative calculation is enabled."
+    End If
+End Sub
+
