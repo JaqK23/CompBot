@@ -129,3 +129,25 @@ Public Sub MarkAsInputCells(ByVal GivenRange As Range, Optional ByVal InteriorOn
     End If
     
 End Sub
+
+'Clears named ranges with RefersTo="=#NAME?"
+Sub ClearNamedRangeErrors()
+    Dim WB As Workbook
+    Dim nmName As Name
+    Dim intDel As Integer
+    
+    Set WB = ActiveWorkbook
+    intDel = 0
+    
+    For Each nmName In WB.Names
+        If nmName.RefersTo = "=#NAME?" Then
+            intDel = intDel + 1
+            Debug.Print "Deletion number " & CStr(intDel) & ": " & nmName.Name
+            On Error Resume Next
+            nmName.Delete
+            If Err.Number <> 0 Then Debug.Print "Deletion failed"
+            On Error GoTo 0
+        End If
+    Next nmName
+    
+End Sub

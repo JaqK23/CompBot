@@ -330,7 +330,7 @@ Sub CreateBonusSheet()
             If Trim(strCurrVal) = "Bonus Questions" Then
                 intBegRow = objCell.Row
                 intFound = intFound + 1
-            ElseIf (intFound = 1 And strCurrVal = "Questions") Or _
+            ElseIf (intFound = 1 And (strCurrVal = "Questions" Or strCurrVal = "Levels")) Or _
             (objCell.Value Like "Level *" And strCurrVal <> "Level Code" And _
             IsNumeric(Trim(Replace(strCurrVal, "Level", "")))) Then
                 intEndRow = objCell.Row
@@ -348,6 +348,7 @@ Sub CreateBonusSheet()
     
     '____________________COPY DATA________________________________________________
     'copy rows to new worksheet
+    If intBegRow <= 0 Then intBegRow = 1
     WS.Rows(intBegRow & ":" & intEndRow).Copy Destination:=WSNew.Rows(1)
     WSNew.Calculate
     
@@ -685,12 +686,13 @@ Sub DetailedInputs(WS As Worksheet, WSNew As Worksheet)
     Dim intCol As Integer
     Dim strHdr As String
     Dim booVal As Boolean
+    Dim intHdrOffset As Integer
     
     Set rngHdr = WSNew.Cells(2, 3)
     Set rngTarget = WSNew.Cells(3, 3)
     intInc = 0
     intRowOut = 0
-    
+        
     'find last row in column B
     intEndRow = WS.Cells(WS.Rows.Count, 2).End(xlUp).Row
     intEndCol = WS.UsedRange.Columns.Count + 3
@@ -698,8 +700,15 @@ Sub DetailedInputs(WS As Worksheet, WSNew As Worksheet)
     'cycle through rows in input sheet
     For intRow = 1 To intEndRow
         strCV = WS.Cells(intRow, 2).Value
-        If Left(strCV, 7) = "Example" Then
+        If Left(strCV, 7) = "Example" And Len(strCV) <= 10 Then
+            'get header offset
+            intHdrOffset = -1
             intCurrExRow = intRow
+            If intCurrExRow + intHdrOffset > 0 Then
+                Do While WS.Cells(intCurrExRow + intHdrOffset, 2).Value = ""
+                    intHdrOffset = intHdrOffset - 1
+                Loop
+            End If
             'example row - check current headers list vs existing
             'reset current column numbers
             If intInc > 0 Then
@@ -709,7 +718,7 @@ Sub DetailedInputs(WS As Worksheet, WSNew As Worksheet)
                 Next intHdr
             End If
             For intCol = 3 To intEndCol
-                strHdr = WS.Cells(intCurrExRow - 2, intCol).Value
+                strHdr = WS.Cells(intCurrExRow + intHdrOffset, intCol).Value
                 strCV = WS.Cells(intCurrExRow, intCol).Value
                 booVal = Not WS.Cells(intCurrExRow, intCol).HasFormula
                 If booVal And strCV <> "" And strHdr <> "Level" And strHdr <> "Points" And strHdr <> "Answer" Then

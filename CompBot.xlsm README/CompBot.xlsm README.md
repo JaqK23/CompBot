@@ -120,7 +120,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | [modCaseSetup.CreateCaseInputsSheet](./VBA/modCaseSetup.bas#L621)([[ActiveCell]]) |
+| Macro Expression | [modCaseSetup.CreateCaseInputsSheet](./VBA/modCaseSetup.bas#L622)([[ActiveCell]]) |
 | Macro Workbook Connection | ThisWorkbook |
 | Launch Codes | 1. ``` CIS ``` 2. ``` IS ``` |
 
@@ -136,7 +136,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | [modCaseSetup.CreateDataTable](./VBA/modCaseSetup.bas#L429)([[NewTableTargetToRight]]) |
+| Macro Expression | [modCaseSetup.CreateDataTable](./VBA/modCaseSetup.bas#L430)([[NewTableTargetToRight]]) |
 | Launch Codes | 1. ``` CDT ``` 2. ``` DT ``` |
 
 [^Top](#oa-robot-definitions)
@@ -196,7 +196,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | [modImportLambdas.ImportAllLambdas](./VBA/modImportLambdas.bas)("CompBot.xlsb") |
+| Macro Expression | [modImportLambdas.ImportAllLambdas](./VBA/modImportLambdas.bas)("CompBot.xlsm") |
 | Macro Workbook Connection | Lambda Robot |
 | Launch Codes | ``` IL ``` |
 
@@ -257,7 +257,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | [modCaseSetup.SaveAnswersToLeft](./VBA/modCaseSetup.bas#L775)() |
+| Macro Expression | [modCaseSetup.SaveAnswersToLeft](./VBA/modCaseSetup.bas#L784)() |
 | Launch Codes | ``` SAL ``` |
 
 [^Top](#oa-robot-definitions)
@@ -272,7 +272,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | [modCaseSetup.SaveCopy](./VBA/modCaseSetup.bas#L828)([[ActiveCell]]) |
+| Macro Expression | [modCaseSetup.SaveCopy](./VBA/modCaseSetup.bas#L837)([[ActiveCell]]) |
 | Launch Codes | ``` SA ``` |
 
 [^Top](#oa-robot-definitions)

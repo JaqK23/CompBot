@@ -112,7 +112,7 @@
       "LaunchCodes": [
         "IL"
       ],
-      "MacroExpression": "modImportLambdas.ImportAllLambdas(\"CompBot.xlsb\")",
+      "MacroExpression": "modImportLambdas.ImportAllLambdas(\"CompBot.xlsm\")",
       "Tags": [
         "LAMBDA",
         "Prep"
