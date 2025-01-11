@@ -20,7 +20,9 @@ Sub Setup()
     Call Backup
     Call CreateLevelSheets
     Call CreateBonusSheet
+    VBAInit
     Call CreateCaseInputsSheet("detailed")
+    VBAFin
 End Sub
 
 'backup all sheets (to prevent overwrite errors)
@@ -760,7 +762,7 @@ Sub DetailedInputs(WS As Worksheet, WSNew As Worksheet)
             WSNew.Cells(rngTarget.Row + intRowOut - 1, rngTarget.Column - 1).Value = strCV
             For intHdr = 1 To intInc
                 If intIncCols(intHdr) <> 0 Then
-                    WSNew.Cells(rngTarget.Row + intRowOut - 1, rngTarget.Column + intHdr - 1).Value = WS.Cells(intRow, intIncCols(intHdr)).Value
+                    WSNew.Cells(rngTarget.Row + intRowOut - 1, rngTarget.Column + intHdr - 1).Value = "'" & WS.Cells(intRow, intIncCols(intHdr)).Value
                 End If
             Next intHdr
         End If

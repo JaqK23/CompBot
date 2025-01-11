@@ -14,6 +14,18 @@
       "MacroWorkbookConnection": "ThisWorkbook"
     },
     {
+      "Name": "Clear Lambdas",
+      "Description": "Clear lambdas that aren't in Lambdas table - for Comp Bot maintenance",
+      "Type": "VBAMacroCommand",
+      "LaunchCodes": [
+        "CL"
+      ],
+      "MacroExpression": "modLambdas.ClearLambdas()",
+      "Tags": [
+        "Maintenance"
+      ]
+    },
+    {
       "Name": "Create Blank Sheet",
       "Description": "Creates a blank sheet named based on cell value (Sht otherwise)",
       "Type": "VBAMacroCommand",

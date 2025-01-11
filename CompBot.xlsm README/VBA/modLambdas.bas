@@ -62,7 +62,7 @@ Sub ImportLambdasFrom()
     ' Loop through named ranges in the source workbook
     For Each nm In sourceWorkbook.Names
         ' Check if the named range is a LAMBDA function
-        If InStr(1, Replace(nm.RefersTo, " ", ""), "=LAMBDA(", vbTextCompare) > 0 Then
+        If InStr(1, Replace(nm.RefersTo, " ", ""), "LAMBDA(", vbTextCompare) > 0 Then
             On Error Resume Next
             ' Add the LAMBDA to the active workbook
             currentWorkbook.Names.Add Name:=nm.Name, RefersTo:=nm.RefersTo
@@ -83,3 +83,50 @@ Sub ImportLambdasFrom()
     End If
 End Sub
 
+'function to clear lambdas to only those in lambda table
+'--------------------------------------------< OA Robot >--------------------------------------------
+' Command Name:           Clear Lambdas
+' Description:            Clear lambdas that aren't in Lambdas table - for Comp Bot maintenance
+' Macro Expression:       modLambdas.ClearLambdas()
+' Generated:              01/10/2025 11:00 PM
+'----------------------------------------------------------------------------------------------------
+Sub ClearLambdas()
+    Dim WB As Workbook
+    Dim LOB As ListObject
+    Dim strName As String
+    Dim dicName As Object
+    Dim nmLambda As Name
+    Dim cell As Range
+    Dim booFound As Boolean
+
+    ' Set workbook to the current workbook
+    Set WB = ThisWorkbook
+    
+    ' Set the ListObject to the Lambdas table (replace "Lambdas" with the actual range name if needed)
+    Set LOB = Range("Lambdas").ListObject
+    
+    ' Create a dictionary to store the names from the "Name" column of the table
+    Set dicName = CreateObject("Scripting.Dictionary")
+    
+    ' Populate the dictionary with names from the "Name" column of the Lambdas table
+    For Each cell In LOB.ListColumns("Name").DataBodyRange
+        dicName(cell.Value) = True
+    Next cell
+    
+    ' Loop through all named ranges in the workbook
+    For Each nmLambda In WB.Names
+        ' Check if the named range refers to a Lambda (based on the name containing "LAMBDA")
+        If InStr(1, nmLambda.RefersTo, "LAMBDA(") > 0 Then
+            strName = nmLambda.Name
+            booFound = dicName.Exists(strName) ' Check if the name is in the dictionary
+            
+            ' If the name isn't found in the dictionary, delete the Lambda
+            If Not booFound Then
+                nmLambda.Delete
+            End If
+        End If
+    Next nmLambda
+
+    
+
+End Sub

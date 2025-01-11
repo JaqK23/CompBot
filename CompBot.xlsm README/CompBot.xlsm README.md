@@ -2,13 +2,13 @@
 
 **CompBot.xlsm** contains definitions for:
 
-[17 Robot Commands](#command-definitions)  
+[18 Robot Commands](#command-definitions)  
 
   
 
 ## Available Robot Commands
 
-[GoTo](#goto) | [LAMBDA](#lambda) | [Name](#name) | [Paste](#paste) | [Prep](#prep) | [Settings](#settings)
+[GoTo](#goto) | [LAMBDA](#lambda) | [Maintenance](#maintenance) | [Name](#name) | [Paste](#paste) | [Prep](#prep) | [Settings](#settings)
 
 ### GoTo
 
@@ -22,6 +22,12 @@
 | --- | --- |
 | [Import Lambda Library](#import-lambda-library) | Imports CompBot's lambda collection into active workbook |
 | [Import Lambdas From](#import-lambdas-from) | Import lambdas from a specified workbook |
+
+### Maintenance
+
+| Name | Description |
+| --- | --- |
+| [Clear Lambdas](#clear-lambdas) | Clear lambdas that aren't in Lambdas table - for Comp Bot maintenance |
 
 ### Name
 
@@ -73,9 +79,24 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | [modCaseSetup.Backup](./VBA/modCaseSetup.bas#L33)() |
+| Macro Expression | [modCaseSetup.Backup](./VBA/modCaseSetup.bas#L35)() |
 | Macro Workbook Connection | ThisWorkbook |
 | Launch Codes | ``` BU ``` |
+
+[^Top](#oa-robot-definitions)
+
+  
+
+### Clear Lambdas
+
+*Clear lambdas that aren't in Lambdas table - for Comp Bot maintenance*
+
+`@CompBot.xlsm` `!VBA Macro Command` `#Maintenance`
+
+| Property | Value |
+| --- | --- |
+| Macro Expression | [modLambdas.ClearLambdas](./VBA/modLambdas.bas#L93)() |
+| Launch Codes | ``` CL ``` |
 
 [^Top](#oa-robot-definitions)
 
@@ -105,7 +126,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | [modCaseSetup.CreateBonusSheet](./VBA/modCaseSetup.bas#L260)() |
+| Macro Expression | [modCaseSetup.CreateBonusSheet](./VBA/modCaseSetup.bas#L262)() |
 | Launch Codes | 1. ``` CB ``` 2. ``` CBS ``` |
 
 [^Top](#oa-robot-definitions)
@@ -120,7 +141,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | [modCaseSetup.CreateCaseInputsSheet](./VBA/modCaseSetup.bas#L622)([[ActiveCell]]) |
+| Macro Expression | [modCaseSetup.CreateCaseInputsSheet](./VBA/modCaseSetup.bas#L624)([[ActiveCell]]) |
 | Macro Workbook Connection | ThisWorkbook |
 | Launch Codes | 1. ``` CIS ``` 2. ``` IS ``` |
 
@@ -136,7 +157,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | [modCaseSetup.CreateDataTable](./VBA/modCaseSetup.bas#L430)([[NewTableTargetToRight]]) |
+| Macro Expression | [modCaseSetup.CreateDataTable](./VBA/modCaseSetup.bas#L432)([[NewTableTargetToRight]]) |
 | Launch Codes | 1. ``` CDT ``` 2. ``` DT ``` |
 
 [^Top](#oa-robot-definitions)
@@ -151,7 +172,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | [modCaseSetup.CreateLevelSheets](./VBA/modCaseSetup.bas#L64)() |
+| Macro Expression | [modCaseSetup.CreateLevelSheets](./VBA/modCaseSetup.bas#L66)() |
 | Launch Codes | 1. ``` CL ``` 2. ``` CLS ``` |
 
 [^Top](#oa-robot-definitions)
@@ -257,7 +278,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | [modCaseSetup.SaveAnswersToLeft](./VBA/modCaseSetup.bas#L784)() |
+| Macro Expression | [modCaseSetup.SaveAnswersToLeft](./VBA/modCaseSetup.bas#L786)() |
 | Launch Codes | ``` SAL ``` |
 
 [^Top](#oa-robot-definitions)
@@ -272,7 +293,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | [modCaseSetup.SaveCopy](./VBA/modCaseSetup.bas#L837)([[ActiveCell]]) |
+| Macro Expression | [modCaseSetup.SaveCopy](./VBA/modCaseSetup.bas#L839)([[ActiveCell]]) |
 | Launch Codes | ``` SA ``` |
 
 [^Top](#oa-robot-definitions)

@@ -47,3 +47,15 @@ Sub GotoSimilarBackgroundColor()
     End If
 
 End Sub
+
+Private Function SelectionOrUsedRange(vSelection As Variant) As Range
+    If TypeName(vSelection) <> "Range" Then
+        Set SelectionOrUsedRange = ActiveSheet.UsedRange
+    ElseIf vSelection.Cells.Count = 1 Then
+        Set SelectionOrUsedRange = vSelection.Parent.UsedRange
+    ElseIf Not Intersect(vSelection, vSelection.Parent.UsedRange) Is Nothing Then
+        Set SelectionOrUsedRange = Intersect(vSelection, vSelection.Parent.UsedRange)
+    Else
+        Set SelectionOrUsedRange = vSelection.Parent.UsedRange
+    End If
+End Function
