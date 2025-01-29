@@ -2,13 +2,13 @@
 
 **CompBot.xlsm** contains definitions for:
 
-[18 Robot Commands](#command-definitions)  
+[24 Robot Commands](#command-definitions)  
 
   
 
 ## Available Robot Commands
 
-[GoTo](#goto) | [LAMBDA](#lambda) | [Maintenance](#maintenance) | [Name](#name) | [Paste](#paste) | [Prep](#prep) | [Settings](#settings)
+[GoTo](#goto) | [LAMBDA](#lambda) | [Maintenance](#maintenance) | [Name](#name) | [Paste](#paste) | [Prep](#prep) | [Settings](#settings) | [WrapWith](#wrapwith) | [Other](#other)
 
 ### GoTo
 
@@ -52,8 +52,10 @@
 | [Create Case Inputs Sheet](#create-case-inputs-sheet) | Creates a case inputs sheet with the inputs for the current case |
 | [Create Data Table](#create-data-table) | Creates a data table on the current sheet for level sheets "L#" or active cell = "Example#" |
 | [Create Level Sheets](#create-level-sheets) | Creates a sheet for each level in the Case sheet |
+| [Full Setup Case](#full-setup-case) | Setup case by running Backup and Level sheet creation |
 | [Import Lambda Library](#import-lambda-library) | Imports CompBot's lambda collection into active workbook |
 | [Import Lambdas From](#import-lambdas-from) | Import lambdas from a specified workbook |
+| [Rename Sheets](#rename-sheets) | Rename multi-word sheet names |
 | [Save Copy of File](#save-copy-of-file) | Enable editing and save copy of file with suffix based on active cell (otherwise Working) |
 | [Setup Case](#setup-case) | Setup case by running Backup and Level sheet creation |
 
@@ -64,6 +66,20 @@
 | [Default Settings](#default-settings) | Updates default settings to those in Default Settings sheet |
 | [Toggle Calculation Mode](#toggle-calculation-mode) | Toggles calculation mode and places current mode notice in StatusBar |
 | [Toggle Iterative Calculation](#toggle-iterative-calculation) | Toggles iterative calculation and sets status in status bar |
+
+### WrapWith
+
+| Name | Description |
+| --- | --- |
+| [Wrap in ABS](#wrap-in-abs) | Wrap in abs. |
+| [Wrap in Drop First Row](#wrap-in-drop-first-row) | Wrap in drop first row |
+| [Wrap in Take by Copied Cell Columns](#wrap-in-take-by-copied-cell-columns) | Wrap in take by copied cell columns. |
+
+### Other
+
+| Name | Description |
+| --- | --- |
+| [Eggy](#eggy) | Easter Egg Fun |
 
   
 
@@ -79,7 +95,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | [modCaseSetup.Backup](./VBA/modCaseSetup.bas#L35)() |
+| Macro Expression | [modCaseSetup.Backup](./VBA/modCaseSetup.bas#L73)() |
 | Macro Workbook Connection | ThisWorkbook |
 | Launch Codes | ``` BU ``` |
 
@@ -126,7 +142,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | [modCaseSetup.CreateBonusSheet](./VBA/modCaseSetup.bas#L262)() |
+| Macro Expression | [modCaseSetup.CreateBonusSheet](./VBA/modCaseSetup.bas#L300)() |
 | Launch Codes | 1. ``` CB ``` 2. ``` CBS ``` |
 
 [^Top](#oa-robot-definitions)
@@ -141,7 +157,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | [modCaseSetup.CreateCaseInputsSheet](./VBA/modCaseSetup.bas#L624)([[ActiveCell]]) |
+| Macro Expression | [modCaseSetup.CreateCaseInputsSheet](./VBA/modCaseSetup.bas#L662)([[ActiveCell]]) |
 | Macro Workbook Connection | ThisWorkbook |
 | Launch Codes | 1. ``` CIS ``` 2. ``` IS ``` |
 
@@ -157,7 +173,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | [modCaseSetup.CreateDataTable](./VBA/modCaseSetup.bas#L432)([[NewTableTargetToRight]]) |
+| Macro Expression | [modCaseSetup.CreateDataTable](./VBA/modCaseSetup.bas#L470)([[NewTableTargetToRight]]) |
 | Launch Codes | 1. ``` CDT ``` 2. ``` DT ``` |
 
 [^Top](#oa-robot-definitions)
@@ -172,7 +188,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | [modCaseSetup.CreateLevelSheets](./VBA/modCaseSetup.bas#L66)() |
+| Macro Expression | [modCaseSetup.CreateLevelSheets](./VBA/modCaseSetup.bas#L104)() |
 | Launch Codes | 1. ``` CL ``` 2. ``` CLS ``` |
 
 [^Top](#oa-robot-definitions)
@@ -189,6 +205,37 @@
 | --- | --- |
 | Macro Expression | [modMisc.DefaultSettings](./VBA/modMisc.bas#L71)() |
 | Launch Codes | ``` DS ``` |
+
+[^Top](#oa-robot-definitions)
+
+  
+
+### Eggy
+
+*Easter Egg Fun*
+
+`@CompBot.xlsm` `!VBA Macro Command`  
+
+| Property | Value |
+| --- | --- |
+| Macro Expression | [modUtilities.Eggy](./VBA/modUtilities.bas#L244)() |
+
+[^Top](#oa-robot-definitions)
+
+  
+
+### Full Setup Case
+
+*Setup case by running Backup and Level sheet creation*
+
+`@CompBot.xlsm` `!VBA Macro Command` `#Prep`
+
+| Property | Value |
+| --- | --- |
+| Macro Expression | [modCaseSetup.Setup](./VBA/modCaseSetup.bas#L18)() |
+| Keyboard Shortcut | ``` ^+g ``` |
+| Command After | [Import Lambda Library](#import-lambda-library) |
+| Launch Codes | ``` SC ``` |
 
 [^Top](#oa-robot-definitions)
 
@@ -270,6 +317,21 @@
 
   
 
+### Rename Sheets
+
+*Rename multi-word sheet names*
+
+`@CompBot.xlsm` `!VBA Macro Command` `#Prep`
+
+| Property | Value |
+| --- | --- |
+| Macro Expression | [modCaseSetup.RenameSht](./VBA/modCaseSetup.bas#L37)() |
+| Launch Codes | ``` rs ``` |
+
+[^Top](#oa-robot-definitions)
+
+  
+
 ### Save Answers To Left
 
 *Saves references to the selected cells in the green answer cells to the left on the same row.*
@@ -278,7 +340,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | [modCaseSetup.SaveAnswersToLeft](./VBA/modCaseSetup.bas#L786)() |
+| Macro Expression | [modCaseSetup.SaveAnswersToLeft](./VBA/modCaseSetup.bas#L824)() |
 | Launch Codes | ``` SAL ``` |
 
 [^Top](#oa-robot-definitions)
@@ -293,7 +355,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | [modCaseSetup.SaveCopy](./VBA/modCaseSetup.bas#L839)([[ActiveCell]]) |
+| Macro Expression | [modCaseSetup.SaveCopy](./VBA/modCaseSetup.bas#L877)([[ActiveCell]]) |
 | Launch Codes | ``` SA ``` |
 
 [^Top](#oa-robot-definitions)
@@ -340,5 +402,50 @@
 | --- | --- |
 | Macro Expression | [modMisc.ToggleIterativeCalculation](./VBA/modMisc.bas#L139)() |
 | Launch Codes | ``` IC ``` |
+
+[^Top](#oa-robot-definitions)
+
+  
+
+### Wrap in ABS
+
+*Wrap in abs.*
+
+`@CompBot.xlsm` `!Excel Formula Command` `#WrapWith`
+
+| Property | Value |
+| --- | --- |
+| Formula | ``` =ABS([[ActiveCell::Formula]]) ``` |
+| Launch Codes | ``` ABS ``` |
+
+[^Top](#oa-robot-definitions)
+
+  
+
+### Wrap in Drop First Row
+
+*Wrap in drop first row*
+
+`@CompBot.xlsm` `!Excel Formula Command` `#WrapWith`
+
+| Property | Value |
+| --- | --- |
+| Formula | ``` =DROP([[ActiveCell::Formula]],1) ``` |
+| Launch Codes | ``` DF ``` |
+
+[^Top](#oa-robot-definitions)
+
+  
+
+### Wrap in Take by Copied Cell Columns
+
+*Wrap in take by copied cell columns.*
+
+`@CompBot.xlsm` `!Excel Formula Command` `#WrapWith`
+
+| Property | Value |
+| --- | --- |
+| Formula | ``` =TAKE([[ActiveCell::Formula]],,[[Clipboard]]) ``` |
+| Launch Codes | ``` TCC ``` |
 
 [^Top](#oa-robot-definitions)

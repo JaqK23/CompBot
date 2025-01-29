@@ -17,12 +17,50 @@ Option Base 1
 '----------------------------------------------------------------------------------------------------
 Sub Setup()
     'backup all sheets
-    Call Backup
-    Call CreateLevelSheets
-    Call CreateBonusSheet
+    Call RenameSht                          'rename sheets with multiple words for easy reference
+    Call Backup                             'backup all sheets
+    Call NameAllUsedRanges                  'set up named ranges on input sheets
+    Call CreateLevelSheets                  'create a sheet for each level
+    Call CreateBonusSheet                   'create a bonus sheet
     VBAInit
-    Call CreateCaseInputsSheet("detailed")
+    Call CreateCaseInputsSheet("detailed")  'create a sheet with the inputs in "Case" sheet
     VBAFin
+End Sub
+
+'rename all sheets (to shorter names)
+'--------------------------------------------< OA Robot >--------------------------------------------
+' Command Name:           Rename Sheets
+' Description:            Rename multi-word sheet names
+' Macro Expression:       modCaseSetup.RenameSht()
+' Generated:              01/25/2025 07:41 PM
+'----------------------------------------------------------------------------------------------------
+Sub RenameSht()
+    Dim WB As Workbook
+    Dim WS As Worksheet
+    Dim intCnt As Integer
+    Dim intCurr As Integer
+    Dim strName As String
+    Dim strNewName As String
+    Dim strWords() As String
+    Dim lngI
+    Set WB = ActiveWorkbook
+    intCnt = WB.Sheets.Count
+    'only cycle through existing sheets
+    For intCurr = 1 To intCnt
+        'get sheet name and copy to end
+        Set WS = WB.Worksheets(intCurr)
+        strName = WS.Name
+        If strName <> "Case" And strName <> "Answers" And InStr(strName, " ") + InStr(strName, "_") > 0 Then
+            strWords = Split(Replace(strName, "_", " "), " ")
+            strNewName = ""
+            For lngI = LBound(strWords) To UBound(strWords)
+                If Len(strWords(lngI)) > 0 Then
+                    strNewName = strNewName & UCase(Left(strWords(lngI), 1))
+                End If
+            Next lngI
+            WS.Name = strNewName
+        End If
+    Next intCurr
 End Sub
 
 'backup all sheets (to prevent overwrite errors)

@@ -1,1 +1,15 @@
-GRIDTOCOL_byLiannaGerrish =LAMBDA(grid,[ShowAll_0],LET(\\LambdaName, "GRIDTOCOL", items_grid, TOCOL(grid), addr_col, TOCOL(ADDRESSES_byDiarmuidEarly(grid)), rows, ROW(INDIRECT(addr_col)) * 1, cols, COLUMN(INDIRECT(addr_col)) * 1, headers, HSTACK("Items", "Row #", "Column #", "Address"), data_grid, HSTACK(items_grid, rows, cols, addr_col), IF(OR(ISOMITTED(ShowAll_0), ShowAll_0 <> 0), VSTACK(headers, FILTER(data_grid, CHOOSECOLS(data_grid, 1) <> 0)), VSTACK(headers, data_grid))));
+GRIDTOCOL_byLiannaGerrish =LAMBDA(grid,[ShowAll_0], LET(
+   \\LambdaName, "GRIDTOCOL",
+   items_grid, TOCOL(grid),
+   addr_col, TOCOL(ADDRESSES_byDiarmuidEarly(grid)),
+   rows, ROW(INDIRECT(addr_col)) * 1,
+   cols, COLUMN(INDIRECT(addr_col)) * 1,
+   rcnum, TOCOL(1000000 * rows + 1000 + cols),
+   headers, HSTACK("Items", "Row #", "Column #", "Address", "RCRef"),
+   data_grid, HSTACK(items_grid, rows, cols, addr_col, rcnum),
+   IF(
+      OR(ISOMITTED(ShowAll_0), ShowAll_0 <> 0),
+      VSTACK(headers, FILTER(data_grid, CHOOSECOLS(data_grid, 1) <> 0)),
+      VSTACK(headers, data_grid)
+   )
+));

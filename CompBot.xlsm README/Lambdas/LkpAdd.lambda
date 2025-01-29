@@ -1,0 +1,1 @@
+LkpAdd =LAMBDA(ToFind,Range,LET(\\LambdaName, "LkpAdd", \\CommandName, "Lookup Address", \\Description, "Looks up address of cell(s) matching input", \\Source, "Jaq Kennedy", CHOOSECOLS(FilterArray(GRIDTOCOL_byLiannaGerrish(Range), {1}, ToFind), {4})));

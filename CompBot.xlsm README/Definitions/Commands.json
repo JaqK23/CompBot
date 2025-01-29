@@ -106,6 +106,26 @@
       ]
     },
     {
+      "Name": "Eggy",
+      "Description": "Easter Egg Fun",
+      "Type": "VBAMacroCommand",
+      "MacroExpression": "modUtilities.Eggy()"
+    },
+    {
+      "Name": "Full Setup Case",
+      "Description": "Setup case by running Backup and Level sheet creation",
+      "Type": "VBAMacroCommand",
+      "ShortCutSendKeyString": "^+g",
+      "CommandAfter": "Import Lambda Library",
+      "LaunchCodes": [
+        "SC"
+      ],
+      "MacroExpression": "modCaseSetup.Setup()",
+      "Tags": [
+        "Prep"
+      ]
+    },
+    {
       "Name": "Goto Similar Background Color",
       "Description": "Goto similar background color.",
       "Type": "VBAMacroCommand",
@@ -170,6 +190,18 @@
       ]
     },
     {
+      "Name": "Rename Sheets",
+      "Description": "Rename multi-word sheet names",
+      "Type": "VBAMacroCommand",
+      "LaunchCodes": [
+        "rs"
+      ],
+      "MacroExpression": "modCaseSetup.RenameSht()",
+      "Tags": [
+        "Prep"
+      ]
+    },
+    {
       "Name": "Save Answers To Left",
       "Description": "Saves references to the selected cells in the green answer cells to the left on the same row.",
       "Type": "VBAMacroCommand",
@@ -227,6 +259,42 @@
       "MacroExpression": "modMisc.ToggleIterativeCalculation()",
       "Tags": [
         "Settings"
+      ]
+    },
+    {
+      "Name": "Wrap in ABS",
+      "Description": "Wrap in abs.",
+      "Type": "ExcelFormulaCommand",
+      "LaunchCodes": [
+        "ABS"
+      ],
+      "Formula": "=ABS([[ActiveCell::Formula]])",
+      "Tags": [
+        "WrapWith"
+      ]
+    },
+    {
+      "Name": "Wrap in Drop First Row",
+      "Description": "Wrap in drop first row",
+      "Type": "ExcelFormulaCommand",
+      "LaunchCodes": [
+        "DF"
+      ],
+      "Formula": "=DROP([[ActiveCell::Formula]],1)",
+      "Tags": [
+        "WrapWith"
+      ]
+    },
+    {
+      "Name": "Wrap in Take by Copied Cell Columns",
+      "Description": "Wrap in take by copied cell columns.",
+      "Type": "ExcelFormulaCommand",
+      "LaunchCodes": [
+        "TCC"
+      ],
+      "Formula": "=TAKE([[ActiveCell::Formula]],,[[Clipboard]])",
+      "Tags": [
+        "WrapWith"
       ]
     }
   ]

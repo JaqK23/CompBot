@@ -107,6 +107,83 @@ Function SanitizeRangeName(proposedName As String) As String
     
     SanitizeRangeName = result
 End Function
+Private Function IsValidRangeName(proposedName As String) As Boolean
+    Dim i As Long
+    Dim char As String
+    Dim validFirstChars As String
+    Dim validChars As String
+    
+    ' Initialize result
+    IsValidRangeName = True
+    
+    ' Handle empty string
+    If Len(proposedName) = 0 Then
+        IsValidRangeName = False
+        Exit Function
+    End If
+    
+    ' Check length constraint
+    If Len(proposedName) > 255 Then
+        IsValidRangeName = False
+        Exit Function
+    End If
+    
+    ' Define valid characters
+    validFirstChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ_\"
+    validChars = validFirstChars & "0123456789."
+    
+    ' Check first character
+    char = UCase(Left(proposedName, 1))
+    If InStr(validFirstChars, char) = 0 Then
+        IsValidRangeName = False
+        Exit Function
+    End If
+    
+    ' Check remaining characters
+    For i = 2 To Len(proposedName)
+        char = UCase(Mid(proposedName, i, 1))
+        If InStr(validChars, char) = 0 Then
+            IsValidRangeName = False
+            Exit Function
+        End If
+    Next i
+    
+    ' Check for spaces
+    If InStr(proposedName, " ") > 0 Then
+        IsValidRangeName = False
+        Exit Function
+    End If
+    
+    ' Check if it's a cell reference
+    If IsCellReference(proposedName) Then
+        IsValidRangeName = False
+        Exit Function
+    End If
+    
+    ' Check reserved words
+    Select Case UCase(proposedName)
+        Case "C", "R", "PRINT_AREA", "PRINT_TITLES", "CONSOLIDATE_AREA", _
+             "DATABASE", "CRITERIA", "TRUE", "FALSE", "ERROR"
+            IsValidRangeName = False
+            Exit Function
+    End Select
+    
+    ' Check if it's only numbers
+    If IsNumeric(proposedName) Then
+        IsValidRangeName = False
+        Exit Function
+    End If
+End Function
+
+' Helper function to check if string matches cell reference pattern
+Private Function IsCellReference(str As String) As Boolean
+    Dim regEx As Object
+    Set regEx = CreateObject("VBScript.RegExp")
+    
+    ' Pattern matches common Excel cell references like A1, AA123, etc.
+    regEx.Pattern = "^[A-Za-z]{1,3}[0-9]+$"
+    IsCellReference = regEx.Test(str)
+End Function
 
 ' --------------------------------------------< OA Robot >--------------------------------------------
 '  Name:                MarkAsInputCells
@@ -150,4 +227,20 @@ Sub ClearNamedRangeErrors()
         End If
     Next nmName
     
+End Sub
+
+'VBA to give a message box with the Easter Egg setup code for MEWC Robot by Erik Oehm
+' ----------------------------------------------------------------------------------------------------
+'  Credit:              Erik Oehm
+'  Source:              https://github.com/ExcelRobot/MEWC-Robot/blob/main/MEWC%20Robot.xlsm
+' ----------------------------------------------------------------------------------------------------
+
+'--------------------------------------------< OA Robot >--------------------------------------------
+' Command Name:           Eggy
+' Description:            Easter Egg Fun
+' Macro Expression:       modUtilities.Eggy()
+' Generated:              01/11/2025 03:56 PM
+'----------------------------------------------------------------------------------------------------
+Sub Eggy()
+    MsgBox ("Secret setup code unlocked - BG66MP!")
 End Sub
