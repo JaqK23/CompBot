@@ -244,3 +244,14 @@ End Sub
 Sub Eggy()
     MsgBox ("Secret setup code unlocked - BG66MP!")
 End Sub
+
+'Save current time to active cell
+'--------------------------------------------< OA Robot >--------------------------------------------
+' Command Name:           Get Time
+' Description:            Get current time.
+' Macro Expression:       modUtilities.GetTime()
+' Generated:              2025-01-30 07:53 PM
+'----------------------------------------------------------------------------------------------------
+Sub GetTime()
+    ActiveCell.Value = Time
+End Sub

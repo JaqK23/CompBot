@@ -1,0 +1,1 @@
+DiffByRow_byJaqKennedy =LAMBDA(Input,LET(\\LambdaName, "DiffByRow", \\CommandName, "Difference of array columns by row", \\Description, "Returns first column - last column in array", \\Source, "Jaq Kennedy", TAKE(Input, , 1) - TAKE(Input, , -1)));

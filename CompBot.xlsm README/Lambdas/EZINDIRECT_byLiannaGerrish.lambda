@@ -1,0 +1,4 @@
+/*
+Indirect function with cell and optional sheet name
+*/
+EZINDIRECT_byLiannaGerrish =LAMBDA(cell,[sheetname],IF(ISOMITTED(sheetname), INDIRECT(cell), INDIRECT(sheetname & "!" & cell)));

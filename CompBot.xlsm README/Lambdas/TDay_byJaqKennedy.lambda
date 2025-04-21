@@ -1,0 +1,4 @@
+/*
+Gets day of week as text - Monday = 1...Sunday = 7.  
+*/
+TDay_byJaqKennedy =LAMBDA(NumList,LET(\\LambdaName, "TDay", \\CommandName, "Get day of week as text", \\Description, "Gets day of week as text - Monday = 1...Sunday = 7", \\Source, "Jaq Kennedy", TEXT(XMOD_byJaqKennedy(NumList + 1, 7), "Dddd")));

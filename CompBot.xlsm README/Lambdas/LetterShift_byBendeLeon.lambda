@@ -1,0 +1,16 @@
+LetterShift_byBendeLeon =LAMBDA(Input,Shft, LET(
+   \\LambdaName, "LetterShift_byBendeLeon",
+   \\CommandName, "Shifts letters",
+   \\Source, "Ben de Leon",
+   arr, UNICODE(EXTRACTCHAR_byHarryGross(Input)),
+   NewChars, IFS(
+      (arr >= 65) * (arr <= 90) = 1,
+      MOD(arr - 65 + Shft, 26) + 65,
+      (arr >= 97) * (arr <= 122) = 1,
+      MOD(arr - 97 + Shft, 26) + 97,
+      TRUE,
+      arr
+   ),
+   Result, CONCAT(UNICHAR(NewChars)),
+   Result
+));

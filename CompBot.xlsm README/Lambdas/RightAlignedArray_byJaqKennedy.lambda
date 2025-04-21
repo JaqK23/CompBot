@@ -1,0 +1,4 @@
+/*
+Aligns contents of array to the right - ignoring blanks
+*/
+RightAlignedArray_byJaqKennedy =LAMBDA(input,LET(\\LambdaName, "RightAlignedArray", \\CommandName, "Align array to right", \\Description, "Aligns array to the right with blanks to left", \\Source, "Jaq Kennedy", _ColsByRow, BYROW(input, COUNT), _Rows, ROWS(input), _Cols, COLUMNS(input), _ColIndex, IF(MOD(SEQUENCE(_Rows, _Cols) - 1, _Cols) + 1 - _Cols + _ColsByRow <= 0, -1, MOD(SEQUENCE(_Rows, _Cols) - 1, _Cols) + 1 - _Cols + _ColsByRow), _RowIndex, SEQUENCE(_Rows), _Result, IFERROR(INDEX(input, _RowIndex, _ColIndex), ""), _Result));

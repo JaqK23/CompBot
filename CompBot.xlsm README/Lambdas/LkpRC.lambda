@@ -1,1 +1,1 @@
-LkpRC =LAMBDA(ToFind,Range,LET(\\LambdaName, "LkpRC", \\CommandName, "Lookup RC coordinates ", \\Description, "Looks up RC coordinates of matching cell(s) in range", CHOOSECOLS(FilterArray(GRIDTOCOL_byLiannaGerrish(Range), {1}, ToFind), {2,3})));
+LkpRC =LAMBDA(ToFind,Range,LET(\\LambdaName, "LkpRC", \\CommandName, "Lookup RC coordinates ", \\Description, "Looks up RC coordinates of matching cell(s) in range", CHOOSECOLS(FilterArray_byErikOehm(GRIDTOCOL_byLiannaGerrish(Range), {1}, ToFind), {2,3})));

@@ -1,0 +1,1 @@
+COLROW =LAMBDA(cell_coordinates, TEXTSPLIT(COLUMN(INDIRECT(cell_coordinates)) & ";" & ROW(INDIRECT(cell_coordinates)), ";"));

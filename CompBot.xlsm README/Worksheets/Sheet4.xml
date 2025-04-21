@@ -14,50 +14,26 @@
    <NumberFormat/>
    <Protection/>
   </Style>
-  <Style ss:ID="s19" ss:Name="Comma">
-   <NumberFormat ss:Format="_(* #,##0.00_);_(* \(#,##0.00\);_(* &quot;-&quot;??_);_(@_)"/>
+  <Style ss:ID="s21" ss:Name="Normal 3">
+   <Alignment ss:Vertical="Bottom"/>
+   <Borders/>
+   <Font ss:FontName="Aptos Narrow" x:Family="Swiss" ss:Size="14"
+    ss:Color="#000000"/>
+   <Interior/>
+   <NumberFormat/>
+   <Protection/>
   </Style>
-  <Style ss:ID="s18" ss:Name="Explanatory Text">
-   <Font ss:FontName="Verdana" x:Family="Swiss" ss:Size="16" ss:Color="#7F7F7F"
-    ss:Italic="1"/>
+  <Style ss:ID="s43" ss:Parent="s21">
+   <Alignment ss:Vertical="Bottom" ss:WrapText="1"/>
   </Style>
-  <Style ss:ID="s16" ss:Name="Heading 1">
-   <Borders>
-    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="3"
-     ss:Color="#156082"/>
-   </Borders>
-   <Font ss:FontName="Verdana" x:Family="Swiss" ss:Size="15" ss:Color="#0E2841"
-    ss:Bold="1"/>
+  <Style ss:ID="s44" ss:Parent="s21">
+   <Font ss:FontName="Aptos Narrow" x:Family="Swiss" ss:Size="14"
+    ss:Color="#000000"/>
   </Style>
-  <Style ss:ID="s22" ss:Parent="s16">
-   <Alignment ss:Horizontal="CenterAcrossSelection" ss:Vertical="Bottom"/>
-  </Style>
-  <Style ss:ID="s23" ss:Parent="s18">
-   <Alignment ss:Horizontal="CenterAcrossSelection" ss:Vertical="Bottom"/>
-  </Style>
-  <Style ss:ID="s35">
-   <Alignment ss:Horizontal="Right" ss:Vertical="Bottom"/>
-  </Style>
-  <Style ss:ID="s36">
-   <Borders>
-    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"/>
-    <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1"/>
-    <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1"/>
-    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1"/>
-   </Borders>
-  </Style>
-  <Style ss:ID="s37">
-   <Borders>
-    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"/>
-    <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1"/>
-    <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1"/>
-    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1"/>
-   </Borders>
-   <Font ss:FontName="Verdana" x:Family="Swiss" ss:Size="16" ss:Color="#0000FF"/>
-   <Interior ss:Color="#FFFFCC" ss:Pattern="Solid"/>
-  </Style>
-  <Style ss:ID="s38" ss:Parent="s19">
-   <Font ss:FontName="Verdana" x:Family="Swiss" ss:Size="16" ss:Color="#000000"/>
+  <Style ss:ID="s45" ss:Parent="s21">
+   <Alignment ss:Vertical="Bottom" ss:WrapText="1"/>
+   <Font ss:FontName="Aptos Narrow" x:Family="Swiss" ss:Size="14"
+    ss:Color="#000000"/>
   </Style>
  </Styles>
  <Names>
@@ -497,108 +473,507 @@
    ss:RefersTo="=LAMBDA(value,value_if_blank, IF(ISBLANK(value), value_if_blank, value))"/>
   <NamedRange ss:Name="IsInList_byErikOehm"
    ss:RefersTo="=LAMBDA(array,list,LET(\\LambdaName, &quot;IsInList&quot;, MAP(array, LAMBDA(x, OR(list = x)))))"/>
-  <NamedRange ss:Name="Language" ss:RefersTo="='Default Settings'!R9C2"/>
   <NamedRange ss:Name="Letters"
    ss:RefersTo="=LAMBDA([Upp], LET(&#10;   \\LambdaName, &quot;Letters&quot;,&#10;   \\CommandName, &quot;Creates a list of letters&quot;,&#10;   ABC, CHAR(SEQUENCE(26) + 64),&#10;   IF((Upp = 1) + ISOMITTED((Upp)), ABC, LOWER(ABC))&#10;))"/>
-  <NamedRange ss:Name="List_Separator" ss:RefersTo="='Default Settings'!R7C2"/>
   <NamedRange ss:Name="MinMax_byJaqKennedy"
    ss:RefersTo="=LAMBDA(Range,LET(\\LambdaName, &quot;MinMax&quot;, \\CommandName, &quot;Get Min and Max of Range&quot;, _GetMin, MIN(Range), _GetMax, MAX(Range), _MinMax, VSTACK(_GetMin, _GetMax), _MinMax))"/>
   <NamedRange ss:Name="RightAlignedArray_byJaqKennedy"
    ss:RefersTo="=LAMBDA(input,LET(\\LambdaName, &quot;RightAlignedArray&quot;, \\CommandName, &quot;Align array to right&quot;, \\Description, &quot;Aligns array to the right with blanks to left&quot;, \\Source, &quot;Jaq Kennedy&quot;, _ColsByRow, BYROW(input, COUNT), _Rows, ROWS(input), _Cols, COLUMNS(input), _ColIndex, IF(MOD(SEQUENCE(_Rows, _Cols) - 1, _Cols) + 1 - _Cols + _ColsByRow &lt;= 0, -1, MOD(SEQUENCE(_Rows, _Cols) - 1, _Cols) + 1 - _Cols + _ColsByRow), _RowIndex, SEQUENCE(_Rows), _Result, IFERROR(INDEX(input, _RowIndex, _ColIndex), &quot;&quot;), _Result))"/>
   <NamedRange ss:Name="ROWCOL"
    ss:RefersTo="=LAMBDA(cell_coordinates,TEXTSPLIT(ROW(INDIRECT(cell_coordinates)) &amp; &quot;;&quot; &amp; COLUMN(INDIRECT(cell_coordinates)), &quot;;&quot;))"/>
-  <NamedRange ss:Name="Thousands_Separator" ss:RefersTo="='Default Settings'!R6C2"/>
-  <NamedRange ss:Name="Use_System_Separators"
-   ss:RefersTo="='Default Settings'!R8C2"/>
   <NamedRange ss:Name="XLOOKUP2D_byBendeLeon"
    ss:RefersTo="=LAMBDA(DataSource,RLU,CLU,[RowArray],[ColumnArray],[MatchMode],[SearchMode],[IfNotFound], LET(&#10;   \\LambdaName, &quot;XLOOKUP2D_byBendeLeon&quot;,&#10;   \\CommandName, &quot;2D lookup&quot;,&#10;   \\Source, &quot;Ben de Leon&quot;,&#10;   RCInc, IF(ISOMITTED(RowArray), 1, 0) + IF(ISOMITTED(RowArray), 2, 0),&#10;   UpdatedDataSource, CHOOSE(&#10;      RCInc + 1,&#10;      DataSource,&#10;      DROP(DataSource, , 1),&#10;      DROP(DataSource, 1),&#10;      DROP(DataSource, 1, 1)&#10;   ),&#10;   IFERROR(&#10;      INDEX(&#10;         UpdatedDataSource,&#10;         XMATCH(&#10;            RLU,&#10;            IF(&#10;               ISOMITTED(RowArray),&#10;               DROP(TAKE(DataSource, , 1), 1),&#10;               TAKE(RowArray, , 1)&#10;            ),&#10;            IF(ISOMITTED(MatchMode), 0, MatchMode),&#10;            IF(ISOMITTED(SearchMode), 1, SearchMode)&#10;         ),&#10;         XMATCH(&#10;            CLU,&#10;            IF(&#10;               ISOMITTED(ColumnArray),&#10;               DROP(TAKE(DataSource, 1), , 1),&#10;               TAKE(ColumnArray, 1)&#10;            ),&#10;            IF(ISOMITTED(MatchMode), 0, MatchMode),&#10;            IF(ISOMITTED(SearchMode), 1, SearchMode)&#10;         )&#10;      ),&#10;      IF(ISOMITTED(IfNotFound), NA(), IfNotFound)&#10;   )&#10;))"/>
   <NamedRange ss:Name="XMOD_byJaqKennedy"
    ss:RefersTo="=LAMBDA(value,divisor,LET(\\LambdaName, &quot;XMOD&quot;, \\CommandName, &quot;MOD with max value&quot;, \\Description, &quot;Returns the MOD of a value where the maximum value returns the divisor instead of 0&quot;, \\Source, &quot;Jaq Kennedy&quot;, MOD(value - 1, divisor) + 1))"/>
  </Names>
- <Worksheet ss:Name="Default Settings">
-  <Table ss:ExpandedColumnCount="12" ss:ExpandedRowCount="9"
-   ss:DefaultColumnWidth="88" ss:DefaultRowHeight="19.5">
-   <Column ss:Width="200"/>
-   <Column ss:Width="111.5"/>
-   <Column ss:AutoFitWidth="0" ss:Width="30.5"/>
-   <Column ss:Width="140.5"/>
-   <Column ss:Width="111.5"/>
-   <Column ss:AutoFitWidth="0" ss:Width="14.5"/>
-   <Column ss:AutoFitWidth="0" ss:Width="100"/>
-   <Column ss:Width="104"/>
-   <Column ss:Width="184.5"/>
-   <Row ss:Height="20">
-    <Cell ss:StyleID="s22"><Data ss:Type="String">Default Settings Header</Data></Cell>
-    <Cell ss:StyleID="s22"/>
-    <Cell ss:StyleID="s22"/>
-    <Cell ss:StyleID="s22"/>
-    <Cell ss:StyleID="s22"/>
-    <Cell ss:StyleID="s22"/>
-    <Cell ss:StyleID="s22"/>
-    <Cell ss:StyleID="s22"/>
-    <Cell ss:StyleID="s22"/>
-    <Cell ss:StyleID="s22"/>
-    <Cell ss:StyleID="s22"/>
-    <Cell ss:StyleID="s22"/>
+ <Worksheet ss:Name="SpeedRun Steps">
+  <Table ss:ExpandedColumnCount="6" ss:ExpandedRowCount="60" ss:StyleID="s21"
+   ss:DefaultColumnWidth="88" ss:DefaultRowHeight="18.5">
+   <Column ss:StyleID="s21" ss:Width="47.5"/>
+   <Column ss:StyleID="s21" ss:Width="48.5"/>
+   <Column ss:StyleID="s21" ss:Width="64.5"/>
+   <Column ss:StyleID="s21" ss:Width="225.5"/>
+   <Column ss:StyleID="s21" ss:Width="203"/>
+   <Column ss:StyleID="s21" ss:Width="87.5"/>
+   <Row>
+    <Cell><Data ss:Type="String">Case</Data></Cell>
+    <Cell ss:StyleID="s44"><Data ss:Type="String">Level</Data></Cell>
+    <Cell><Data ss:Type="String">Type</Data></Cell>
+    <Cell><Data ss:Type="String">Name</Data></Cell>
+    <Cell><Data ss:Type="String">Notes</Data></Cell>
+    <Cell><Data ss:Type="String">Bot</Data></Cell>
    </Row>
-   <Row ss:Height="20">
-    <Cell ss:StyleID="s23"><Data ss:Type="String">To update settings run command &quot;Default Settings&quot;. Note this will not change Windows level settings, only Excel</Data></Cell>
-    <Cell ss:StyleID="s23"/>
-    <Cell ss:StyleID="s23"/>
-    <Cell ss:StyleID="s23"/>
-    <Cell ss:StyleID="s23"/>
-    <Cell ss:StyleID="s23"/>
-    <Cell ss:StyleID="s23"/>
-    <Cell ss:StyleID="s23"/>
-    <Cell ss:StyleID="s23"/>
-    <Cell ss:StyleID="s23"/>
-    <Cell ss:StyleID="s23"/>
-    <Cell ss:StyleID="s23"/>
+   <Row ss:Height="55.5">
+    <Cell><Data ss:Type="String">RTLV1</Data></Cell>
+    <Cell><Data ss:Type="Number">5</Data></Cell>
+    <Cell><Data ss:Type="String">Lambda</Data></Cell>
+    <Cell ss:StyleID="s44"><Data ss:Type="String">LkpRC()</Data></Cell>
+    <Cell ss:StyleID="s45"><Data ss:Type="String">LkpRCbyRow(G17 - value to lookup,YBR - range to look in)&#10;Lambda by Jaq Kennedy</Data></Cell>
+    <Cell ss:StyleID="s44"><Data ss:Type="String">CompBot</Data></Cell>
    </Row>
-   <Row ss:Index="4">
-    <Cell ss:Index="4"><Data ss:Type="String">English (UK/US)</Data></Cell>
-    <Cell><Data ss:Type="String">Afrikaans</Data></Cell>
-    <Cell ss:Index="7"><Data ss:Type="String">Example</Data></Cell>
+   <Row ss:Height="55.5">
+    <Cell><Data ss:Type="String">RTLV1</Data></Cell>
+    <Cell><Data ss:Type="Number">5</Data></Cell>
+    <Cell><Data ss:Type="String">Lambda</Data></Cell>
+    <Cell ss:StyleID="s44"><Data ss:Type="String">LkpRC()</Data></Cell>
+    <Cell ss:StyleID="s45"><Data ss:Type="String">LkpRCbyRow(H17 - value to lookup,YBR - range to look in)&#10;Lambda by Jaq Kennedy</Data></Cell>
+    <Cell ss:StyleID="s44"><Data ss:Type="String">CompBot</Data></Cell>
+   </Row>
+   <Row ss:Height="37">
+    <Cell><Data ss:Type="String">RTLV1</Data></Cell>
+    <Cell><Data ss:Type="Number">5</Data></Cell>
+    <Cell><Data ss:Type="String">Command</Data></Cell>
+    <Cell><Data ss:Type="String">Generate Lambda Statement</Data></Cell>
+    <Cell ss:StyleID="s45"><Data ss:Type="String">GL&#10;Used to create dist lambda</Data></Cell>
+    <Cell ss:StyleID="s44"><Data ss:Type="String">Lambda Robot</Data></Cell>
    </Row>
    <Row>
-    <Cell ss:StyleID="s35"><Data ss:Type="String">Decimal Separator</Data></Cell>
-    <Cell ss:StyleID="s37"><Data ss:Type="String">.</Data></Cell>
-    <Cell ss:Index="4" ss:StyleID="s36"><Data ss:Type="String">.</Data></Cell>
-    <Cell ss:StyleID="s36"><Data ss:Type="String">,</Data></Cell>
-    <Cell ss:Index="7" ss:StyleID="s38"><Data ss:Type="Number">1000.23</Data></Cell>
+    <Cell><Data ss:Type="String">RTLV1</Data></Cell>
+    <Cell><Data ss:Type="Number">5</Data></Cell>
+    <Cell><Data ss:Type="String">Command</Data></Cell>
+    <Cell><Data ss:Type="String">Auto Fill Down</Data></Cell>
+    <Cell><Data ss:Type="String">D</Data></Cell>
+    <Cell><Data ss:Type="String">Formula Robot</Data></Cell>
+   </Row>
+   <Row ss:Height="55.5">
+    <Cell><Data ss:Type="String">RTLV1</Data></Cell>
+    <Cell><Data ss:Type="Number">6</Data></Cell>
+    <Cell><Data ss:Type="String">Lambda</Data></Cell>
+    <Cell ss:StyleID="s44"><Data ss:Type="String">GRIDTOCOL_byLiannaGerrish</Data></Cell>
+    <Cell ss:StyleID="s45"><Data ss:Type="String">GRIDTOCOL_byLiannaGerrish(YBR - range to summarise)&#10;Lambda by Lianna Gerrish</Data></Cell>
+    <Cell ss:StyleID="s44"><Data ss:Type="String">CompBot</Data></Cell>
    </Row>
    <Row>
-    <Cell ss:StyleID="s35"><Data ss:Type="String">Thousands Separator</Data></Cell>
-    <Cell ss:StyleID="s37"><Data ss:Type="String">,</Data><NamedCell
-      ss:Name="Thousands_Separator"/></Cell>
-    <Cell ss:Index="4" ss:StyleID="s36"><Data ss:Type="String">,</Data></Cell>
-    <Cell ss:StyleID="s36"><Data ss:Type="String"> </Data></Cell>
-    <Cell ss:Index="7" ss:StyleID="s38"><Data ss:Type="Number">1000.23</Data></Cell>
+    <Cell><Data ss:Type="String">RTLV1</Data></Cell>
+    <Cell><Data ss:Type="Number">6</Data></Cell>
+    <Cell><Data ss:Type="String">Command</Data></Cell>
+    <Cell><Data ss:Type="String">Wrap in Drop First Row</Data></Cell>
+    <Cell><Data ss:Type="String">DF</Data></Cell>
+    <Cell><Data ss:Type="String">CompBot</Data></Cell>
    </Row>
    <Row>
-    <Cell ss:StyleID="s35"><Data ss:Type="String">List Separator</Data></Cell>
-    <Cell ss:StyleID="s37"><Data ss:Type="String">,</Data><NamedCell
-      ss:Name="List_Separator"/></Cell>
-    <Cell ss:Index="4" ss:StyleID="s36"><Data ss:Type="String">,</Data></Cell>
-    <Cell ss:StyleID="s36"><Data ss:Type="String">;</Data></Cell>
-    <Cell ss:Index="7" ss:Formula="=CONCAT(R[-2]C[-4],R[-2]C[-3],R[-2]C[-2])"><Data
-      ss:Type="String">.,</Data></Cell>
-    <Cell ss:Formula="=FORMULATEXT(RC[-1])"><Data ss:Type="String">=CONCAT(D9,E9,F9)</Data></Cell>
+    <Cell><Data ss:Type="String">RTLV1</Data></Cell>
+    <Cell><Data ss:Type="Number">6</Data></Cell>
+    <Cell><Data ss:Type="String">Command</Data></Cell>
+    <Cell><Data ss:Type="String">Keep Columns Of Array</Data></Cell>
+    <Cell><Data ss:Type="String">KC</Data></Cell>
+    <Cell><Data ss:Type="String">Array Robot</Data></Cell>
+   </Row>
+   <Row ss:Height="37">
+    <Cell><Data ss:Type="String">RTLV1</Data></Cell>
+    <Cell><Data ss:Type="Number">6</Data></Cell>
+    <Cell><Data ss:Type="String">Command</Data></Cell>
+    <Cell><Data ss:Type="String">Generate Lambda Statement</Data></Cell>
+    <Cell ss:StyleID="s45"><Data ss:Type="String">GL&#10;Used to create dist lambda</Data></Cell>
+    <Cell ss:StyleID="s44"><Data ss:Type="String">Lambda Robot</Data></Cell>
    </Row>
    <Row>
-    <Cell ss:StyleID="s35"><Data ss:Type="String">Use System Separators</Data></Cell>
-    <Cell ss:StyleID="s37"><Data ss:Type="Boolean">1</Data><NamedCell
-      ss:Name="Use_System_Separators"/></Cell>
-    <Cell ss:Index="4" ss:StyleID="s36"><Data ss:Type="Boolean">1</Data></Cell>
-    <Cell ss:StyleID="s36"><Data ss:Type="Boolean">0</Data></Cell>
+    <Cell><Data ss:Type="String">RTLV1</Data></Cell>
+    <Cell><Data ss:Type="Number">6</Data></Cell>
+    <Cell><Data ss:Type="String">Command</Data></Cell>
+    <Cell ss:StyleID="s44"><Data ss:Type="String">Sort Array Asc</Data></Cell>
+    <Cell ss:StyleID="s44"><Data ss:Type="String">SA</Data></Cell>
+    <Cell ss:StyleID="s44"><Data ss:Type="String">Array Robot</Data></Cell>
    </Row>
    <Row>
-    <Cell ss:StyleID="s35"><Data ss:Type="String">Language</Data></Cell>
-    <Cell ss:StyleID="s37"><Data ss:Type="String">English</Data><NamedCell
-      ss:Name="Language"/></Cell>
-    <Cell ss:Index="4" ss:StyleID="s36"><Data ss:Type="String">English</Data></Cell>
-    <Cell ss:StyleID="s36"><Data ss:Type="String">Afrikaans</Data></Cell>
-    <Cell ss:Index="7" ss:StyleID="s18"><Data ss:Type="String">Does not update anything - for notification message only</Data></Cell>
+    <Cell><Data ss:Type="String">RTLV1</Data></Cell>
+    <Cell><Data ss:Type="Number">6</Data></Cell>
+    <Cell><Data ss:Type="String">Command</Data></Cell>
+    <Cell ss:StyleID="s44"><Data ss:Type="String">Keep First Row Of Array</Data></Cell>
+    <Cell ss:StyleID="s44"><Data ss:Type="String">KFR</Data></Cell>
+    <Cell ss:StyleID="s44"><Data ss:Type="String">Array Robot</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">RTLV1</Data></Cell>
+    <Cell><Data ss:Type="Number">6</Data></Cell>
+    <Cell><Data ss:Type="String">Command</Data></Cell>
+    <Cell><Data ss:Type="String">Auto Fill Down</Data></Cell>
+    <Cell><Data ss:Type="String">D</Data></Cell>
+    <Cell><Data ss:Type="String">Formula Robot</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">RTLV2</Data></Cell>
+    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String">Command</Data></Cell>
+    <Cell><Data ss:Type="String">Full Setup Case</Data></Cell>
+    <Cell><Data ss:Type="String">Ctrl-Shft-G</Data></Cell>
+    <Cell><Data ss:Type="String">CompBot</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">RTLV2</Data></Cell>
+    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String">Command</Data></Cell>
+    <Cell><Data ss:Type="String">Wrap with IFERROR TEXTBEFORE space</Data></Cell>
+    <Cell><Data ss:Type="String">TBSE</Data></Cell>
+    <Cell><Data ss:Type="String">CompBot</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">RTLV2</Data></Cell>
+    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String">Command</Data></Cell>
+    <Cell><Data ss:Type="String">Split By Character</Data></Cell>
+    <Cell><Data ss:Type="String">SBC</Data></Cell>
+    <Cell><Data ss:Type="String">Array Robot</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">RTLV2</Data></Cell>
+    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String">Command</Data></Cell>
+    <Cell><Data ss:Type="String">Wrap in UNICODE</Data></Cell>
+    <Cell><Data ss:Type="String">CODE</Data></Cell>
+    <Cell><Data ss:Type="String">CompBot</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">RTLV2</Data></Cell>
+    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String">Command</Data></Cell>
+    <Cell><Data ss:Type="String">If Error Then Blank</Data></Cell>
+    <Cell><Data ss:Type="String">EB</Data></Cell>
+    <Cell><Data ss:Type="String">Array Robot</Data></Cell>
+   </Row>
+   <Row ss:Height="37">
+    <Cell><Data ss:Type="String">RTLV2</Data></Cell>
+    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String">Command</Data></Cell>
+    <Cell><Data ss:Type="String">Align Array to Right</Data></Cell>
+    <Cell ss:StyleID="s43"><Data ss:Type="String">AR&#10;Uses RightAlignedArray lambda</Data></Cell>
+    <Cell><Data ss:Type="String">CompBot</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">RTLV2</Data></Cell>
+    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String">Command</Data></Cell>
+    <Cell><Data ss:Type="String">Keep Columns Of Array</Data></Cell>
+    <Cell><Data ss:Type="String">KC</Data></Cell>
+    <Cell><Data ss:Type="String">Array Robot</Data></Cell>
+   </Row>
+   <Row ss:Height="37">
+    <Cell><Data ss:Type="String">RTLV2</Data></Cell>
+    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String">Command</Data></Cell>
+    <Cell><Data ss:Type="String">Difference of Array Columns by Row</Data></Cell>
+    <Cell ss:StyleID="s43"><Data ss:Type="String">DIFF&#10;Uses DiffByRow lambda</Data></Cell>
+    <Cell><Data ss:Type="String">CompBot</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">RTLV2</Data></Cell>
+    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String">Command</Data></Cell>
+    <Cell><Data ss:Type="String">Negative Values</Data></Cell>
+    <Cell><Data ss:Type="String">NEG</Data></Cell>
+    <Cell><Data ss:Type="String">CompBot</Data></Cell>
+   </Row>
+   <Row ss:Height="37">
+    <Cell><Data ss:Type="String">RTLV2</Data></Cell>
+    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String">Lambda</Data></Cell>
+    <Cell><Data ss:Type="String">TDay()</Data></Cell>
+    <Cell ss:StyleID="s43"><Data ss:Type="String">Tday(along# + 1 - array of values to convert to a day in text format)</Data></Cell>
+    <Cell><Data ss:Type="String">CompBot</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">RTLV2</Data></Cell>
+    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String">Command</Data></Cell>
+    <Cell><Data ss:Type="String">Split By Character</Data></Cell>
+    <Cell><Data ss:Type="String">SBC</Data></Cell>
+    <Cell><Data ss:Type="String">Array Robot</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">RTLV2</Data></Cell>
+    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String">Command</Data></Cell>
+    <Cell><Data ss:Type="String">Keep Columns Of Array</Data></Cell>
+    <Cell><Data ss:Type="String">KC</Data></Cell>
+    <Cell><Data ss:Type="String">Array Robot</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">RTLV2</Data></Cell>
+    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String">Command</Data></Cell>
+    <Cell><Data ss:Type="String">Wrap in UNICODE</Data></Cell>
+    <Cell><Data ss:Type="String">CODE</Data></Cell>
+    <Cell><Data ss:Type="String">CompBot</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">RTLV2</Data></Cell>
+    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String">Command</Data></Cell>
+    <Cell><Data ss:Type="String">Duplicate Array To Right</Data></Cell>
+    <Cell><Data ss:Type="String">Ctrl-Shft-R</Data></Cell>
+    <Cell><Data ss:Type="String">Array Robot</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">RTLV2</Data></Cell>
+    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String">Command</Data></Cell>
+    <Cell><Data ss:Type="String">Split By Character</Data></Cell>
+    <Cell><Data ss:Type="String">SBC</Data></Cell>
+    <Cell><Data ss:Type="String">Array Robot</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">RTLV2</Data></Cell>
+    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String">Command</Data></Cell>
+    <Cell><Data ss:Type="String">Keep Columns Of Array</Data></Cell>
+    <Cell><Data ss:Type="String">KC</Data></Cell>
+    <Cell><Data ss:Type="String">Array Robot</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">RTLV2</Data></Cell>
+    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String">Command</Data></Cell>
+    <Cell><Data ss:Type="String">Wrap in UNICODE</Data></Cell>
+    <Cell><Data ss:Type="String">CODE</Data></Cell>
+    <Cell><Data ss:Type="String">CompBot</Data></Cell>
+   </Row>
+   <Row ss:Height="74">
+    <Cell><Data ss:Type="String">RTLV2</Data></Cell>
+    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String">Lambda</Data></Cell>
+    <Cell><Data ss:Type="String">LkpRCbyRow()</Data></Cell>
+    <Cell ss:StyleID="s43"><Data ss:Type="String">LkpRCbyRow(along# - array of values to lookup,People - range to look in)&#10;Lambda by Jaq Kennedy</Data></Cell>
+    <Cell><Data ss:Type="String">CompBot</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">RTLV2</Data></Cell>
+    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String">Command</Data></Cell>
+    <Cell><Data ss:Type="String">Keep Columns Of Array</Data></Cell>
+    <Cell><Data ss:Type="String">KC</Data></Cell>
+    <Cell><Data ss:Type="String">Array Robot</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">RTLV2</Data></Cell>
+    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String">Command</Data></Cell>
+    <Cell><Data ss:Type="String">Duplicate Array To Right</Data></Cell>
+    <Cell><Data ss:Type="String">Ctrl-Shft-R</Data></Cell>
+    <Cell><Data ss:Type="String">Array Robot</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">RTLV2</Data></Cell>
+    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String">Command</Data></Cell>
+    <Cell><Data ss:Type="String">Split By Character</Data></Cell>
+    <Cell><Data ss:Type="String">SBC</Data></Cell>
+    <Cell><Data ss:Type="String">Array Robot</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">RTLV2</Data></Cell>
+    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String">Command</Data></Cell>
+    <Cell><Data ss:Type="String">Wrap in UNICODE</Data></Cell>
+    <Cell><Data ss:Type="String">CODE</Data></Cell>
+    <Cell><Data ss:Type="String">CompBot</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">RTLV2</Data></Cell>
+    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String">Command</Data></Cell>
+    <Cell><Data ss:Type="String">Wrap in IFERROR with Space</Data></Cell>
+    <Cell><Data ss:Type="String">ERR</Data></Cell>
+    <Cell><Data ss:Type="String">CompBot</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">RTLV2</Data></Cell>
+    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String">Command</Data></Cell>
+    <Cell><Data ss:Type="String">Concatenate Array By Row</Data></Cell>
+    <Cell><Data ss:Type="String">CR</Data></Cell>
+    <Cell><Data ss:Type="String">Array Robot</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">RTLV2</Data></Cell>
+    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String">Command</Data></Cell>
+    <Cell><Data ss:Type="String">If Error Then Zero (0)</Data></Cell>
+    <Cell><Data ss:Type="String">E0</Data></Cell>
+    <Cell><Data ss:Type="String">Array Robot</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">RTLV2</Data></Cell>
+    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String">Command</Data></Cell>
+    <Cell><Data ss:Type="String">Auto Fill Down</Data></Cell>
+    <Cell><Data ss:Type="String">D</Data></Cell>
+    <Cell><Data ss:Type="String">Formula Robot</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">RTLV3</Data></Cell>
+    <Cell><Data ss:Type="Number">4</Data></Cell>
+    <Cell><Data ss:Type="String">Command</Data></Cell>
+    <Cell><Data ss:Type="String">Full Setup Case</Data></Cell>
+    <Cell><Data ss:Type="String">Ctrl-Shft-G</Data></Cell>
+    <Cell><Data ss:Type="String">CompBot</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="s44"><Data ss:Type="String">RTLV3</Data></Cell>
+    <Cell><Data ss:Type="Number">4</Data></Cell>
+    <Cell><Data ss:Type="String">Command</Data></Cell>
+    <Cell ss:StyleID="s44"><Data ss:Type="String">Keep Cell of Array</Data></Cell>
+    <Cell ss:StyleID="s44"><Data ss:Type="String">KTC</Data></Cell>
+    <Cell ss:StyleID="s44"><Data ss:Type="String">CompBot</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="s44"><Data ss:Type="String">RTLV3</Data></Cell>
+    <Cell><Data ss:Type="Number">4</Data></Cell>
+    <Cell><Data ss:Type="String">Command</Data></Cell>
+    <Cell><Data ss:Type="String">Split Text by Delimiter Above</Data></Cell>
+    <Cell ss:StyleID="s44"><Data ss:Type="String">ST</Data></Cell>
+    <Cell ss:StyleID="s44"><Data ss:Type="String">CompBot</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="s44"><Data ss:Type="String">RTLV3</Data></Cell>
+    <Cell><Data ss:Type="Number">5</Data></Cell>
+    <Cell><Data ss:Type="String">Command</Data></Cell>
+    <Cell><Data ss:Type="String">Wrap with IFERROR TEXTBEFORE space</Data></Cell>
+    <Cell><Data ss:Type="String">TBSE</Data></Cell>
+    <Cell><Data ss:Type="String">CompBot</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">RTLV3</Data></Cell>
+    <Cell><Data ss:Type="Number">5</Data></Cell>
+    <Cell><Data ss:Type="String">Command</Data></Cell>
+    <Cell><Data ss:Type="String">Keep Columns Of Array</Data></Cell>
+    <Cell><Data ss:Type="String">KC</Data></Cell>
+    <Cell><Data ss:Type="String">Array Robot</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">RTLV3</Data></Cell>
+    <Cell><Data ss:Type="Number">5</Data></Cell>
+    <Cell><Data ss:Type="String">Command</Data></Cell>
+    <Cell><Data ss:Type="String">Keep Rows of Array</Data></Cell>
+    <Cell><Data ss:Type="String">KR</Data></Cell>
+    <Cell><Data ss:Type="String">Array Robot</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">RTLV3</Data></Cell>
+    <Cell><Data ss:Type="Number">5</Data></Cell>
+    <Cell><Data ss:Type="String">Command</Data></Cell>
+    <Cell><Data ss:Type="String">Find Above In Left</Data></Cell>
+    <Cell><Data ss:Type="String">FAL</Data></Cell>
+    <Cell><Data ss:Type="String">CompBot</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">RTLV3</Data></Cell>
+    <Cell><Data ss:Type="Number">5</Data></Cell>
+    <Cell><Data ss:Type="String">Command</Data></Cell>
+    <Cell><Data ss:Type="String">Wrap in Concat</Data></Cell>
+    <Cell><Data ss:Type="String">CON</Data></Cell>
+    <Cell><Data ss:Type="String">CompBot</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">RTLV3</Data></Cell>
+    <Cell><Data ss:Type="Number">5</Data></Cell>
+    <Cell><Data ss:Type="String">Command</Data></Cell>
+    <Cell><Data ss:Type="String">Wrap in Drop First Row</Data></Cell>
+    <Cell><Data ss:Type="String">DF</Data></Cell>
+    <Cell><Data ss:Type="String">CompBot</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">RTLV3</Data></Cell>
+    <Cell><Data ss:Type="Number">5</Data></Cell>
+    <Cell><Data ss:Type="String">Command</Data></Cell>
+    <Cell><Data ss:Type="String">Duplicate Array To Right</Data></Cell>
+    <Cell><Data ss:Type="String">Ctrl-Shft-R</Data></Cell>
+    <Cell><Data ss:Type="String">Array Robot</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">RTLV3</Data></Cell>
+    <Cell><Data ss:Type="Number">5</Data></Cell>
+    <Cell><Data ss:Type="String">Command</Data></Cell>
+    <Cell><Data ss:Type="String">Keep Columns Of Array</Data></Cell>
+    <Cell><Data ss:Type="String">KC</Data></Cell>
+    <Cell><Data ss:Type="String">Array Robot</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">RTLV3</Data></Cell>
+    <Cell><Data ss:Type="Number">5</Data></Cell>
+    <Cell><Data ss:Type="String">Command</Data></Cell>
+    <Cell><Data ss:Type="String">Duplicate Array To Right</Data></Cell>
+    <Cell><Data ss:Type="String">Ctrl-Shft-R</Data></Cell>
+    <Cell><Data ss:Type="String">Array Robot</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">RTLV3</Data></Cell>
+    <Cell><Data ss:Type="Number">5</Data></Cell>
+    <Cell><Data ss:Type="String">Command</Data></Cell>
+    <Cell><Data ss:Type="String">Keep Columns Of Array</Data></Cell>
+    <Cell><Data ss:Type="String">KC</Data></Cell>
+    <Cell><Data ss:Type="String">Array Robot</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">RTLV3</Data></Cell>
+    <Cell><Data ss:Type="Number">5</Data></Cell>
+    <Cell><Data ss:Type="String">Command</Data></Cell>
+    <Cell><Data ss:Type="String">Substitute Blank for 0</Data></Cell>
+    <Cell><Data ss:Type="String">SB0</Data></Cell>
+    <Cell><Data ss:Type="String">CompBot</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">RTLV3</Data></Cell>
+    <Cell><Data ss:Type="Number">5</Data></Cell>
+    <Cell><Data ss:Type="String">Command</Data></Cell>
+    <Cell><Data ss:Type="String">Substitute Blank for 1</Data></Cell>
+    <Cell><Data ss:Type="String">SB1</Data></Cell>
+    <Cell><Data ss:Type="String">CompBot</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">RTLV3</Data></Cell>
+    <Cell><Data ss:Type="Number">5</Data></Cell>
+    <Cell><Data ss:Type="String">Command</Data></Cell>
+    <Cell><Data ss:Type="String">Concatenate Array By Row</Data></Cell>
+    <Cell><Data ss:Type="String">CR</Data></Cell>
+    <Cell><Data ss:Type="String">Array Robot</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">RTLV3</Data></Cell>
+    <Cell><Data ss:Type="Number">5</Data></Cell>
+    <Cell><Data ss:Type="String">Command</Data></Cell>
+    <Cell><Data ss:Type="String">Auto Fill Down</Data></Cell>
+    <Cell><Data ss:Type="String">D</Data></Cell>
+    <Cell><Data ss:Type="String">Formula Robot</Data></Cell>
+   </Row>
+   <Row ss:Height="55.5">
+    <Cell><Data ss:Type="String">RTLV3</Data></Cell>
+    <Cell><Data ss:Type="Number">5</Data></Cell>
+    <Cell><Data ss:Type="String">Command</Data></Cell>
+    <Cell><Data ss:Type="String">Save Game Answer To Left</Data></Cell>
+    <Cell ss:StyleID="s43"><Data ss:Type="String">Ctrl-Shft-S&#10;See &quot;Eggy&quot; command to get this bot</Data></Cell>
+    <Cell><Data ss:Type="String">MEWC Robot</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">RTLV3</Data></Cell>
+    <Cell><Data ss:Type="Number">6</Data></Cell>
+    <Cell><Data ss:Type="String">Command</Data></Cell>
+    <Cell><Data ss:Type="String">Find Above In Left</Data></Cell>
+    <Cell><Data ss:Type="String">FAL</Data></Cell>
+    <Cell><Data ss:Type="String">CompBot</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">RTLV3</Data></Cell>
+    <Cell><Data ss:Type="Number">6</Data></Cell>
+    <Cell><Data ss:Type="String">Command</Data></Cell>
+    <Cell><Data ss:Type="String">Duplicate Array To Right</Data></Cell>
+    <Cell><Data ss:Type="String">Ctrl-Shft-R</Data></Cell>
+    <Cell><Data ss:Type="String">Array Robot</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">RTLV3</Data></Cell>
+    <Cell><Data ss:Type="Number">6</Data></Cell>
+    <Cell><Data ss:Type="String">Command</Data></Cell>
+    <Cell><Data ss:Type="String">Sequence of Row Count</Data></Cell>
+    <Cell><Data ss:Type="String">SRC</Data></Cell>
+    <Cell><Data ss:Type="String">CompBot</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">RTLV3</Data></Cell>
+    <Cell><Data ss:Type="Number">6</Data></Cell>
+    <Cell><Data ss:Type="String">Command</Data></Cell>
+    <Cell><Data ss:Type="String">Auto Fill Down</Data></Cell>
+    <Cell><Data ss:Type="String">D</Data></Cell>
+    <Cell><Data ss:Type="String">Formula Robot</Data></Cell>
    </Row>
   </Table>
  </Worksheet>

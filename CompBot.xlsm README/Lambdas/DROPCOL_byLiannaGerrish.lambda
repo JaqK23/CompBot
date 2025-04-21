@@ -1,0 +1,1 @@
+DROPCOL_byLiannaGerrish =LAMBDA(array,column,LET(\\LambdaName, "DROPCOL", \\CommandName, \\LambdaName, \\Description, "Drops a column from an array", \\Source, "Lianna", MAKEARRAY(ROWS(array), COLUMNS(array) - 1, LAMBDA(i,j, INDEX(array, i, IF(j < column, j, j + 1))))));

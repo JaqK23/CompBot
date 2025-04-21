@@ -1,4 +1,0 @@
-IsInList =    LAMBDA(array,list,LET(
-   \\LambdaName, "IsInList",
-MAP(array,LAMBDA(x,OR(list=x))))
-);

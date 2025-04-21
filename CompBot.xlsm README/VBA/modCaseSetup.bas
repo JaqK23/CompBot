@@ -50,7 +50,7 @@ Sub RenameSht()
         'get sheet name and copy to end
         Set WS = WB.Worksheets(intCurr)
         strName = WS.Name
-        If strName <> "Case" And strName <> "Answers" And InStr(strName, " ") + InStr(strName, "_") > 0 Then
+        If strName <> "Case" And strName <> "Case-Varsity" And strName <> "Answers" And InStr(strName, " ") + InStr(strName, "_") > 0 Then
             strWords = Split(Replace(strName, "_", " "), " ")
             strNewName = ""
             For lngI = LBound(strWords) To UBound(strWords)
@@ -58,7 +58,9 @@ Sub RenameSht()
                     strNewName = strNewName & UCase(Left(strWords(lngI), 1))
                 End If
             Next lngI
+            On Error Resume Next
             WS.Name = strNewName
+            On Error GoTo 0
         End If
     Next intCurr
 End Sub
@@ -131,7 +133,8 @@ Sub CreateLevelSheets()
     Dim strHeader As String
     Dim varCol As Variant
     Dim strCurrVal As String
-    
+    Dim shp As Shape
+
     'Initialize
     VBAInit
     ' Initialize excluded headers as a dictionary
@@ -143,6 +146,10 @@ Sub CreateLevelSheets()
     Set WB = ActiveWorkbook
     On Error Resume Next
     Set WS = WB.Worksheets("Case")
+    If Err.Number <> 0 Then
+        On Error Resume Next
+        Set WS = WB.Worksheets("Case-Varsity")
+    End If
     On Error GoTo 0
     
     'check if sheet exists, if not, prompt for a sheet name,
@@ -190,7 +197,7 @@ Sub CreateLevelSheets()
     For intCurr = 1 To intLevels
         'create new worksheet for the level
         Set WSNew = WB.Sheets.Add(After:=WB.Sheets(WS.Index + intCurr - 1))
-        WSNew.Name = "L" & intCurr
+        WSNew.Name = "L0" & intCurr
         
         'get row numbers
         intBegRow = colLRows(intCurr)
@@ -285,6 +292,11 @@ SkipStep:
             WSNew.Cells(1, 1).Formula = "='Case'!" & rngScore.Address
         End If
         
+        'clear shapes
+        For Each shp In WSNew.Shapes
+            shp.Delete
+        Next shp
+
     Next intCurr
     VBAFin
     Application.Calculate
@@ -336,6 +348,10 @@ Sub CreateBonusSheet()
     Set WB = ActiveWorkbook
     On Error Resume Next
     Set WS = WB.Worksheets("Case")
+    If Err.Number <> 0 Then
+        On Error Resume Next
+        Set WS = WB.Worksheets("Case-Varsity")
+    End If
     On Error GoTo 0
     
     'check if sheet exists, if not, prompt for a sheet name,
@@ -669,6 +685,10 @@ Sub CreateCaseInputsSheet(Optional strDetailed As String = "")
     Set WB = ActiveWorkbook
     On Error Resume Next
     Set WS = WB.Worksheets("Case")
+    If Err.Number <> 0 Then
+        On Error Resume Next
+        Set WS = WB.Worksheets("Case-Varsity")
+    End If
     On Error GoTo 0
     booDetailed = True
     If IsMissing(strDetailed) Or strDetailed = "" Then booDetailed = False

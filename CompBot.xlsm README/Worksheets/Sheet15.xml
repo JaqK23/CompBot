@@ -34,22 +34,33 @@
    <Font ss:FontName="Verdana" x:Family="Swiss" ss:Size="13" ss:Color="#0E2841"
     ss:Bold="1"/>
   </Style>
-  <Style ss:ID="s21" ss:Parent="s16">
+  <Style ss:ID="s22" ss:Parent="s16">
    <Alignment ss:Horizontal="CenterAcrossSelection" ss:Vertical="Bottom"/>
   </Style>
-  <Style ss:ID="s22" ss:Parent="s18">
+  <Style ss:ID="s23" ss:Parent="s18">
    <Alignment ss:Horizontal="CenterAcrossSelection" ss:Vertical="Bottom"/>
   </Style>
-  <Style ss:ID="s23" ss:Parent="s17">
+  <Style ss:ID="s24" ss:Parent="s17">
    <Alignment ss:Horizontal="CenterAcrossSelection" ss:Vertical="Bottom"/>
   </Style>
-  <Style ss:ID="s25">
+  <Style ss:ID="s26">
    <Alignment ss:Vertical="Bottom" ss:WrapText="1"/>
   </Style>
  </Styles>
  <Names>
+  <NamedRange ss:Name="_xleta.CELL" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xleta.COLUMN" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xleta.COUNT" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xleta.COUNTA" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xleta.MIN" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xleta.OFFSET" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xleta.ROWS" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xleta.SUM" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xleta.T" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xleta.TEXT" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xleta.TYPE" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xleta.UNICHAR" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xleta.VALUE" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlop.Actual" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlop.aggregate_function" ss:RefersTo="=#NAME?"
    ss:Hidden="1"/>
@@ -58,16 +69,19 @@
   <NamedRange ss:Name="_xlop.ColMax" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlop.ColMin" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlop.column_index" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlop.ColumnArray" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlop.default" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlop.delimiter" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlop.exclude" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlop.Flatten" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlop.horizontal" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlop.id" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlop.IfNotFound" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlop.In" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlop.include_grand_total" ss:RefersTo="=#NAME?"
    ss:Hidden="1"/>
   <NamedRange ss:Name="_xlop.lookup_output" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlop.MatchMode" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlop.n" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlop.n_horiz" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlop.Out" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
@@ -75,11 +89,14 @@
   <NamedRange ss:Name="_xlop.posx" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlop.posy" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlop.return_type" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlop.RowArray" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlop.rowDelim" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlop.RowMax" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlop.RowMin" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlop.SearchMode" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlop.sheetname" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlop.ShowAll_0" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlop.Upp" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlop.vertical" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlop.Wrap" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlop.x_multiplier" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
@@ -94,6 +111,7 @@
   <NamedRange ss:Name="_xlpm._ColIndex" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm._ColorTable" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm._Cols" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm._ColsByRow" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm._ColumnIndex" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm._ColumnsToInsert" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm._countif" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
@@ -103,6 +121,7 @@
   <NamedRange ss:Name="_xlpm._GetMin" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm._include" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm._Included" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm._IsArray" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm._Keep" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm._Keys" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm._MeanSquaredError" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
@@ -110,8 +129,11 @@
   <NamedRange ss:Name="_xlpm._PadWith" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm._Result" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm._RowFields" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm._RowIndex" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm._Rows" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm._Seq" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm._Sequence" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm._Split" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm._Step1" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm._Step10" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm._Step11" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
@@ -123,11 +145,13 @@
   <NamedRange ss:Name="_xlpm._Step7" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm._Step8" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm._Step9" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm._Transpose" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm._unique" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm._Values" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm._X" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm._Y" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.a" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.ABC" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.ac" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.acc" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.accum" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
@@ -178,8 +202,10 @@
   <NamedRange ss:Name="_xlpm.CleanData" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.ClnData" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.cls" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.CLU" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.cnt" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.cnum" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.co" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.col" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.ColCnt" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.colDelim" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
@@ -193,9 +219,15 @@
   <NamedRange ss:Name="_xlpm.column" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.column_index" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.column_indexes" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.ColumnArray" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.ColumnID" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.columns_to_insert" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.condition" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.cou" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.coun" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.count" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.counti" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.countif" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.cr" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.curr" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.current_cell" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
@@ -209,6 +241,7 @@
   <NamedRange ss:Name="_xlpm.data3" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.data4" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.data5" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.DataSource" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.days_in_period" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.default" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.delim1" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
@@ -218,6 +251,7 @@
   <NamedRange ss:Name="_xlpm.diag_flag" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.dice" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.dist" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.divisor" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.doc" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.e" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.end" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
@@ -228,7 +262,10 @@
   <NamedRange ss:Name="_xlpm.find" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.First" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.firstChar" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.firstcol" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.firstrow" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.Flatten" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.fnSingle" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.func" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.function" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.g" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
@@ -243,11 +280,16 @@
   <NamedRange ss:Name="_xlpm.horizontal_mod" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.horizontal_moves" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.i" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.iABC" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.id" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.idx" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.IfNotFound" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.In" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.inABC" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.include_grand_total" ss:RefersTo="=#NAME?"
    ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.indABC" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.Input" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.Input1" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.Input2" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.InputArray" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
@@ -267,6 +309,7 @@
   <NamedRange ss:Name="_xlpm.m" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.m_vert" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.map_cell" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.MatchMode" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.Mcls" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.month_num" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.mp" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
@@ -279,11 +322,15 @@
   <NamedRange ss:Name="_xlpm.new_block" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.newArray" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.newcell" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.NewChars" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.number" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.NumList" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.off" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.offset" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.Out" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.pad_with" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.param" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.params" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.period_start_date" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.periods" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.pos" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
@@ -301,6 +348,7 @@
   <NamedRange ss:Name="_xlpm.rate" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.RB" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.rc" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.RCInc" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.rcn" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.rcnu" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.rcnum" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
@@ -314,9 +362,11 @@
   <NamedRange ss:Name="_xlpm.return_array" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.return_type" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.RF" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.RLU" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.rng" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.rnum" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.row" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.RowArray" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.RowCnt" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.rowDelim" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.rowIndex" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
@@ -331,14 +381,18 @@
   <NamedRange ss:Name="_xlpm.rws" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.s" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.search" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.SearchMode" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.Second" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.sheetname" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.Shft" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.shift" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.ShowAll_0" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.single_cell" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.size" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.SortedData" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.Srt" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.stack" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.stacker" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.start" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.start_date" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.startcell" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
@@ -357,6 +411,7 @@
   <NamedRange ss:Name="_xlpm.table_arrows" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.tarr" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.text" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.text_vector" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.TextLengthNoSpaces" ss:RefersTo="=#NAME?"
    ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.Third" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
@@ -367,6 +422,15 @@
   <NamedRange ss:Name="_xlpm.TrimmedtextLength" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.type" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.u" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.UABC" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.UpABC" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.UpdatedDataSource" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.Upp" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.UppABC" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.Uppe" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.UppeABC" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.Upper" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.UpperABC" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.v" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.v_fixed" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.v_mod" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
@@ -398,34 +462,51 @@
    ss:RefersTo="=LAMBDA(rng, ADDRESS(ROW(rng), COLUMN(rng), 4))"/>
   <NamedRange ss:Name="CaseInputs"
    ss:RefersTo="=LAMBDA(     LET(         questions, FILTER(INDIRECT(&quot;Case!$B:$EE&quot;), ISNUMBER(INDIRECT(&quot;Case!$B:$B&quot;))),         result, IF(questions=0, NA(), questions),         clean, HSTACK(TAKE(result,,3), TAKE(result,,-COLUMNS(result)+5)),         IFERROR(clean, &quot;&quot;)     ) )"/>
+  <NamedRange ss:Name="COL"
+   ss:RefersTo="=LAMBDA(x, IF(ISOMITTED(x), COLUMN(), COLUMN(x)))"/>
+  <NamedRange ss:Name="COLROW"
+   ss:RefersTo="=LAMBDA(cell_coordinates, TEXTSPLIT(COLUMN(INDIRECT(cell_coordinates)) &amp; &quot;;&quot; &amp; ROW(INDIRECT(cell_coordinates)), &quot;;&quot;))"/>
+  <NamedRange ss:Name="CountChar_byLiannaGerrish"
+   ss:RefersTo="=LAMBDA(text,c,LET(\\LambdaName, &quot;CountChar_byLiannaGerrish&quot;, \\CommandName, &quot;Count Characters in a String&quot;, \\Description, &quot;Returns the number of times a character appears in the selected text string&quot;, \\Source, &quot;Lianna Gerrish&quot;, Trimmedtext, TRIM(text), TrimmedtextLength, LEN(Trimmedtext), WhiteSpaceSubstitution, SUBSTITUTE(Trimmedtext, c, &quot;&quot;), TextLengthNoSpaces, LEN(WhiteSpaceSubstitution), TrimmedtextLength - TextLengthNoSpaces + 0))"/>
+  <NamedRange ss:Name="DiffByRow_byJaqKennedy"
+   ss:RefersTo="=LAMBDA(Input,LET(\\LambdaName, &quot;DiffByRow&quot;, \\CommandName, &quot;Difference of array columns by row&quot;, \\Description, &quot;Returns first column - last column in array&quot;, \\Source, &quot;Jaq Kennedy&quot;, TAKE(Input, , 1) - TAKE(Input, , -1)))"/>
+  <NamedRange ss:Name="DROPCOL_byLiannaGerrish"
+   ss:RefersTo="=LAMBDA(array,column,LET(\\LambdaName, &quot;DROPCOL&quot;, \\CommandName, \\LambdaName, \\Description, &quot;Drops a column from an array&quot;, \\Source, &quot;Lianna&quot;, MAKEARRAY(ROWS(array), COLUMNS(array) - 1, LAMBDA(i,j, INDEX(array, i, IF(j &lt; column, j, j + 1))))))"/>
   <NamedRange ss:Name="EXTRACTCHAR_byHarryGross"
    ss:RefersTo="=LAMBDA(text, MID(text, SEQUENCE(, LEN(text), 1, 1), 1))"/>
+  <NamedRange ss:Name="EXTRACTLETTERS_byHarryGross"
+   ss:RefersTo="=LAMBDA(text,REDUCE(&quot;&quot;, MID(text, SEQUENCE(LEN(text), 1), 1), LAMBDA(x,y, IF(ISNUMBER(VALUE(y)), x, x &amp; y))))"/>
   <NamedRange ss:Name="EXTRACTNUMBERS_byHarryGross"
    ss:RefersTo="=LAMBDA(cell,TEXTSPLIT(cell,TEXTSPLIT(cell,SEQUENCE(10,,0),,1),,1))"/>
-  <NamedRange ss:Name="IsInList"
-   ss:RefersTo="=    LAMBDA(array,list,LET(&#10;   \\LambdaName, &quot;IsInList&quot;,&#10;MAP(array,LAMBDA(x,OR(list=x))))&#10;)"/>
+  <NamedRange ss:Name="EZINDIRECT_byLiannaGerrish"
+   ss:RefersTo="=LAMBDA(cell,[sheetname],IF(ISOMITTED(sheetname), INDIRECT(cell), INDIRECT(sheetname &amp; &quot;!&quot; &amp; cell)))"/>
+  <NamedRange ss:Name="IFBLANK"
+   ss:RefersTo="=LAMBDA(value,value_if_blank, IF(ISBLANK(value), value_if_blank, value))"/>
+  <NamedRange ss:Name="IsInList_byErikOehm"
+   ss:RefersTo="=LAMBDA(array,list,LET(\\LambdaName, &quot;IsInList&quot;, MAP(array, LAMBDA(x, OR(list = x)))))"/>
+  <NamedRange ss:Name="Letters"
+   ss:RefersTo="=LAMBDA([Upp], LET(&#10;   \\LambdaName, &quot;Letters&quot;,&#10;   \\CommandName, &quot;Creates a list of letters&quot;,&#10;   ABC, CHAR(SEQUENCE(26) + 64),&#10;   IF((Upp = 1) + ISOMITTED((Upp)), ABC, LOWER(ABC))&#10;))"/>
+  <NamedRange ss:Name="MinMax_byJaqKennedy"
+   ss:RefersTo="=LAMBDA(Range,LET(\\LambdaName, &quot;MinMax&quot;, \\CommandName, &quot;Get Min and Max of Range&quot;, _GetMin, MIN(Range), _GetMax, MAX(Range), _MinMax, VSTACK(_GetMin, _GetMax), _MinMax))"/>
+  <NamedRange ss:Name="RightAlignedArray_byJaqKennedy"
+   ss:RefersTo="=LAMBDA(input,LET(\\LambdaName, &quot;RightAlignedArray&quot;, \\CommandName, &quot;Align array to right&quot;, \\Description, &quot;Aligns array to the right with blanks to left&quot;, \\Source, &quot;Jaq Kennedy&quot;, _ColsByRow, BYROW(input, COUNT), _Rows, ROWS(input), _Cols, COLUMNS(input), _ColIndex, IF(MOD(SEQUENCE(_Rows, _Cols) - 1, _Cols) + 1 - _Cols + _ColsByRow &lt;= 0, -1, MOD(SEQUENCE(_Rows, _Cols) - 1, _Cols) + 1 - _Cols + _ColsByRow), _RowIndex, SEQUENCE(_Rows), _Result, IFERROR(INDEX(input, _RowIndex, _ColIndex), &quot;&quot;), _Result))"/>
+  <NamedRange ss:Name="ROWCOL"
+   ss:RefersTo="=LAMBDA(cell_coordinates,TEXTSPLIT(ROW(INDIRECT(cell_coordinates)) &amp; &quot;;&quot; &amp; COLUMN(INDIRECT(cell_coordinates)), &quot;;&quot;))"/>
+  <NamedRange ss:Name="XLOOKUP2D_byBendeLeon"
+   ss:RefersTo="=LAMBDA(DataSource,RLU,CLU,[RowArray],[ColumnArray],[MatchMode],[SearchMode],[IfNotFound], LET(&#10;   \\LambdaName, &quot;XLOOKUP2D_byBendeLeon&quot;,&#10;   \\CommandName, &quot;2D lookup&quot;,&#10;   \\Source, &quot;Ben de Leon&quot;,&#10;   RCInc, IF(ISOMITTED(RowArray), 1, 0) + IF(ISOMITTED(RowArray), 2, 0),&#10;   UpdatedDataSource, CHOOSE(&#10;      RCInc + 1,&#10;      DataSource,&#10;      DROP(DataSource, , 1),&#10;      DROP(DataSource, 1),&#10;      DROP(DataSource, 1, 1)&#10;   ),&#10;   IFERROR(&#10;      INDEX(&#10;         UpdatedDataSource,&#10;         XMATCH(&#10;            RLU,&#10;            IF(&#10;               ISOMITTED(RowArray),&#10;               DROP(TAKE(DataSource, , 1), 1),&#10;               TAKE(RowArray, , 1)&#10;            ),&#10;            IF(ISOMITTED(MatchMode), 0, MatchMode),&#10;            IF(ISOMITTED(SearchMode), 1, SearchMode)&#10;         ),&#10;         XMATCH(&#10;            CLU,&#10;            IF(&#10;               ISOMITTED(ColumnArray),&#10;               DROP(TAKE(DataSource, 1), , 1),&#10;               TAKE(ColumnArray, 1)&#10;            ),&#10;            IF(ISOMITTED(MatchMode), 0, MatchMode),&#10;            IF(ISOMITTED(SearchMode), 1, SearchMode)&#10;         )&#10;      ),&#10;      IF(ISOMITTED(IfNotFound), NA(), IfNotFound)&#10;   )&#10;))"/>
+  <NamedRange ss:Name="XMOD_byJaqKennedy"
+   ss:RefersTo="=LAMBDA(value,divisor,LET(\\LambdaName, &quot;XMOD&quot;, \\CommandName, &quot;MOD with max value&quot;, \\Description, &quot;Returns the MOD of a value where the maximum value returns the divisor instead of 0&quot;, \\Source, &quot;Jaq Kennedy&quot;, MOD(value - 1, divisor) + 1))"/>
  </Names>
  <Worksheet ss:Name="Load Lambdas">
   <Table ss:ExpandedColumnCount="9" ss:ExpandedRowCount="10"
-   ss:DefaultColumnWidth="90" ss:DefaultRowHeight="19.5">
-   <Column ss:Width="238.5"/>
-   <Column ss:Width="109.5"/>
-   <Column ss:AutoFitWidth="0" ss:Width="351"/>
-   <Column ss:Width="121.5"/>
-   <Column ss:AutoFitWidth="0" ss:Width="41.25" ss:Span="4"/>
-   <Row ss:Height="21">
-    <Cell ss:StyleID="s21"><Data ss:Type="String">Load Lambdas</Data></Cell>
-    <Cell ss:StyleID="s21"/>
-    <Cell ss:StyleID="s21"/>
-    <Cell ss:StyleID="s21"/>
-    <Cell ss:StyleID="s21"/>
-    <Cell ss:StyleID="s21"/>
-    <Cell ss:StyleID="s21"/>
-    <Cell ss:StyleID="s21"/>
-    <Cell ss:StyleID="s21"/>
-   </Row>
-   <Row ss:Height="20.25">
-    <Cell ss:StyleID="s22"><Data ss:Type="String">Import your lambdas from your own lambda library by clicking this icon or running the &quot;Import Lambdas From&quot; command</Data></Cell>
+   ss:DefaultColumnWidth="88" ss:DefaultRowHeight="19.5">
+   <Column ss:Width="244.5"/>
+   <Column ss:Width="112.5"/>
+   <Column ss:AutoFitWidth="0" ss:Width="360"/>
+   <Column ss:Width="124.5"/>
+   <Column ss:AutoFitWidth="0" ss:Width="42.5" ss:Span="4"/>
+   <Row ss:Height="20">
+    <Cell ss:StyleID="s22"><Data ss:Type="String">Load Lambdas</Data></Cell>
     <Cell ss:StyleID="s22"/>
     <Cell ss:StyleID="s22"/>
     <Cell ss:StyleID="s22"/>
@@ -435,8 +516,8 @@
     <Cell ss:StyleID="s22"/>
     <Cell ss:StyleID="s22"/>
    </Row>
-   <Row ss:Index="7" ss:Height="20.25">
-    <Cell ss:StyleID="s23"><Data ss:Type="String">Robot Commands</Data></Cell>
+   <Row ss:Height="20">
+    <Cell ss:StyleID="s23"><Data ss:Type="String">Import your lambdas from your own lambda library by clicking this icon or running the &quot;Import Lambdas From&quot; command</Data></Cell>
     <Cell ss:StyleID="s23"/>
     <Cell ss:StyleID="s23"/>
     <Cell ss:StyleID="s23"/>
@@ -446,7 +527,18 @@
     <Cell ss:StyleID="s23"/>
     <Cell ss:StyleID="s23"/>
    </Row>
-   <Row ss:Height="20.25"/>
+   <Row ss:Index="7" ss:Height="20">
+    <Cell ss:StyleID="s24"><Data ss:Type="String">Robot Commands</Data></Cell>
+    <Cell ss:StyleID="s24"/>
+    <Cell ss:StyleID="s24"/>
+    <Cell ss:StyleID="s24"/>
+    <Cell ss:StyleID="s24"/>
+    <Cell ss:StyleID="s24"/>
+    <Cell ss:StyleID="s24"/>
+    <Cell ss:StyleID="s24"/>
+    <Cell ss:StyleID="s24"/>
+   </Row>
+   <Row ss:Height="20"/>
    <Row>
     <Cell><Data ss:Type="String">Name</Data></Cell>
     <Cell><Data ss:Type="String">Creator</Data></Cell>
@@ -456,7 +548,7 @@
    <Row ss:Height="39">
     <Cell><Data ss:Type="String">Import Lambdas From</Data></Cell>
     <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s25"><Data ss:Type="String">Opens a browser to navigate to a workbook with the lambdas to load</Data></Cell>
+    <Cell ss:StyleID="s26"><Data ss:Type="String">Opens a browser to navigate to a workbook with the lambdas to load</Data></Cell>
     <Cell><Data ss:Type="String">N/A</Data></Cell>
    </Row>
   </Table>

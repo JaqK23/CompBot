@@ -34,42 +34,45 @@
    <Font ss:FontName="Verdana" x:Family="Swiss" ss:Size="13" ss:Color="#0E2841"
     ss:Bold="1"/>
   </Style>
-  <Style ss:ID="s21" ss:Parent="s16">
+  <Style ss:ID="s22" ss:Parent="s16">
    <Alignment ss:Horizontal="CenterAcrossSelection" ss:Vertical="Bottom"/>
   </Style>
-  <Style ss:ID="s22" ss:Parent="s18">
+  <Style ss:ID="s23" ss:Parent="s18">
    <Alignment ss:Horizontal="CenterAcrossSelection" ss:Vertical="Bottom"/>
   </Style>
-  <Style ss:ID="s23" ss:Parent="s17">
+  <Style ss:ID="s24" ss:Parent="s17">
    <Alignment ss:Horizontal="CenterAcrossSelection" ss:Vertical="Bottom"/>
   </Style>
-  <Style ss:ID="s29" ss:Parent="s16">
+  <Style ss:ID="s30" ss:Parent="s16">
    <Alignment ss:Horizontal="CenterAcrossSelection" ss:Vertical="Top"/>
   </Style>
-  <Style ss:ID="s30" ss:Parent="s18">
+  <Style ss:ID="s31" ss:Parent="s18">
    <Alignment ss:Horizontal="CenterAcrossSelection" ss:Vertical="Top"/>
   </Style>
-  <Style ss:ID="s31" ss:Parent="s17">
+  <Style ss:ID="s32" ss:Parent="s17">
    <Alignment ss:Horizontal="CenterAcrossSelection" ss:Vertical="Top"/>
-  </Style>
-  <Style ss:ID="s32">
-   <Alignment ss:Vertical="Top"/>
   </Style>
   <Style ss:ID="s33">
-   <Alignment ss:Vertical="Top" ss:WrapText="1"/>
-  </Style>
-  <Style ss:ID="s39">
-   <Alignment ss:Vertical="Top" ss:WrapText="1"/>
-   <Interior ss:Color="#A6A6A6" ss:Pattern="Solid"/>
-  </Style>
-  <Style ss:ID="s40">
    <Alignment ss:Vertical="Top"/>
-   <Interior ss:Color="#A6A6A6" ss:Pattern="Solid"/>
+  </Style>
+  <Style ss:ID="s34">
+   <Alignment ss:Vertical="Top" ss:WrapText="1"/>
   </Style>
  </Styles>
  <Names>
+  <NamedRange ss:Name="_xleta.CELL" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xleta.COLUMN" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xleta.COUNT" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xleta.COUNTA" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xleta.MIN" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xleta.OFFSET" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xleta.ROWS" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xleta.SUM" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xleta.T" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xleta.TEXT" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xleta.TYPE" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xleta.UNICHAR" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xleta.VALUE" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlop.Actual" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlop.aggregate_function" ss:RefersTo="=#NAME?"
    ss:Hidden="1"/>
@@ -78,16 +81,19 @@
   <NamedRange ss:Name="_xlop.ColMax" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlop.ColMin" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlop.column_index" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlop.ColumnArray" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlop.default" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlop.delimiter" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlop.exclude" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlop.Flatten" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlop.horizontal" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlop.id" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlop.IfNotFound" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlop.In" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlop.include_grand_total" ss:RefersTo="=#NAME?"
    ss:Hidden="1"/>
   <NamedRange ss:Name="_xlop.lookup_output" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlop.MatchMode" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlop.n" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlop.n_horiz" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlop.Out" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
@@ -95,11 +101,14 @@
   <NamedRange ss:Name="_xlop.posx" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlop.posy" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlop.return_type" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlop.RowArray" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlop.rowDelim" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlop.RowMax" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlop.RowMin" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlop.SearchMode" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlop.sheetname" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlop.ShowAll_0" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlop.Upp" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlop.vertical" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlop.Wrap" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlop.x_multiplier" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
@@ -114,6 +123,7 @@
   <NamedRange ss:Name="_xlpm._ColIndex" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm._ColorTable" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm._Cols" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm._ColsByRow" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm._ColumnIndex" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm._ColumnsToInsert" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm._countif" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
@@ -123,6 +133,7 @@
   <NamedRange ss:Name="_xlpm._GetMin" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm._include" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm._Included" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm._IsArray" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm._Keep" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm._Keys" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm._MeanSquaredError" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
@@ -130,8 +141,11 @@
   <NamedRange ss:Name="_xlpm._PadWith" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm._Result" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm._RowFields" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm._RowIndex" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm._Rows" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm._Seq" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm._Sequence" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm._Split" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm._Step1" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm._Step10" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm._Step11" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
@@ -143,11 +157,13 @@
   <NamedRange ss:Name="_xlpm._Step7" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm._Step8" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm._Step9" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm._Transpose" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm._unique" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm._Values" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm._X" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm._Y" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.a" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.ABC" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.ac" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.acc" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.accum" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
@@ -198,8 +214,10 @@
   <NamedRange ss:Name="_xlpm.CleanData" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.ClnData" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.cls" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.CLU" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.cnt" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.cnum" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.co" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.col" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.ColCnt" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.colDelim" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
@@ -213,9 +231,15 @@
   <NamedRange ss:Name="_xlpm.column" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.column_index" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.column_indexes" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.ColumnArray" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.ColumnID" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.columns_to_insert" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.condition" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.cou" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.coun" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.count" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.counti" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.countif" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.cr" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.curr" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.current_cell" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
@@ -229,6 +253,7 @@
   <NamedRange ss:Name="_xlpm.data3" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.data4" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.data5" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.DataSource" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.days_in_period" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.default" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.delim1" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
@@ -238,6 +263,7 @@
   <NamedRange ss:Name="_xlpm.diag_flag" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.dice" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.dist" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.divisor" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.doc" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.e" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.end" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
@@ -248,7 +274,10 @@
   <NamedRange ss:Name="_xlpm.find" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.First" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.firstChar" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.firstcol" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.firstrow" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.Flatten" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.fnSingle" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.func" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.function" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.g" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
@@ -263,11 +292,16 @@
   <NamedRange ss:Name="_xlpm.horizontal_mod" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.horizontal_moves" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.i" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.iABC" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.id" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.idx" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.IfNotFound" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.In" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.inABC" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.include_grand_total" ss:RefersTo="=#NAME?"
    ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.indABC" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.Input" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.Input1" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.Input2" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.InputArray" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
@@ -287,6 +321,7 @@
   <NamedRange ss:Name="_xlpm.m" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.m_vert" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.map_cell" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.MatchMode" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.Mcls" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.month_num" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.mp" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
@@ -299,11 +334,15 @@
   <NamedRange ss:Name="_xlpm.new_block" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.newArray" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.newcell" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.NewChars" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.number" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.NumList" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.off" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.offset" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.Out" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.pad_with" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.param" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.params" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.period_start_date" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.periods" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.pos" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
@@ -321,6 +360,7 @@
   <NamedRange ss:Name="_xlpm.rate" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.RB" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.rc" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.RCInc" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.rcn" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.rcnu" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.rcnum" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
@@ -334,9 +374,11 @@
   <NamedRange ss:Name="_xlpm.return_array" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.return_type" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.RF" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.RLU" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.rng" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.rnum" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.row" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.RowArray" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.RowCnt" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.rowDelim" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.rowIndex" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
@@ -351,14 +393,18 @@
   <NamedRange ss:Name="_xlpm.rws" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.s" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.search" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.SearchMode" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.Second" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.sheetname" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.Shft" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.shift" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.ShowAll_0" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.single_cell" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.size" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.SortedData" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.Srt" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.stack" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.stacker" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.start" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.start_date" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.startcell" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
@@ -377,6 +423,7 @@
   <NamedRange ss:Name="_xlpm.table_arrows" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.tarr" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.text" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.text_vector" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.TextLengthNoSpaces" ss:RefersTo="=#NAME?"
    ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.Third" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
@@ -387,6 +434,15 @@
   <NamedRange ss:Name="_xlpm.TrimmedtextLength" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.type" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.u" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.UABC" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.UpABC" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.UpdatedDataSource" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.Upp" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.UppABC" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.Uppe" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.UppeABC" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.Upper" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.UpperABC" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.v" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.v_fixed" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.v_mod" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
@@ -418,35 +474,52 @@
    ss:RefersTo="=LAMBDA(rng, ADDRESS(ROW(rng), COLUMN(rng), 4))"/>
   <NamedRange ss:Name="CaseInputs"
    ss:RefersTo="=LAMBDA(     LET(         questions, FILTER(INDIRECT(&quot;Case!$B:$EE&quot;), ISNUMBER(INDIRECT(&quot;Case!$B:$B&quot;))),         result, IF(questions=0, NA(), questions),         clean, HSTACK(TAKE(result,,3), TAKE(result,,-COLUMNS(result)+5)),         IFERROR(clean, &quot;&quot;)     ) )"/>
+  <NamedRange ss:Name="COL"
+   ss:RefersTo="=LAMBDA(x, IF(ISOMITTED(x), COLUMN(), COLUMN(x)))"/>
+  <NamedRange ss:Name="COLROW"
+   ss:RefersTo="=LAMBDA(cell_coordinates, TEXTSPLIT(COLUMN(INDIRECT(cell_coordinates)) &amp; &quot;;&quot; &amp; ROW(INDIRECT(cell_coordinates)), &quot;;&quot;))"/>
+  <NamedRange ss:Name="CountChar_byLiannaGerrish"
+   ss:RefersTo="=LAMBDA(text,c,LET(\\LambdaName, &quot;CountChar_byLiannaGerrish&quot;, \\CommandName, &quot;Count Characters in a String&quot;, \\Description, &quot;Returns the number of times a character appears in the selected text string&quot;, \\Source, &quot;Lianna Gerrish&quot;, Trimmedtext, TRIM(text), TrimmedtextLength, LEN(Trimmedtext), WhiteSpaceSubstitution, SUBSTITUTE(Trimmedtext, c, &quot;&quot;), TextLengthNoSpaces, LEN(WhiteSpaceSubstitution), TrimmedtextLength - TextLengthNoSpaces + 0))"/>
+  <NamedRange ss:Name="DiffByRow_byJaqKennedy"
+   ss:RefersTo="=LAMBDA(Input,LET(\\LambdaName, &quot;DiffByRow&quot;, \\CommandName, &quot;Difference of array columns by row&quot;, \\Description, &quot;Returns first column - last column in array&quot;, \\Source, &quot;Jaq Kennedy&quot;, TAKE(Input, , 1) - TAKE(Input, , -1)))"/>
+  <NamedRange ss:Name="DROPCOL_byLiannaGerrish"
+   ss:RefersTo="=LAMBDA(array,column,LET(\\LambdaName, &quot;DROPCOL&quot;, \\CommandName, \\LambdaName, \\Description, &quot;Drops a column from an array&quot;, \\Source, &quot;Lianna&quot;, MAKEARRAY(ROWS(array), COLUMNS(array) - 1, LAMBDA(i,j, INDEX(array, i, IF(j &lt; column, j, j + 1))))))"/>
   <NamedRange ss:Name="EXTRACTCHAR_byHarryGross"
    ss:RefersTo="=LAMBDA(text, MID(text, SEQUENCE(, LEN(text), 1, 1), 1))"/>
+  <NamedRange ss:Name="EXTRACTLETTERS_byHarryGross"
+   ss:RefersTo="=LAMBDA(text,REDUCE(&quot;&quot;, MID(text, SEQUENCE(LEN(text), 1), 1), LAMBDA(x,y, IF(ISNUMBER(VALUE(y)), x, x &amp; y))))"/>
   <NamedRange ss:Name="EXTRACTNUMBERS_byHarryGross"
    ss:RefersTo="=LAMBDA(cell,TEXTSPLIT(cell,TEXTSPLIT(cell,SEQUENCE(10,,0),,1),,1))"/>
-  <NamedRange ss:Name="IsInList"
-   ss:RefersTo="=    LAMBDA(array,list,LET(&#10;   \\LambdaName, &quot;IsInList&quot;,&#10;MAP(array,LAMBDA(x,OR(list=x))))&#10;)"/>
+  <NamedRange ss:Name="EZINDIRECT_byLiannaGerrish"
+   ss:RefersTo="=LAMBDA(cell,[sheetname],IF(ISOMITTED(sheetname), INDIRECT(cell), INDIRECT(sheetname &amp; &quot;!&quot; &amp; cell)))"/>
+  <NamedRange ss:Name="IFBLANK"
+   ss:RefersTo="=LAMBDA(value,value_if_blank, IF(ISBLANK(value), value_if_blank, value))"/>
+  <NamedRange ss:Name="IsInList_byErikOehm"
+   ss:RefersTo="=LAMBDA(array,list,LET(\\LambdaName, &quot;IsInList&quot;, MAP(array, LAMBDA(x, OR(list = x)))))"/>
+  <NamedRange ss:Name="Letters"
+   ss:RefersTo="=LAMBDA([Upp], LET(&#10;   \\LambdaName, &quot;Letters&quot;,&#10;   \\CommandName, &quot;Creates a list of letters&quot;,&#10;   ABC, CHAR(SEQUENCE(26) + 64),&#10;   IF((Upp = 1) + ISOMITTED((Upp)), ABC, LOWER(ABC))&#10;))"/>
+  <NamedRange ss:Name="MinMax_byJaqKennedy"
+   ss:RefersTo="=LAMBDA(Range,LET(\\LambdaName, &quot;MinMax&quot;, \\CommandName, &quot;Get Min and Max of Range&quot;, _GetMin, MIN(Range), _GetMax, MAX(Range), _MinMax, VSTACK(_GetMin, _GetMax), _MinMax))"/>
+  <NamedRange ss:Name="RightAlignedArray_byJaqKennedy"
+   ss:RefersTo="=LAMBDA(input,LET(\\LambdaName, &quot;RightAlignedArray&quot;, \\CommandName, &quot;Align array to right&quot;, \\Description, &quot;Aligns array to the right with blanks to left&quot;, \\Source, &quot;Jaq Kennedy&quot;, _ColsByRow, BYROW(input, COUNT), _Rows, ROWS(input), _Cols, COLUMNS(input), _ColIndex, IF(MOD(SEQUENCE(_Rows, _Cols) - 1, _Cols) + 1 - _Cols + _ColsByRow &lt;= 0, -1, MOD(SEQUENCE(_Rows, _Cols) - 1, _Cols) + 1 - _Cols + _ColsByRow), _RowIndex, SEQUENCE(_Rows), _Result, IFERROR(INDEX(input, _RowIndex, _ColIndex), &quot;&quot;), _Result))"/>
+  <NamedRange ss:Name="ROWCOL"
+   ss:RefersTo="=LAMBDA(cell_coordinates,TEXTSPLIT(ROW(INDIRECT(cell_coordinates)) &amp; &quot;;&quot; &amp; COLUMN(INDIRECT(cell_coordinates)), &quot;;&quot;))"/>
+  <NamedRange ss:Name="XLOOKUP2D_byBendeLeon"
+   ss:RefersTo="=LAMBDA(DataSource,RLU,CLU,[RowArray],[ColumnArray],[MatchMode],[SearchMode],[IfNotFound], LET(&#10;   \\LambdaName, &quot;XLOOKUP2D_byBendeLeon&quot;,&#10;   \\CommandName, &quot;2D lookup&quot;,&#10;   \\Source, &quot;Ben de Leon&quot;,&#10;   RCInc, IF(ISOMITTED(RowArray), 1, 0) + IF(ISOMITTED(RowArray), 2, 0),&#10;   UpdatedDataSource, CHOOSE(&#10;      RCInc + 1,&#10;      DataSource,&#10;      DROP(DataSource, , 1),&#10;      DROP(DataSource, 1),&#10;      DROP(DataSource, 1, 1)&#10;   ),&#10;   IFERROR(&#10;      INDEX(&#10;         UpdatedDataSource,&#10;         XMATCH(&#10;            RLU,&#10;            IF(&#10;               ISOMITTED(RowArray),&#10;               DROP(TAKE(DataSource, , 1), 1),&#10;               TAKE(RowArray, , 1)&#10;            ),&#10;            IF(ISOMITTED(MatchMode), 0, MatchMode),&#10;            IF(ISOMITTED(SearchMode), 1, SearchMode)&#10;         ),&#10;         XMATCH(&#10;            CLU,&#10;            IF(&#10;               ISOMITTED(ColumnArray),&#10;               DROP(TAKE(DataSource, 1), , 1),&#10;               TAKE(ColumnArray, 1)&#10;            ),&#10;            IF(ISOMITTED(MatchMode), 0, MatchMode),&#10;            IF(ISOMITTED(SearchMode), 1, SearchMode)&#10;         )&#10;      ),&#10;      IF(ISOMITTED(IfNotFound), NA(), IfNotFound)&#10;   )&#10;))"/>
+  <NamedRange ss:Name="XMOD_byJaqKennedy"
+   ss:RefersTo="=LAMBDA(value,divisor,LET(\\LambdaName, &quot;XMOD&quot;, \\CommandName, &quot;MOD with max value&quot;, \\Description, &quot;Returns the MOD of a value where the maximum value returns the divisor instead of 0&quot;, \\Source, &quot;Jaq Kennedy&quot;, MOD(value - 1, divisor) + 1))"/>
  </Names>
- <Worksheet ss:Name="Info">
-  <Table ss:ExpandedColumnCount="9" ss:ExpandedRowCount="39"
-   ss:DefaultColumnWidth="90" ss:DefaultRowHeight="19.5">
-   <Column ss:StyleID="s32" ss:Width="297.75"/>
-   <Column ss:StyleID="s32" ss:AutoFitWidth="0" ss:Width="174"/>
-   <Column ss:StyleID="s32" ss:Width="540"/>
-   <Column ss:StyleID="s32" ss:AutoFitWidth="0" ss:Width="301.5"/>
-   <Column ss:StyleID="s32" ss:Width="146.25"/>
-   <Column ss:AutoFitWidth="0" ss:Width="17.25" ss:Span="3"/>
-   <Row ss:Height="21">
-    <Cell ss:StyleID="s29"><Data ss:Type="String">CompBot</Data></Cell>
-    <Cell ss:StyleID="s29"/>
-    <Cell ss:StyleID="s29"/>
-    <Cell ss:StyleID="s29"/>
-    <Cell ss:StyleID="s29"/>
-    <Cell ss:StyleID="s21"/>
-    <Cell ss:StyleID="s21"/>
-    <Cell ss:StyleID="s21"/>
-    <Cell ss:StyleID="s21"/>
-   </Row>
-   <Row ss:Height="20.25">
-    <Cell ss:StyleID="s30"><Data ss:Type="String">by Jaq Kennedy</Data></Cell>
+ <Worksheet ss:Name="Info_Lambdas">
+  <Table ss:ExpandedColumnCount="9" ss:ExpandedRowCount="37"
+   ss:DefaultColumnWidth="88" ss:DefaultRowHeight="19.5">
+   <Column ss:StyleID="s33" ss:Width="305.5"/>
+   <Column ss:StyleID="s33" ss:AutoFitWidth="0" ss:Width="178.5"/>
+   <Column ss:StyleID="s33" ss:Width="554"/>
+   <Column ss:StyleID="s33" ss:Width="352.5"/>
+   <Column ss:StyleID="s33" ss:Width="150"/>
+   <Column ss:AutoFitWidth="0" ss:Width="17.5" ss:Span="3"/>
+   <Row ss:Height="20">
+    <Cell ss:StyleID="s30"><Data ss:Type="String">CompBot</Data></Cell>
     <Cell ss:StyleID="s30"/>
     <Cell ss:StyleID="s30"/>
     <Cell ss:StyleID="s30"/>
@@ -456,8 +529,8 @@
     <Cell ss:StyleID="s22"/>
     <Cell ss:StyleID="s22"/>
    </Row>
-   <Row ss:Index="4" ss:Height="20.25">
-    <Cell ss:StyleID="s31"><Data ss:Type="String">Lambdas Included</Data></Cell>
+   <Row ss:Height="20">
+    <Cell ss:StyleID="s31"><Data ss:Type="String">by Jaq Kennedy</Data></Cell>
     <Cell ss:StyleID="s31"/>
     <Cell ss:StyleID="s31"/>
     <Cell ss:StyleID="s31"/>
@@ -467,16 +540,27 @@
     <Cell ss:StyleID="s23"/>
     <Cell ss:StyleID="s23"/>
    </Row>
-   <Row ss:Height="20.25">
-    <Cell ss:StyleID="s30"><Data ss:Type="String">Limited collection included with CompBot for demonstration. To add lambdas, view the Load Lambdas sheet or run &quot;Import Lambdas From&quot; Command</Data></Cell>
-    <Cell ss:StyleID="s30"/>
-    <Cell ss:StyleID="s30"/>
-    <Cell ss:StyleID="s30"/>
-    <Cell ss:StyleID="s30"/>
-    <Cell ss:StyleID="s22"/>
-    <Cell ss:StyleID="s22"/>
-    <Cell ss:StyleID="s22"/>
-    <Cell ss:StyleID="s22"/>
+   <Row ss:Index="4" ss:Height="20">
+    <Cell ss:StyleID="s32"><Data ss:Type="String">Lambdas Included</Data></Cell>
+    <Cell ss:StyleID="s32"/>
+    <Cell ss:StyleID="s32"/>
+    <Cell ss:StyleID="s32"/>
+    <Cell ss:StyleID="s32"/>
+    <Cell ss:StyleID="s24"/>
+    <Cell ss:StyleID="s24"/>
+    <Cell ss:StyleID="s24"/>
+    <Cell ss:StyleID="s24"/>
+   </Row>
+   <Row ss:Height="20">
+    <Cell ss:StyleID="s31"><Data ss:Type="String">Limited collection included with CompBot for demonstration. To add lambdas, view the Load Lambdas sheet or run &quot;Import Lambdas From&quot; Command</Data></Cell>
+    <Cell ss:StyleID="s31"/>
+    <Cell ss:StyleID="s31"/>
+    <Cell ss:StyleID="s31"/>
+    <Cell ss:StyleID="s31"/>
+    <Cell ss:StyleID="s23"/>
+    <Cell ss:StyleID="s23"/>
+    <Cell ss:StyleID="s23"/>
+    <Cell ss:StyleID="s23"/>
    </Row>
    <Row ss:Index="7">
     <Cell><Data ss:Type="String">Name</Data></Cell>
@@ -489,6 +573,13 @@
     <Cell><Data ss:Type="String">EXTRACTCHAR_byHarryGross</Data></Cell>
     <Cell><Data ss:Type="String">Harry Gross</Data></Cell>
     <Cell><Data ss:Type="String">Splits out the characters in a string to an array</Data></Cell>
+    <Cell><Data ss:Type="String">&quot;text&quot; - string to be split</Data></Cell>
+    <Cell><Data ss:Type="String">No</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">EXTRACTLETTERS_byHarryGross</Data></Cell>
+    <Cell><Data ss:Type="String">Harry Gross</Data></Cell>
+    <Cell><Data ss:Type="String">Splits out the letters in a string to an array</Data></Cell>
     <Cell><Data ss:Type="String">&quot;text&quot; - string to be split</Data></Cell>
     <Cell><Data ss:Type="String">No</Data></Cell>
    </Row>
@@ -509,199 +600,169 @@
    <Row ss:Height="39">
     <Cell><Data ss:Type="String">GRIDTOCOL_byLiannaGerrish</Data></Cell>
     <Cell><Data ss:Type="String">Lianna Gerrish</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Converts a grid to a single column with row number, column number, and address of each cell</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Converts a grid to a single column with row number, column number, and address of each cell</Data></Cell>
     <Cell><Data ss:Type="String">Input Range</Data></Cell>
     <Cell><Data ss:Type="String">Yes</Data></Cell>
    </Row>
    <Row ss:Height="39">
     <Cell><Data ss:Type="String">CaseInputs</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Lianna Gerrish / Helen Dupree</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Outputs populated columns B:D &amp; G:EE from &quot;Case&quot; sheet where B:B is numeric (i.e. for level rows)</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Lianna Gerrish / Helen Dupree</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Outputs populated columns B:D &amp; G:EE from &quot;Case&quot; sheet where B:B is numeric (i.e. for level rows)</Data></Cell>
     <Cell><Data ss:Type="String">N/A</Data></Cell>
     <Cell><Data ss:Type="String">Yes</Data></Cell>
    </Row>
    <Row ss:Height="39">
     <Cell><Data ss:Type="String">LkpAdd</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Outputs cell address of cell(s) where [ToFind] is found in [Range]</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">[ToFind] - value to search for&#10;[Range] - range to search in</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Jaq Kennedy</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Outputs cell address of cell(s) where [ToFind] is found in [Range]</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">[ToFind] - value to search for&#10;[Range] - range to search in</Data></Cell>
     <Cell><Data ss:Type="String">Yes</Data></Cell>
    </Row>
    <Row ss:Height="39">
     <Cell><Data ss:Type="String">LkpRC</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Outputs row and column of cell(s) where [ToFind] is found in [Range]</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">[ToFind] - value to search for&#10;[Range] - range to search in</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Jaq Kennedy</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Outputs row and column of cell(s) where [ToFind] is found in [Range]</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">[ToFind] - value to search for&#10;[Range] - range to search in</Data></Cell>
+    <Cell><Data ss:Type="String">Yes</Data></Cell>
+   </Row>
+   <Row ss:Height="39">
+    <Cell><Data ss:Type="String">IsInList_byErikOehm</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Erik Oehm</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Returns a boolean for matches in an array to a list</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">[array] - array to check&#10;[list] - list of values to check against</Data></Cell>
     <Cell><Data ss:Type="String">Yes</Data></Cell>
    </Row>
    <Row ss:Height="58.5">
-    <Cell><Data ss:Type="String">IsInList</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Erik Oehm</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Returns a boolean for matches in an array to a list</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">[array] - array to check&#10;[list] - list of values to check against</Data></Cell>
+    <Cell><Data ss:Type="String">FilterArray_byErikOehm</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Erik Oehm</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Filters an array based on a list</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">[data] - array to check&#10;[column_indexes] - columns to search&#10;[list] - list of values to check against</Data></Cell>
     <Cell><Data ss:Type="String">Yes</Data></Cell>
    </Row>
-   <Row ss:Height="97.5">
-    <Cell><Data ss:Type="String">FilterArray</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Erik Oehm</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Filters an array based on a list</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">[data] - array to check&#10;[column_indexes] - columns to search&#10;[list] - list of values to check against</Data></Cell>
-    <Cell><Data ss:Type="String">Yes</Data></Cell>
-   </Row>
-   <Row ss:Index="18" ss:Height="20.25">
-    <Cell ss:StyleID="s31"><Data ss:Type="String">Robot Commands</Data></Cell>
-    <Cell ss:StyleID="s31"/>
-    <Cell ss:StyleID="s31"/>
-    <Cell ss:StyleID="s31"/>
-    <Cell ss:StyleID="s31"/>
-    <Cell ss:StyleID="s23"/>
-    <Cell ss:StyleID="s23"/>
-    <Cell ss:StyleID="s23"/>
-    <Cell ss:StyleID="s23"/>
-   </Row>
-   <Row ss:Height="20.25">
-    <Cell ss:StyleID="s30"><Data ss:Type="String">Current list of CompBot Commands</Data></Cell>
-    <Cell ss:StyleID="s30"/>
-    <Cell ss:StyleID="s30"/>
-    <Cell ss:StyleID="s30"/>
-    <Cell ss:StyleID="s30"/>
-    <Cell ss:StyleID="s22"/>
-    <Cell ss:StyleID="s22"/>
-    <Cell ss:StyleID="s22"/>
-    <Cell ss:StyleID="s22"/>
-   </Row>
-   <Row ss:Index="21">
-    <Cell><Data ss:Type="String">Name</Data></Cell>
-    <Cell><Data ss:Type="String">Creator</Data></Cell>
-    <Cell><Data ss:Type="String">Description</Data></Cell>
-    <Cell><Data ss:Type="String">Parameters</Data></Cell>
-    <Cell><Data ss:Type="String">Launch Code</Data></Cell>
-   </Row>
    <Row ss:Height="39">
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Create Blank Sheet</Data></Cell>
+    <Cell><Data ss:Type="String">Letters</Data></Cell>
     <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Creates a blank sheet named based on cell value (Sht otherwise)</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">&quot;strWS&quot; - sheet name (optional) set as value of active cell</Data></Cell>
-    <Cell><Data ss:Type="String">BS</Data></Cell>
-   </Row>
-   <Row ss:Height="58.5">
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Default Settings</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Sets Default Settings as per the &quot;Default Settings&quot; sheet. &#10;Use this to reset Excel settings to your preferences. Base version is set up as per US English.</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">As per &quot;Default Settings&quot; sheet</Data></Cell>
-    <Cell><Data ss:Type="String">DS</Data></Cell>
-   </Row>
-   <Row ss:Height="39">
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Save Copy of File</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Saves a copy of the file in the current location with the suffix &quot;_Working&quot; (for empty cell) or &quot;_[[ActiveCell]]&quot;</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">&quot;strShtSuff&quot; - suffix of file name (optional) set as value of active cell</Data></Cell>
-    <Cell><Data ss:Type="String">SA</Data></Cell>
-   </Row>
-   <Row ss:Height="58.5">
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Name Used Ranges by Sheet Prefix</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Renames used range in sheets starting with text in active cell. Uses SanitizeRangeName function from &quot;MEWC Robot&quot; by Erik Oehm</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">&quot;strShtPref&quot; - Prefix of sheet name to process</Data></Cell>
-    <Cell><Data ss:Type="String">NURS</Data></Cell>
-   </Row>
-   <Row ss:Height="39">
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Name All Used Ranges</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Renames used range in all sheets. Uses SanitizeRangeName function from &quot;MEWC Robot&quot; by Erik Oehm</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">N/A</Data></Cell>
-    <Cell><Data ss:Type="String">NA</Data></Cell>
-   </Row>
-   <Row ss:Height="58.5">
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Import Lambdas From</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Opens a browser to navigate to a workbook with the lambdas to load. Use this as a one-off to set up your CompBot with your own lambdas.</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">N/A</Data></Cell>
-    <Cell><Data ss:Type="String">ILF</Data></Cell>
-   </Row>
-   <Row ss:Height="39">
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Import Lambdas</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Loads lambdas held in CompBot to the active workbook - easy load for competitions</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">N/A</Data></Cell>
-    <Cell><Data ss:Type="String">IL</Data></Cell>
+    <Cell><Data ss:Type="String">List letters in the alphabet</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">[case] (optional) 1 - uppercase, 0 - lowercase</Data></Cell>
+    <Cell><Data ss:Type="String">No</Data></Cell>
    </Row>
    <Row>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Clear Lambdas</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Cleans workbook lambdas for upload to GitHub</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">N/A</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">CL</Data></Cell>
-   </Row>
-   <Row ss:Height="117">
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Setup Case</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Sets up a case file by running the following VBA / commands together:&#10;* Backup Sheets&#10;* Create Level Sheets&#10;* Create Bonus Sheet&#10;* Create Case Input Sheet</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">N/A</Data></Cell>
-    <Cell><Data ss:Type="String">SC</Data></Cell>
-   </Row>
-   <Row ss:AutoFitHeight="0" ss:Height="52.5">
-    <Cell ss:StyleID="s39"><Data ss:Type="String">Backup Sheets in Workbook</Data></Cell>
-    <Cell ss:StyleID="s40"><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s39"><Data ss:Type="String">INCLUDED IN &quot;SETUP CASE&quot;&#10;Backs up all sheets in the active workbook</Data></Cell>
-    <Cell ss:StyleID="s39"><Data ss:Type="String">N/A</Data></Cell>
-    <Cell ss:StyleID="s40"><Data ss:Type="String">BU</Data></Cell>
-   </Row>
-   <Row ss:AutoFitHeight="0" ss:Height="52.5">
-    <Cell ss:StyleID="s39"><Data ss:Type="String">Create Bonus Sheet</Data></Cell>
-    <Cell ss:StyleID="s40"><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s39"><Data ss:Type="String">INCLUDED IN &quot;SETUP CASE&quot;&#10;Creates a sheet for bonus questions in the Case sheet. </Data></Cell>
-    <Cell ss:StyleID="s39"><Data ss:Type="String">N/A</Data></Cell>
-    <Cell ss:StyleID="s39"><Data ss:Type="String">CB&#10;CBS</Data></Cell>
-   </Row>
-   <Row ss:Height="97.5">
-    <Cell ss:StyleID="s39"><Data ss:Type="String">Create Level Sheets</Data></Cell>
-    <Cell ss:StyleID="s40"><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s39"><Data ss:Type="String">INCLUDED IN &quot;SETUP CASE&quot;&#10;Creates a sheet for each level in the Case sheet. &#10;By default this excludes data tables. To add a data table run Create Data Table command below when in a &quot;L#&quot; sheet or when on an &quot;Example#&quot; cell.</Data></Cell>
-    <Cell ss:StyleID="s39"><Data ss:Type="String">N/A</Data></Cell>
-    <Cell ss:StyleID="s39"><Data ss:Type="String">CL&#10;CLS</Data></Cell>
-   </Row>
-   <Row ss:Height="136.5">
-    <Cell ss:StyleID="s39"><Data ss:Type="String">Create Case Input Sheet</Data></Cell>
-    <Cell ss:StyleID="s40"><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s39"><Data ss:Type="String">INCLUDED IN &quot;SETUP CASE&quot;&#10;Creates a case inputs sheet with the inputs for the current case.&#10;By default this loads all columns from column B onwards into an array (excl E:F). &#10;If run on a cell with non-blank value, this will find headers and return only those that are not standard columns for Points, Answers, etc. Question number will still be included.</Data></Cell>
-    <Cell ss:StyleID="s39"><Data ss:Type="String">N/A</Data></Cell>
-    <Cell ss:StyleID="s40"><Data ss:Type="String">CIS</Data></Cell>
+    <Cell><Data ss:Type="String">CountChar_byLiannaGerrish</Data></Cell>
+    <Cell><Data ss:Type="String">Lianna Gerrish</Data></Cell>
    </Row>
    <Row ss:Height="58.5">
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Create Data Table</Data></Cell>
+    <Cell><Data ss:Type="String">XMOD_byJaqKennedy</Data></Cell>
     <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Creates a data table on the current sheet for level sheets &quot;L#&quot; or active cell = &quot;Example#&quot;&#10;Turns on iterative calculations.</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">&quot;strQ&quot; - example number (optional) set as value of active cell if in format &quot;Example*&quot;</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">DT&#10;CDT</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Performs a mod where the top value returns the divisor, e.g. instead of using MOD(CODE(letter)-1,26)+1, use XMOD(CODE(letter),26) </Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">[value] - value to MOD&#10;[divisor] - divisor</Data></Cell>
    </Row>
    <Row>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Go To Similar Background Color</Data></Cell>
+    <Cell><Data ss:Type="String">RightAlignedArray_byJaqKennedy</Data></Cell>
+    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
+    <Cell><Data ss:Type="String">Right aligns an array, shifting blanks to the left instead of right</Data></Cell>
+    <Cell><Data ss:Type="String">&quot;input&quot; - array to be aligned</Data></Cell>
+    <Cell><Data ss:Type="String">Yes</Data></Cell>
+   </Row>
+   <Row ss:Height="39">
+    <Cell ss:StyleID="Default"><Data ss:Type="String">LkpRCByRow</Data></Cell>
+    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
+    <Cell><Data ss:Type="String">Outputs first row and column of cell(s) where [ToFind] is found in [Range], [ToFind] as an array input</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">[ToFind] - array of values to search for&#10;[Range] - range to search in</Data></Cell>
+    <Cell><Data ss:Type="String">Yes</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">IFBLANK</Data></Cell>
     <Cell><Data ss:Type="String">Erik Oehm</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Select cells in selection with same background color as active cell</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">N/A</Data></Cell>
-    <Cell><Data ss:Type="String">SBC</Data></Cell>
+    <Cell><Data ss:Type="String">Replaces values in array with specified output if blank</Data></Cell>
+    <Cell ss:Index="5"><Data ss:Type="String">Yes</Data></Cell>
+   </Row>
+   <Row ss:Height="39">
+    <Cell><Data ss:Type="String">TDay_byJaqKennedy</Data></Cell>
+    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
+    <Cell><Data ss:Type="String">Gets day of week as text from number 1-7 where 1=Mon</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">[DayNum] - day of week from 1 for Monday to 7 for Sunday</Data></Cell>
+    <Cell><Data ss:Type="String">Yes</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">XLOOKUP2D_byBendeLeon</Data></Cell>
+    <Cell><Data ss:Type="String">Ben deLeon</Data></Cell>
+    <Cell><Data ss:Type="String">2D XLOOKUP</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">LetterShift_byBendeLeon</Data></Cell>
+    <Cell><Data ss:Type="String">Ben deLeon</Data></Cell>
+    <Cell><Data ss:Type="String">Shift letters by a given number</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">COLROW</Data></Cell>
+    <Cell><Data ss:Type="String">Lianna Gerrish</Data></Cell>
+    <Cell><Data ss:Type="String">Returns column and row of an address string</Data></Cell>
+    <Cell ss:Index="5"><Data ss:Type="String">No</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">ROWCOL</Data></Cell>
+    <Cell><Data ss:Type="String">from COLROW</Data></Cell>
+    <Cell><Data ss:Type="String">Returns row and column of an address string</Data></Cell>
+    <Cell ss:Index="5"><Data ss:Type="String">No</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">ZigZag_byBendeLeon</Data></Cell>
+    <Cell><Data ss:Type="String">Ben deLeon</Data></Cell>
+    <Cell><Data ss:Type="String">Zigs and Zags</Data></Cell>
+    <Cell ss:Index="5"><Data ss:Type="String">Yes</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">BiRow_byPeterBartholomew</Data></Cell>
+    <Cell><Data ss:Type="String">Peter Bartholomew</Data></Cell>
+    <Cell><Data ss:Type="String">for Thunking I Think</Data></Cell>
+    <Cell ss:Index="5"><Data ss:Type="String">Yes</Data></Cell>
+   </Row>
+   <Row ss:Height="39">
+    <Cell><Data ss:Type="String">DROPCOL_byLiannaGerrish</Data></Cell>
+    <Cell><Data ss:Type="String">Lianna Gerrish</Data></Cell>
+    <Cell><Data ss:Type="String">Drops a specified column from an array</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">[array] - array to amend&#10;[column] - column to drop</Data></Cell>
+    <Cell><Data ss:Type="String">No</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">DiffByRow_byJaqKennedy</Data></Cell>
+    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
+    <Cell><Data ss:Type="String">Returns first column - last column in array</Data></Cell>
+    <Cell><Data ss:Type="String">[array] - array to get differences from</Data></Cell>
+    <Cell><Data ss:Type="String">Yes</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">TEXTREVERSE</Data></Cell>
+    <Cell><Data ss:Type="String">?</Data></Cell>
+    <Cell><Data ss:Type="String">Recursively reverse a string of characters</Data></Cell>
+    <Cell><Data ss:Type="String">[string] - string to reverse</Data></Cell>
+    <Cell><Data ss:Type="String">No</Data></Cell>
+   </Row>
+   <Row ss:Height="58.5">
+    <Cell><Data ss:Type="String">EZINDIRECT_byLiannaGerrish</Data></Cell>
+    <Cell><Data ss:Type="String">Lianna Gerrish</Data></Cell>
+    <Cell><Data ss:Type="String">Indirect function with cell and optional sheet name</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">[cell] - cell address to fetch&#10;[sheetname] (optional) - name of sheet to fetch</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">MinMax_byJaqKennedy</Data></Cell>
+    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
+    <Cell><Data ss:Type="String">Returns array with min and max of a range</Data></Cell>
+    <Cell><Data ss:Type="String">[range] - range to get min and max from</Data></Cell>
+    <Cell><Data ss:Type="String">No</Data></Cell>
    </Row>
    <Row ss:Height="78">
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Save Answers to Left</Data></Cell>
-    <Cell><Data ss:Type="String">Erik Oehm</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Saves references to the selected cells in the green answer cells to the left on the same row. &#10;Then copies either answers or the formula below for paste into solution.</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Active cell contains answers to copy</Data></Cell>
-    <Cell><Data ss:Type="String">SAL</Data></Cell>
+    <Cell><Data ss:Type="String">CellsAround_byBendeLeon</Data></Cell>
+    <Cell><Data ss:Type="String">Ben deLeon</Data></Cell>
+    <Cell><Data ss:Type="String">Return cells around target cell</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">[ref] - cell reference&#10;[coloff] - column offset&#10;[rowoff] - row offset&#10;see function for more</Data></Cell>
+    <Cell><Data ss:Type="String">No</Data></Cell>
    </Row>
-   <Row ss:Height="39">
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Toggle Calc Mode</Data></Cell>
+   <Row>
+    <Cell><Data ss:Type="String">COL</Data></Cell>
     <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Toggles calculation mode between manual and automatic. Status is set in StatusBar to not cause an interruption.</Data></Cell>
-    <Cell ss:StyleID="s33"/>
-    <Cell><Data ss:Type="String">TC</Data></Cell>
-   </Row>
-   <Row ss:Height="58.5">
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Toggle Iterative Calcs</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Ensures Calc Mode is Automatic and then turns on iterative calculations.&#10;Status is set in StatusBar to not cause an interruption.</Data></Cell>
-    <Cell ss:StyleID="s33"/>
-    <Cell><Data ss:Type="String">IC</Data></Cell>
+    <Cell><Data ss:Type="String">Short version of COLUMN</Data></Cell>
+    <Cell><Data ss:Type="String">[cell] (optional) - cell to get column from</Data></Cell>
    </Row>
   </Table>
  </Worksheet>

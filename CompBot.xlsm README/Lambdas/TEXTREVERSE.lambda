@@ -1,0 +1,1 @@
+TEXTREVERSE =LAMBDA(string,LET(stringLength, LEN(string), substring, RIGHT(string, stringLength - 1), firstChar, LEFT(string, 1), IF(LEN(string) = 0, string, TEXTREVERSE(substring) & firstChar)));

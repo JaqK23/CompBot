@@ -1,0 +1,1 @@
+LkpRCByRow =LAMBDA(ToFind,Range,LET(\\LambdaName, "LkpRCByRow", \\CommandName, "Lookup Value by Row", \\Description, "Returns RC location of a list of values in a range", \\Source, "Jaq Kennedy", BiRow_byPeterBartholomew(ToFind, LAMBDA(a, IFERROR(CHOOSEROWS(LkpRC(a, Range), 1), {"",""})))));

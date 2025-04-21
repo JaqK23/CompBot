@@ -1,0 +1,4 @@
+/*
+Returns array with min and max of a range
+*/
+MinMax_byJaqKennedy =LAMBDA(Range,LET(\\LambdaName, "MinMax", \\CommandName, "Get Min and Max of Range", _GetMin, MIN(Range), _GetMax, MAX(Range), _MinMax, VSTACK(_GetMin, _GetMax), _MinMax));

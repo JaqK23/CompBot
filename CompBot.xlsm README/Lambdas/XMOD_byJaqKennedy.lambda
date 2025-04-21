@@ -1,0 +1,4 @@
+/*
+Returns the MOD of a value where the maximum value returns the divisor instead of 0.  
+*/
+XMOD_byJaqKennedy =LAMBDA(value,divisor,LET(\\LambdaName, "XMOD", \\CommandName, "MOD with max value", \\Description, "Returns the MOD of a value where the maximum value returns the divisor instead of 0", \\Source, "Jaq Kennedy", MOD(value - 1, divisor) + 1));

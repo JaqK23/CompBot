@@ -1,0 +1,4 @@
+/*
+Return cells around target cell
+*/
+CellsAround_byBendeLeon =LAMBDA(Ref,ColOff,RowOff,[ColMin],[ColMax],[RowMin],[RowMax],[Flatten],LET(\\LambdaName, "CellsAround", \\Description, "Return cells around target cell", \\Source, "Ben deLeon", arr, LET(a, DROP(ColumnList(COLUMN(INDIRECT(Ref)) + ColOff), , IF(COLUMN(INDIRECT(Ref)) <= ColOff, 0, COLUMN(INDIRECT(Ref)) - ColOff - 1)), b, ColumnNumber(a), FILTER(a, (b >= IF(ISOMITTED(ColMin), 1, MAX(1, IF(ISNUMBER(ColMin), ColMin, ColumnNumber(ColMin))))) * (b <= IF(ISOMITTED(ColMax), 1000, MIN(1000, IF(ISNUMBER(ColMax), ColMax, ColumnNumber(ColMax))))))) & LET(a, SEQUENCE(RowOff * 2 + 1, , ROW(INDIRECT(Ref)) - RowOff), FILTER(a, (a >= IF(ISOMITTED(RowMin), 1, MAX(1, RowMin))) * (a <= IF(ISOMITTED(RowMax), 10000, MIN(10000, RowMax))))), IF(Flatten = TRUE, TOROW(arr), arr)));

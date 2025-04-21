@@ -14,9 +14,6 @@
    <NumberFormat/>
    <Protection/>
   </Style>
-  <Style ss:ID="s19" ss:Name="Comma">
-   <NumberFormat ss:Format="_(* #,##0.00_);_(* \(#,##0.00\);_(* &quot;-&quot;??_);_(@_)"/>
-  </Style>
   <Style ss:ID="s18" ss:Name="Explanatory Text">
    <Font ss:FontName="Verdana" x:Family="Swiss" ss:Size="16" ss:Color="#7F7F7F"
     ss:Italic="1"/>
@@ -29,35 +26,45 @@
    <Font ss:FontName="Verdana" x:Family="Swiss" ss:Size="15" ss:Color="#0E2841"
     ss:Bold="1"/>
   </Style>
+  <Style ss:ID="s17" ss:Name="Heading 2">
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="3"
+     ss:Color="#64BEE6"/>
+   </Borders>
+   <Font ss:FontName="Verdana" x:Family="Swiss" ss:Size="13" ss:Color="#0E2841"
+    ss:Bold="1"/>
+  </Style>
   <Style ss:ID="s22" ss:Parent="s16">
    <Alignment ss:Horizontal="CenterAcrossSelection" ss:Vertical="Bottom"/>
   </Style>
   <Style ss:ID="s23" ss:Parent="s18">
    <Alignment ss:Horizontal="CenterAcrossSelection" ss:Vertical="Bottom"/>
   </Style>
-  <Style ss:ID="s35">
-   <Alignment ss:Horizontal="Right" ss:Vertical="Bottom"/>
+  <Style ss:ID="s24" ss:Parent="s17">
+   <Alignment ss:Horizontal="CenterAcrossSelection" ss:Vertical="Bottom"/>
   </Style>
-  <Style ss:ID="s36">
-   <Borders>
-    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"/>
-    <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1"/>
-    <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1"/>
-    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1"/>
-   </Borders>
+  <Style ss:ID="s30" ss:Parent="s16">
+   <Alignment ss:Horizontal="CenterAcrossSelection" ss:Vertical="Top"/>
   </Style>
-  <Style ss:ID="s37">
-   <Borders>
-    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"/>
-    <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1"/>
-    <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1"/>
-    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1"/>
-   </Borders>
-   <Font ss:FontName="Verdana" x:Family="Swiss" ss:Size="16" ss:Color="#0000FF"/>
-   <Interior ss:Color="#FFFFCC" ss:Pattern="Solid"/>
+  <Style ss:ID="s31" ss:Parent="s18">
+   <Alignment ss:Horizontal="CenterAcrossSelection" ss:Vertical="Top"/>
   </Style>
-  <Style ss:ID="s38" ss:Parent="s19">
-   <Font ss:FontName="Verdana" x:Family="Swiss" ss:Size="16" ss:Color="#000000"/>
+  <Style ss:ID="s32" ss:Parent="s17">
+   <Alignment ss:Horizontal="CenterAcrossSelection" ss:Vertical="Top"/>
+  </Style>
+  <Style ss:ID="s33">
+   <Alignment ss:Vertical="Top"/>
+  </Style>
+  <Style ss:ID="s34">
+   <Alignment ss:Vertical="Top" ss:WrapText="1"/>
+  </Style>
+  <Style ss:ID="s40">
+   <Alignment ss:Vertical="Top" ss:WrapText="1"/>
+   <Interior ss:Color="#A6A6A6" ss:Pattern="Solid"/>
+  </Style>
+  <Style ss:ID="s41">
+   <Alignment ss:Vertical="Top"/>
+   <Interior ss:Color="#A6A6A6" ss:Pattern="Solid"/>
   </Style>
  </Styles>
  <Names>
@@ -497,108 +504,340 @@
    ss:RefersTo="=LAMBDA(value,value_if_blank, IF(ISBLANK(value), value_if_blank, value))"/>
   <NamedRange ss:Name="IsInList_byErikOehm"
    ss:RefersTo="=LAMBDA(array,list,LET(\\LambdaName, &quot;IsInList&quot;, MAP(array, LAMBDA(x, OR(list = x)))))"/>
-  <NamedRange ss:Name="Language" ss:RefersTo="='Default Settings'!R9C2"/>
   <NamedRange ss:Name="Letters"
    ss:RefersTo="=LAMBDA([Upp], LET(&#10;   \\LambdaName, &quot;Letters&quot;,&#10;   \\CommandName, &quot;Creates a list of letters&quot;,&#10;   ABC, CHAR(SEQUENCE(26) + 64),&#10;   IF((Upp = 1) + ISOMITTED((Upp)), ABC, LOWER(ABC))&#10;))"/>
-  <NamedRange ss:Name="List_Separator" ss:RefersTo="='Default Settings'!R7C2"/>
   <NamedRange ss:Name="MinMax_byJaqKennedy"
    ss:RefersTo="=LAMBDA(Range,LET(\\LambdaName, &quot;MinMax&quot;, \\CommandName, &quot;Get Min and Max of Range&quot;, _GetMin, MIN(Range), _GetMax, MAX(Range), _MinMax, VSTACK(_GetMin, _GetMax), _MinMax))"/>
   <NamedRange ss:Name="RightAlignedArray_byJaqKennedy"
    ss:RefersTo="=LAMBDA(input,LET(\\LambdaName, &quot;RightAlignedArray&quot;, \\CommandName, &quot;Align array to right&quot;, \\Description, &quot;Aligns array to the right with blanks to left&quot;, \\Source, &quot;Jaq Kennedy&quot;, _ColsByRow, BYROW(input, COUNT), _Rows, ROWS(input), _Cols, COLUMNS(input), _ColIndex, IF(MOD(SEQUENCE(_Rows, _Cols) - 1, _Cols) + 1 - _Cols + _ColsByRow &lt;= 0, -1, MOD(SEQUENCE(_Rows, _Cols) - 1, _Cols) + 1 - _Cols + _ColsByRow), _RowIndex, SEQUENCE(_Rows), _Result, IFERROR(INDEX(input, _RowIndex, _ColIndex), &quot;&quot;), _Result))"/>
   <NamedRange ss:Name="ROWCOL"
    ss:RefersTo="=LAMBDA(cell_coordinates,TEXTSPLIT(ROW(INDIRECT(cell_coordinates)) &amp; &quot;;&quot; &amp; COLUMN(INDIRECT(cell_coordinates)), &quot;;&quot;))"/>
-  <NamedRange ss:Name="Thousands_Separator" ss:RefersTo="='Default Settings'!R6C2"/>
-  <NamedRange ss:Name="Use_System_Separators"
-   ss:RefersTo="='Default Settings'!R8C2"/>
   <NamedRange ss:Name="XLOOKUP2D_byBendeLeon"
    ss:RefersTo="=LAMBDA(DataSource,RLU,CLU,[RowArray],[ColumnArray],[MatchMode],[SearchMode],[IfNotFound], LET(&#10;   \\LambdaName, &quot;XLOOKUP2D_byBendeLeon&quot;,&#10;   \\CommandName, &quot;2D lookup&quot;,&#10;   \\Source, &quot;Ben de Leon&quot;,&#10;   RCInc, IF(ISOMITTED(RowArray), 1, 0) + IF(ISOMITTED(RowArray), 2, 0),&#10;   UpdatedDataSource, CHOOSE(&#10;      RCInc + 1,&#10;      DataSource,&#10;      DROP(DataSource, , 1),&#10;      DROP(DataSource, 1),&#10;      DROP(DataSource, 1, 1)&#10;   ),&#10;   IFERROR(&#10;      INDEX(&#10;         UpdatedDataSource,&#10;         XMATCH(&#10;            RLU,&#10;            IF(&#10;               ISOMITTED(RowArray),&#10;               DROP(TAKE(DataSource, , 1), 1),&#10;               TAKE(RowArray, , 1)&#10;            ),&#10;            IF(ISOMITTED(MatchMode), 0, MatchMode),&#10;            IF(ISOMITTED(SearchMode), 1, SearchMode)&#10;         ),&#10;         XMATCH(&#10;            CLU,&#10;            IF(&#10;               ISOMITTED(ColumnArray),&#10;               DROP(TAKE(DataSource, 1), , 1),&#10;               TAKE(ColumnArray, 1)&#10;            ),&#10;            IF(ISOMITTED(MatchMode), 0, MatchMode),&#10;            IF(ISOMITTED(SearchMode), 1, SearchMode)&#10;         )&#10;      ),&#10;      IF(ISOMITTED(IfNotFound), NA(), IfNotFound)&#10;   )&#10;))"/>
   <NamedRange ss:Name="XMOD_byJaqKennedy"
    ss:RefersTo="=LAMBDA(value,divisor,LET(\\LambdaName, &quot;XMOD&quot;, \\CommandName, &quot;MOD with max value&quot;, \\Description, &quot;Returns the MOD of a value where the maximum value returns the divisor instead of 0&quot;, \\Source, &quot;Jaq Kennedy&quot;, MOD(value - 1, divisor) + 1))"/>
  </Names>
- <Worksheet ss:Name="Default Settings">
-  <Table ss:ExpandedColumnCount="12" ss:ExpandedRowCount="9"
+ <Worksheet ss:Name="Info_Robot Commands">
+  <Table ss:ExpandedColumnCount="9" ss:ExpandedRowCount="44"
    ss:DefaultColumnWidth="88" ss:DefaultRowHeight="19.5">
-   <Column ss:Width="200"/>
-   <Column ss:Width="111.5"/>
-   <Column ss:AutoFitWidth="0" ss:Width="30.5"/>
-   <Column ss:Width="140.5"/>
-   <Column ss:Width="111.5"/>
-   <Column ss:AutoFitWidth="0" ss:Width="14.5"/>
-   <Column ss:AutoFitWidth="0" ss:Width="100"/>
-   <Column ss:Width="104"/>
-   <Column ss:Width="184.5"/>
+   <Column ss:StyleID="s33" ss:Width="305.5"/>
+   <Column ss:StyleID="s33" ss:AutoFitWidth="0" ss:Width="178.5"/>
+   <Column ss:StyleID="s33" ss:Width="554"/>
+   <Column ss:StyleID="s33" ss:AutoFitWidth="0" ss:Width="309"/>
+   <Column ss:StyleID="s33" ss:Width="150"/>
+   <Column ss:AutoFitWidth="0" ss:Width="17.5" ss:Span="3"/>
    <Row ss:Height="20">
-    <Cell ss:StyleID="s22"><Data ss:Type="String">Default Settings Header</Data></Cell>
-    <Cell ss:StyleID="s22"/>
-    <Cell ss:StyleID="s22"/>
-    <Cell ss:StyleID="s22"/>
-    <Cell ss:StyleID="s22"/>
-    <Cell ss:StyleID="s22"/>
-    <Cell ss:StyleID="s22"/>
-    <Cell ss:StyleID="s22"/>
+    <Cell ss:StyleID="s30"><Data ss:Type="String">CompBot</Data></Cell>
+    <Cell ss:StyleID="s30"/>
+    <Cell ss:StyleID="s30"/>
+    <Cell ss:StyleID="s30"/>
+    <Cell ss:StyleID="s30"/>
     <Cell ss:StyleID="s22"/>
     <Cell ss:StyleID="s22"/>
     <Cell ss:StyleID="s22"/>
     <Cell ss:StyleID="s22"/>
    </Row>
    <Row ss:Height="20">
-    <Cell ss:StyleID="s23"><Data ss:Type="String">To update settings run command &quot;Default Settings&quot;. Note this will not change Windows level settings, only Excel</Data></Cell>
-    <Cell ss:StyleID="s23"/>
-    <Cell ss:StyleID="s23"/>
-    <Cell ss:StyleID="s23"/>
-    <Cell ss:StyleID="s23"/>
-    <Cell ss:StyleID="s23"/>
-    <Cell ss:StyleID="s23"/>
-    <Cell ss:StyleID="s23"/>
+    <Cell ss:StyleID="s31"><Data ss:Type="String">by Jaq Kennedy</Data></Cell>
+    <Cell ss:StyleID="s31"/>
+    <Cell ss:StyleID="s31"/>
+    <Cell ss:StyleID="s31"/>
+    <Cell ss:StyleID="s31"/>
     <Cell ss:StyleID="s23"/>
     <Cell ss:StyleID="s23"/>
     <Cell ss:StyleID="s23"/>
     <Cell ss:StyleID="s23"/>
    </Row>
-   <Row ss:Index="4">
-    <Cell ss:Index="4"><Data ss:Type="String">English (UK/US)</Data></Cell>
-    <Cell><Data ss:Type="String">Afrikaans</Data></Cell>
-    <Cell ss:Index="7"><Data ss:Type="String">Example</Data></Cell>
+   <Row ss:Index="4" ss:Height="20">
+    <Cell ss:StyleID="s32"><Data ss:Type="String">Robot Commands</Data></Cell>
+    <Cell ss:StyleID="s32"/>
+    <Cell ss:StyleID="s32"/>
+    <Cell ss:StyleID="s32"/>
+    <Cell ss:StyleID="s32"/>
+    <Cell ss:StyleID="s24"/>
+    <Cell ss:StyleID="s24"/>
+    <Cell ss:StyleID="s24"/>
+    <Cell ss:StyleID="s24"/>
    </Row>
-   <Row>
-    <Cell ss:StyleID="s35"><Data ss:Type="String">Decimal Separator</Data></Cell>
-    <Cell ss:StyleID="s37"><Data ss:Type="String">.</Data></Cell>
-    <Cell ss:Index="4" ss:StyleID="s36"><Data ss:Type="String">.</Data></Cell>
-    <Cell ss:StyleID="s36"><Data ss:Type="String">,</Data></Cell>
-    <Cell ss:Index="7" ss:StyleID="s38"><Data ss:Type="Number">1000.23</Data></Cell>
-   </Row>
-   <Row>
-    <Cell ss:StyleID="s35"><Data ss:Type="String">Thousands Separator</Data></Cell>
-    <Cell ss:StyleID="s37"><Data ss:Type="String">,</Data><NamedCell
-      ss:Name="Thousands_Separator"/></Cell>
-    <Cell ss:Index="4" ss:StyleID="s36"><Data ss:Type="String">,</Data></Cell>
-    <Cell ss:StyleID="s36"><Data ss:Type="String"> </Data></Cell>
-    <Cell ss:Index="7" ss:StyleID="s38"><Data ss:Type="Number">1000.23</Data></Cell>
-   </Row>
-   <Row>
-    <Cell ss:StyleID="s35"><Data ss:Type="String">List Separator</Data></Cell>
-    <Cell ss:StyleID="s37"><Data ss:Type="String">,</Data><NamedCell
-      ss:Name="List_Separator"/></Cell>
-    <Cell ss:Index="4" ss:StyleID="s36"><Data ss:Type="String">,</Data></Cell>
-    <Cell ss:StyleID="s36"><Data ss:Type="String">;</Data></Cell>
-    <Cell ss:Index="7" ss:Formula="=CONCAT(R[-2]C[-4],R[-2]C[-3],R[-2]C[-2])"><Data
-      ss:Type="String">.,</Data></Cell>
-    <Cell ss:Formula="=FORMULATEXT(RC[-1])"><Data ss:Type="String">=CONCAT(D9,E9,F9)</Data></Cell>
+   <Row ss:Height="20">
+    <Cell ss:StyleID="s31"><Data ss:Type="String">Current list of CompBot Commands</Data></Cell>
+    <Cell ss:StyleID="s31"/>
+    <Cell ss:StyleID="s31"/>
+    <Cell ss:StyleID="s31"/>
+    <Cell ss:StyleID="s31"/>
+    <Cell ss:StyleID="s23"/>
+    <Cell ss:StyleID="s23"/>
+    <Cell ss:StyleID="s23"/>
+    <Cell ss:StyleID="s23"/>
    </Row>
    <Row>
-    <Cell ss:StyleID="s35"><Data ss:Type="String">Use System Separators</Data></Cell>
-    <Cell ss:StyleID="s37"><Data ss:Type="Boolean">1</Data><NamedCell
-      ss:Name="Use_System_Separators"/></Cell>
-    <Cell ss:Index="4" ss:StyleID="s36"><Data ss:Type="Boolean">1</Data></Cell>
-    <Cell ss:StyleID="s36"><Data ss:Type="Boolean">0</Data></Cell>
+    <Cell ss:Formula="=ROWS(#REF!)"><Data ss:Type="Number">37</Data></Cell>
    </Row>
    <Row>
-    <Cell ss:StyleID="s35"><Data ss:Type="String">Language</Data></Cell>
-    <Cell ss:StyleID="s37"><Data ss:Type="String">English</Data><NamedCell
-      ss:Name="Language"/></Cell>
-    <Cell ss:Index="4" ss:StyleID="s36"><Data ss:Type="String">English</Data></Cell>
-    <Cell ss:StyleID="s36"><Data ss:Type="String">Afrikaans</Data></Cell>
-    <Cell ss:Index="7" ss:StyleID="s18"><Data ss:Type="String">Does not update anything - for notification message only</Data></Cell>
+    <Cell><Data ss:Type="String">Name</Data></Cell>
+    <Cell><Data ss:Type="String">Creator</Data></Cell>
+    <Cell><Data ss:Type="String">Description</Data></Cell>
+    <Cell><Data ss:Type="String">Parameters</Data></Cell>
+    <Cell><Data ss:Type="String">Launch Code</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Align Array to Right</Data></Cell>
+    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Aligns array to the right with blanks to left</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Active cell contains array</Data></Cell>
+    <Cell><Data ss:Type="String">AR</Data></Cell>
+   </Row>
+   <Row ss:Height="39">
+    <Cell ss:StyleID="s40"><Data ss:Type="String">Backup Sheets in Workbook</Data></Cell>
+    <Cell ss:StyleID="s41"><Data ss:Type="String">Jaq Kennedy</Data></Cell>
+    <Cell ss:StyleID="s40"><Data ss:Type="String">INCLUDED IN &quot;Full Setup Case&quot;&#10;Backs up all sheets in the active workbook</Data></Cell>
+    <Cell ss:StyleID="s40"><Data ss:Type="String">N/A</Data></Cell>
+    <Cell ss:StyleID="s41"><Data ss:Type="String">BU</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Clear Lambdas</Data></Cell>
+    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Cleans workbook lambdas for upload to GitHub</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">N/A</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">CL</Data></Cell>
+   </Row>
+   <Row ss:Height="39">
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Create Blank Sheet</Data></Cell>
+    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Creates a blank sheet named based on cell value (Sht otherwise)</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">&quot;strWS&quot; - sheet name (optional) set as value of active cell</Data></Cell>
+    <Cell><Data ss:Type="String">BS</Data></Cell>
+   </Row>
+   <Row ss:Height="39">
+    <Cell ss:StyleID="s40"><Data ss:Type="String">Create Bonus Sheet</Data></Cell>
+    <Cell ss:StyleID="s41"><Data ss:Type="String">Jaq Kennedy</Data></Cell>
+    <Cell ss:StyleID="s40"><Data ss:Type="String">INCLUDED IN &quot;Full Setup Case&quot;&#10;Creates a sheet for bonus questions in the Case sheet. </Data></Cell>
+    <Cell ss:StyleID="s40"><Data ss:Type="String">N/A</Data></Cell>
+    <Cell ss:StyleID="s40"><Data ss:Type="String">CB&#10;CBS</Data></Cell>
+   </Row>
+   <Row ss:Height="136.5">
+    <Cell ss:StyleID="s40"><Data ss:Type="String">Create Case Inputs Sheet</Data></Cell>
+    <Cell ss:StyleID="s41"><Data ss:Type="String">Jaq Kennedy</Data></Cell>
+    <Cell ss:StyleID="s40"><Data ss:Type="String">INCLUDED IN &quot;Full Setup Case&quot;&#10;Creates a case inputs sheet with the inputs for the current case.&#10;By default this loads all columns from column B onwards into an array (excl E:F). &#10;If run on a cell with non-blank value, this will find headers and return only those that are not standard columns for Points, Answers, etc. Question number will still be included.</Data></Cell>
+    <Cell ss:StyleID="s40"><Data ss:Type="String">N/A</Data></Cell>
+    <Cell ss:StyleID="s40"><Data ss:Type="String">CIS&#10;IS</Data></Cell>
+   </Row>
+   <Row ss:Height="58.5">
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Create Data Table</Data></Cell>
+    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Creates a data table on the current sheet for level sheets &quot;L#&quot; or active cell = &quot;Example#&quot;&#10;Turns on iterative calculations.</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">&quot;strQ&quot; - example number (optional) set as value of active cell if in format &quot;Example*&quot;</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">DT&#10;CDT</Data></Cell>
+   </Row>
+   <Row ss:Height="97.5">
+    <Cell ss:StyleID="s40"><Data ss:Type="String">Create Level Sheets</Data></Cell>
+    <Cell ss:StyleID="s41"><Data ss:Type="String">Jaq Kennedy</Data></Cell>
+    <Cell ss:StyleID="s40"><Data ss:Type="String">INCLUDED IN &quot;Full Setup Case&quot;&#10;Creates a sheet for each level in the Case sheet. &#10;By default this excludes data tables. To add a data table run Create Data Table command below when in a &quot;L#&quot; sheet or when on an &quot;Example#&quot; cell.</Data></Cell>
+    <Cell ss:StyleID="s40"><Data ss:Type="String">N/A</Data></Cell>
+    <Cell ss:StyleID="s40"><Data ss:Type="String">CL&#10;CLS</Data></Cell>
+   </Row>
+   <Row ss:Height="58.5">
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Default Settings</Data></Cell>
+    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Sets Default Settings as per the &quot;Default Settings&quot; sheet. &#10;Use this to reset Excel settings to your preferences. Base version is set up as per US English.</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">As per &quot;Default Settings&quot; sheet</Data></Cell>
+    <Cell><Data ss:Type="String">DS</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0" ss:Height="52.5">
+    <Cell><Data ss:Type="String">Difference of Array Columns by Row</Data></Cell>
+    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Returns first column - last column in array</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Active cell contains array with at least 2 columns</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">DIFF&#10;DBR</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0" ss:Height="52.5">
+    <Cell><Data ss:Type="String">Find Above In Left</Data></Cell>
+    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Find above value(s) in left value(s).&#10;Applies a FIND function to find cells where there is a match</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Cell above and to left of active cell should be populated</Data></Cell>
+    <Cell><Data ss:Type="String">FAL</Data></Cell>
+   </Row>
+   <Row ss:Height="117">
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Full Setup Case</Data></Cell>
+    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Sets up a case file by running the following VBA / commands together:&#10;* Backup Sheets&#10;* Create Level Sheets&#10;* Create Bonus Sheet&#10;* Create Case Input Sheet</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">N/A</Data></Cell>
+    <Cell><Data ss:Type="String">Ctrl-Shift-G</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Goto Similar Background Color</Data></Cell>
+    <Cell><Data ss:Type="String">Erik Oehm</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Select cells in selection with same background color as active cell</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">N/A</Data></Cell>
+    <Cell><Data ss:Type="String">SBC</Data></Cell>
+   </Row>
+   <Row ss:Height="39">
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Import Lambda Library</Data></Cell>
+    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Loads lambdas held in CompBot to the active workbook - easy load for competitions</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">N/A</Data></Cell>
+    <Cell><Data ss:Type="String">IL</Data></Cell>
+   </Row>
+   <Row ss:Height="58.5">
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Import Lambdas From</Data></Cell>
+    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Opens a browser to navigate to a workbook with the lambdas to load. Use this as a one-off to set up your CompBot with your own lambdas.</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">N/A</Data></Cell>
+    <Cell><Data ss:Type="String">ILF</Data></Cell>
+   </Row>
+   <Row ss:Height="58.5">
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Keep Cell of Array</Data></Cell>
+    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Keeps the selected cell of an array</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Wraps in a CHOOSEROWS &amp; CHOOSECOLS to pick up the active cell</Data></Cell>
+    <Cell><Data ss:Type="String">KTC</Data></Cell>
+   </Row>
+   <Row ss:Height="58.5">
+    <Cell><Data ss:Type="String">Lookup Value by Row</Data></Cell>
+    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Returns RC location of a list of values in a range</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">&quot;list&quot; - list of values to look up in a 2D range&#10;&quot;range&quot; - range to look up</Data></Cell>
+    <Cell><Data ss:Type="String">LKP</Data></Cell>
+   </Row>
+   <Row ss:Height="39">
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Name All Used Ranges</Data></Cell>
+    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Renames used range in all sheets. Uses SanitizeRangeName function from &quot;MEWC Robot&quot; by Erik Oehm</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">N/A</Data></Cell>
+    <Cell><Data ss:Type="String">NA</Data></Cell>
+   </Row>
+   <Row ss:Height="58.5">
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Name Used Ranges</Data></Cell>
+    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Renames used range in sheets starting with text in active cell. Uses SanitizeRangeName function from &quot;MEWC Robot&quot; by Erik Oehm</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">&quot;strShtPref&quot; - Prefix of sheet name to process</Data></Cell>
+    <Cell><Data ss:Type="String">NURS</Data></Cell>
+   </Row>
+   <Row ss:Height="39">
+    <Cell><Data ss:Type="String">Negative Values</Data></Cell>
+    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Negative values. with errors as blank</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Active cell array range becomes negative of current value</Data></Cell>
+    <Cell><Data ss:Type="String">NEG</Data></Cell>
+   </Row>
+   <Row ss:Height="39">
+    <Cell ss:StyleID="s41"><Data ss:Type="String">Rename Sheets</Data></Cell>
+    <Cell ss:StyleID="s41"><Data ss:Type="String">Jaq Kennedy</Data></Cell>
+    <Cell ss:StyleID="s40"><Data ss:Type="String">INCLUDED IN &quot;Full Setup Case&quot;&#10;Rename multi-word sheet names</Data></Cell>
+    <Cell ss:StyleID="s40"><Data ss:Type="String">N/A</Data></Cell>
+    <Cell ss:StyleID="s40"><Data ss:Type="String">RS</Data></Cell>
+   </Row>
+   <Row ss:Height="78">
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Save Answers to Left</Data></Cell>
+    <Cell><Data ss:Type="String">Erik Oehm</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Saves references to the selected cells in the green answer cells to the left on the same row. &#10;Then copies either answers or the formula below for paste into solution.</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Active cell contains answers to copy</Data></Cell>
+    <Cell><Data ss:Type="String">SAL</Data></Cell>
+   </Row>
+   <Row ss:Height="39">
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Save Copy of File</Data></Cell>
+    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Saves a copy of the file in the current location with the suffix &quot;_Working&quot; (for empty cell) or &quot;_[[ActiveCell]]&quot;</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">&quot;strShtSuff&quot; - suffix of file name (optional) set as value of active cell</Data></Cell>
+    <Cell><Data ss:Type="String">SA</Data></Cell>
+   </Row>
+   <Row ss:Height="58.5">
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Sequence of Row Count</Data></Cell>
+    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Sequence of row count of array variable</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Returns a sequence from 1 to the number of rows in the array in the active cell</Data></Cell>
+    <Cell><Data ss:Type="String">SRC</Data></Cell>
+   </Row>
+   <Row ss:Height="39">
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Split Text by Delimiter Above</Data></Cell>
+    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Wrapps the current formula in a TRIM + TEXTSPLIT based on the delimiter in the cell above</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Above cell contains delimiter</Data></Cell>
+    <Cell><Data ss:Type="String">ST</Data></Cell>
+   </Row>
+   <Row ss:Height="39">
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Substitute Blank for 0</Data></Cell>
+    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Substitute blank values for 0</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Wraps in a SUBSTITUTE function replacing blanks with 0</Data></Cell>
+    <Cell><Data ss:Type="String">SB0</Data></Cell>
+   </Row>
+   <Row ss:Height="39">
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Substitute Blank for 1</Data></Cell>
+    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Substitute blank cells for 1</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Wraps in a SUBSTITUTE function replacing blanks with 1</Data></Cell>
+    <Cell><Data ss:Type="String">SB1</Data></Cell>
+   </Row>
+   <Row ss:Height="39">
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Toggle Calculation Mode</Data></Cell>
+    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Toggles calculation mode between manual and automatic. Status is set in StatusBar to not cause an interruption.</Data></Cell>
+    <Cell ss:StyleID="s34"/>
+    <Cell><Data ss:Type="String">TC</Data></Cell>
+   </Row>
+   <Row ss:Height="58.5">
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Toggle Iterative Calculation</Data></Cell>
+    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Ensures Calc Mode is Automatic and then turns on iterative calculations.&#10;Status is set in StatusBar to not cause an interruption.</Data></Cell>
+    <Cell ss:StyleID="s34"/>
+    <Cell><Data ss:Type="String">IC</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Wrap in ABS</Data></Cell>
+    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Wrap in abs.</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Wraps in an ABS function</Data></Cell>
+    <Cell><Data ss:Type="String">ABS</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Wrap in Concat</Data></Cell>
+    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Wrap in concat.</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Wraps in a CONCAT function</Data></Cell>
+    <Cell><Data ss:Type="String">CON</Data></Cell>
+   </Row>
+   <Row ss:Height="39">
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Wrap in Drop First Row</Data></Cell>
+    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Wrap in drop first row</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Wraps in a DROP function to drop the first row</Data></Cell>
+    <Cell><Data ss:Type="String">DF</Data></Cell>
+   </Row>
+   <Row ss:Height="39">
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Wrap in IFERROR with space</Data></Cell>
+    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Wrap in iferror.</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Wraps in an IFERROR using a space for errors</Data></Cell>
+    <Cell><Data ss:Type="String">ERR</Data></Cell>
+   </Row>
+   <Row ss:Height="58.5">
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Wrap in Take by Copied Cell Columns</Data></Cell>
+    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Wrap in take by copied cell columns.</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Wraps in a TAKE function to take the first x columns where x is on the clipboard</Data></Cell>
+    <Cell><Data ss:Type="String">TCC</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Wrap in UNICHAR</Data></Cell>
+    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Wrap in unichar.</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Wraps in a UNICHAR function</Data></Cell>
+    <Cell><Data ss:Type="String">CHAR</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Wrap in UNICODE</Data></Cell>
+    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Wrap in unicode.</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Wraps in a UNICODE function</Data></Cell>
+    <Cell><Data ss:Type="String">CODE</Data></Cell>
+   </Row>
+   <Row ss:Height="78">
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Wrap with IFERROR TEXTBEFORE space</Data></Cell>
+    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Wraps current formula with TEXTBEFORE space with IFERROR in case space doesn't exist</Data></Cell>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Wraps in a TEXTBEFORE using a space and allowing for errors where no spaces exist to return the full input</Data></Cell>
+    <Cell><Data ss:Type="String">TBSE</Data></Cell>
    </Row>
   </Table>
  </Worksheet>

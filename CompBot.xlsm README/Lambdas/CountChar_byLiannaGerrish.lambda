@@ -1,0 +1,4 @@
+/*
+Returns the number of times a character appears in the selected text string.  
+*/
+CountChar_byLiannaGerrish =LAMBDA(text,c,LET(\\LambdaName, "CountChar_byLiannaGerrish", \\CommandName, "Count Characters in a String", \\Description, "Returns the number of times a character appears in the selected text string", \\Source, "Lianna Gerrish", Trimmedtext, TRIM(text), TrimmedtextLength, LEN(Trimmedtext), WhiteSpaceSubstitution, SUBSTITUTE(Trimmedtext, c, ""), TextLengthNoSpaces, LEN(WhiteSpaceSubstitution), TrimmedtextLength - TextLengthNoSpaces + 0));

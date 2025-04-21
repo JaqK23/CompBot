@@ -1,0 +1,6 @@
+Letters =LAMBDA([Upp], LET(
+   \\LambdaName, "Letters",
+   \\CommandName, "Creates a list of letters",
+   ABC, CHAR(SEQUENCE(26) + 64),
+   IF((Upp = 1) + ISOMITTED((Upp)), ABC, LOWER(ABC))
+));

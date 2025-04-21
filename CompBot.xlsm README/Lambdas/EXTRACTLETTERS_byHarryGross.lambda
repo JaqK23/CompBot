@@ -1,0 +1,4 @@
+/*
+Extracts letters from a string
+*/
+EXTRACTLETTERS_byHarryGross =LAMBDA(text,REDUCE("", MID(text, SEQUENCE(LEN(text), 1), 1), LAMBDA(x,y, IF(ISNUMBER(VALUE(y)), x, x & y))));

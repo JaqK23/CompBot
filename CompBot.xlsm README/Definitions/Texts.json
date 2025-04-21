@@ -1,0 +1,84 @@
+{
+  "Texts": [
+    {
+      "Name": "ADDRESSES_byDiarmuidEarly.lambda",
+      "Description": "Definition of ADDRESSES_byDiarmuidEarly lambda function.",
+      "Type": "ExcelNameText",
+      "ContentType": "ExcelFormula",
+      "Value": "ADDRESSES_byDiarmuidEarly = LAMBDA(rng, ADDRESS(ROW(rng), COLUMN(rng), 4));",
+      "Location": "ADDRESSES_byDiarmuidEarly"
+    },
+    {
+      "Name": "BiRow_byPeterBartholomew.lambda",
+      "Description": "Definition of BiRow_byPeterBartholomew lambda function.",
+      "Type": "ExcelNameText",
+      "ContentType": "ExcelFormula",
+      "Value": "BiRow_byPeterBartholomew = LAMBDA(array,function,LET(\\\\LambdaName, \"BiRow_byPeterBartholomew\", \\\\Description, \"Perform array function by row\", \\\\Source, \"attributed to Peter Bartholomew: https://techcommunity.microsoft.com/discussions/excelgeneral/recursive-lambda-implementation-of-excels-reduce-function-/3949754/replies/3952653#M207809\", IF(ROWS(array) = 1, function(array), VSTACK(BiRow_byPeterBartholomew(TAKE(array, ROWS(array) / 2), function), BiRow_byPeterBartholomew(DROP(array, ROWS(array) / 2), function)))));",
+      "Location": "BiRow_byPeterBartholomew"
+    },
+    {
+      "Name": "DiffByRow_byJaqKennedy.lambda",
+      "Description": "Definition of DiffByRow_byJaqKennedy lambda function.",
+      "Type": "ExcelNameText",
+      "ContentType": "ExcelFormula",
+      "Value": "DiffByRow_byJaqKennedy = LAMBDA(Input,LET(\\\\LambdaName, \"DiffByRow\", \\\\CommandName, \"Difference of array columns by row\", \\\\Description, \"Returns first column - last column in array\", \\\\Source, \"Jaq Kennedy\", TAKE(Input, , 1) - TAKE(Input, , -1)));",
+      "Location": "DiffByRow_byJaqKennedy"
+    },
+    {
+      "Name": "FilterArray_byErikOehm.lambda",
+      "Description": "Definition of FilterArray_byErikOehm lambda function.",
+      "Type": "ExcelNameText",
+      "ContentType": "ExcelFormula",
+      "Value": "FilterArray_byErikOehm = LAMBDA(data,column_indexes,filter_values,LET(\\\\LambdaName, \"FilterArray\", FILTER(data, BYROW(IsInList_byErikOehm(CHOOSECOLS(data, column_indexes), filter_values), LAMBDA(x, AND(x))))));",
+      "Location": "FilterArray_byErikOehm"
+    },
+    {
+      "Name": "GRIDTOCOL_byLiannaGerrish.lambda",
+      "Description": "Definition of GRIDTOCOL_byLiannaGerrish lambda function.",
+      "Type": "ExcelNameText",
+      "ContentType": "ExcelFormula",
+      "Value": "GRIDTOCOL_byLiannaGerrish = LAMBDA(grid,[ShowAll_0], LET(\n   \\\\LambdaName, \"GRIDTOCOL\",\n   items_grid, TOCOL(grid),\n   addr_col, TOCOL(ADDRESSES_byDiarmuidEarly(grid)),\n   rows, ROW(INDIRECT(addr_col)) * 1,\n   cols, COLUMN(INDIRECT(addr_col)) * 1,\n   rcnum, TOCOL(1000000 * rows + 1000 + cols),\n   headers, HSTACK(\"Items\", \"Row #\", \"Column #\", \"Address\", \"RCRef\"),\n   data_grid, HSTACK(items_grid, rows, cols, addr_col, rcnum),\n   IF(\n      OR(ISOMITTED(ShowAll_0), ShowAll_0 <> 0),\n      VSTACK(headers, FILTER(data_grid, CHOOSECOLS(data_grid, 1) <> 0)),\n      VSTACK(headers, data_grid)\n   )\n));",
+      "Location": "GRIDTOCOL_byLiannaGerrish"
+    },
+    {
+      "Name": "IFBLANK.lambda",
+      "Description": "Definition of IFBLANK lambda function.",
+      "Type": "ExcelNameText",
+      "ContentType": "ExcelFormula",
+      "Value": "IFBLANK = LAMBDA(value,value_if_blank, IF(ISBLANK(value), value_if_blank, value));",
+      "Location": "IFBLANK"
+    },
+    {
+      "Name": "IsInList_byErikOehm.lambda",
+      "Description": "Definition of IsInList_byErikOehm lambda function.",
+      "Type": "ExcelNameText",
+      "ContentType": "ExcelFormula",
+      "Value": "IsInList_byErikOehm = LAMBDA(array,list,LET(\\\\LambdaName, \"IsInList\", MAP(array, LAMBDA(x, OR(list = x)))));",
+      "Location": "IsInList_byErikOehm"
+    },
+    {
+      "Name": "LkpRC.lambda",
+      "Description": "Definition of LkpRC lambda function.",
+      "Type": "ExcelNameText",
+      "ContentType": "ExcelFormula",
+      "Value": "LkpRC = LAMBDA(ToFind,Range,LET(\\\\LambdaName, \"LkpRC\", \\\\CommandName, \"Lookup RC coordinates \", \\\\Description, \"Looks up RC coordinates of matching cell(s) in range\", CHOOSECOLS(FilterArray_byErikOehm(GRIDTOCOL_byLiannaGerrish(Range), {1}, ToFind), {2,3})));",
+      "Location": "LkpRC"
+    },
+    {
+      "Name": "LkpRCByRow.lambda",
+      "Description": "Definition of LkpRCByRow lambda function.",
+      "Type": "ExcelNameText",
+      "ContentType": "ExcelFormula",
+      "Value": "LkpRCByRow = LAMBDA(ToFind,Range,LET(\\\\LambdaName, \"LkpRCByRow\", \\\\CommandName, \"Lookup Value by Row\", \\\\Description, \"Returns RC location of a list of values in a range\", \\\\Source, \"Jaq Kennedy\", BiRow_byPeterBartholomew(ToFind, LAMBDA(a, IFERROR(CHOOSEROWS(LkpRC(a, Range), 1), {\"\",\"\"})))));",
+      "Location": "LkpRCByRow"
+    },
+    {
+      "Name": "RightAlignedArray_byJaqKennedy.lambda",
+      "Description": "Definition of RightAlignedArray_byJaqKennedy lambda function.",
+      "Type": "ExcelNameText",
+      "ContentType": "ExcelFormula",
+      "Value": "/*Aligns contents of array to the right - ignoring blanks*/\r\nRightAlignedArray_byJaqKennedy = LAMBDA(input,LET(\\\\LambdaName, \"RightAlignedArray\", \\\\CommandName, \"Align array to right\", \\\\Description, \"Aligns array to the right with blanks to left\", \\\\Source, \"Jaq Kennedy\", _ColsByRow, BYROW(input, COUNT), _Rows, ROWS(input), _Cols, COLUMNS(input), _ColIndex, IF(MOD(SEQUENCE(_Rows, _Cols) - 1, _Cols) + 1 - _Cols + _ColsByRow <= 0, -1, MOD(SEQUENCE(_Rows, _Cols) - 1, _Cols) + 1 - _Cols + _ColsByRow), _RowIndex, SEQUENCE(_Rows), _Result, IFERROR(INDEX(input, _RowIndex, _ColIndex), \"\"), _Result));",
+      "Location": "RightAlignedArray_byJaqKennedy"
+    }
+  ]
+}

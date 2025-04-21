@@ -1,0 +1,39 @@
+XLOOKUP2D_byBendeLeon =LAMBDA(DataSource,RLU,CLU,[RowArray],[ColumnArray],[MatchMode],[SearchMode],[IfNotFound], LET(
+   \\LambdaName, "XLOOKUP2D_byBendeLeon",
+   \\CommandName, "2D lookup",
+   \\Source, "Ben de Leon",
+   RCInc, IF(ISOMITTED(RowArray), 1, 0) + IF(ISOMITTED(RowArray), 2, 0),
+   UpdatedDataSource, CHOOSE(
+      RCInc + 1,
+      DataSource,
+      DROP(DataSource, , 1),
+      DROP(DataSource, 1),
+      DROP(DataSource, 1, 1)
+   ),
+   IFERROR(
+      INDEX(
+         UpdatedDataSource,
+         XMATCH(
+            RLU,
+            IF(
+               ISOMITTED(RowArray),
+               DROP(TAKE(DataSource, , 1), 1),
+               TAKE(RowArray, , 1)
+            ),
+            IF(ISOMITTED(MatchMode), 0, MatchMode),
+            IF(ISOMITTED(SearchMode), 1, SearchMode)
+         ),
+         XMATCH(
+            CLU,
+            IF(
+               ISOMITTED(ColumnArray),
+               DROP(TAKE(DataSource, 1), , 1),
+               TAKE(ColumnArray, 1)
+            ),
+            IF(ISOMITTED(MatchMode), 0, MatchMode),
+            IF(ISOMITTED(SearchMode), 1, SearchMode)
+         )
+      ),
+      IF(ISOMITTED(IfNotFound), NA(), IfNotFound)
+   )
+));

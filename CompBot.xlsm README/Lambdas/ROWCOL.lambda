@@ -1,0 +1,1 @@
+ROWCOL =LAMBDA(cell_coordinates,TEXTSPLIT(ROW(INDIRECT(cell_coordinates)) & ";" & COLUMN(INDIRECT(cell_coordinates)), ";"));

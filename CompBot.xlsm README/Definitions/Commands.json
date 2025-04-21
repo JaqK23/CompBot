@@ -1,6 +1,22 @@
 {
   "Commands": [
     {
+      "Name": "Align Array to Right",
+      "Description": "Aligns array to the right with blanks to left",
+      "Type": "ExcelFormulaCommand",
+      "LaunchCodes": [
+        "ar"
+      ],
+      "Formula": "=RightAlignedArray_byJaqKennedy(IFBLANK([[ActiveCell::Formula]],\"\"))",
+      "Tags": [
+        "WrapWith"
+      ],
+      "FormulaDependencies": [
+        "RightAlignedArray_byJaqKennedy.lambda",
+        "IFBLANK.lambda"
+      ]
+    },
+    {
       "Name": "Backup Sheets in Workbook",
       "Description": "Copy all sheets in workbook for backup",
       "Type": "VBAMacroCommand",
@@ -106,10 +122,38 @@
       ]
     },
     {
+      "Name": "Difference of Array Columns by Row",
+      "Description": "Returns first column - last column in array",
+      "Type": "ExcelFormulaCommand",
+      "LaunchCodes": [
+        "diff",
+        "dbr"
+      ],
+      "Formula": "=DiffByRow_byJaqKennedy([[ActiveCell::Formula]])",
+      "Tags": [
+        "WrapWith"
+      ],
+      "FormulaDependencies": [
+        "DiffByRow_byJaqKennedy.lambda"
+      ]
+    },
+    {
       "Name": "Eggy",
       "Description": "Easter Egg Fun",
       "Type": "VBAMacroCommand",
       "MacroExpression": "modUtilities.Eggy()"
+    },
+    {
+      "Name": "Find Above In Left",
+      "Description": "Find above value(s) in left value(s).",
+      "Type": "ExcelFormulaCommand",
+      "LaunchCodes": [
+        "fal"
+      ],
+      "Formula": "=1-ISERROR(FIND([[ActiveCell.Offset(-1,0).SpillParent.SpillingToRange]],[[ActiveCell.Offset(0,-1).SpillParent.SpillingToRange]]))",
+      "Tags": [
+        "WrapWith"
+      ]
     },
     {
       "Name": "Full Setup Case",
@@ -165,6 +209,40 @@
       ]
     },
     {
+      "Name": "Keep Cell of Array",
+      "Description": "Keep selected cell of array.",
+      "Type": "ExcelFormulaCommand",
+      "LaunchCodes": [
+        "KTC"
+      ],
+      "Formula": "=CHOOSEROWS(CHOOSECOLS([[ActiveCell.SpillParent::Formula]],{{Selected_Column_Indexes_In_Spilling_Range}}),{{Selected_Row_Indexes_In_Spilling_Range}})",
+      "DestinationRangeAddress": "[[ActiveCell.SpillParent]]",
+      "Tags": [
+        "WrapWith"
+      ]
+    },
+    {
+      "Name": "Lookup Value by Row",
+      "Description": "Returns RC location of a list of values in a range",
+      "Type": "ExcelFormulaCommand",
+      "LaunchCodes": [
+        "lkp"
+      ],
+      "Formula": "=LkpRCByRow([[ActiveCell::Formula]], [[Clipboard::Address]])",
+      "Tags": [
+        "WrapWith"
+      ],
+      "FormulaDependencies": [
+        "LkpRCByRow.lambda",
+        "BiRow_byPeterBartholomew.lambda",
+        "LkpRC.lambda",
+        "FilterArray_byErikOehm.lambda",
+        "IsInList_byErikOehm.lambda",
+        "GRIDTOCOL_byLiannaGerrish.lambda",
+        "ADDRESSES_byDiarmuidEarly.lambda"
+      ]
+    },
+    {
       "Name": "Name All Used Ranges",
       "Description": "Renames used range in all sheets",
       "Type": "VBAMacroCommand",
@@ -187,6 +265,18 @@
       "MacroExpression": "modNames.NameUsedRanges([[ActiveCell]])",
       "Tags": [
         "Name"
+      ]
+    },
+    {
+      "Name": "Negative Values",
+      "Description": "Negative values. with errors as blank",
+      "Type": "ExcelFormulaCommand",
+      "LaunchCodes": [
+        "neg"
+      ],
+      "Formula": "=IFERROR(-([[ActiveCell::Formula]]),\"\")",
+      "Tags": [
+        "WrapWith"
       ]
     },
     {
@@ -226,15 +316,51 @@
       ]
     },
     {
-      "Name": "Setup Case",
-      "Description": "Setup case by running Backup and Level sheet creation",
-      "Type": "VBAMacroCommand",
+      "Name": "Sequence of Row Count",
+      "Description": "Sequence of row count of array variable",
+      "Type": "ExcelFormulaCommand",
       "LaunchCodes": [
-        "SC"
+        "src"
       ],
-      "MacroExpression": "modCaseSetup.Setup()",
+      "Formula": "=SEQUENCE(ROWS([[ActiveCell::Formula]]),1,1,1)",
       "Tags": [
-        "Prep"
+        "WrapWith"
+      ]
+    },
+    {
+      "Name": "Split Text by Delimiter Above",
+      "Description": "Split text by delimiter in the cell above and trim output.",
+      "Type": "ExcelFormulaCommand",
+      "LaunchCodes": [
+        "ST"
+      ],
+      "Formula": "=TRIM(TEXTSPLIT([[ActiveCell::Formula]],,[[ActiveCell.Offset(-1,0)]],TRUE))",
+      "Tags": [
+        "WrapWith"
+      ]
+    },
+    {
+      "Name": "Substitute Blank for 0",
+      "Description": "Substitute blank values for 0",
+      "Type": "ExcelFormulaCommand",
+      "LaunchCodes": [
+        "sb0"
+      ],
+      "Formula": "=SUBSTITUTE([[ActiveCell::Formula]],\"\",0)",
+      "Tags": [
+        "WrapWith"
+      ]
+    },
+    {
+      "Name": "Substitute Blank for 1",
+      "Description": "Substitute blank cells for 1",
+      "Type": "ExcelFormulaCommand",
+      "LaunchCodes": [
+        "sb1"
+      ],
+      "Formula": "=SUBSTITUTE([[ActiveCell::Formula]],\"\",1)",
+      "Tags": [
+        "WrapWith"
       ]
     },
     {
@@ -274,6 +400,18 @@
       ]
     },
     {
+      "Name": "Wrap in Concat",
+      "Description": "Wrap in concat.",
+      "Type": "ExcelFormulaCommand",
+      "LaunchCodes": [
+        "con"
+      ],
+      "Formula": "=CONCAT([[ActiveCell::Formula]])",
+      "Tags": [
+        "WrapWith"
+      ]
+    },
+    {
       "Name": "Wrap in Drop First Row",
       "Description": "Wrap in drop first row",
       "Type": "ExcelFormulaCommand",
@@ -286,6 +424,18 @@
       ]
     },
     {
+      "Name": "Wrap in IFERROR with space",
+      "Description": "Wrap in iferror.",
+      "Type": "ExcelFormulaCommand",
+      "LaunchCodes": [
+        "err"
+      ],
+      "Formula": "=IFERROR([[ActiveCell::Formula]],\" \")",
+      "Tags": [
+        "WrapWith"
+      ]
+    },
+    {
       "Name": "Wrap in Take by Copied Cell Columns",
       "Description": "Wrap in take by copied cell columns.",
       "Type": "ExcelFormulaCommand",
@@ -293,6 +443,42 @@
         "TCC"
       ],
       "Formula": "=TAKE([[ActiveCell::Formula]],,[[Clipboard]])",
+      "Tags": [
+        "WrapWith"
+      ]
+    },
+    {
+      "Name": "Wrap in UNICHAR",
+      "Description": "Wrap in unichar.",
+      "Type": "ExcelFormulaCommand",
+      "LaunchCodes": [
+        "char"
+      ],
+      "Formula": "=UNICHAR([[ActiveCell::Formula]])",
+      "Tags": [
+        "WrapWith"
+      ]
+    },
+    {
+      "Name": "Wrap in UNICODE",
+      "Description": "Wrap in unicode.",
+      "Type": "ExcelFormulaCommand",
+      "LaunchCodes": [
+        "code"
+      ],
+      "Formula": "=UNICODE([[ActiveCell::Formula]])",
+      "Tags": [
+        "WrapWith"
+      ]
+    },
+    {
+      "Name": "Wrap with IFERROR TEXTBEFORE space",
+      "Description": "Wraps current formula with TEXTBEFORE space with IFERROR in case space doesn't exist",
+      "Type": "ExcelFormulaCommand",
+      "LaunchCodes": [
+        "tbse"
+      ],
+      "Formula": "=IFERROR(TEXTBEFORE([[ActiveCell::Formula]],\" \"),[[ActiveCell::Formula]])",
       "Tags": [
         "WrapWith"
       ]
