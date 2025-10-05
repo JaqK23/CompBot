@@ -1,0 +1,1 @@
+SWAP =LAMBDA(array,pos_one_x,pos_one_y,pos_two_x,pos_two_y, LET(a, INDEX(array, pos_one_x, pos_one_y), b, INDEX(array, pos_two_x, pos_two_y), arrr, SET(array, b, pos_one_x, pos_one_y), SET(arrr, a, pos_two_x, pos_two_y)));

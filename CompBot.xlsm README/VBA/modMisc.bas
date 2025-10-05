@@ -50,7 +50,7 @@ Sub CreateBlankSheet(Optional strWS As String)
     Set rng = Range("B5:J5")
     rng.HorizontalAlignment = xlCenterAcrossSelection
     rng.Style = "Heading 1"
-    rng.Cells(1, 1).Value = strWS & " Header"
+    rng.Cells(1, 1).Value = strWS
     'freeze panes below header
     With ActiveWindow
         If .FreezePanes Then .FreezePanes = False

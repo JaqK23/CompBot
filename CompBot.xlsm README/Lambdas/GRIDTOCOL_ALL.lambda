@@ -1,0 +1,1 @@
+GRIDTOCOL_ALL =LAMBDA(arr, LET(items_arr, TOCOL(arr), rows, TOCOL(SEQUENCE(, COLUMNS(arr)) * 0 & SEQUENCE(ROWS(arr))) * 1, cols, TOCOL(SEQUENCE(ROWS(arr)) * 0 & SEQUENCE(, COLUMNS(arr))) * 1, addr, TOCOL(ADDRESS(rows, cols, 4, 1)), headers, HSTACK("Items", "Row #", "Column #", "Address"), data_arr, HSTACK(items_arr, rows, cols, addr), VSTACK(headers, data_arr)));

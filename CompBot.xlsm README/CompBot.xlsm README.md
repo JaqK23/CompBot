@@ -711,7 +711,7 @@
 | Property | Value |
 | --- | --- |
 | Text | [ADDRESSES_byDiarmuidEarly.lambda](./Text/ADDRESSES_byDiarmuidEarly.lambda.txt) |
-| Value | ``` ADDRESSES_byDiarmuidEarly = LAMBDA(rng, ADDRESS(ROW(rng), COLUMN(rng), 4)); ``` |
+| Value | ``` /*Returns the cell address of a range*/⁣ ADDRESSES_byDiarmuidEarly = LAMBDA(rng, ADDRESS(ROW(rng), COLUMN(rng), 4)); ``` |
 | Content Type | ExcelFormula |
 | Location | ``` ADDRESSES_byDiarmuidEarly ``` |
 
@@ -728,7 +728,7 @@
 | Property | Value |
 | --- | --- |
 | Text | [BiRow_byPeterBartholomew.lambda](./Text/BiRow_byPeterBartholomew.lambda.txt) |
-| Value | ``` BiRow_byPeterBartholomew = LAMBDA(array,function,LET(\\LambdaName, "BiRow_byPeterBartholomew", \\Description, "Perform array function by row", \\Source, "attributed to Peter Bartholomew: https://techcommunity.microsoft.com/discussions/excelgeneral/recursive-lambda-implementation-of-excels-reduce-function-/3949754/replies/3952653#M207809", IF(ROWS(array) = 1, function(array), VSTACK(BiRow_byPeterBartholomew(TAKE(array, ROWS(array) / 2), function), BiRow_byPeterBartholomew(DROP(array, ROWS(arr...``` |
+| Value | ``` /*BiRow function as defined by Peter Bartholomew*/⁣ BiRow_byPeterBartholomew = LAMBDA(array,function,LET(\\LambdaName, "BiRow_byPeterBartholomew", \\Description, "Perform array function by row", \\Source, "attributed to Peter Bartholomew: https://techcommunity.microsoft.com/discussions/excelgeneral/recursive-lambda-implementation-of-excels-reduce-function-/3949754/replies/3952653#M207809", IF(ROWS(array) = 1, function(array), VSTACK(BiRow_byPeterBartholomew(TAKE(array, ROWS(array) / 2), func...``` |
 | Content Type | ExcelFormula |
 | Location | ``` BiRow_byPeterBartholomew ``` |
 
@@ -779,7 +779,7 @@
 | Property | Value |
 | --- | --- |
 | Text | [GRIDTOCOL_byLiannaGerrish.lambda](./Text/GRIDTOCOL_byLiannaGerrish.lambda.txt) |
-| Value | ``` GRIDTOCOL_byLiannaGerrish = LAMBDA(grid,[ShowAll_0], LET( \\LambdaName, "GRIDTOCOL", items_grid, TOCOL(grid), addr_col, TOCOL(ADDRESSES_byDiarmuidEarly(grid)), rows, ROW(INDIRECT(addr_col)) * 1, cols, COLUMN(INDIRECT(addr_col)) * 1, rcnum, TOCOL(1000000 * rows + 1000 + cols), headers, HSTACK("Items", "Row #", "Column #", "Address", "RCRef"), data_grid, HSTACK(items_grid, rows, cols, addr_col, rcnum), IF( OR(ISOMITTED(ShowAll_0), ShowAll_0 <> 0), VSTACK(...``` |
+| Value | ``` GRIDTOCOL_byLiannaGerrish = LAMBDA(grid,[ShowAll_0], LET(⁣ \\LambdaName, "GRIDTOCOL",⁣ items_grid, TOCOL(grid),⁣ addr_col, TOCOL(ADDRESSES_byDiarmuidEarly(grid)),⁣ rows, ROW(INDIRECT(addr_col)) * 1,⁣ cols, COLUMN(INDIRECT(addr_col)) * 1,⁣ rcnum, TOCOL(1000000 * rows + 1000 + cols),⁣ headers, HSTACK("Items", "Row #", "Column #", "Address", "RCRef"),⁣ data_grid, HSTACK(items_grid, rows, cols, addr_col, rcnum),⁣ IF(⁣ OR(ISOMITTED(ShowAll_0), ShowAll_0 <> 0),⁣ VSTACK(...``` |
 | Content Type | ExcelFormula |
 | Location | ``` GRIDTOCOL_byLiannaGerrish ``` |
 
@@ -864,7 +864,7 @@
 | Property | Value |
 | --- | --- |
 | Text | [RightAlignedArray_byJaqKennedy.lambda](./Text/RightAlignedArray_byJaqKennedy.lambda.txt) |
-| Value | ``` /*Aligns contents of array to the right - ignoring blanks*/ RightAlignedArray_byJaqKennedy = LAMBDA(input,LET(\\LambdaName, "RightAlignedArray", \\CommandName, "Align array to right", \\Description, "Aligns array to the right with blanks to left", \\Source, "Jaq Kennedy", _ColsByRow, BYROW(input, COUNT), _Rows, ROWS(input), _Cols, COLUMNS(input), _ColIndex, IF(MOD(SEQUENCE(_Rows, _Cols) - 1, _Cols) + 1 - _Cols + _ColsByRow <= 0, -1, MOD(SEQUENCE(_Rows, _Cols) - 1, _Cols) + 1 - _Cols + _Cols...``` |
+| Value | ``` /*Aligns contents of array to the right - ignoring blanks*/⁣ RightAlignedArray_byJaqKennedy = LAMBDA(input,LET(\\LambdaName, "RightAlignedArray", \\CommandName, "Align array to right", \\Description, "Aligns array to the right with blanks to left", \\Source, "Jaq Kennedy", _ColsByRow, BYROW(input, COUNT), _Rows, ROWS(input), _Cols, COLUMNS(input), _ColIndex, IF(MOD(SEQUENCE(_Rows, _Cols) - 1, _Cols) + 1 - _Cols + _ColsByRow <= 0, -1, MOD(SEQUENCE(_Rows, _Cols) - 1, _Cols) + 1 - _Cols + _Cols...``` |
 | Content Type | ExcelFormula |
 | Location | ``` RightAlignedArray_byJaqKennedy ``` |
 

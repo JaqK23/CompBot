@@ -1,0 +1,1 @@
+SHIFT_OOB =LAMBDA(cell_coordinates,horizontal_moves,vertical_moves, ADDRESS(IF(ROW(INDIRECT(cell_coordinates)) + horizontal_moves < 1, 1, ROW(INDIRECT(cell_coordinates)) + horizontal_moves), IF(COLUMN(INDIRECT(cell_coordinates)) + vertical_moves < 1, 1, COLUMN(INDIRECT(cell_coordinates)) + vertical_moves), 4, 1));

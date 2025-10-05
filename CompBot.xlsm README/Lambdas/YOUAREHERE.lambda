@@ -1,0 +1,1 @@
+YOUAREHERE =LAMBDA(cell,[sheetname], IF(ISOMITTED(sheetname), ADDRESS(ROW(cell), COLUMN(cell), 4, TRUE), ADDRESS(ROW(cell), COLUMN(cell), 4, TRUE, sheetname)));

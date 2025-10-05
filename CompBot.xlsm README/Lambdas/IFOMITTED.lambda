@@ -1,0 +1,1 @@
+IFOMITTED =LAMBDA(value,value_if_omitted, IF(ISOMITTED(value), value_if_omitted, value));

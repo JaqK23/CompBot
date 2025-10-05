@@ -1,0 +1,1 @@
+BLOCK =LAMBDA(rng,sheetname,x,y, OFFSET(INDIRECT(YOUAREHERE(rng, sheetname)), -y, -x, 2 * y + 1, 2 * x + 1));

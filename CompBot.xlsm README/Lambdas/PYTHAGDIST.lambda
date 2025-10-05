@@ -1,0 +1,1 @@
+PYTHAGDIST =LAMBDA(a,b, LET(ac, TAKE(COLROW(a), , 1), ar, TAKE(COLROW(a), , -1), bc, TAKE(COLROW(b), , 1), br, TAKE(COLROW(b), , -1), cr, ABS(br - ar), cc, ABS(bc - ac), PYTHAG(cr, cc)));

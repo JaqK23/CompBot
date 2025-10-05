@@ -1,0 +1,1 @@
+MODTEXT =LAMBDA(letter,shift, UNICHAR(MOD(UNICODE(UPPER(letter)) + UPPER(shift) - 65, 26) + 65));

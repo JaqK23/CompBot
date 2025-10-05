@@ -1,0 +1,1 @@
+I2M =LAMBDA(arr,row,col, INDEX(arr, MATCH(row, CHOOSECOLS(arr, 1), 0), MATCH(col, CHOOSEROWS(arr, 1), 0)));

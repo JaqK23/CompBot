@@ -14,6 +14,11 @@
    <NumberFormat/>
    <Protection/>
   </Style>
+  <Style ss:ID="s22" ss:Name="Accent5">
+   <Font ss:FontName="Aptos Narrow" x:Family="Swiss" ss:Size="14"
+    ss:Color="#FFFFFF"/>
+   <Interior ss:Color="#A02B93" ss:Pattern="Solid"/>
+  </Style>
   <Style ss:ID="s18" ss:Name="Explanatory Text">
    <Font ss:FontName="Verdana" x:Family="Swiss" ss:Size="16" ss:Color="#7F7F7F"
     ss:Italic="1"/>
@@ -34,10 +39,10 @@
    <Font ss:FontName="Verdana" x:Family="Swiss" ss:Size="13" ss:Color="#0E2841"
     ss:Bold="1"/>
   </Style>
-  <Style ss:ID="s22" ss:Parent="s16">
+  <Style ss:ID="s23" ss:Parent="s16">
    <Alignment ss:Horizontal="CenterAcrossSelection" ss:Vertical="Bottom"/>
   </Style>
-  <Style ss:ID="s27" ss:Parent="s17">
+  <Style ss:ID="s28" ss:Parent="s17">
    <Alignment ss:Horizontal="CenterAcrossSelection" ss:Vertical="Bottom"/>
    <Borders>
     <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="3"
@@ -46,10 +51,10 @@
     <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1"/>
    </Borders>
   </Style>
-  <Style ss:ID="s28">
+  <Style ss:ID="s29">
    <Interior ss:Color="#808080" ss:Pattern="Solid"/>
   </Style>
-  <Style ss:ID="s29" ss:Parent="s17">
+  <Style ss:ID="s30" ss:Parent="s17">
    <Alignment ss:Horizontal="CenterAcrossSelection" ss:Vertical="Bottom"/>
    <Borders>
     <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="3"
@@ -61,6 +66,8 @@
   </Style>
  </Styles>
  <Names>
+  <NamedRange ss:Name="_distFrom"
+   ss:RefersTo="=LAMBDA(mp,trg,func,LET(vals,TOCOL(mp),rws,TOCOL(SEQUENCE(ROWS(mp))+0*SEQUENCE(,COLUMNS(mp))),cls,TOCOL(SEQUENCE(ROWS(mp))*0+SEQUENCE(,COLUMNS(mp))),Mrws,TOROW(FILTER(rws,vals=trg)),Mcls,TOROW(FILTER(cls,vals=trg)),rdist,ABS(rws-Mrws),cdist,ABS(cls-Mcls),dist,BYROW(MAP(rdist,cdist,func),MIN),WRAPROWS(dist,COLUMNS(mp))))"/>
   <NamedRange ss:Name="_xleta.CELL" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xleta.COLUMN" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xleta.COUNT" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
@@ -309,6 +316,7 @@
   <NamedRange ss:Name="_xlpm.items_arr" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.items_grid" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.j" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.k" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.key" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.keyCols" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.l" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
@@ -316,6 +324,8 @@
   <NamedRange ss:Name="_xlpm.letter" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.levels" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.list" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.lkpin" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.lkpout" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.lookup_array" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.lookup_output" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.lr_roll" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
@@ -471,8 +481,22 @@
   <NamedRange ss:Name="_xlpm.ymove" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.ymoveunit" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.ymult" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="A2C" ss:RefersTo="=LAMBDA(add, COLUMN(INDIRECT(add)))"/>
+  <NamedRange ss:Name="A2R" ss:RefersTo="=LAMBDA(add, ROW(INDIRECT(add)))"/>
   <NamedRange ss:Name="ADDRESSES_byDiarmuidEarly"
    ss:RefersTo="=LAMBDA(rng, ADDRESS(ROW(rng), COLUMN(rng), 4))"/>
+  <NamedRange ss:Name="AMATCH"
+   ss:RefersTo="=LAMBDA(rng,trg,[Actual], LET(vals, TOCOL(rng), strw, IF(Actual = 1, ROW(TAKE(rng, 1, 1)) - 1, 0), stcl, IF(Actual = 1, COLUMN(TAKE(rng, 1, 1)) - 1, 0), rws, TOCOL(SEQUENCE(ROWS(rng)) + 0 * SEQUENCE(, COLUMNS(rng))), cls, TOCOL(SEQUENCE(ROWS(rng)) * 0 + SEQUENCE(, COLUMNS(rng))), Mrws, TOROW(FILTER(rws, (vals = trg) * (vals &lt;&gt; &quot;&quot;))), Mcls, TOROW(FILTER(cls, (vals = trg) * (vals &lt;&gt; &quot;&quot;))), TRANSPOSE(VSTACK(strw + Mrws, stcl + Mcls))))"/>
+  <NamedRange ss:Name="AMATCHADD"
+   ss:RefersTo="=LAMBDA(rng,trg,[Actual], LET(vals, TOCOL(rng), strw, IF(Actual = 1, ROW(TAKE(rng, 1, 1)) - 1, 0), stcl, IF(Actual = 1, COLUMN(TAKE(rng, 1, 1)) - 1, 0), rws, TOCOL(SEQUENCE(ROWS(rng)) + 0 * SEQUENCE(, COLUMNS(rng))), cls, TOCOL(SEQUENCE(ROWS(rng)) * 0 + SEQUENCE(, COLUMNS(rng))), Mrws, TOROW(FILTER(rws, (vals = trg) * (vals &lt;&gt; &quot;&quot;))), Mcls, TOROW(FILTER(cls, (vals = trg) * (vals &lt;&gt; &quot;&quot;))), TRANSPOSE(ADDRESS(strw + Mrws, stcl + Mcls, 4))))"/>
+  <NamedRange ss:Name="APPENDCOLS"
+   ss:RefersTo="=LAMBDA(array1,array2, LET(array1Rows, ROWS(array1), array1Cols, COLUMNS(array1), array2Rows, ROWS(array2), array2Cols, COLUMNS(array2), rowLen, MAX(array1Rows, array2Rows), colLen, array1Cols + array2Cols, newArray, SEQUENCE(rowLen, colLen), colIndex, MOD(newArray - 1, colLen) + 1, rowIndex, 1 + ((newArray - colIndex) / colLen), resultArray, IF(colIndex &gt; array1Cols, INDEX(array2, rowIndex, colIndex - array1Cols), INDEX(array1, rowIndex, colIndex)), resultArray))"/>
+  <NamedRange ss:Name="APPENDROWS"
+   ss:RefersTo="=LAMBDA(array1,array2, LET(array1Rows, ROWS(array1), colIndex, SEQUENCE(, MAX(COLUMNS(array1), COLUMNS(array2))), rowIndex1, SEQUENCE(array1Rows + ROWS(array2)), rowIndex2, rowIndex1 - array1Rows, IF(rowIndex2 &gt;= 1, INDEX(array2, rowIndex2, colIndex), INDEX(array1, rowIndex1, colIndex))))"/>
+  <NamedRange ss:Name="ARROWSHIFT"
+   ss:RefersTo="=LAMBDA(starting_cell,arrow, LET(Arrows, VSTACK(&quot;↗&quot;, &quot;↓&quot;, &quot;↖&quot;, &quot;←&quot;, &quot;→&quot;, &quot;↙&quot;, &quot;↘&quot;, &quot;↑&quot;), Arrowsx, VSTACK(1, 0, -1, -1, 1, -1, 1, 0), Arrowsy, VSTACK(-1, 1, -1, 0, 0, 1, 1, -1), d, RIGHT(arrow, 1), m, IF(LEN(arrow) = 1, 1, 1 * LEFT(arrow, LEN(arrow) - 1)), xmoveunit, XLOOKUP(d, Arrows, Arrowsx), ymoveunit, XLOOKUP(d, Arrows, Arrowsy), xmove, xmoveunit * m, ymove, ymoveunit * m, collet, TAKE(TEXTSPLIT(starting_cell, SEQUENCE(, 10, 0)), , 1), startcol, COLUMN(INDIRECT(collet &amp; 1)), startrow, 1 * RIGHT(starting_cell, LEN(starting_cell) - LEN(collet)), newcell, ADDRESS(startrow + ymove, startcol + xmove, 4), newcell))"/>
+  <NamedRange ss:Name="ARROWTABLE"
+   ss:RefersTo="=LAMBDA(LET(Arrows, VSTACK(&quot;↗&quot;, &quot;↓&quot;, &quot;↖&quot;, &quot;←&quot;, &quot;→&quot;, &quot;↙&quot;, &quot;↘&quot;, &quot;↑&quot;), Arrowsx, VSTACK(1, 0, -1, -1, 1, -1, 1, 0), Arrowsy, VSTACK(-1, 1, -1, 0, 0, 1, 1, -1), headers, HSTACK(&quot;Arrows&quot;, &quot;Arrowsx&quot;, &quot;Arrowsy&quot;), table_arrows, HSTACK(Arrows, Arrowsx, Arrowsy), VSTACK(headers, table_arrows)))"/>
   <NamedRange ss:Name="CaseInputs"
    ss:RefersTo="=LAMBDA(     LET(         questions, FILTER(INDIRECT(&quot;Case!$B:$EE&quot;), ISNUMBER(INDIRECT(&quot;Case!$B:$B&quot;))),         result, IF(questions=0, NA(), questions),         clean, HSTACK(TAKE(result,,3), TAKE(result,,-COLUMNS(result)+5)),         IFERROR(clean, &quot;&quot;)     ) )"/>
   <NamedRange ss:Name="COL"
@@ -481,8 +505,18 @@
    ss:RefersTo="=LAMBDA(cell_coordinates, TEXTSPLIT(COLUMN(INDIRECT(cell_coordinates)) &amp; &quot;;&quot; &amp; ROW(INDIRECT(cell_coordinates)), &quot;;&quot;))"/>
   <NamedRange ss:Name="CountChar_byLiannaGerrish"
    ss:RefersTo="=LAMBDA(text,c,LET(\\LambdaName, &quot;CountChar_byLiannaGerrish&quot;, \\CommandName, &quot;Count Characters in a String&quot;, \\Description, &quot;Returns the number of times a character appears in the selected text string&quot;, \\Source, &quot;Lianna Gerrish&quot;, Trimmedtext, TRIM(text), TrimmedtextLength, LEN(Trimmedtext), WhiteSpaceSubstitution, SUBSTITUTE(Trimmedtext, c, &quot;&quot;), TextLengthNoSpaces, LEN(WhiteSpaceSubstitution), TrimmedtextLength - TextLengthNoSpaces + 0))"/>
+  <NamedRange ss:Name="CR2A"
+   ss:RefersTo="=LAMBDA(cnum,rnum, ADDRESS(rnum, cnum, 4))"/>
+  <NamedRange ss:Name="DATEHEADERS"
+   ss:RefersTo="=LAMBDA(start_date,periods,type, LET(month_num, IFS(type = &quot;Y&quot;, 12, type = &quot;Q&quot;, 3, type = &quot;M&quot;, 1), HSTACK(VSTACK(&quot;Start Date&quot;, &quot;End Date&quot;, &quot;Period #&quot;, &quot;Year&quot;, &quot;Month&quot;, &quot;Jan Flag&quot;), VSTACK(EDATE(start_date, SEQUENCE(, periods, 0, month_num)), EOMONTH(EDATE(start_date, SEQUENCE(, periods, 0, month_num)), month_num - 1), SEQUENCE(, periods), YEAR(EDATE(start_date, SEQUENCE(, periods, 0, month_num))), MONTH(EDATE(start_date, SEQUENCE(, periods, 0, month_num))), --MONTH(EDATE(start_date, SEQUENCE(, periods, 0, month_num))) = 1))))"/>
+  <NamedRange ss:Name="DAYSINPERIOD"
+   ss:RefersTo="=LAMBDA(start_date,end_date,period_start_date,days_in_period, MAX(0, MAX(0, MIN(days_in_period, MIN(end_date - period_start_date))) - MAX(0, (start_date - period_start_date))))"/>
+  <NamedRange ss:Name="DICE"
+   ss:RefersTo="=LAMBDA(dice, 1 * XMATCH(dice, {&quot;⚀&quot;;&quot;⚁&quot;;&quot;⚂&quot;;&quot;⚃&quot;;&quot;⚄&quot;;&quot;⚅&quot;}, 0))"/>
   <NamedRange ss:Name="DiffByRow_byJaqKennedy"
    ss:RefersTo="=LAMBDA(Input,LET(\\LambdaName, &quot;DiffByRow&quot;, \\CommandName, &quot;Difference of array columns by row&quot;, \\Description, &quot;Returns first column - last column in array&quot;, \\Source, &quot;Jaq Kennedy&quot;, TAKE(Input, , 1) - TAKE(Input, , -1)))"/>
+  <NamedRange ss:Name="DROPCOL"
+   ss:RefersTo="=LAMBDA(array,column, LET(&#10;   \\LambdaName, &quot;DROPCOL&quot;,&#10;   \\CommandName, \\LambdaName,&#10;   \\Description, &quot;Drops a column from an array&quot;,&#10;   \\Source, &quot;Lianna&quot;,&#10;   MAKEARRAY(&#10;      ROWS(array),&#10;      COLUMNS(array) - 1,&#10;      LAMBDA(i,j, INDEX(array, i, IF(j &lt; column, j, j + 1)))&#10;   )&#10;))"/>
   <NamedRange ss:Name="DROPCOL_byLiannaGerrish"
    ss:RefersTo="=LAMBDA(array,column,LET(\\LambdaName, &quot;DROPCOL&quot;, \\CommandName, \\LambdaName, \\Description, &quot;Drops a column from an array&quot;, \\Source, &quot;Lianna&quot;, MAKEARRAY(ROWS(array), COLUMNS(array) - 1, LAMBDA(i,j, INDEX(array, i, IF(j &lt; column, j, j + 1))))))"/>
   <NamedRange ss:Name="EXTRACTCHAR_byHarryGross"
@@ -493,99 +527,153 @@
    ss:RefersTo="=LAMBDA(cell,TEXTSPLIT(cell,TEXTSPLIT(cell,SEQUENCE(10,,0),,1),,1))"/>
   <NamedRange ss:Name="EZINDIRECT_byLiannaGerrish"
    ss:RefersTo="=LAMBDA(cell,[sheetname],IF(ISOMITTED(sheetname), INDIRECT(cell), INDIRECT(sheetname &amp; &quot;!&quot; &amp; cell)))"/>
+  <NamedRange ss:Name="GETDIST"
+   ss:RefersTo="=LAMBDA(cell_from,cell_to,diag_flag, IFS(diag_flag = 1, MAX(ABS(COLUMN(INDIRECT(cell_from)) - COLUMN(INDIRECT(cell_to))), ABS(ROW(INDIRECT(cell_from)) - ROW(INDIRECT(cell_to)))), diag_flag = 0, ABS(COLUMN(INDIRECT(cell_from)) - COLUMN(INDIRECT(cell_to))) + ABS(ROW(INDIRECT(cell_from)) - ROW(INDIRECT(cell_to)))))"/>
+  <NamedRange ss:Name="GRIDTOCOL_ALL"
+   ss:RefersTo="=LAMBDA(arr, LET(items_arr, TOCOL(arr), rows, TOCOL(SEQUENCE(, COLUMNS(arr)) * 0 &amp; SEQUENCE(ROWS(arr))) * 1, cols, TOCOL(SEQUENCE(ROWS(arr)) * 0 &amp; SEQUENCE(, COLUMNS(arr))) * 1, addr, TOCOL(ADDRESS(rows, cols, 4, 1)), headers, HSTACK(&quot;Items&quot;, &quot;Row #&quot;, &quot;Column #&quot;, &quot;Address&quot;), data_arr, HSTACK(items_arr, rows, cols, addr), VSTACK(headers, data_arr)))"/>
+  <NamedRange ss:Name="I2M"
+   ss:RefersTo="=LAMBDA(arr,row,col, INDEX(arr, MATCH(row, CHOOSECOLS(arr, 1), 0), MATCH(col, CHOOSEROWS(arr, 1), 0)))"/>
   <NamedRange ss:Name="IFBLANK"
    ss:RefersTo="=LAMBDA(value,value_if_blank, IF(ISBLANK(value), value_if_blank, value))"/>
+  <NamedRange ss:Name="IFOMITTED"
+   ss:RefersTo="=LAMBDA(value,value_if_omitted, IF(ISOMITTED(value), value_if_omitted, value))"/>
+  <NamedRange ss:Name="IndMatch"
+   ss:RefersTo="=LAMBDA(Input1,Input2, LET(&#10;   \\LambdaName, &quot;IndMatch&quot;,&#10;   \\CommandName, &quot;Indirect Match Lookup&quot;,&#10;   _Step1, SUBSTITUTE(Input1, &quot; &quot;, &quot;_&quot;),&#10;   _Step2, SUBSTITUTE(Input2, &quot; &quot;, &quot;_&quot;),&#10;   _Result, INDIRECT(_Step1)  INDIRECT(_Step2),&#10;   _Result&#10;))"/>
   <NamedRange ss:Name="IsInList_byErikOehm"
    ss:RefersTo="=LAMBDA(array,list,LET(\\LambdaName, &quot;IsInList&quot;, MAP(array, LAMBDA(x, OR(list = x)))))"/>
+  <NamedRange ss:Name="ISNONZERO"
+   ss:RefersTo="=LAMBDA(x, IF(x = 0, FALSE(), TRUE()))"/>
   <NamedRange ss:Name="Letters"
    ss:RefersTo="=LAMBDA([Upp], LET(&#10;   \\LambdaName, &quot;Letters&quot;,&#10;   \\CommandName, &quot;Creates a list of letters&quot;,&#10;   ABC, CHAR(SEQUENCE(26) + 64),&#10;   IF((Upp = 1) + ISOMITTED((Upp)), ABC, LOWER(ABC))&#10;))"/>
+  <NamedRange ss:Name="LISTOFFSET"
+   ss:RefersTo="=LAMBDA(array,curr,offset,booLoop, LET(tarr, IF(ROWS(array) &gt; 1, array, TRANSPOSE(array)), cnt, ROWS(tarr), off, IF(ABS(offset) &gt; cnt, SIGN(offset) * (MOD(ABS(offset) + 1, cnt) - 1), offset), idx, IF(OR(curr + off &lt; 1, curr + off &gt; cnt), IF(booLoop, IF(curr + off &lt; 1, cnt + curr + off, curr + off - cnt), 0), curr + off), return, IF(idx = 0, 0, INDEX(tarr, idx)), return))"/>
+  <NamedRange ss:Name="LkpSum"
+   ss:RefersTo="=LAMBDA(values,lkpin,lkpout, LET(&#10;   \\LambdaName, &quot;LkpSum&quot;,&#10;   \\CommandName, &quot;Sum Lookup by Row&quot;,&#10;   BYROW(XLOOKUP(values, lkpin, lkpout), SUM)&#10;))"/>
+  <NamedRange ss:Name="MAXLOOKUP"
+   ss:RefersTo="=LAMBDA(lookup_array,return_array,[return_type], IF(OR(return_type = 1, ISOMITTED(return_type)), XLOOKUP(MAX(lookup_array), lookup_array, return_array), XLOOKUP(MIN(lookup_array), lookup_array, return_array)))"/>
   <NamedRange ss:Name="MinMax_byJaqKennedy"
    ss:RefersTo="=LAMBDA(Range,LET(\\LambdaName, &quot;MinMax&quot;, \\CommandName, &quot;Get Min and Max of Range&quot;, _GetMin, MIN(Range), _GetMax, MAX(Range), _MinMax, VSTACK(_GetMin, _GetMax), _MinMax))"/>
+  <NamedRange ss:Name="MODESUPER"
+   ss:RefersTo="=LAMBDA(rng, LET(u, TOCOL(UNIQUE(rng), 3), TAKE(SORT(HSTACK(u, COUNTIF(rng, u)), 2, -1), 1)))"/>
+  <NamedRange ss:Name="MODTEXT"
+   ss:RefersTo="=LAMBDA(letter,shift, UNICHAR(MOD(UNICODE(UPPER(letter)) + UPPER(shift) - 65, 26) + 65))"/>
+  <NamedRange ss:Name="NTHINSTANCE"
+   ss:RefersTo="=LAMBDA(text,find,number, FIND(CHAR(160), SUBSTITUTE(text, find, CHAR(160), number)))"/>
+  <NamedRange ss:Name="Permutations"
+   ss:RefersTo="=LAMBDA(array, LET(k, COUNTA(array), k))"/>
+  <NamedRange ss:Name="PRODUCTIF"
+   ss:RefersTo="=LAMBDA(values,condition, REDUCE(1, values, LAMBDA(a,b, IF(condition(b), a * b, a))))"/>
+  <NamedRange ss:Name="PYTHAG" ss:RefersTo="=LAMBDA(a,b, SQRT((a * a) + (b * b)))"/>
+  <NamedRange ss:Name="RATEANNUALTOMONTHLY"
+   ss:RefersTo="=LAMBDA(rate,periods, (1 + rate) ^ (1 / periods) - 1)"/>
+  <NamedRange ss:Name="RATEMONTHLYTOANNUAL"
+   ss:RefersTo="=LAMBDA(rate,periods, (1 + rate) ^ periods - 1)"/>
+  <NamedRange ss:Name="REVERSE_H"
+   ss:RefersTo="=LAMBDA(array, LET(l, COUNTA(TAKE(array, 1)), s, SEQUENCE(, l), SORTBY(array, s, -1)))"/>
+  <NamedRange ss:Name="REVERSE_V"
+   ss:RefersTo="=LAMBDA(array, LET(l, COUNTA(TAKE(array, , 1)), s, SEQUENCE(l), SORTBY(array, s, -1)))"/>
   <NamedRange ss:Name="RightAlignedArray_byJaqKennedy"
    ss:RefersTo="=LAMBDA(input,LET(\\LambdaName, &quot;RightAlignedArray&quot;, \\CommandName, &quot;Align array to right&quot;, \\Description, &quot;Aligns array to the right with blanks to left&quot;, \\Source, &quot;Jaq Kennedy&quot;, _ColsByRow, BYROW(input, COUNT), _Rows, ROWS(input), _Cols, COLUMNS(input), _ColIndex, IF(MOD(SEQUENCE(_Rows, _Cols) - 1, _Cols) + 1 - _Cols + _ColsByRow &lt;= 0, -1, MOD(SEQUENCE(_Rows, _Cols) - 1, _Cols) + 1 - _Cols + _ColsByRow), _RowIndex, SEQUENCE(_Rows), _Result, IFERROR(INDEX(input, _RowIndex, _ColIndex), &quot;&quot;), _Result))"/>
+  <NamedRange ss:Name="ROLL"
+   ss:RefersTo="=LAMBDA(arr,[horizontal],[vertical], LET(horizontal, IF(ISOMITTED(horizontal), 0, horizontal), vertical, IF(ISOMITTED(vertical), 0, vertical), width, COUNT(TAKE(arr, 1)), height, COUNT(TAKE(arr, , 1)), horizontal_mod, IF(ABS(horizontal) &gt; width, MOD(horizontal, width), horizontal), vertical_mod, IF(ABS(vertical) &gt; height, MOD(vertical, height), vertical), h_fixed, IF(horizontal_mod &lt; 0, width + horizontal_mod, horizontal_mod), v_fixed, IF(vertical_mod &lt; 0, height + vertical_mod, vertical_mod), r, IF(horizontal_mod &lt; 0, width - (h_fixed), width - h_fixed), u, IF(vertical_mod &lt; 0, height - (v_fixed), height - v_fixed), lr_roll, IF(OR(h_fixed = 0, h_fixed = width), arr, HSTACK(TAKE(arr, , -h_fixed), TAKE(arr, , r))), final_roll, IF(OR(v_fixed = 0, v_fixed = height), lr_roll, VSTACK(TAKE(lr_roll, -v_fixed), TAKE(lr_roll, u))), final_roll))"/>
+  <NamedRange ss:Name="ROLL_SINGLE"
+   ss:RefersTo="=LAMBDA(arrr,r, LET(arr, TOCOL(arrr), size, COUNT(arr), rr, MOD(r, size), leng, COUNTA(TAKE(arrr, 1)), IF(r = 0, arrr, WRAPROWS(VSTACK(TAKE(arr, -rr), TAKE(arr, size - rr)), leng))))"/>
   <NamedRange ss:Name="ROWCOL"
    ss:RefersTo="=LAMBDA(cell_coordinates,TEXTSPLIT(ROW(INDIRECT(cell_coordinates)) &amp; &quot;;&quot; &amp; COLUMN(INDIRECT(cell_coordinates)), &quot;;&quot;))"/>
+  <NamedRange ss:Name="SET"
+   ss:RefersTo="=LAMBDA(array,val,[posx],[posy], LET(posxx, IF(ISOMITTED(posx), 1, posx), posyy, IF(ISOMITTED(posy), 1, posy), arrr, TOCOL(array), ax, COUNTA(TAKE(array, , 1)), ay, COUNTA(TAKE(array, 1)), pos, (ay * posxx) - ay + posyy, a, TAKE(arrr, pos - 1), b, TAKE(arrr, -COUNTA(arrr) + pos), c, IF(AND(posxx = 1, posyy = 1), VSTACK(val, b), IF(AND(posx = ax, posy = ay), VSTACK(a, val), IF(OR(posx &gt; ax, posy &gt; ay), NA(), VSTACK(a, val, b)))), WRAPROWS(c, ay)))"/>
+  <NamedRange ss:Name="SHIFT"
+   ss:RefersTo="=LAMBDA(cell_coordinates,horizontal_moves,vertical_moves, ADDRESS(ROW(INDIRECT(cell_coordinates)) + vertical_moves, COLUMN(INDIRECT(cell_coordinates)) + horizontal_moves, 4, 1))"/>
+  <NamedRange ss:Name="SHIFT_OOB"
+   ss:RefersTo="=LAMBDA(cell_coordinates,horizontal_moves,vertical_moves, ADDRESS(IF(ROW(INDIRECT(cell_coordinates)) + horizontal_moves &lt; 1, 1, ROW(INDIRECT(cell_coordinates)) + horizontal_moves), IF(COLUMN(INDIRECT(cell_coordinates)) + vertical_moves &lt; 1, 1, COLUMN(INDIRECT(cell_coordinates)) + vertical_moves), 4, 1))"/>
+  <NamedRange ss:Name="TEXTBETWEEN"
+   ss:RefersTo="=LAMBDA(text,start,end, TEXTAFTER(TEXTBEFORE(text, end), start))"/>
+  <NamedRange ss:Name="Thunk" ss:RefersTo="=LAMBDA(x, LAMBDA(x))"/>
   <NamedRange ss:Name="XLOOKUP2D_byBendeLeon"
    ss:RefersTo="=LAMBDA(DataSource,RLU,CLU,[RowArray],[ColumnArray],[MatchMode],[SearchMode],[IfNotFound], LET(&#10;   \\LambdaName, &quot;XLOOKUP2D_byBendeLeon&quot;,&#10;   \\CommandName, &quot;2D lookup&quot;,&#10;   \\Source, &quot;Ben de Leon&quot;,&#10;   RCInc, IF(ISOMITTED(RowArray), 1, 0) + IF(ISOMITTED(RowArray), 2, 0),&#10;   UpdatedDataSource, CHOOSE(&#10;      RCInc + 1,&#10;      DataSource,&#10;      DROP(DataSource, , 1),&#10;      DROP(DataSource, 1),&#10;      DROP(DataSource, 1, 1)&#10;   ),&#10;   IFERROR(&#10;      INDEX(&#10;         UpdatedDataSource,&#10;         XMATCH(&#10;            RLU,&#10;            IF(&#10;               ISOMITTED(RowArray),&#10;               DROP(TAKE(DataSource, , 1), 1),&#10;               TAKE(RowArray, , 1)&#10;            ),&#10;            IF(ISOMITTED(MatchMode), 0, MatchMode),&#10;            IF(ISOMITTED(SearchMode), 1, SearchMode)&#10;         ),&#10;         XMATCH(&#10;            CLU,&#10;            IF(&#10;               ISOMITTED(ColumnArray),&#10;               DROP(TAKE(DataSource, 1), , 1),&#10;               TAKE(ColumnArray, 1)&#10;            ),&#10;            IF(ISOMITTED(MatchMode), 0, MatchMode),&#10;            IF(ISOMITTED(SearchMode), 1, SearchMode)&#10;         )&#10;      ),&#10;      IF(ISOMITTED(IfNotFound), NA(), IfNotFound)&#10;   )&#10;))"/>
   <NamedRange ss:Name="XMOD_byJaqKennedy"
    ss:RefersTo="=LAMBDA(value,divisor,LET(\\LambdaName, &quot;XMOD&quot;, \\CommandName, &quot;MOD with max value&quot;, \\Description, &quot;Returns the MOD of a value where the maximum value returns the divisor instead of 0&quot;, \\Source, &quot;Jaq Kennedy&quot;, MOD(value - 1, divisor) + 1))"/>
+  <NamedRange ss:Name="YOUAREHERE"
+   ss:RefersTo="=LAMBDA(cell,[sheetname], IF(ISOMITTED(sheetname), ADDRESS(ROW(cell), COLUMN(cell), 4, TRUE), ADDRESS(ROW(cell), COLUMN(cell), 4, TRUE, sheetname)))"/>
  </Names>
  <Worksheet ss:Name="Lambdas List">
-  <Table ss:ExpandedColumnCount="21" ss:ExpandedRowCount="42"
-   ss:DefaultColumnWidth="88" ss:DefaultRowHeight="19.5">
-   <Column ss:Width="287.5"/>
-   <Column ss:AutoFitWidth="0" ss:Width="24.5"/>
-   <Column ss:Width="341.5"/>
-   <Column ss:Width="127" ss:Span="1"/>
-   <Column ss:Index="6" ss:Width="186"/>
-   <Column ss:Width="191.5"/>
-   <Column ss:Width="80.5"/>
-   <Column ss:Width="89"/>
-   <Column ss:Width="73"/>
-   <Column ss:Width="17.5" ss:Span="3"/>
-   <Column ss:Index="15" ss:Width="31.5"/>
-   <Column ss:Width="37"/>
-   <Column ss:Width="43"/>
-   <Column ss:Width="41.5"/>
-   <Column ss:Width="17.5" ss:Span="2"/>
+  <Table ss:ExpandedColumnCount="23" ss:ExpandedRowCount="95"
+   ss:DefaultColumnWidth="90" ss:DefaultRowHeight="19.5">
+   <Column ss:Width="280.5"/>
+   <Column ss:AutoFitWidth="0" ss:Width="24"/>
+   <Column ss:Width="333"/>
+   <Column ss:Width="123.75" ss:Span="1"/>
+   <Column ss:Index="6" ss:Width="181.5"/>
+   <Column ss:Width="186.75"/>
+   <Column ss:Width="78.75"/>
+   <Column ss:Width="87"/>
+   <Column ss:Width="71.25"/>
+   <Column ss:Width="17.25" ss:Span="3"/>
+   <Column ss:Index="15" ss:Width="30.75"/>
+   <Column ss:Width="50.25"/>
+   <Column ss:Width="42"/>
+   <Column ss:Width="40.5"/>
+   <Column ss:Width="17.25" ss:Span="2"/>
+   <Column ss:Index="23" ss:Width="257.25"/>
    <Row>
     <Cell ss:StyleID="s18"><Data ss:Type="String">refresh this UDF to see current list</Data></Cell>
     <Cell ss:Index="3" ss:StyleID="s18"><Data ss:Type="String">List of lambdas included with Comp Bot</Data></Cell>
    </Row>
-   <Row ss:Height="20">
-    <Cell ss:StyleID="s22"><Data ss:Type="String">Actual Lambdas List (UDF)</Data></Cell>
-    <Cell ss:StyleID="s22"/>
-    <Cell ss:StyleID="s22"><Data ss:Type="String">Lambdas Listed in Info &amp; Examples</Data></Cell>
-    <Cell ss:StyleID="s22"/>
-    <Cell ss:StyleID="s22"/>
-    <Cell ss:StyleID="s22"/>
-    <Cell ss:StyleID="s22"/>
-    <Cell ss:StyleID="s22"/>
-    <Cell ss:StyleID="s22"/>
-    <Cell ss:StyleID="s22"/>
-    <Cell ss:StyleID="s22"/>
-    <Cell ss:StyleID="s22"/>
-    <Cell ss:StyleID="s22"/>
-    <Cell ss:StyleID="s22"/>
-    <Cell ss:StyleID="s22"/>
-    <Cell ss:StyleID="s22"/>
-    <Cell ss:StyleID="s22"/>
-    <Cell ss:StyleID="s22"/>
-    <Cell ss:StyleID="s22"/>
-    <Cell ss:StyleID="s22"/>
-    <Cell ss:StyleID="s22"/>
+   <Row ss:Height="21">
+    <Cell ss:StyleID="s23"><Data ss:Type="String">Actual Lambdas List (UDF)</Data></Cell>
+    <Cell ss:StyleID="s23"/>
+    <Cell ss:StyleID="s23"><Data ss:Type="String">Lambdas Listed in Info &amp; Examples</Data></Cell>
+    <Cell ss:StyleID="s23"/>
+    <Cell ss:StyleID="s23"/>
+    <Cell ss:StyleID="s23"/>
+    <Cell ss:StyleID="s23"/>
+    <Cell ss:StyleID="s23"/>
+    <Cell ss:StyleID="s23"/>
+    <Cell ss:StyleID="s23"/>
+    <Cell ss:StyleID="s23"/>
+    <Cell ss:StyleID="s23"/>
+    <Cell ss:StyleID="s23"/>
+    <Cell ss:StyleID="s23"/>
+    <Cell ss:StyleID="s23"/>
+    <Cell ss:StyleID="s23"/>
+    <Cell ss:StyleID="s23"/>
+    <Cell ss:StyleID="s23"/>
+    <Cell ss:StyleID="s23"/>
+    <Cell ss:StyleID="s23"/>
+    <Cell ss:StyleID="s23"/>
    </Row>
-   <Row ss:Height="20">
-    <Cell ss:Formula="=COUNTA(R[2]C#)"><Data ss:Type="Number">30</Data></Cell>
+   <Row ss:Height="20.25">
+    <Cell ss:Formula="=COUNTA(R[2]C#)"><Data ss:Type="Number">83</Data></Cell>
+    <Cell ss:StyleID="s29"/>
+    <Cell ss:Formula="=COUNTA(R[2]C#)"><Data ss:Type="Number">31</Data></Cell>
+   </Row>
+   <Row ss:Height="20.25">
+    <Cell ss:StyleID="s28"><Data ss:Type="String">Full Lambda List</Data></Cell>
+    <Cell ss:StyleID="s30"><Data ss:Type="String"> </Data></Cell>
+    <Cell ss:StyleID="s28"><Data ss:Type="String">Documented Lambdas</Data></Cell>
+    <Cell ss:StyleID="s28"><Data ss:Type="String">Inputs</Data></Cell>
     <Cell ss:StyleID="s28"/>
-    <Cell ss:Formula="=COUNTA(R[2]C#)"><Data ss:Type="Number">30</Data></Cell>
+    <Cell ss:StyleID="s28"><Data ss:Type="String">Notes</Data></Cell>
+    <Cell ss:StyleID="s28"><Data ss:Type="String">Output</Data></Cell>
+    <Cell ss:StyleID="s28"/>
+    <Cell ss:StyleID="s28"/>
+    <Cell ss:StyleID="s28"/>
+    <Cell ss:StyleID="s28"/>
+    <Cell ss:StyleID="s28"/>
+    <Cell ss:StyleID="s28"/>
+    <Cell ss:StyleID="s28"/>
+    <Cell ss:StyleID="s28"/>
+    <Cell ss:StyleID="s28"/>
+    <Cell ss:StyleID="s28"/>
+    <Cell ss:StyleID="s28"/>
+    <Cell ss:StyleID="s28"/>
+    <Cell ss:StyleID="s28"/>
+    <Cell ss:StyleID="s28"><Data ss:Type="String"> </Data></Cell>
+    <Cell ss:Index="23" ss:StyleID="s28"><Data ss:Type="String">Unlisted Lambdas</Data></Cell>
    </Row>
-   <Row ss:Height="20">
-    <Cell ss:StyleID="s27"><Data ss:Type="String">Full Lambda List</Data></Cell>
-    <Cell ss:StyleID="s29"><Data ss:Type="String"> </Data></Cell>
-    <Cell ss:StyleID="s27"><Data ss:Type="String">Documented Lambdas</Data></Cell>
-    <Cell ss:StyleID="s27"><Data ss:Type="String">Inputs</Data></Cell>
-    <Cell ss:StyleID="s27"/>
-    <Cell ss:StyleID="s27"><Data ss:Type="String">Notes</Data></Cell>
-    <Cell ss:StyleID="s27"><Data ss:Type="String">Output</Data></Cell>
-    <Cell ss:StyleID="s27"/>
-    <Cell ss:StyleID="s27"/>
-    <Cell ss:StyleID="s27"/>
-    <Cell ss:StyleID="s27"/>
-    <Cell ss:StyleID="s27"/>
-    <Cell ss:StyleID="s27"/>
-    <Cell ss:StyleID="s27"/>
-    <Cell ss:StyleID="s27"/>
-    <Cell ss:StyleID="s27"/>
-    <Cell ss:StyleID="s27"/>
-    <Cell ss:StyleID="s27"/>
-    <Cell ss:StyleID="s27"/>
-    <Cell ss:StyleID="s27"/>
-    <Cell ss:StyleID="s27"><Data ss:Type="String"> </Data></Cell>
-   </Row>
-   <Row ss:Height="20">
-    <Cell><Data ss:Type="String">ADDRESSES_byDiarmuidEarly</Data></Cell>
-    <Cell ss:Index="3" ss:ArrayRange="RC:R[29]C" ss:Formula="=#REF!"><Data
+   <Row ss:Height="20.25">
+    <Cell><Data ss:Type="String">_distFrom</Data></Cell>
+    <Cell ss:Index="3" ss:ArrayRange="RC:R[30]C" ss:Formula="=#REF!"><Data
       ss:Type="String">EXTRACTCHAR_byHarryGross</Data></Cell>
     <Cell><Data ss:Type="String">Happy 45 ^ 2!</Data></Cell>
     <Cell ss:Index="7" ss:ArrayRange="RC:RC[12]"
@@ -602,27 +690,37 @@
     <Cell><Data ss:Type="String"> </Data></Cell>
     <Cell><Data ss:Type="String">2</Data></Cell>
     <Cell><Data ss:Type="String">!</Data></Cell>
+    <Cell ss:Index="23" ss:ArrayRange="RC:R[51]C"
+     ss:Formula="=FILTER(RC[-22]#,NOT(IsInList_byErikOehm(RC[-22]#,RC[-20]#)))"><Data
+      ss:Type="String">_distFrom</Data></Cell>
    </Row>
    <Row>
-    <Cell><Data ss:Type="String">BiRow_byPeterBartholomew</Data></Cell>
+    <Cell><Data ss:Type="String">A2C</Data></Cell>
     <Cell ss:Index="3"><Data ss:Type="String">EXTRACTLETTERS_byHarryGross</Data></Cell>
     <Cell><Data ss:Type="String">Happy 45 ^ 2!</Data></Cell>
+    <Cell ss:Index="23"><Data ss:Type="String">A2C</Data></Cell>
+   </Row>
+   <Row ss:Height="20.25">
+    <Cell><Data ss:Type="String">A2R</Data></Cell>
+    <Cell ss:Index="3" ss:StyleID="s22"><Data ss:Type="String">EXTRACTNUMBERS_byHarryGross</Data></Cell>
     <Cell ss:Index="7" ss:ArrayRange="RC:RC[1]"
-     ss:Formula="=EXTRACTNUMBERS_byHarryGross(RC[-3])"><Data ss:Type="String">45</Data></Cell>
+     ss:Formula="=EXTRACTNUMBERS_byHarryGross(R[-1]C[-3])"><Data ss:Type="String">45</Data></Cell>
     <Cell><Data ss:Type="String">2</Data></Cell>
+    <Cell ss:Index="23"><Data ss:Type="String">A2R</Data></Cell>
    </Row>
    <Row>
-    <Cell><Data ss:Type="String">CaseInputs</Data></Cell>
-    <Cell ss:Index="3"><Data ss:Type="String">EXTRACTNUMBERS_byHarryGross</Data></Cell>
+    <Cell><Data ss:Type="String">ADDRESSES_byDiarmuidEarly</Data></Cell>
+    <Cell ss:Index="3"><Data ss:Type="String">ADDRESSES_byDiarmuidEarly</Data></Cell>
     <Cell><Data ss:Type="String">This cell</Data></Cell>
     <Cell><Data ss:Type="String">And this cell</Data></Cell>
     <Cell ss:Index="7" ss:ArrayRange="RC:RC[1]"
-     ss:Formula="=ADDRESSES_byDiarmuidEarly(RC[-3]:RC[-2])"><Data ss:Type="String">E10</Data></Cell>
-    <Cell><Data ss:Type="String">F10</Data></Cell>
+     ss:Formula="=ADDRESSES_byDiarmuidEarly(RC[-3]:RC[-2])"><Data ss:Type="String">E11</Data></Cell>
+    <Cell><Data ss:Type="String">F11</Data></Cell>
+    <Cell ss:Index="23"><Data ss:Type="String">AMATCH</Data></Cell>
    </Row>
-   <Row>
-    <Cell><Data ss:Type="String">CellsAround_byBendeLeon</Data></Cell>
-    <Cell ss:Index="3"><Data ss:Type="String">ADDRESSES_byDiarmuidEarly</Data></Cell>
+   <Row ss:Height="20.25">
+    <Cell><Data ss:Type="String">AMATCH</Data></Cell>
+    <Cell ss:Index="3" ss:StyleID="s22"><Data ss:Type="String">GRIDTOCOL_byLiannaGerrish</Data></Cell>
     <Cell><Data ss:Type="String">A</Data></Cell>
     <Cell><Data ss:Type="String">B</Data></Cell>
     <Cell ss:Index="7"><Data ss:Type="String">Items</Data></Cell>
@@ -630,214 +728,481 @@
     <Cell><Data ss:Type="String">Column #</Data></Cell>
     <Cell><Data ss:Type="String">Address</Data></Cell>
     <Cell><Data ss:Type="String">RCRef</Data></Cell>
+    <Cell ss:Index="23"><Data ss:Type="String">AMATCHADD</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">AMATCHADD</Data></Cell>
+    <Cell ss:Index="3"><Data ss:Type="String">CaseInputs</Data></Cell>
+    <Cell ss:Index="6" ss:StyleID="s18"><Data ss:Type="String">Requires 'Case' sheet</Data></Cell>
+    <Cell><Data ss:Type="String">A</Data></Cell>
+    <Cell><Data ss:Type="Number">12</Data></Cell>
+    <Cell><Data ss:Type="Number">5</Data></Cell>
+    <Cell><Data ss:Type="String">E12</Data></Cell>
+    <Cell><Data ss:Type="Number">12001005</Data></Cell>
+    <Cell ss:Index="23"><Data ss:Type="String">APPENDCOLS</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">APPENDCOLS</Data></Cell>
+    <Cell ss:Index="3"><Data ss:Type="String">LkpAdd</Data></Cell>
+    <Cell><Data ss:Type="String">H14</Data></Cell>
+    <Cell ss:Index="7"><Data ss:Type="String">B</Data></Cell>
+    <Cell><Data ss:Type="Number">12</Data></Cell>
+    <Cell><Data ss:Type="Number">6</Data></Cell>
+    <Cell><Data ss:Type="String">F12</Data></Cell>
+    <Cell><Data ss:Type="Number">12001006</Data></Cell>
+    <Cell ss:Index="23"><Data ss:Type="String">APPENDROWS</Data></Cell>
+   </Row>
+   <Row ss:Height="20.25">
+    <Cell><Data ss:Type="String">APPENDROWS</Data></Cell>
+    <Cell ss:Index="3" ss:StyleID="s22"><Data ss:Type="String">LkpRC</Data></Cell>
+    <Cell><Data ss:Type="Number">13</Data></Cell>
+    <Cell><Data ss:Type="Number">9</Data></Cell>
+    <Cell ss:Index="23"><Data ss:Type="String">ARROWSHIFT</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">ARROWSHIFT</Data></Cell>
+    <Cell ss:Index="3"><Data ss:Type="String">IsInList_byErikOehm</Data></Cell>
+    <Cell><Data ss:Type="Number">14</Data></Cell>
+    <Cell><Data ss:Type="Number">9</Data></Cell>
+    <Cell ss:Index="7" ss:ArrayRange="RC:R[82]C"
+     ss:Formula="=IsInList_byErikOehm(R[-8]C[-6]#,R[-8]C[-4]#)"><Data
+      ss:Type="Boolean">0</Data></Cell>
+    <Cell><Data ss:Type="String">None found</Data></Cell>
+    <Cell ss:Index="23"><Data ss:Type="String">ARROWTABLE</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">ARROWTABLE</Data></Cell>
+    <Cell ss:Index="3"><Data ss:Type="String">FilterArray_byErikOehm</Data></Cell>
+    <Cell ss:Index="7"><Data ss:Type="Boolean">0</Data></Cell>
+    <Cell ss:Index="23"><Data ss:Type="String">BLOCK</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">BiRow_byPeterBartholomew</Data></Cell>
+    <Cell ss:Index="3"><Data ss:Type="String">Letters</Data></Cell>
+    <Cell><Data ss:Type="Number">1</Data></Cell>
+    <Cell ss:Index="6" ss:StyleID="s18"><Data ss:Type="String">0/1 for lower/upper</Data></Cell>
+    <Cell><Data ss:Type="Boolean">0</Data></Cell>
+    <Cell ss:Index="14" ss:ArrayRange="RC:R[25]C" ss:Formula="=Letters(RC[-10])"><Data
+      ss:Type="String">A</Data></Cell>
+    <Cell ss:Index="23"><Data ss:Type="String">CR2A</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">BLOCK</Data></Cell>
+    <Cell ss:Index="3"><Data ss:Type="String">CountChar_byLiannaGerrish</Data></Cell>
+    <Cell ss:Index="7"><Data ss:Type="Boolean">1</Data></Cell>
+    <Cell ss:ArrayRange="RC"
+     ss:Formula="=CountChar_byLiannaGerrish(R[-9]C[-5],&quot;S&quot;)"><Data
+      ss:Type="Number">1</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">B</Data></Cell>
+    <Cell ss:Index="23"><Data ss:Type="String">DATEHEADERS</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">CaseInputs</Data></Cell>
+    <Cell ss:Index="3"><Data ss:Type="String">XMOD_byJaqKennedy</Data></Cell>
+    <Cell ss:Formula="=CODE(R[-1]C[10])-(CODE(R[-2]C[10])-1)+47"><Data
+      ss:Type="Number">49</Data></Cell>
+    <Cell><Data ss:Type="Number">26</Data></Cell>
+    <Cell ss:Index="7"><Data ss:Type="Boolean">0</Data></Cell>
+    <Cell ss:ArrayRange="RC" ss:Formula="=XMOD_byJaqKennedy(RC[-4],RC[-3])"><Data
+      ss:Type="Number">23</Data></Cell>
+    <Cell ss:Formula="=CHAR(RC[-1]+CODE(R[-2]C[5])-1)"><Data ss:Type="String">W</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">C</Data></Cell>
+    <Cell ss:Index="23"><Data ss:Type="String">DAYSINPERIOD</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">CellsAround_byBendeLeon</Data></Cell>
+    <Cell ss:Index="3"><Data ss:Type="String">RightAlignedArray_byJaqKennedy</Data></Cell>
+    <Cell ss:Index="7"><Data ss:Type="Boolean">0</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">D</Data></Cell>
+    <Cell ss:Index="23"><Data ss:Type="String">DICE</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">COL</Data></Cell>
-    <Cell ss:Index="3"><Data ss:Type="String">GRIDTOCOL_byLiannaGerrish</Data></Cell>
-    <Cell ss:Index="6" ss:StyleID="s18"><Data ss:Type="String">Requires 'Case' sheet</Data></Cell>
-    <Cell><Data ss:Type="String">A</Data></Cell>
-    <Cell><Data ss:Type="Number">11</Data></Cell>
-    <Cell><Data ss:Type="Number">5</Data></Cell>
-    <Cell><Data ss:Type="String">E11</Data></Cell>
-    <Cell><Data ss:Type="Number">11001005</Data></Cell>
-   </Row>
-   <Row>
-    <Cell><Data ss:Type="String">COLROW</Data></Cell>
-    <Cell ss:Index="3"><Data ss:Type="String">CaseInputs</Data></Cell>
-    <Cell><Data ss:Type="String">H13</Data></Cell>
-    <Cell ss:Index="7"><Data ss:Type="String">B</Data></Cell>
-    <Cell><Data ss:Type="Number">11</Data></Cell>
-    <Cell><Data ss:Type="Number">6</Data></Cell>
-    <Cell><Data ss:Type="String">F11</Data></Cell>
-    <Cell><Data ss:Type="Number">11001006</Data></Cell>
-   </Row>
-   <Row>
-    <Cell><Data ss:Type="String">CountChar_byLiannaGerrish</Data></Cell>
-    <Cell ss:Index="3"><Data ss:Type="String">LkpAdd</Data></Cell>
-    <Cell><Data ss:Type="Number">13</Data></Cell>
-    <Cell><Data ss:Type="Number">8</Data></Cell>
-   </Row>
-   <Row>
-    <Cell><Data ss:Type="String">DiffByRow_byJaqKennedy</Data></Cell>
-    <Cell ss:Index="3"><Data ss:Type="String">LkpRC</Data></Cell>
-   </Row>
-   <Row>
-    <Cell><Data ss:Type="String">DROPCOL_byLiannaGerrish</Data></Cell>
-    <Cell ss:Index="3"><Data ss:Type="String">IsInList_byErikOehm</Data></Cell>
-    <Cell ss:Index="7" ss:ArrayRange="RC:R[29]C"
-     ss:Formula="=IsInList_byErikOehm(R[-8]C[-6]#,R[-8]C[-4]#)"><Data
-      ss:Type="Boolean">1</Data></Cell>
-    <Cell><Data ss:Type="String">None found</Data></Cell>
-   </Row>
-   <Row>
-    <Cell><Data ss:Type="String">EXTRACTCHAR_byHarryGross</Data></Cell>
-    <Cell ss:Index="3"><Data ss:Type="String">FilterArray_byErikOehm</Data></Cell>
-    <Cell><Data ss:Type="Number">1</Data></Cell>
-    <Cell ss:Index="6" ss:StyleID="s18"><Data ss:Type="String">0/1 for lower/upper</Data></Cell>
-    <Cell><Data ss:Type="Boolean">1</Data></Cell>
-    <Cell ss:Index="14" ss:ArrayRange="RC:R[25]C" ss:Formula="=Letters(RC[-10])"><Data
-      ss:Type="String">A</Data></Cell>
-   </Row>
-   <Row>
-    <Cell><Data ss:Type="String">EXTRACTLETTERS_byHarryGross</Data></Cell>
-    <Cell ss:Index="3"><Data ss:Type="String">Letters</Data></Cell>
-    <Cell ss:Index="7"><Data ss:Type="Boolean">1</Data></Cell>
-    <Cell ss:Index="14"><Data ss:Type="String">B</Data></Cell>
-    <Cell ss:Index="16" ss:ArrayRange="RC"
-     ss:Formula="=CountChar_byLiannaGerrish(R[-8]C[-13],&quot;S&quot;)"><Data
-      ss:Type="Number">1</Data></Cell>
-   </Row>
-   <Row>
-    <Cell><Data ss:Type="String">EXTRACTNUMBERS_byHarryGross</Data></Cell>
-    <Cell ss:Index="3"><Data ss:Type="String">CountChar_byLiannaGerrish</Data></Cell>
-    <Cell ss:Formula="=CODE(RC[10])-(CODE(R[-2]C[10])-1)+47"><Data ss:Type="Number">50</Data></Cell>
-    <Cell><Data ss:Type="Number">26</Data></Cell>
-    <Cell ss:Index="7"><Data ss:Type="Boolean">1</Data></Cell>
-    <Cell ss:Index="14"><Data ss:Type="String">C</Data></Cell>
-    <Cell ss:Index="16" ss:ArrayRange="RC"
-     ss:Formula="=XMOD_byJaqKennedy(RC[-12],RC[-11])"><Data ss:Type="Number">24</Data></Cell>
-    <Cell ss:Formula="=CHAR(RC[-1]+CODE(R[-2]C[-3])-1)"><Data ss:Type="String">X</Data></Cell>
-   </Row>
-   <Row>
-    <Cell><Data ss:Type="String">EZINDIRECT_byLiannaGerrish</Data></Cell>
-    <Cell ss:Index="3"><Data ss:Type="String">XMOD_byJaqKennedy</Data></Cell>
-    <Cell ss:Index="7"><Data ss:Type="Boolean">1</Data></Cell>
-    <Cell ss:Index="14"><Data ss:Type="String">D</Data></Cell>
-   </Row>
-   <Row>
-    <Cell><Data ss:Type="String">FilterArray_byErikOehm</Data></Cell>
-    <Cell ss:Index="3"><Data ss:Type="String">RightAlignedArray_byJaqKennedy</Data></Cell>
-    <Cell ss:Index="7"><Data ss:Type="Boolean">1</Data></Cell>
-    <Cell ss:Index="14"><Data ss:Type="String">E</Data></Cell>
-   </Row>
-   <Row>
-    <Cell><Data ss:Type="String">GRIDTOCOL_byLiannaGerrish</Data></Cell>
     <Cell ss:Index="3"><Data ss:Type="String">LkpRCByRow</Data></Cell>
     <Cell><Data ss:Type="Number">8</Data></Cell>
     <Cell><Data ss:Type="Number">9</Data></Cell>
-    <Cell ss:Index="7"><Data ss:Type="Boolean">1</Data></Cell>
+    <Cell ss:Index="7"><Data ss:Type="Boolean">0</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">E</Data></Cell>
+    <Cell ss:Index="23"><Data ss:Type="String">DIJKSTRA</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">COLROW</Data></Cell>
+    <Cell ss:Index="3"><Data ss:Type="String">IFBLANK</Data></Cell>
+    <Cell ss:Index="7"><Data ss:Type="Boolean">0</Data></Cell>
     <Cell ss:Index="14"><Data ss:Type="String">F</Data></Cell>
+    <Cell ss:Index="23"><Data ss:Type="String">DistFromCellArr</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">CountChar_byLiannaGerrish</Data></Cell>
+    <Cell ss:Index="3"><Data ss:Type="String">TDay_byJaqKennedy</Data></Cell>
+    <Cell ss:Index="7"><Data ss:Type="Boolean">0</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">G</Data></Cell>
+    <Cell ss:Index="23"><Data ss:Type="String">DROPCOL</Data></Cell>
+   </Row>
+   <Row ss:Height="20.25">
+    <Cell><Data ss:Type="String">CR2A</Data></Cell>
+    <Cell ss:Index="3" ss:StyleID="s22"><Data ss:Type="String">XLOOKUP2D_byBendeLeon</Data></Cell>
+    <Cell ss:Index="7"><Data ss:Type="Boolean">0</Data></Cell>
+    <Cell ss:ArrayRange="RC"
+     ss:Formula="=XLOOKUP2D_byBendeLeon(R[-17]C[-1]:R[-11]C[13],&quot;E11&quot;,&quot;a&quot;)"><Data
+      ss:Type="String">F11</Data></Cell>
+    <Cell ss:ArrayRange="RC"
+     ss:Formula="=XLOOKUP2D_byBendeLeon(R[-17]C[-2]:R[-11]C[12],&quot;Items&quot;,&quot;y&quot;)"><Data
+      ss:Type="String">RCRef</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">H</Data></Cell>
+    <Cell ss:Index="23"><Data ss:Type="String">GETDIST</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">DATEHEADERS</Data></Cell>
+    <Cell ss:Index="3"><Data ss:Type="String">LetterShift_byBendeLeon</Data></Cell>
+    <Cell ss:Index="7"><Data ss:Type="Boolean">1</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">I</Data></Cell>
+    <Cell ss:Index="23"><Data ss:Type="String">GETDIST_weighted</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">DAYSINPERIOD</Data></Cell>
+    <Cell ss:Index="3"><Data ss:Type="String">COLROW</Data></Cell>
+    <Cell ss:ArrayRange="RC:RC[1]" ss:Formula="=COLROW(R[-13]C)"><Data
+      ss:Type="String">8</Data></Cell>
+    <Cell><Data ss:Type="String">14</Data></Cell>
+    <Cell ss:Index="7"><Data ss:Type="Boolean">0</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">J</Data></Cell>
+    <Cell ss:Index="23"><Data ss:Type="String">GRIDTOCOL_ALL</Data></Cell>
+   </Row>
+   <Row ss:Height="20.25">
+    <Cell><Data ss:Type="String">DICE</Data></Cell>
+    <Cell ss:Index="3" ss:StyleID="s22"><Data ss:Type="String">ROWCOL</Data></Cell>
+    <Cell ss:ArrayRange="RC:RC[1]" ss:Formula="=ROWCOL(R[-14]C)"><Data
+      ss:Type="String">14</Data></Cell>
+    <Cell><Data ss:Type="String">8</Data></Cell>
+    <Cell ss:Index="7"><Data ss:Type="Boolean">1</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">K</Data></Cell>
+    <Cell ss:Index="23"><Data ss:Type="String">I2M</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">DiffByRow_byJaqKennedy</Data></Cell>
+    <Cell ss:Index="3"><Data ss:Type="String">ZigZag_byBendeLeon</Data></Cell>
+    <Cell ss:Index="7"><Data ss:Type="Boolean">1</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">L</Data></Cell>
+    <Cell ss:Index="23"><Data ss:Type="String">IFOMITTED</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">DIJKSTRA</Data></Cell>
+    <Cell ss:Index="3"><Data ss:Type="String">BiRow_byPeterBartholomew</Data></Cell>
+    <Cell ss:Index="7"><Data ss:Type="Boolean">1</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">M</Data></Cell>
+    <Cell ss:Index="23"><Data ss:Type="String">IndMatch</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">DistFromCellArr</Data></Cell>
+    <Cell ss:Index="3"><Data ss:Type="String">DROPCOL_byLiannaGerrish</Data></Cell>
+    <Cell ss:Index="7"><Data ss:Type="Boolean">1</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">N</Data></Cell>
+    <Cell ss:Index="23"><Data ss:Type="String">ISINRANGE</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">DROPCOL</Data></Cell>
+    <Cell ss:Index="3"><Data ss:Type="String">DiffByRow_byJaqKennedy</Data></Cell>
+    <Cell ss:Index="7"><Data ss:Type="Boolean">1</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">O</Data></Cell>
+    <Cell ss:Index="23"><Data ss:Type="String">ISNONZERO</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">DROPCOL_byLiannaGerrish</Data></Cell>
+    <Cell ss:Index="3"><Data ss:Type="String">TEXTREVERSE</Data></Cell>
+    <Cell ss:Index="7"><Data ss:Type="Boolean">0</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">P</Data></Cell>
+    <Cell ss:Index="23"><Data ss:Type="String">LISTOFFSET</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">EXTRACTCHAR_byHarryGross</Data></Cell>
+    <Cell ss:Index="3"><Data ss:Type="String">EZINDIRECT_byLiannaGerrish</Data></Cell>
+    <Cell ss:Index="7"><Data ss:Type="Boolean">0</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Q</Data></Cell>
+    <Cell ss:Index="23"><Data ss:Type="String">LkpSum</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">EXTRACTLETTERS_byHarryGross</Data></Cell>
+    <Cell ss:Index="3"><Data ss:Type="String">MinMax_byJaqKennedy</Data></Cell>
+    <Cell ss:Index="7"><Data ss:Type="Boolean">0</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">R</Data></Cell>
+    <Cell ss:Index="23"><Data ss:Type="String">MAXLOOKUP</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">EXTRACTNUMBERS_byHarryGross</Data></Cell>
+    <Cell ss:Index="3"><Data ss:Type="String">CellsAround_byBendeLeon</Data></Cell>
+    <Cell ss:Index="7"><Data ss:Type="Boolean">0</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">S</Data></Cell>
+    <Cell ss:Index="23"><Data ss:Type="String">MEGAREPLACE</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">EZINDIRECT_byLiannaGerrish</Data></Cell>
+    <Cell ss:Index="3"><Data ss:Type="String">COL</Data></Cell>
+    <Cell ss:Index="7"><Data ss:Type="Boolean">1</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">T</Data></Cell>
+    <Cell ss:Index="23"><Data ss:Type="String">MODESUPER</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">FilterArray_byErikOehm</Data></Cell>
+    <Cell ss:Index="3"><Data ss:Type="String">INTSECT</Data></Cell>
+    <Cell ss:Index="7"><Data ss:Type="Boolean">0</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">U</Data></Cell>
+    <Cell ss:Index="23"><Data ss:Type="String">MODTEXT</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">GETDIST</Data></Cell>
+    <Cell ss:Index="7"><Data ss:Type="Boolean">0</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">V</Data></Cell>
+    <Cell ss:Index="23"><Data ss:Type="String">NTHINSTANCE</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">GETDIST_weighted</Data></Cell>
+    <Cell ss:Index="7"><Data ss:Type="Boolean">0</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">W</Data></Cell>
+    <Cell ss:Index="23"><Data ss:Type="String">ONSAMEDIAGONAL</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">GRIDTOCOL_ALL</Data></Cell>
+    <Cell ss:Index="7"><Data ss:Type="Boolean">1</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">X</Data></Cell>
+    <Cell ss:Index="23"><Data ss:Type="String">Permutations</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">GRIDTOCOL_byLiannaGerrish</Data></Cell>
+    <Cell ss:Index="7"><Data ss:Type="Boolean">1</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Y</Data></Cell>
+    <Cell ss:Index="23"><Data ss:Type="String">PRODUCTIF</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">I2M</Data></Cell>
+    <Cell ss:Index="7"><Data ss:Type="Boolean">1</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Z</Data></Cell>
+    <Cell ss:Index="23"><Data ss:Type="String">PYTHAG</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">IFBLANK</Data></Cell>
-    <Cell ss:Index="3"><Data ss:Type="String">IFBLANK</Data></Cell>
-    <Cell><Data ss:Type="Number">13</Data></Cell>
-    <Cell><Data ss:Type="Number">8</Data></Cell>
     <Cell ss:Index="7"><Data ss:Type="Boolean">1</Data></Cell>
-    <Cell ss:Index="14"><Data ss:Type="String">G</Data></Cell>
+    <Cell ss:Index="23"><Data ss:Type="String">PYTHAGDIST</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">IFOMITTED</Data></Cell>
+    <Cell ss:Index="7"><Data ss:Type="Boolean">1</Data></Cell>
+    <Cell ss:Index="23"><Data ss:Type="String">RATEANNUALTOMONTHLY</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">IndMatch</Data></Cell>
+    <Cell ss:Index="7"><Data ss:Type="Boolean">1</Data></Cell>
+    <Cell ss:Index="23"><Data ss:Type="String">RATEMONTHLYTOANNUAL</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">INTSECT</Data></Cell>
+    <Cell ss:Index="7"><Data ss:Type="Boolean">0</Data></Cell>
+    <Cell ss:Index="23"><Data ss:Type="String">REVERSE_H</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">IsInList_byErikOehm</Data></Cell>
-    <Cell ss:Index="3"><Data ss:Type="String">TDay_byJaqKennedy</Data></Cell>
+    <Cell ss:Index="7"><Data ss:Type="Boolean">0</Data></Cell>
+    <Cell ss:Index="23"><Data ss:Type="String">REVERSE_V</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">ISINRANGE</Data></Cell>
+    <Cell ss:Index="7"><Data ss:Type="Boolean">0</Data></Cell>
+    <Cell ss:Index="23"><Data ss:Type="String">ROLL</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">ISNONZERO</Data></Cell>
     <Cell ss:Index="7"><Data ss:Type="Boolean">1</Data></Cell>
-    <Cell ss:Index="14"><Data ss:Type="String">H</Data></Cell>
-    <Cell ss:Index="16" ss:ArrayRange="RC"
-     ss:Formula="=XLOOKUP2D_byBendeLeon(R[-16]C[-9]:R[-10]C[5],&quot;E10&quot;,&quot;a&quot;)"><Data
-      ss:Type="String">F10</Data></Cell>
+    <Cell ss:Index="23"><Data ss:Type="String">ROLL_SINGLE</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">Letters</Data></Cell>
-    <Cell ss:Index="3"><Data ss:Type="String">XLOOKUP2D_byBendeLeon</Data></Cell>
-    <Cell ss:Index="7"><Data ss:Type="Boolean">1</Data></Cell>
-    <Cell ss:Index="14"><Data ss:Type="String">I</Data></Cell>
+    <Cell ss:Index="7"><Data ss:Type="Boolean">0</Data></Cell>
+    <Cell ss:Index="23"><Data ss:Type="String">SET</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">LetterShift_byBendeLeon</Data></Cell>
-    <Cell ss:Index="3"><Data ss:Type="String">LetterShift_byBendeLeon</Data></Cell>
     <Cell ss:Index="7"><Data ss:Type="Boolean">1</Data></Cell>
-    <Cell ss:Index="14"><Data ss:Type="String">J</Data></Cell>
+    <Cell ss:Index="23"><Data ss:Type="String">SHIFT</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">LISTOFFSET</Data></Cell>
+    <Cell ss:Index="7"><Data ss:Type="Boolean">0</Data></Cell>
+    <Cell ss:Index="23"><Data ss:Type="String">SHIFT_OOB</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">LkpAdd</Data></Cell>
-    <Cell ss:Index="3"><Data ss:Type="String">COLROW</Data></Cell>
-    <Cell ss:Index="7"><Data ss:Type="Boolean">1</Data></Cell>
-    <Cell ss:Index="14"><Data ss:Type="String">K</Data></Cell>
+    <Cell ss:Index="7"><Data ss:Type="Boolean">0</Data></Cell>
+    <Cell ss:Index="23"><Data ss:Type="String">SumDist</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">LkpRC</Data></Cell>
-    <Cell ss:Index="3"><Data ss:Type="String">ROWCOL</Data></Cell>
     <Cell ss:Index="7"><Data ss:Type="Boolean">1</Data></Cell>
-    <Cell ss:Index="14"><Data ss:Type="String">L</Data></Cell>
+    <Cell ss:Index="23"><Data ss:Type="String">SumDistFromStart</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">LkpRCByRow</Data></Cell>
-    <Cell ss:Index="3"><Data ss:Type="String">ZigZag_byBendeLeon</Data></Cell>
     <Cell ss:Index="7"><Data ss:Type="Boolean">1</Data></Cell>
-    <Cell ss:Index="14"><Data ss:Type="String">M</Data></Cell>
+    <Cell ss:Index="23"><Data ss:Type="String">SWAP</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">LkpSum</Data></Cell>
+    <Cell ss:Index="7"><Data ss:Type="Boolean">0</Data></Cell>
+    <Cell ss:Index="23"><Data ss:Type="String">TEXTBETWEEN</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">MAXLOOKUP</Data></Cell>
+    <Cell ss:Index="7"><Data ss:Type="Boolean">0</Data></Cell>
+    <Cell ss:Index="23"><Data ss:Type="String">Thunk</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">MEGAREPLACE</Data></Cell>
+    <Cell ss:Index="7"><Data ss:Type="Boolean">1</Data></Cell>
+    <Cell ss:Index="23"><Data ss:Type="String">YOUAREHERE</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">MinMax_byJaqKennedy</Data></Cell>
-    <Cell ss:Index="3"><Data ss:Type="String">BiRow_byPeterBartholomew</Data></Cell>
     <Cell ss:Index="7"><Data ss:Type="Boolean">1</Data></Cell>
-    <Cell ss:Index="14"><Data ss:Type="String">N</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">MODESUPER</Data></Cell>
+    <Cell ss:Index="7"><Data ss:Type="Boolean">0</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">MODTEXT</Data></Cell>
+    <Cell ss:Index="7"><Data ss:Type="Boolean">1</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">NTHINSTANCE</Data></Cell>
+    <Cell ss:Index="7"><Data ss:Type="Boolean">1</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">ONSAMEDIAGONAL</Data></Cell>
+    <Cell ss:Index="7"><Data ss:Type="Boolean">1</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">Permutations</Data></Cell>
+    <Cell ss:Index="7"><Data ss:Type="Boolean">0</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">PRODUCTIF</Data></Cell>
+    <Cell ss:Index="7"><Data ss:Type="Boolean">0</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">PYTHAG</Data></Cell>
+    <Cell ss:Index="7"><Data ss:Type="Boolean">0</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">PYTHAGDIST</Data></Cell>
+    <Cell ss:Index="7"><Data ss:Type="Boolean">1</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">RATEANNUALTOMONTHLY</Data></Cell>
+    <Cell ss:Index="7"><Data ss:Type="Boolean">0</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">RATEMONTHLYTOANNUAL</Data></Cell>
+    <Cell ss:Index="7"><Data ss:Type="Boolean">0</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">REVERSE_H</Data></Cell>
+    <Cell ss:Index="7"><Data ss:Type="Boolean">0</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">REVERSE_V</Data></Cell>
+    <Cell ss:Index="7"><Data ss:Type="Boolean">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">RightAlignedArray_byJaqKennedy</Data></Cell>
-    <Cell ss:Index="3"><Data ss:Type="String">DROPCOL_byLiannaGerrish</Data></Cell>
-    <Cell ss:Index="7"><Data ss:Type="Boolean">1</Data></Cell>
-    <Cell ss:Index="14"><Data ss:Type="String">O</Data></Cell>
+    <Cell ss:Index="7"><Data ss:Type="Boolean">0</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">ROLL</Data></Cell>
+    <Cell ss:Index="7"><Data ss:Type="Boolean">0</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">ROLL_SINGLE</Data></Cell>
+    <Cell ss:Index="7"><Data ss:Type="Boolean">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">ROWCOL</Data></Cell>
-    <Cell ss:Index="3"><Data ss:Type="String">DiffByRow_byJaqKennedy</Data></Cell>
+    <Cell ss:Index="7"><Data ss:Type="Boolean">0</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">SET</Data></Cell>
+    <Cell ss:Index="7"><Data ss:Type="Boolean">0</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">SHIFT</Data></Cell>
+    <Cell ss:Index="7"><Data ss:Type="Boolean">0</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">SHIFT_OOB</Data></Cell>
+    <Cell ss:Index="7"><Data ss:Type="Boolean">0</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">SumDist</Data></Cell>
+    <Cell ss:Index="7"><Data ss:Type="Boolean">0</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">SumDistFromStart</Data></Cell>
     <Cell ss:Index="7"><Data ss:Type="Boolean">1</Data></Cell>
-    <Cell ss:Index="14"><Data ss:Type="String">P</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">SWAP</Data></Cell>
+    <Cell ss:Index="7"><Data ss:Type="Boolean">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">TDay_byJaqKennedy</Data></Cell>
-    <Cell ss:Index="3"><Data ss:Type="String">TEXTREVERSE</Data></Cell>
+    <Cell ss:Index="7"><Data ss:Type="Boolean">0</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">TEXTBETWEEN</Data></Cell>
     <Cell ss:Index="7"><Data ss:Type="Boolean">1</Data></Cell>
-    <Cell ss:Index="14"><Data ss:Type="String">Q</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">TEXTREVERSE</Data></Cell>
-    <Cell ss:Index="3"><Data ss:Type="String">EZINDIRECT_byLiannaGerrish</Data></Cell>
-    <Cell ss:Index="7"><Data ss:Type="Boolean">1</Data></Cell>
-    <Cell ss:Index="14"><Data ss:Type="String">R</Data></Cell>
+    <Cell ss:Index="7"><Data ss:Type="Boolean">0</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">Thunk</Data></Cell>
+    <Cell ss:Index="7"><Data ss:Type="Boolean">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">XLOOKUP2D_byBendeLeon</Data></Cell>
-    <Cell ss:Index="3"><Data ss:Type="String">MinMax_byJaqKennedy</Data></Cell>
-    <Cell ss:Index="7"><Data ss:Type="Boolean">1</Data></Cell>
-    <Cell ss:Index="14"><Data ss:Type="String">S</Data></Cell>
+    <Cell ss:Index="7"><Data ss:Type="Boolean">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">XMOD_byJaqKennedy</Data></Cell>
-    <Cell ss:Index="3"><Data ss:Type="String">CellsAround_byBendeLeon</Data></Cell>
-    <Cell ss:Index="7"><Data ss:Type="Boolean">1</Data></Cell>
-    <Cell ss:Index="14"><Data ss:Type="String">T</Data></Cell>
+    <Cell ss:Index="7"><Data ss:Type="Boolean">0</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">YOUAREHERE</Data></Cell>
+    <Cell ss:Index="7"><Data ss:Type="Boolean">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">ZigZag_byBendeLeon</Data></Cell>
-    <Cell ss:Index="3"><Data ss:Type="String">COL</Data></Cell>
-    <Cell ss:Index="7"><Data ss:Type="Boolean">1</Data></Cell>
-    <Cell ss:Index="14"><Data ss:Type="String">U</Data></Cell>
+    <Cell ss:Index="7"><Data ss:Type="Boolean">0</Data></Cell>
    </Row>
    <Row>
     <Cell ss:Index="7"><Data ss:Type="Boolean">1</Data></Cell>
-    <Cell ss:Index="14"><Data ss:Type="String">V</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="7"><Data ss:Type="Boolean">0</Data></Cell>
    </Row>
    <Row>
     <Cell ss:Index="7"><Data ss:Type="Boolean">1</Data></Cell>
-    <Cell ss:Index="14"><Data ss:Type="String">W</Data></Cell>
    </Row>
    <Row>
-    <Cell ss:Index="7"><Data ss:Type="Boolean">1</Data></Cell>
-    <Cell ss:Index="14"><Data ss:Type="String">X</Data></Cell>
-   </Row>
-   <Row>
-    <Cell ss:Index="7"><Data ss:Type="Boolean">1</Data></Cell>
-    <Cell ss:Index="14"><Data ss:Type="String">Y</Data></Cell>
-   </Row>
-   <Row>
-    <Cell ss:Index="7"><Data ss:Type="Boolean">1</Data></Cell>
-    <Cell ss:Index="14"><Data ss:Type="String">Z</Data></Cell>
+    <Cell ss:Index="7"><Data ss:Type="Boolean">0</Data></Cell>
    </Row>
    <Row>
     <Cell ss:Index="7"><Data ss:Type="Boolean">1</Data></Cell>
    </Row>
    <Row>
     <Cell ss:Index="7"><Data ss:Type="Boolean">1</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="7"><Data ss:Type="Boolean">0</Data></Cell>
    </Row>
    <Row>
     <Cell ss:Index="7"><Data ss:Type="Boolean">1</Data></Cell>

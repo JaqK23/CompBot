@@ -1,0 +1,1 @@
+ARROWTABLE =LAMBDA(LET(Arrows, VSTACK("↗", "↓", "↖", "←", "→", "↙", "↘", "↑"), Arrowsx, VSTACK(1, 0, -1, -1, 1, -1, 1, 0), Arrowsy, VSTACK(-1, 1, -1, 0, 0, 1, 1, -1), headers, HSTACK("Arrows", "Arrowsx", "Arrowsy"), table_arrows, HSTACK(Arrows, Arrowsx, Arrowsy), VSTACK(headers, table_arrows)));

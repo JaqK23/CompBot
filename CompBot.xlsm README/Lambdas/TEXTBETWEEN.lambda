@@ -1,0 +1,1 @@
+TEXTBETWEEN =LAMBDA(text,start,end, TEXTAFTER(TEXTBEFORE(text, end), start));

@@ -5,7 +5,7 @@
       "Description": "Definition of ADDRESSES_byDiarmuidEarly lambda function.",
       "Type": "ExcelNameText",
       "ContentType": "ExcelFormula",
-      "Value": "ADDRESSES_byDiarmuidEarly = LAMBDA(rng, ADDRESS(ROW(rng), COLUMN(rng), 4));",
+      "Value": "/*Returns the cell address of a range*/\r\nADDRESSES_byDiarmuidEarly = LAMBDA(rng, ADDRESS(ROW(rng), COLUMN(rng), 4));",
       "Location": "ADDRESSES_byDiarmuidEarly"
     },
     {
@@ -13,7 +13,7 @@
       "Description": "Definition of BiRow_byPeterBartholomew lambda function.",
       "Type": "ExcelNameText",
       "ContentType": "ExcelFormula",
-      "Value": "BiRow_byPeterBartholomew = LAMBDA(array,function,LET(\\\\LambdaName, \"BiRow_byPeterBartholomew\", \\\\Description, \"Perform array function by row\", \\\\Source, \"attributed to Peter Bartholomew: https://techcommunity.microsoft.com/discussions/excelgeneral/recursive-lambda-implementation-of-excels-reduce-function-/3949754/replies/3952653#M207809\", IF(ROWS(array) = 1, function(array), VSTACK(BiRow_byPeterBartholomew(TAKE(array, ROWS(array) / 2), function), BiRow_byPeterBartholomew(DROP(array, ROWS(array) / 2), function)))));",
+      "Value": "/*BiRow function as defined by Peter Bartholomew*/\r\nBiRow_byPeterBartholomew = LAMBDA(array,function,LET(\\\\LambdaName, \"BiRow_byPeterBartholomew\", \\\\Description, \"Perform array function by row\", \\\\Source, \"attributed to Peter Bartholomew: https://techcommunity.microsoft.com/discussions/excelgeneral/recursive-lambda-implementation-of-excels-reduce-function-/3949754/replies/3952653#M207809\", IF(ROWS(array) = 1, function(array), VSTACK(BiRow_byPeterBartholomew(TAKE(array, ROWS(array) / 2), function), BiRow_byPeterBartholomew(DROP(array, ROWS(array) / 2), function)))));",
       "Location": "BiRow_byPeterBartholomew"
     },
     {

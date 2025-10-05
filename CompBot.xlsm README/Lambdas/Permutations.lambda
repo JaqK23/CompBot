@@ -1,0 +1,1 @@
+Permutations =LAMBDA(array, LET(k, COUNTA(array), k));

@@ -1,0 +1,1 @@
+ONSAMEDIAGONAL =LAMBDA(cell1,cell2, ABS(ROW(cell1) - ROW(cell2)) = ABS(COL(cell2) - COL(cell1)));

@@ -1,0 +1,1 @@
+_distFrom =LAMBDA(mp,trg,func,LET(vals,TOCOL(mp),rws,TOCOL(SEQUENCE(ROWS(mp))+0*SEQUENCE(,COLUMNS(mp))),cls,TOCOL(SEQUENCE(ROWS(mp))*0+SEQUENCE(,COLUMNS(mp))),Mrws,TOROW(FILTER(rws,vals=trg)),Mcls,TOROW(FILTER(cls,vals=trg)),rdist,ABS(rws-Mrws),cdist,ABS(cls-Mcls),dist,BYROW(MAP(rdist,cdist,func),MIN),WRAPROWS(dist,COLUMNS(mp))));

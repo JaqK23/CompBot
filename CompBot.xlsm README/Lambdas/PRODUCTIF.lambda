@@ -1,0 +1,1 @@
+PRODUCTIF =LAMBDA(values,condition, REDUCE(1, values, LAMBDA(a,b, IF(condition(b), a * b, a))));

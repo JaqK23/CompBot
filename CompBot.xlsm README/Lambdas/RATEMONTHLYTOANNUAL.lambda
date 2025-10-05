@@ -1,0 +1,1 @@
+RATEMONTHLYTOANNUAL =LAMBDA(rate,periods, (1 + rate) ^ periods - 1);

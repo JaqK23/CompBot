@@ -1,0 +1,1 @@
+NTHINSTANCE =LAMBDA(text,find,number, FIND(CHAR(160), SUBSTITUTE(text, find, CHAR(160), number)));

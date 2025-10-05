@@ -1,0 +1,1 @@
+ISNONZERO =LAMBDA(x, IF(x = 0, FALSE(), TRUE()));

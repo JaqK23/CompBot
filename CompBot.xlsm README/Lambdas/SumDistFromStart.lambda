@@ -1,0 +1,17 @@
+SumDistFromStart =LAMBDA(sum_distance_traveled, LET(
+   \\LambdaName, "SumDistFromStart",
+   \\CommandName, "Sum Distance From Start",
+   \\Description, "Not total distance walked, distance at end from distance at start",
+   _Step1, IFERROR(EXTRACTNUMBERS(sum_distance_traveled), 1),
+   _Step2, IFERROR(SUBSTITUTE(sum_distance_traveled, _Step1, ""), ""),
+   _Step3, ARROWTABLE(),
+   _Step4, IFERROR(
+      _Step1 * XLOOKUP(_Step2, TAKE(_Step3, -8, 1), TAKE(DROP(_Step3, , 1), -8, 1), 0, 0),
+      0
+   ),
+   _Step5, IFERROR(_Step1 * XLOOKUP(_Step2, TAKE(_Step3, -8, 1), TAKE(_Step3, -8, -1), 0, 0), 0),
+   _Step6, SUM(_Step4),
+   _Step7, SUM(_Step5),
+   _Result, ABS(_Step6) + ABS(_Step7),
+   _Result
+));

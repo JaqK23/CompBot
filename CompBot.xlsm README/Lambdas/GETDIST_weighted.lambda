@@ -1,0 +1,1 @@
+GETDIST_weighted =LAMBDA(cell1,cell2,diag_flag,h_mod,v_mod,d_mod, LET(a, Loc.COLROW(cell1), b, Loc.COLROW(cell2), c, ABS(a - b), d, IF(diag_flag = 0, 0, MIN(c)), ca, TAKE(c, , 1), cb, TAKE(c, , -1), h, IF(diag_flag = 0, ca, IF(ca > cb, ABS(ca - cb), 0)), v, IF(diag_flag = 0, cb, IF(ca < cb, ABS(ca - cb), 0)), SUMPRODUCT(TAKE(HSTACK(h, v, d), -1), HSTACK(h_mod, v_mod, d_mod))));

@@ -1,0 +1,8 @@
+IndMatch =LAMBDA(Input1,Input2, LET(
+   \\LambdaName, "IndMatch",
+   \\CommandName, "Indirect Match Lookup",
+   _Step1, SUBSTITUTE(Input1, " ", "_"),
+   _Step2, SUBSTITUTE(Input2, " ", "_"),
+   _Result, INDIRECT(_Step1)  INDIRECT(_Step2),
+   _Result
+));

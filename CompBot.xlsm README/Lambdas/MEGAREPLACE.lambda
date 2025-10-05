@@ -1,0 +1,1 @@
+MEGAREPLACE =LAMBDA(text,search,replace, IF(search = "", text, MEGAREPLACE(SUBSTITUTE(text, search, replace), OFFSET(search, 1, 0), OFFSET(replace, 1, 0))));

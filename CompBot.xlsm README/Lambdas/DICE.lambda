@@ -1,0 +1,1 @@
+DICE =LAMBDA(dice, 1 * XMATCH(dice, {"⚀";"⚁";"⚂";"⚃";"⚄";"⚅"}, 0));

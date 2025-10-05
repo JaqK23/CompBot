@@ -23,20 +23,22 @@
    <NumberFormat/>
    <Protection/>
   </Style>
-  <Style ss:ID="s43" ss:Parent="s21">
+  <Style ss:ID="s44" ss:Parent="s21">
    <Alignment ss:Vertical="Bottom" ss:WrapText="1"/>
   </Style>
-  <Style ss:ID="s44" ss:Parent="s21">
+  <Style ss:ID="s45" ss:Parent="s21">
    <Font ss:FontName="Aptos Narrow" x:Family="Swiss" ss:Size="14"
     ss:Color="#000000"/>
   </Style>
-  <Style ss:ID="s45" ss:Parent="s21">
+  <Style ss:ID="s46" ss:Parent="s21">
    <Alignment ss:Vertical="Bottom" ss:WrapText="1"/>
    <Font ss:FontName="Aptos Narrow" x:Family="Swiss" ss:Size="14"
     ss:Color="#000000"/>
   </Style>
  </Styles>
  <Names>
+  <NamedRange ss:Name="_distFrom"
+   ss:RefersTo="=LAMBDA(mp,trg,func,LET(vals,TOCOL(mp),rws,TOCOL(SEQUENCE(ROWS(mp))+0*SEQUENCE(,COLUMNS(mp))),cls,TOCOL(SEQUENCE(ROWS(mp))*0+SEQUENCE(,COLUMNS(mp))),Mrws,TOROW(FILTER(rws,vals=trg)),Mcls,TOROW(FILTER(cls,vals=trg)),rdist,ABS(rws-Mrws),cdist,ABS(cls-Mcls),dist,BYROW(MAP(rdist,cdist,func),MIN),WRAPROWS(dist,COLUMNS(mp))))"/>
   <NamedRange ss:Name="_xleta.CELL" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xleta.COLUMN" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xleta.COUNT" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
@@ -285,6 +287,7 @@
   <NamedRange ss:Name="_xlpm.items_arr" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.items_grid" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.j" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.k" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.key" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.keyCols" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.l" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
@@ -292,6 +295,8 @@
   <NamedRange ss:Name="_xlpm.letter" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.levels" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.list" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.lkpin" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.lkpout" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.lookup_array" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.lookup_output" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.lr_roll" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
@@ -447,8 +452,22 @@
   <NamedRange ss:Name="_xlpm.ymove" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.ymoveunit" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.ymult" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="A2C" ss:RefersTo="=LAMBDA(add, COLUMN(INDIRECT(add)))"/>
+  <NamedRange ss:Name="A2R" ss:RefersTo="=LAMBDA(add, ROW(INDIRECT(add)))"/>
   <NamedRange ss:Name="ADDRESSES_byDiarmuidEarly"
    ss:RefersTo="=LAMBDA(rng, ADDRESS(ROW(rng), COLUMN(rng), 4))"/>
+  <NamedRange ss:Name="AMATCH"
+   ss:RefersTo="=LAMBDA(rng,trg,[Actual], LET(vals, TOCOL(rng), strw, IF(Actual = 1, ROW(TAKE(rng, 1, 1)) - 1, 0), stcl, IF(Actual = 1, COLUMN(TAKE(rng, 1, 1)) - 1, 0), rws, TOCOL(SEQUENCE(ROWS(rng)) + 0 * SEQUENCE(, COLUMNS(rng))), cls, TOCOL(SEQUENCE(ROWS(rng)) * 0 + SEQUENCE(, COLUMNS(rng))), Mrws, TOROW(FILTER(rws, (vals = trg) * (vals &lt;&gt; &quot;&quot;))), Mcls, TOROW(FILTER(cls, (vals = trg) * (vals &lt;&gt; &quot;&quot;))), TRANSPOSE(VSTACK(strw + Mrws, stcl + Mcls))))"/>
+  <NamedRange ss:Name="AMATCHADD"
+   ss:RefersTo="=LAMBDA(rng,trg,[Actual], LET(vals, TOCOL(rng), strw, IF(Actual = 1, ROW(TAKE(rng, 1, 1)) - 1, 0), stcl, IF(Actual = 1, COLUMN(TAKE(rng, 1, 1)) - 1, 0), rws, TOCOL(SEQUENCE(ROWS(rng)) + 0 * SEQUENCE(, COLUMNS(rng))), cls, TOCOL(SEQUENCE(ROWS(rng)) * 0 + SEQUENCE(, COLUMNS(rng))), Mrws, TOROW(FILTER(rws, (vals = trg) * (vals &lt;&gt; &quot;&quot;))), Mcls, TOROW(FILTER(cls, (vals = trg) * (vals &lt;&gt; &quot;&quot;))), TRANSPOSE(ADDRESS(strw + Mrws, stcl + Mcls, 4))))"/>
+  <NamedRange ss:Name="APPENDCOLS"
+   ss:RefersTo="=LAMBDA(array1,array2, LET(array1Rows, ROWS(array1), array1Cols, COLUMNS(array1), array2Rows, ROWS(array2), array2Cols, COLUMNS(array2), rowLen, MAX(array1Rows, array2Rows), colLen, array1Cols + array2Cols, newArray, SEQUENCE(rowLen, colLen), colIndex, MOD(newArray - 1, colLen) + 1, rowIndex, 1 + ((newArray - colIndex) / colLen), resultArray, IF(colIndex &gt; array1Cols, INDEX(array2, rowIndex, colIndex - array1Cols), INDEX(array1, rowIndex, colIndex)), resultArray))"/>
+  <NamedRange ss:Name="APPENDROWS"
+   ss:RefersTo="=LAMBDA(array1,array2, LET(array1Rows, ROWS(array1), colIndex, SEQUENCE(, MAX(COLUMNS(array1), COLUMNS(array2))), rowIndex1, SEQUENCE(array1Rows + ROWS(array2)), rowIndex2, rowIndex1 - array1Rows, IF(rowIndex2 &gt;= 1, INDEX(array2, rowIndex2, colIndex), INDEX(array1, rowIndex1, colIndex))))"/>
+  <NamedRange ss:Name="ARROWSHIFT"
+   ss:RefersTo="=LAMBDA(starting_cell,arrow, LET(Arrows, VSTACK(&quot;↗&quot;, &quot;↓&quot;, &quot;↖&quot;, &quot;←&quot;, &quot;→&quot;, &quot;↙&quot;, &quot;↘&quot;, &quot;↑&quot;), Arrowsx, VSTACK(1, 0, -1, -1, 1, -1, 1, 0), Arrowsy, VSTACK(-1, 1, -1, 0, 0, 1, 1, -1), d, RIGHT(arrow, 1), m, IF(LEN(arrow) = 1, 1, 1 * LEFT(arrow, LEN(arrow) - 1)), xmoveunit, XLOOKUP(d, Arrows, Arrowsx), ymoveunit, XLOOKUP(d, Arrows, Arrowsy), xmove, xmoveunit * m, ymove, ymoveunit * m, collet, TAKE(TEXTSPLIT(starting_cell, SEQUENCE(, 10, 0)), , 1), startcol, COLUMN(INDIRECT(collet &amp; 1)), startrow, 1 * RIGHT(starting_cell, LEN(starting_cell) - LEN(collet)), newcell, ADDRESS(startrow + ymove, startcol + xmove, 4), newcell))"/>
+  <NamedRange ss:Name="ARROWTABLE"
+   ss:RefersTo="=LAMBDA(LET(Arrows, VSTACK(&quot;↗&quot;, &quot;↓&quot;, &quot;↖&quot;, &quot;←&quot;, &quot;→&quot;, &quot;↙&quot;, &quot;↘&quot;, &quot;↑&quot;), Arrowsx, VSTACK(1, 0, -1, -1, 1, -1, 1, 0), Arrowsy, VSTACK(-1, 1, -1, 0, 0, 1, 1, -1), headers, HSTACK(&quot;Arrows&quot;, &quot;Arrowsx&quot;, &quot;Arrowsy&quot;), table_arrows, HSTACK(Arrows, Arrowsx, Arrowsy), VSTACK(headers, table_arrows)))"/>
   <NamedRange ss:Name="CaseInputs"
    ss:RefersTo="=LAMBDA(     LET(         questions, FILTER(INDIRECT(&quot;Case!$B:$EE&quot;), ISNUMBER(INDIRECT(&quot;Case!$B:$B&quot;))),         result, IF(questions=0, NA(), questions),         clean, HSTACK(TAKE(result,,3), TAKE(result,,-COLUMNS(result)+5)),         IFERROR(clean, &quot;&quot;)     ) )"/>
   <NamedRange ss:Name="COL"
@@ -457,8 +476,18 @@
    ss:RefersTo="=LAMBDA(cell_coordinates, TEXTSPLIT(COLUMN(INDIRECT(cell_coordinates)) &amp; &quot;;&quot; &amp; ROW(INDIRECT(cell_coordinates)), &quot;;&quot;))"/>
   <NamedRange ss:Name="CountChar_byLiannaGerrish"
    ss:RefersTo="=LAMBDA(text,c,LET(\\LambdaName, &quot;CountChar_byLiannaGerrish&quot;, \\CommandName, &quot;Count Characters in a String&quot;, \\Description, &quot;Returns the number of times a character appears in the selected text string&quot;, \\Source, &quot;Lianna Gerrish&quot;, Trimmedtext, TRIM(text), TrimmedtextLength, LEN(Trimmedtext), WhiteSpaceSubstitution, SUBSTITUTE(Trimmedtext, c, &quot;&quot;), TextLengthNoSpaces, LEN(WhiteSpaceSubstitution), TrimmedtextLength - TextLengthNoSpaces + 0))"/>
+  <NamedRange ss:Name="CR2A"
+   ss:RefersTo="=LAMBDA(cnum,rnum, ADDRESS(rnum, cnum, 4))"/>
+  <NamedRange ss:Name="DATEHEADERS"
+   ss:RefersTo="=LAMBDA(start_date,periods,type, LET(month_num, IFS(type = &quot;Y&quot;, 12, type = &quot;Q&quot;, 3, type = &quot;M&quot;, 1), HSTACK(VSTACK(&quot;Start Date&quot;, &quot;End Date&quot;, &quot;Period #&quot;, &quot;Year&quot;, &quot;Month&quot;, &quot;Jan Flag&quot;), VSTACK(EDATE(start_date, SEQUENCE(, periods, 0, month_num)), EOMONTH(EDATE(start_date, SEQUENCE(, periods, 0, month_num)), month_num - 1), SEQUENCE(, periods), YEAR(EDATE(start_date, SEQUENCE(, periods, 0, month_num))), MONTH(EDATE(start_date, SEQUENCE(, periods, 0, month_num))), --MONTH(EDATE(start_date, SEQUENCE(, periods, 0, month_num))) = 1))))"/>
+  <NamedRange ss:Name="DAYSINPERIOD"
+   ss:RefersTo="=LAMBDA(start_date,end_date,period_start_date,days_in_period, MAX(0, MAX(0, MIN(days_in_period, MIN(end_date - period_start_date))) - MAX(0, (start_date - period_start_date))))"/>
+  <NamedRange ss:Name="DICE"
+   ss:RefersTo="=LAMBDA(dice, 1 * XMATCH(dice, {&quot;⚀&quot;;&quot;⚁&quot;;&quot;⚂&quot;;&quot;⚃&quot;;&quot;⚄&quot;;&quot;⚅&quot;}, 0))"/>
   <NamedRange ss:Name="DiffByRow_byJaqKennedy"
    ss:RefersTo="=LAMBDA(Input,LET(\\LambdaName, &quot;DiffByRow&quot;, \\CommandName, &quot;Difference of array columns by row&quot;, \\Description, &quot;Returns first column - last column in array&quot;, \\Source, &quot;Jaq Kennedy&quot;, TAKE(Input, , 1) - TAKE(Input, , -1)))"/>
+  <NamedRange ss:Name="DROPCOL"
+   ss:RefersTo="=LAMBDA(array,column, LET(&#10;   \\LambdaName, &quot;DROPCOL&quot;,&#10;   \\CommandName, \\LambdaName,&#10;   \\Description, &quot;Drops a column from an array&quot;,&#10;   \\Source, &quot;Lianna&quot;,&#10;   MAKEARRAY(&#10;      ROWS(array),&#10;      COLUMNS(array) - 1,&#10;      LAMBDA(i,j, INDEX(array, i, IF(j &lt; column, j, j + 1)))&#10;   )&#10;))"/>
   <NamedRange ss:Name="DROPCOL_byLiannaGerrish"
    ss:RefersTo="=LAMBDA(array,column,LET(\\LambdaName, &quot;DROPCOL&quot;, \\CommandName, \\LambdaName, \\Description, &quot;Drops a column from an array&quot;, \\Source, &quot;Lianna&quot;, MAKEARRAY(ROWS(array), COLUMNS(array) - 1, LAMBDA(i,j, INDEX(array, i, IF(j &lt; column, j, j + 1))))))"/>
   <NamedRange ss:Name="EXTRACTCHAR_byHarryGross"
@@ -469,63 +498,114 @@
    ss:RefersTo="=LAMBDA(cell,TEXTSPLIT(cell,TEXTSPLIT(cell,SEQUENCE(10,,0),,1),,1))"/>
   <NamedRange ss:Name="EZINDIRECT_byLiannaGerrish"
    ss:RefersTo="=LAMBDA(cell,[sheetname],IF(ISOMITTED(sheetname), INDIRECT(cell), INDIRECT(sheetname &amp; &quot;!&quot; &amp; cell)))"/>
+  <NamedRange ss:Name="GETDIST"
+   ss:RefersTo="=LAMBDA(cell_from,cell_to,diag_flag, IFS(diag_flag = 1, MAX(ABS(COLUMN(INDIRECT(cell_from)) - COLUMN(INDIRECT(cell_to))), ABS(ROW(INDIRECT(cell_from)) - ROW(INDIRECT(cell_to)))), diag_flag = 0, ABS(COLUMN(INDIRECT(cell_from)) - COLUMN(INDIRECT(cell_to))) + ABS(ROW(INDIRECT(cell_from)) - ROW(INDIRECT(cell_to)))))"/>
+  <NamedRange ss:Name="GRIDTOCOL_ALL"
+   ss:RefersTo="=LAMBDA(arr, LET(items_arr, TOCOL(arr), rows, TOCOL(SEQUENCE(, COLUMNS(arr)) * 0 &amp; SEQUENCE(ROWS(arr))) * 1, cols, TOCOL(SEQUENCE(ROWS(arr)) * 0 &amp; SEQUENCE(, COLUMNS(arr))) * 1, addr, TOCOL(ADDRESS(rows, cols, 4, 1)), headers, HSTACK(&quot;Items&quot;, &quot;Row #&quot;, &quot;Column #&quot;, &quot;Address&quot;), data_arr, HSTACK(items_arr, rows, cols, addr), VSTACK(headers, data_arr)))"/>
+  <NamedRange ss:Name="I2M"
+   ss:RefersTo="=LAMBDA(arr,row,col, INDEX(arr, MATCH(row, CHOOSECOLS(arr, 1), 0), MATCH(col, CHOOSEROWS(arr, 1), 0)))"/>
   <NamedRange ss:Name="IFBLANK"
    ss:RefersTo="=LAMBDA(value,value_if_blank, IF(ISBLANK(value), value_if_blank, value))"/>
+  <NamedRange ss:Name="IFOMITTED"
+   ss:RefersTo="=LAMBDA(value,value_if_omitted, IF(ISOMITTED(value), value_if_omitted, value))"/>
+  <NamedRange ss:Name="IndMatch"
+   ss:RefersTo="=LAMBDA(Input1,Input2, LET(&#10;   \\LambdaName, &quot;IndMatch&quot;,&#10;   \\CommandName, &quot;Indirect Match Lookup&quot;,&#10;   _Step1, SUBSTITUTE(Input1, &quot; &quot;, &quot;_&quot;),&#10;   _Step2, SUBSTITUTE(Input2, &quot; &quot;, &quot;_&quot;),&#10;   _Result, INDIRECT(_Step1)  INDIRECT(_Step2),&#10;   _Result&#10;))"/>
   <NamedRange ss:Name="IsInList_byErikOehm"
    ss:RefersTo="=LAMBDA(array,list,LET(\\LambdaName, &quot;IsInList&quot;, MAP(array, LAMBDA(x, OR(list = x)))))"/>
+  <NamedRange ss:Name="ISNONZERO"
+   ss:RefersTo="=LAMBDA(x, IF(x = 0, FALSE(), TRUE()))"/>
   <NamedRange ss:Name="Letters"
    ss:RefersTo="=LAMBDA([Upp], LET(&#10;   \\LambdaName, &quot;Letters&quot;,&#10;   \\CommandName, &quot;Creates a list of letters&quot;,&#10;   ABC, CHAR(SEQUENCE(26) + 64),&#10;   IF((Upp = 1) + ISOMITTED((Upp)), ABC, LOWER(ABC))&#10;))"/>
+  <NamedRange ss:Name="LISTOFFSET"
+   ss:RefersTo="=LAMBDA(array,curr,offset,booLoop, LET(tarr, IF(ROWS(array) &gt; 1, array, TRANSPOSE(array)), cnt, ROWS(tarr), off, IF(ABS(offset) &gt; cnt, SIGN(offset) * (MOD(ABS(offset) + 1, cnt) - 1), offset), idx, IF(OR(curr + off &lt; 1, curr + off &gt; cnt), IF(booLoop, IF(curr + off &lt; 1, cnt + curr + off, curr + off - cnt), 0), curr + off), return, IF(idx = 0, 0, INDEX(tarr, idx)), return))"/>
+  <NamedRange ss:Name="LkpSum"
+   ss:RefersTo="=LAMBDA(values,lkpin,lkpout, LET(&#10;   \\LambdaName, &quot;LkpSum&quot;,&#10;   \\CommandName, &quot;Sum Lookup by Row&quot;,&#10;   BYROW(XLOOKUP(values, lkpin, lkpout), SUM)&#10;))"/>
+  <NamedRange ss:Name="MAXLOOKUP"
+   ss:RefersTo="=LAMBDA(lookup_array,return_array,[return_type], IF(OR(return_type = 1, ISOMITTED(return_type)), XLOOKUP(MAX(lookup_array), lookup_array, return_array), XLOOKUP(MIN(lookup_array), lookup_array, return_array)))"/>
   <NamedRange ss:Name="MinMax_byJaqKennedy"
    ss:RefersTo="=LAMBDA(Range,LET(\\LambdaName, &quot;MinMax&quot;, \\CommandName, &quot;Get Min and Max of Range&quot;, _GetMin, MIN(Range), _GetMax, MAX(Range), _MinMax, VSTACK(_GetMin, _GetMax), _MinMax))"/>
+  <NamedRange ss:Name="MODESUPER"
+   ss:RefersTo="=LAMBDA(rng, LET(u, TOCOL(UNIQUE(rng), 3), TAKE(SORT(HSTACK(u, COUNTIF(rng, u)), 2, -1), 1)))"/>
+  <NamedRange ss:Name="MODTEXT"
+   ss:RefersTo="=LAMBDA(letter,shift, UNICHAR(MOD(UNICODE(UPPER(letter)) + UPPER(shift) - 65, 26) + 65))"/>
+  <NamedRange ss:Name="NTHINSTANCE"
+   ss:RefersTo="=LAMBDA(text,find,number, FIND(CHAR(160), SUBSTITUTE(text, find, CHAR(160), number)))"/>
+  <NamedRange ss:Name="Permutations"
+   ss:RefersTo="=LAMBDA(array, LET(k, COUNTA(array), k))"/>
+  <NamedRange ss:Name="PRODUCTIF"
+   ss:RefersTo="=LAMBDA(values,condition, REDUCE(1, values, LAMBDA(a,b, IF(condition(b), a * b, a))))"/>
+  <NamedRange ss:Name="PYTHAG" ss:RefersTo="=LAMBDA(a,b, SQRT((a * a) + (b * b)))"/>
+  <NamedRange ss:Name="RATEANNUALTOMONTHLY"
+   ss:RefersTo="=LAMBDA(rate,periods, (1 + rate) ^ (1 / periods) - 1)"/>
+  <NamedRange ss:Name="RATEMONTHLYTOANNUAL"
+   ss:RefersTo="=LAMBDA(rate,periods, (1 + rate) ^ periods - 1)"/>
+  <NamedRange ss:Name="REVERSE_H"
+   ss:RefersTo="=LAMBDA(array, LET(l, COUNTA(TAKE(array, 1)), s, SEQUENCE(, l), SORTBY(array, s, -1)))"/>
+  <NamedRange ss:Name="REVERSE_V"
+   ss:RefersTo="=LAMBDA(array, LET(l, COUNTA(TAKE(array, , 1)), s, SEQUENCE(l), SORTBY(array, s, -1)))"/>
   <NamedRange ss:Name="RightAlignedArray_byJaqKennedy"
    ss:RefersTo="=LAMBDA(input,LET(\\LambdaName, &quot;RightAlignedArray&quot;, \\CommandName, &quot;Align array to right&quot;, \\Description, &quot;Aligns array to the right with blanks to left&quot;, \\Source, &quot;Jaq Kennedy&quot;, _ColsByRow, BYROW(input, COUNT), _Rows, ROWS(input), _Cols, COLUMNS(input), _ColIndex, IF(MOD(SEQUENCE(_Rows, _Cols) - 1, _Cols) + 1 - _Cols + _ColsByRow &lt;= 0, -1, MOD(SEQUENCE(_Rows, _Cols) - 1, _Cols) + 1 - _Cols + _ColsByRow), _RowIndex, SEQUENCE(_Rows), _Result, IFERROR(INDEX(input, _RowIndex, _ColIndex), &quot;&quot;), _Result))"/>
+  <NamedRange ss:Name="ROLL"
+   ss:RefersTo="=LAMBDA(arr,[horizontal],[vertical], LET(horizontal, IF(ISOMITTED(horizontal), 0, horizontal), vertical, IF(ISOMITTED(vertical), 0, vertical), width, COUNT(TAKE(arr, 1)), height, COUNT(TAKE(arr, , 1)), horizontal_mod, IF(ABS(horizontal) &gt; width, MOD(horizontal, width), horizontal), vertical_mod, IF(ABS(vertical) &gt; height, MOD(vertical, height), vertical), h_fixed, IF(horizontal_mod &lt; 0, width + horizontal_mod, horizontal_mod), v_fixed, IF(vertical_mod &lt; 0, height + vertical_mod, vertical_mod), r, IF(horizontal_mod &lt; 0, width - (h_fixed), width - h_fixed), u, IF(vertical_mod &lt; 0, height - (v_fixed), height - v_fixed), lr_roll, IF(OR(h_fixed = 0, h_fixed = width), arr, HSTACK(TAKE(arr, , -h_fixed), TAKE(arr, , r))), final_roll, IF(OR(v_fixed = 0, v_fixed = height), lr_roll, VSTACK(TAKE(lr_roll, -v_fixed), TAKE(lr_roll, u))), final_roll))"/>
+  <NamedRange ss:Name="ROLL_SINGLE"
+   ss:RefersTo="=LAMBDA(arrr,r, LET(arr, TOCOL(arrr), size, COUNT(arr), rr, MOD(r, size), leng, COUNTA(TAKE(arrr, 1)), IF(r = 0, arrr, WRAPROWS(VSTACK(TAKE(arr, -rr), TAKE(arr, size - rr)), leng))))"/>
   <NamedRange ss:Name="ROWCOL"
    ss:RefersTo="=LAMBDA(cell_coordinates,TEXTSPLIT(ROW(INDIRECT(cell_coordinates)) &amp; &quot;;&quot; &amp; COLUMN(INDIRECT(cell_coordinates)), &quot;;&quot;))"/>
+  <NamedRange ss:Name="SET"
+   ss:RefersTo="=LAMBDA(array,val,[posx],[posy], LET(posxx, IF(ISOMITTED(posx), 1, posx), posyy, IF(ISOMITTED(posy), 1, posy), arrr, TOCOL(array), ax, COUNTA(TAKE(array, , 1)), ay, COUNTA(TAKE(array, 1)), pos, (ay * posxx) - ay + posyy, a, TAKE(arrr, pos - 1), b, TAKE(arrr, -COUNTA(arrr) + pos), c, IF(AND(posxx = 1, posyy = 1), VSTACK(val, b), IF(AND(posx = ax, posy = ay), VSTACK(a, val), IF(OR(posx &gt; ax, posy &gt; ay), NA(), VSTACK(a, val, b)))), WRAPROWS(c, ay)))"/>
+  <NamedRange ss:Name="SHIFT"
+   ss:RefersTo="=LAMBDA(cell_coordinates,horizontal_moves,vertical_moves, ADDRESS(ROW(INDIRECT(cell_coordinates)) + vertical_moves, COLUMN(INDIRECT(cell_coordinates)) + horizontal_moves, 4, 1))"/>
+  <NamedRange ss:Name="SHIFT_OOB"
+   ss:RefersTo="=LAMBDA(cell_coordinates,horizontal_moves,vertical_moves, ADDRESS(IF(ROW(INDIRECT(cell_coordinates)) + horizontal_moves &lt; 1, 1, ROW(INDIRECT(cell_coordinates)) + horizontal_moves), IF(COLUMN(INDIRECT(cell_coordinates)) + vertical_moves &lt; 1, 1, COLUMN(INDIRECT(cell_coordinates)) + vertical_moves), 4, 1))"/>
+  <NamedRange ss:Name="TEXTBETWEEN"
+   ss:RefersTo="=LAMBDA(text,start,end, TEXTAFTER(TEXTBEFORE(text, end), start))"/>
+  <NamedRange ss:Name="Thunk" ss:RefersTo="=LAMBDA(x, LAMBDA(x))"/>
   <NamedRange ss:Name="XLOOKUP2D_byBendeLeon"
    ss:RefersTo="=LAMBDA(DataSource,RLU,CLU,[RowArray],[ColumnArray],[MatchMode],[SearchMode],[IfNotFound], LET(&#10;   \\LambdaName, &quot;XLOOKUP2D_byBendeLeon&quot;,&#10;   \\CommandName, &quot;2D lookup&quot;,&#10;   \\Source, &quot;Ben de Leon&quot;,&#10;   RCInc, IF(ISOMITTED(RowArray), 1, 0) + IF(ISOMITTED(RowArray), 2, 0),&#10;   UpdatedDataSource, CHOOSE(&#10;      RCInc + 1,&#10;      DataSource,&#10;      DROP(DataSource, , 1),&#10;      DROP(DataSource, 1),&#10;      DROP(DataSource, 1, 1)&#10;   ),&#10;   IFERROR(&#10;      INDEX(&#10;         UpdatedDataSource,&#10;         XMATCH(&#10;            RLU,&#10;            IF(&#10;               ISOMITTED(RowArray),&#10;               DROP(TAKE(DataSource, , 1), 1),&#10;               TAKE(RowArray, , 1)&#10;            ),&#10;            IF(ISOMITTED(MatchMode), 0, MatchMode),&#10;            IF(ISOMITTED(SearchMode), 1, SearchMode)&#10;         ),&#10;         XMATCH(&#10;            CLU,&#10;            IF(&#10;               ISOMITTED(ColumnArray),&#10;               DROP(TAKE(DataSource, 1), , 1),&#10;               TAKE(ColumnArray, 1)&#10;            ),&#10;            IF(ISOMITTED(MatchMode), 0, MatchMode),&#10;            IF(ISOMITTED(SearchMode), 1, SearchMode)&#10;         )&#10;      ),&#10;      IF(ISOMITTED(IfNotFound), NA(), IfNotFound)&#10;   )&#10;))"/>
   <NamedRange ss:Name="XMOD_byJaqKennedy"
    ss:RefersTo="=LAMBDA(value,divisor,LET(\\LambdaName, &quot;XMOD&quot;, \\CommandName, &quot;MOD with max value&quot;, \\Description, &quot;Returns the MOD of a value where the maximum value returns the divisor instead of 0&quot;, \\Source, &quot;Jaq Kennedy&quot;, MOD(value - 1, divisor) + 1))"/>
+  <NamedRange ss:Name="YOUAREHERE"
+   ss:RefersTo="=LAMBDA(cell,[sheetname], IF(ISOMITTED(sheetname), ADDRESS(ROW(cell), COLUMN(cell), 4, TRUE), ADDRESS(ROW(cell), COLUMN(cell), 4, TRUE, sheetname)))"/>
  </Names>
  <Worksheet ss:Name="SpeedRun Steps">
   <Table ss:ExpandedColumnCount="6" ss:ExpandedRowCount="60" ss:StyleID="s21"
-   ss:DefaultColumnWidth="88" ss:DefaultRowHeight="18.5">
-   <Column ss:StyleID="s21" ss:Width="47.5"/>
-   <Column ss:StyleID="s21" ss:Width="48.5"/>
-   <Column ss:StyleID="s21" ss:Width="64.5"/>
-   <Column ss:StyleID="s21" ss:Width="225.5"/>
-   <Column ss:StyleID="s21" ss:Width="203"/>
-   <Column ss:StyleID="s21" ss:Width="87.5"/>
+   ss:DefaultColumnWidth="85.5" ss:DefaultRowHeight="18.75">
+   <Column ss:StyleID="s21" ss:Width="46.5"/>
+   <Column ss:StyleID="s21" ss:Width="47.25"/>
+   <Column ss:StyleID="s21" ss:Width="63"/>
+   <Column ss:StyleID="s21" ss:Width="219.75"/>
+   <Column ss:StyleID="s21" ss:Width="198"/>
    <Row>
     <Cell><Data ss:Type="String">Case</Data></Cell>
-    <Cell ss:StyleID="s44"><Data ss:Type="String">Level</Data></Cell>
+    <Cell ss:StyleID="s45"><Data ss:Type="String">Level</Data></Cell>
     <Cell><Data ss:Type="String">Type</Data></Cell>
     <Cell><Data ss:Type="String">Name</Data></Cell>
     <Cell><Data ss:Type="String">Notes</Data></Cell>
     <Cell><Data ss:Type="String">Bot</Data></Cell>
    </Row>
-   <Row ss:Height="55.5">
+   <Row ss:Height="56.25">
     <Cell><Data ss:Type="String">RTLV1</Data></Cell>
     <Cell><Data ss:Type="Number">5</Data></Cell>
     <Cell><Data ss:Type="String">Lambda</Data></Cell>
-    <Cell ss:StyleID="s44"><Data ss:Type="String">LkpRC()</Data></Cell>
-    <Cell ss:StyleID="s45"><Data ss:Type="String">LkpRCbyRow(G17 - value to lookup,YBR - range to look in)&#10;Lambda by Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s44"><Data ss:Type="String">CompBot</Data></Cell>
+    <Cell ss:StyleID="s45"><Data ss:Type="String">LkpRC()</Data></Cell>
+    <Cell ss:StyleID="s46"><Data ss:Type="String">LkpRCbyRow(G17 - value to lookup,YBR - range to look in)&#10;Lambda by Jaq Kennedy</Data></Cell>
+    <Cell ss:StyleID="s45"><Data ss:Type="String">CompBot</Data></Cell>
    </Row>
-   <Row ss:Height="55.5">
+   <Row ss:Height="56.25">
     <Cell><Data ss:Type="String">RTLV1</Data></Cell>
     <Cell><Data ss:Type="Number">5</Data></Cell>
     <Cell><Data ss:Type="String">Lambda</Data></Cell>
-    <Cell ss:StyleID="s44"><Data ss:Type="String">LkpRC()</Data></Cell>
-    <Cell ss:StyleID="s45"><Data ss:Type="String">LkpRCbyRow(H17 - value to lookup,YBR - range to look in)&#10;Lambda by Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s44"><Data ss:Type="String">CompBot</Data></Cell>
+    <Cell ss:StyleID="s45"><Data ss:Type="String">LkpRC()</Data></Cell>
+    <Cell ss:StyleID="s46"><Data ss:Type="String">LkpRCbyRow(H17 - value to lookup,YBR - range to look in)&#10;Lambda by Jaq Kennedy</Data></Cell>
+    <Cell ss:StyleID="s45"><Data ss:Type="String">CompBot</Data></Cell>
    </Row>
-   <Row ss:Height="37">
+   <Row ss:Height="37.5">
     <Cell><Data ss:Type="String">RTLV1</Data></Cell>
     <Cell><Data ss:Type="Number">5</Data></Cell>
     <Cell><Data ss:Type="String">Command</Data></Cell>
     <Cell><Data ss:Type="String">Generate Lambda Statement</Data></Cell>
-    <Cell ss:StyleID="s45"><Data ss:Type="String">GL&#10;Used to create dist lambda</Data></Cell>
-    <Cell ss:StyleID="s44"><Data ss:Type="String">Lambda Robot</Data></Cell>
+    <Cell ss:StyleID="s46"><Data ss:Type="String">GL&#10;Used to create dist lambda</Data></Cell>
+    <Cell ss:StyleID="s45"><Data ss:Type="String">Lambda Robot</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">RTLV1</Data></Cell>
@@ -535,13 +615,13 @@
     <Cell><Data ss:Type="String">D</Data></Cell>
     <Cell><Data ss:Type="String">Formula Robot</Data></Cell>
    </Row>
-   <Row ss:Height="55.5">
+   <Row ss:Height="56.25">
     <Cell><Data ss:Type="String">RTLV1</Data></Cell>
     <Cell><Data ss:Type="Number">6</Data></Cell>
     <Cell><Data ss:Type="String">Lambda</Data></Cell>
-    <Cell ss:StyleID="s44"><Data ss:Type="String">GRIDTOCOL_byLiannaGerrish</Data></Cell>
-    <Cell ss:StyleID="s45"><Data ss:Type="String">GRIDTOCOL_byLiannaGerrish(YBR - range to summarise)&#10;Lambda by Lianna Gerrish</Data></Cell>
-    <Cell ss:StyleID="s44"><Data ss:Type="String">CompBot</Data></Cell>
+    <Cell ss:StyleID="s45"><Data ss:Type="String">GRIDTOCOL_byLiannaGerrish</Data></Cell>
+    <Cell ss:StyleID="s46"><Data ss:Type="String">GRIDTOCOL_byLiannaGerrish(YBR - range to summarise)&#10;Lambda by Lianna Gerrish</Data></Cell>
+    <Cell ss:StyleID="s45"><Data ss:Type="String">CompBot</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">RTLV1</Data></Cell>
@@ -559,29 +639,29 @@
     <Cell><Data ss:Type="String">KC</Data></Cell>
     <Cell><Data ss:Type="String">Array Robot</Data></Cell>
    </Row>
-   <Row ss:Height="37">
+   <Row ss:Height="37.5">
     <Cell><Data ss:Type="String">RTLV1</Data></Cell>
     <Cell><Data ss:Type="Number">6</Data></Cell>
     <Cell><Data ss:Type="String">Command</Data></Cell>
     <Cell><Data ss:Type="String">Generate Lambda Statement</Data></Cell>
-    <Cell ss:StyleID="s45"><Data ss:Type="String">GL&#10;Used to create dist lambda</Data></Cell>
-    <Cell ss:StyleID="s44"><Data ss:Type="String">Lambda Robot</Data></Cell>
+    <Cell ss:StyleID="s46"><Data ss:Type="String">GL&#10;Used to create dist lambda</Data></Cell>
+    <Cell ss:StyleID="s45"><Data ss:Type="String">Lambda Robot</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">RTLV1</Data></Cell>
     <Cell><Data ss:Type="Number">6</Data></Cell>
     <Cell><Data ss:Type="String">Command</Data></Cell>
-    <Cell ss:StyleID="s44"><Data ss:Type="String">Sort Array Asc</Data></Cell>
-    <Cell ss:StyleID="s44"><Data ss:Type="String">SA</Data></Cell>
-    <Cell ss:StyleID="s44"><Data ss:Type="String">Array Robot</Data></Cell>
+    <Cell ss:StyleID="s45"><Data ss:Type="String">Sort Array Asc</Data></Cell>
+    <Cell ss:StyleID="s45"><Data ss:Type="String">SA</Data></Cell>
+    <Cell ss:StyleID="s45"><Data ss:Type="String">Array Robot</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">RTLV1</Data></Cell>
     <Cell><Data ss:Type="Number">6</Data></Cell>
     <Cell><Data ss:Type="String">Command</Data></Cell>
-    <Cell ss:StyleID="s44"><Data ss:Type="String">Keep First Row Of Array</Data></Cell>
-    <Cell ss:StyleID="s44"><Data ss:Type="String">KFR</Data></Cell>
-    <Cell ss:StyleID="s44"><Data ss:Type="String">Array Robot</Data></Cell>
+    <Cell ss:StyleID="s45"><Data ss:Type="String">Keep First Row Of Array</Data></Cell>
+    <Cell ss:StyleID="s45"><Data ss:Type="String">KFR</Data></Cell>
+    <Cell ss:StyleID="s45"><Data ss:Type="String">Array Robot</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">RTLV1</Data></Cell>
@@ -631,12 +711,12 @@
     <Cell><Data ss:Type="String">EB</Data></Cell>
     <Cell><Data ss:Type="String">Array Robot</Data></Cell>
    </Row>
-   <Row ss:Height="37">
+   <Row ss:Height="37.5">
     <Cell><Data ss:Type="String">RTLV2</Data></Cell>
     <Cell><Data ss:Type="Number">7</Data></Cell>
     <Cell><Data ss:Type="String">Command</Data></Cell>
     <Cell><Data ss:Type="String">Align Array to Right</Data></Cell>
-    <Cell ss:StyleID="s43"><Data ss:Type="String">AR&#10;Uses RightAlignedArray lambda</Data></Cell>
+    <Cell ss:StyleID="s44"><Data ss:Type="String">AR&#10;Uses RightAlignedArray lambda</Data></Cell>
     <Cell><Data ss:Type="String">CompBot</Data></Cell>
    </Row>
    <Row>
@@ -647,12 +727,12 @@
     <Cell><Data ss:Type="String">KC</Data></Cell>
     <Cell><Data ss:Type="String">Array Robot</Data></Cell>
    </Row>
-   <Row ss:Height="37">
+   <Row ss:Height="37.5">
     <Cell><Data ss:Type="String">RTLV2</Data></Cell>
     <Cell><Data ss:Type="Number">7</Data></Cell>
     <Cell><Data ss:Type="String">Command</Data></Cell>
     <Cell><Data ss:Type="String">Difference of Array Columns by Row</Data></Cell>
-    <Cell ss:StyleID="s43"><Data ss:Type="String">DIFF&#10;Uses DiffByRow lambda</Data></Cell>
+    <Cell ss:StyleID="s44"><Data ss:Type="String">DIFF&#10;Uses DiffByRow lambda</Data></Cell>
     <Cell><Data ss:Type="String">CompBot</Data></Cell>
    </Row>
    <Row>
@@ -663,12 +743,12 @@
     <Cell><Data ss:Type="String">NEG</Data></Cell>
     <Cell><Data ss:Type="String">CompBot</Data></Cell>
    </Row>
-   <Row ss:Height="37">
+   <Row ss:Height="56.25">
     <Cell><Data ss:Type="String">RTLV2</Data></Cell>
     <Cell><Data ss:Type="Number">7</Data></Cell>
     <Cell><Data ss:Type="String">Lambda</Data></Cell>
     <Cell><Data ss:Type="String">TDay()</Data></Cell>
-    <Cell ss:StyleID="s43"><Data ss:Type="String">Tday(along# + 1 - array of values to convert to a day in text format)</Data></Cell>
+    <Cell ss:StyleID="s44"><Data ss:Type="String">Tday(along# + 1 - array of values to convert to a day in text format)</Data></Cell>
     <Cell><Data ss:Type="String">CompBot</Data></Cell>
    </Row>
    <Row>
@@ -727,12 +807,12 @@
     <Cell><Data ss:Type="String">CODE</Data></Cell>
     <Cell><Data ss:Type="String">CompBot</Data></Cell>
    </Row>
-   <Row ss:Height="74">
+   <Row ss:Height="75">
     <Cell><Data ss:Type="String">RTLV2</Data></Cell>
     <Cell><Data ss:Type="Number">7</Data></Cell>
     <Cell><Data ss:Type="String">Lambda</Data></Cell>
     <Cell><Data ss:Type="String">LkpRCbyRow()</Data></Cell>
-    <Cell ss:StyleID="s43"><Data ss:Type="String">LkpRCbyRow(along# - array of values to lookup,People - range to look in)&#10;Lambda by Jaq Kennedy</Data></Cell>
+    <Cell ss:StyleID="s44"><Data ss:Type="String">LkpRCbyRow(along# - array of values to lookup,People - range to look in)&#10;Lambda by Jaq Kennedy</Data></Cell>
     <Cell><Data ss:Type="String">CompBot</Data></Cell>
    </Row>
    <Row>
@@ -808,23 +888,23 @@
     <Cell><Data ss:Type="String">CompBot</Data></Cell>
    </Row>
    <Row>
-    <Cell ss:StyleID="s44"><Data ss:Type="String">RTLV3</Data></Cell>
+    <Cell ss:StyleID="s45"><Data ss:Type="String">RTLV3</Data></Cell>
     <Cell><Data ss:Type="Number">4</Data></Cell>
     <Cell><Data ss:Type="String">Command</Data></Cell>
-    <Cell ss:StyleID="s44"><Data ss:Type="String">Keep Cell of Array</Data></Cell>
-    <Cell ss:StyleID="s44"><Data ss:Type="String">KTC</Data></Cell>
-    <Cell ss:StyleID="s44"><Data ss:Type="String">CompBot</Data></Cell>
+    <Cell ss:StyleID="s45"><Data ss:Type="String">Keep Cell of Array</Data></Cell>
+    <Cell ss:StyleID="s45"><Data ss:Type="String">KTC</Data></Cell>
+    <Cell ss:StyleID="s45"><Data ss:Type="String">CompBot</Data></Cell>
    </Row>
    <Row>
-    <Cell ss:StyleID="s44"><Data ss:Type="String">RTLV3</Data></Cell>
+    <Cell ss:StyleID="s45"><Data ss:Type="String">RTLV3</Data></Cell>
     <Cell><Data ss:Type="Number">4</Data></Cell>
     <Cell><Data ss:Type="String">Command</Data></Cell>
     <Cell><Data ss:Type="String">Split Text by Delimiter Above</Data></Cell>
-    <Cell ss:StyleID="s44"><Data ss:Type="String">ST</Data></Cell>
-    <Cell ss:StyleID="s44"><Data ss:Type="String">CompBot</Data></Cell>
+    <Cell ss:StyleID="s45"><Data ss:Type="String">ST</Data></Cell>
+    <Cell ss:StyleID="s45"><Data ss:Type="String">CompBot</Data></Cell>
    </Row>
    <Row>
-    <Cell ss:StyleID="s44"><Data ss:Type="String">RTLV3</Data></Cell>
+    <Cell ss:StyleID="s45"><Data ss:Type="String">RTLV3</Data></Cell>
     <Cell><Data ss:Type="Number">5</Data></Cell>
     <Cell><Data ss:Type="String">Command</Data></Cell>
     <Cell><Data ss:Type="String">Wrap with IFERROR TEXTBEFORE space</Data></Cell>
@@ -935,12 +1015,12 @@
     <Cell><Data ss:Type="String">D</Data></Cell>
     <Cell><Data ss:Type="String">Formula Robot</Data></Cell>
    </Row>
-   <Row ss:Height="55.5">
+   <Row ss:Height="56.25">
     <Cell><Data ss:Type="String">RTLV3</Data></Cell>
     <Cell><Data ss:Type="Number">5</Data></Cell>
     <Cell><Data ss:Type="String">Command</Data></Cell>
     <Cell><Data ss:Type="String">Save Game Answer To Left</Data></Cell>
-    <Cell ss:StyleID="s43"><Data ss:Type="String">Ctrl-Shft-S&#10;See &quot;Eggy&quot; command to get this bot</Data></Cell>
+    <Cell ss:StyleID="s44"><Data ss:Type="String">Ctrl-Shft-S&#10;See &quot;Eggy&quot; command to get this bot</Data></Cell>
     <Cell><Data ss:Type="String">MEWC Robot</Data></Cell>
    </Row>
    <Row>

@@ -1,0 +1,1 @@
+RATEANNUALTOMONTHLY =LAMBDA(rate,periods, (1 + rate) ^ (1 / periods) - 1);

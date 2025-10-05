@@ -1,0 +1,27 @@
+SumDist =LAMBDA(sum_distance_traveled, LET(
+   \\LambdaName, "SumDist",
+   \\CommandName, "Sum Distance of Arrows",
+   \\Description, "diagonals count as 2 moves, others count as 1",
+   _Step1, IFERROR(EXTRACTNUMBERS(sum_distance_traveled), 1),
+   _Step2, ARROWTABLE(),
+   _Step3, IFERROR(SUBSTITUTE(sum_distance_traveled, _Step1, ""), 0),
+   _Step4, SUM(ABS(TAKE(DROP(_Step2, 1), 1, -2))),
+   _Step5, SUM(ABS(TAKE(DROP(_Step2, 2), 1, -2))),
+   _Step6, SUM(ABS(TAKE(DROP(_Step2, 3), 1, -2))),
+   _Step7, SUM(ABS(TAKE(DROP(_Step2, 4), 1, -2))),
+   _Step8, SUM(ABS(TAKE(DROP(_Step2, 5), 1, -2))),
+   _Step9, SUM(ABS(TAKE(DROP(_Step2, 6), 1, -2))),
+   _Step10, SUM(ABS(TAKE(DROP(_Step2, 7), 1, -2))),
+   _Step11, SUM(ABS(TAKE(_Step2, -1, -2))),
+   _Result, SUM(
+      _Step1
+         * XLOOKUP(
+            _Step3,
+            TAKE(_Step2, -8, 1),
+            VSTACK(_Step4, _Step5, _Step6, _Step7, _Step8, _Step9, _Step10, _Step11),
+            0,
+            0
+         )
+   ),
+   _Result
+));

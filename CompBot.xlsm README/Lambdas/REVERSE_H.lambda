@@ -1,0 +1,1 @@
+REVERSE_H =LAMBDA(array, LET(l, COUNTA(TAKE(array, 1)), s, SEQUENCE(, l), SORTBY(array, s, -1)));

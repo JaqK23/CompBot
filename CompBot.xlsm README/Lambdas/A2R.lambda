@@ -1,0 +1,1 @@
+A2R =LAMBDA(add, ROW(INDIRECT(add)));

@@ -1,0 +1,19 @@
+DistFromCellArr =LAMBDA(startcell,sum_distance_traveled, LET(
+   \\LambdaName, "DistFromCellArr",
+   \\CommandName, "Distance From Cell By Numbered Arrow",
+   _Step1, IFERROR(EXTRACTNUMBERS(sum_distance_traveled), 1),
+   _Step2, COLROW(startcell),
+   _Step3, IFERROR(SUBSTITUTE(sum_distance_traveled, _Step1, ""), ""),
+   _Step4, ARROWTABLE(),
+   _X, IFERROR(
+      _Step1 * XLOOKUP(_Step3, TAKE(_Step4, -8, 1), TAKE(DROP(_Step4, , 1), -8, 1), 0, 0),
+      0
+   ),
+   _Y, IFERROR(_Step1 * XLOOKUP(_Step3, TAKE(_Step4, -8, 1), TAKE(_Step4, -8, -1), 0, 0), 0),
+   _Step7, SUM(_X),
+   _Step8, SUM(_Y),
+   _Step9, TAKE(_Step2, , 1) + _Step7,
+   _Step10, TAKE(_Step2, , -1) + _Step8,
+   _Result, ADDRESS(_Step10, _Step9, 4),
+   _Result
+));

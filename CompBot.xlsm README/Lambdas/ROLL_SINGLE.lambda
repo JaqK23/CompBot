@@ -1,0 +1,1 @@
+ROLL_SINGLE =LAMBDA(arrr,r, LET(arr, TOCOL(arrr), size, COUNT(arr), rr, MOD(r, size), leng, COUNTA(TAKE(arrr, 1)), IF(r = 0, arrr, WRAPROWS(VSTACK(TAKE(arr, -rr), TAKE(arr, size - rr)), leng))));

@@ -1,0 +1,1 @@
+MAXLOOKUP =LAMBDA(lookup_array,return_array,[return_type], IF(OR(return_type = 1, ISOMITTED(return_type)), XLOOKUP(MAX(lookup_array), lookup_array, return_array), XLOOKUP(MIN(lookup_array), lookup_array, return_array)));

@@ -1,0 +1,1 @@
+GETDIST =LAMBDA(cell_from,cell_to,diag_flag, IFS(diag_flag = 1, MAX(ABS(COLUMN(INDIRECT(cell_from)) - COLUMN(INDIRECT(cell_to))), ABS(ROW(INDIRECT(cell_from)) - ROW(INDIRECT(cell_to)))), diag_flag = 0, ABS(COLUMN(INDIRECT(cell_from)) - COLUMN(INDIRECT(cell_to))) + ABS(ROW(INDIRECT(cell_from)) - ROW(INDIRECT(cell_to)))));

@@ -1,0 +1,1 @@
+APPENDROWS =LAMBDA(array1,array2, LET(array1Rows, ROWS(array1), colIndex, SEQUENCE(, MAX(COLUMNS(array1), COLUMNS(array2))), rowIndex1, SEQUENCE(array1Rows + ROWS(array2)), rowIndex2, rowIndex1 - array1Rows, IF(rowIndex2 >= 1, INDEX(array2, rowIndex2, colIndex), INDEX(array1, rowIndex1, colIndex))));
