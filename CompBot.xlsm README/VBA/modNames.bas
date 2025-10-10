@@ -15,7 +15,7 @@ Sub NameUsedRanges(strShtPref As String)
     Set WB = ActiveWorkbook
     For Each WS In WB.Worksheets
         If LCase(Mid(WS.Name, 1, Len(strShtPref))) = LCase(strShtPref) Then
-            WS.UsedRange.Name = SanitizeRangeName(WS.Name)
+            WS.UsedRange.Name = "UR_" & SanitizeRangeName(WS.Name)
         End If
     Next WS
 End Sub
@@ -34,7 +34,7 @@ Sub NameAllUsedRanges()
     Set WB = ActiveWorkbook
     For Each WS In WB.Worksheets
         On Error Resume Next
-        WS.UsedRange.Name = SanitizeRangeName(WS.Name)
+        WS.UsedRange.Name = "UR_" & SanitizeRangeName(WS.Name)
         On Error GoTo 0
     Next WS
 End Sub
