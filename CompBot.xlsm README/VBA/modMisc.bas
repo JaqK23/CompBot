@@ -1,5 +1,6 @@
 Attribute VB_Name = "modMisc"
 Option Explicit
+Private Const SETTINGS_SHEET As String = "Default Settings"
 
 'Create a new blank sheet with no gridlines, a header and freeze frames
 '--------------------------------------------< OA Robot >--------------------------------------------
@@ -63,33 +64,38 @@ End Sub
 
 'Update Default Settings to those specified
 '--------------------------------------------< OA Robot >--------------------------------------------
-' Command Name:           Default Settings
+' Command Name:           Update Settings
 ' Description:            Updates default settings to those in Default Settings sheet
 ' Macro Expression:       modMisc.DefaultSettings()
 ' Generated:              01/03/2025 10:19 PM
 '----------------------------------------------------------------------------------------------------
-Sub DefaultSettings()
+Sub UpdateSettings()
     Dim decimalSeparator As String
     Dim thousandsSeparator As String
     Dim listSeparator As String
     Dim useSystemSeparators As Boolean
-    Dim targetLanguage As String
     Dim WS As Worksheet
     
     ' Ensure named ranges exist
-    On Error GoTo ErrorHandler
-    Set WS = ThisWorkbook.Sheets("Default Settings")
+    On Error GoTo RangeError
+    Set WS = ThisWorkbook.Sheets(SETTINGS_SHEET)
     
     ' Read values from named ranges
     decimalSeparator = WS.Range("Decimal_Separator").Value
     thousandsSeparator = WS.Range("Thousands_Separator").Value
     listSeparator = WS.Range("List_Separator").Value
-    useSystemSeparators = WS.Range("Use_System_Separators").Value
-    targetLanguage = WS.Range("Language").Value
+    useSystemSeparators = CBool(WS.Range("Use_System_Separators").Value)
     
     ' Apply settings
-    Application.useSystemSeparators = useSystemSeparators
     
+    On Error GoTo ApplyError
+    'Error checks
+    If Len(decimalSeparator) <> 1 And Not useSystemSeparators Then Err.Raise vbObjectError, , "Decimal separator must be a single character"
+    If Len(thousandsSeparator) <> 1 And Not useSystemSeparators Then Err.Raise vbObjectError, , "Thousands separator must be a single character"
+    
+    Application.useSystemSeparators = useSystemSeparators
+        
+    'Only update this if useSystemSeparators is FALSE
     If Not useSystemSeparators Then
         Application.decimalSeparator = decimalSeparator
         Application.thousandsSeparator = thousandsSeparator
@@ -98,20 +104,133 @@ Sub DefaultSettings()
     ' List Separator: Update formula separators if needed
     ' This requires workarounds since `xlListSeparator` is read-only
     If listSeparator <> Application.International(xlListSeparator) Then
-        MsgBox "Please ensure the regional settings in your system reflect the desired list separator: " & listSeparator, vbExclamation
+        MsgBox "Please note that the formula separator is automatically set based on decimal separator: " & _
+        Application.International(xlListSeparator) & " will be used", vbExclamation
         
     End If
 
     ' Notify user
-    MsgBox "Excel settings updated to " & targetLanguage & " conventions.", vbInformation
+    MsgBox "Excel settings updated to current conventions.", vbInformation
+
+    Exit Sub
+
+RangeError:
+    MsgBox "Error with loading ranges. Ensure all named ranges exist and are populated.", vbCritical
+    Exit Sub
+ApplyError:
+    MsgBox "Error updating settings. Ensure access is allowed.", vbCritical
+    
+End Sub
+
+'--------------------------------------------< OA Robot >--------------------------------------------
+' Command Name:           Revert Settings
+' Description:            Reverts settings to those loaded into the Loaded column.
+' Macro Expression:       modMisc.RevertSettings()
+' Generated:              2026-05-21 11:46 AM
+'----------------------------------------------------------------------------------------------------
+Sub RevertSettings()
+    Dim decimalSeparator As String
+    Dim thousandsSeparator As String
+    Dim listSeparator As String
+    Dim useSystemSeparators As Boolean
+    Dim WS As Worksheet
+    
+    ' Ensure named ranges exist
+    On Error GoTo RangeError
+    Set WS = ThisWorkbook.Sheets(SETTINGS_SHEET)
+    
+    ' Read values from named ranges
+    decimalSeparator = WS.Range("Loaded_Decimal_Separator").Value
+    thousandsSeparator = WS.Range("Loaded_Thousands_Separator").Value
+    listSeparator = WS.Range("Loaded_List_Separator").Value
+    useSystemSeparators = CBool(WS.Range("Loaded_Use_System_Separators").Value)
+    
+    
+    ' Apply settings
+    
+    On Error GoTo ApplyError
+    'Error checks
+    If Len(decimalSeparator) <> 1 And Not useSystemSeparators Then Err.Raise vbObjectError, , "Decimal separator must be a single character"
+    If Len(thousandsSeparator) <> 1 And Not useSystemSeparators Then Err.Raise vbObjectError, , "Thousands separator must be a single character"
+    
+    Application.useSystemSeparators = useSystemSeparators
+        
+    'Overwrite this to be sure you're reverting all settings, regardless of useSystemSeparators
+    Application.decimalSeparator = decimalSeparator
+    Application.thousandsSeparator = thousandsSeparator
+
+    ' List Separator: Update formula separators if needed
+    ' This requires workarounds since `xlListSeparator` is read-only
+    If listSeparator <> Application.International(xlListSeparator) Then
+        MsgBox "Please note that the formula separator is automatically set based on decimal separator: " & _
+        Application.International(xlListSeparator) & " will be used", vbExclamation
+        
+    End If
+
+    ' Notify user
+    MsgBox "Excel settings updated to previously loaded conventions.", vbInformation
+
+    Exit Sub
+
+RangeError:
+    MsgBox "Error with loading ranges. Ensure all named ranges exist and are populated.", vbCritical
+    Exit Sub
+ApplyError:
+    MsgBox "Error updating settings. Ensure access is allowed.", vbCritical
+    
+End Sub
+'--------------------------------------------< OA Robot >--------------------------------------------
+' Command Name:           Get Current Settings
+' Description:            Get current settings for this computer.
+' Macro Expression:       modMisc.GetCurrentSettings()
+' Generated:              2026-05-21 09:48 AM
+'----------------------------------------------------------------------------------------------------
+Sub GetCurrentSettings()
+    Dim decimalSeparator As String
+    Dim thousandsSeparator As String
+    Dim listSeparator As String
+    Dim useSystemSeparators As Boolean
+    Dim loadedLanguageID As Long
+    Dim WS As Worksheet
+    
+    ' Ensure named ranges exist
+    On Error GoTo ErrorHandler
+    Set WS = ThisWorkbook.Sheets(SETTINGS_SHEET)
+    
+     ' Get settings
+    useSystemSeparators = Application.useSystemSeparators
+    If useSystemSeparators Then
+        decimalSeparator = Application.International(xlDecimalSeparator)
+        thousandsSeparator = Application.International(xlThousandsSeparator)
+    Else
+        decimalSeparator = Application.decimalSeparator
+        thousandsSeparator = Application.thousandsSeparator
+    End If
+    
+    ' List Separator: Update formula separators if needed
+    ' This requires workarounds since `xlListSeparator` is read-only
+    listSeparator = Application.International(xlListSeparator)
+    
+    ' Unable to update - set up for information only
+    loadedLanguageID = Application.LanguageSettings.LanguageID(msoLanguageIDUI)
+   
+   ' Read values from named ranges
+    WS.Range("Loaded_Decimal_Separator").Value = decimalSeparator
+    WS.Range("Loaded_Thousands_Separator").Value = thousandsSeparator
+    WS.Range("Loaded_List_Separator").Value = listSeparator
+    WS.Range("Loaded_Use_System_Separators").Value = useSystemSeparators
+    WS.Range("Loaded_Language_ID").Value = loadedLanguageID
+    
+
+    ' Notify user
+    MsgBox "Current Excel settings loaded to 'Loaded' range.", vbInformation
 
     Exit Sub
 
 ErrorHandler:
-    MsgBox "Error updating regional settings. Ensure all named ranges exist and are populated.", vbCritical
+    MsgBox "Error getting current regional settings. Have some practice debugging VBA.", vbCritical
 
 End Sub
-
 'Toggle calculation mode between manual and automatic
 '--------------------------------------------< OA Robot >--------------------------------------------
 ' Command Name:           Toggle Calculation Mode

@@ -89,9 +89,9 @@ Sub Backup()
         'rename new sheet as BU version
         Set WS = WB.Worksheets(WB.Worksheets.Count)
         If Len(strName) < 30 Then
-            WS.Name = strName & "BU"
+            WS.Name = "BU_" & strName
         Else
-            WS.Name = Left(strName, 29) & "BU"
+            WS.Name = "BU_" & Left(strName, 28)
         End If
     Next intCurr
     
@@ -631,7 +631,8 @@ Sub CreateDataTable(rngTarget As Range)
 NoMoreInputs:
     
     'set up formula and question numbers
-    WS.Cells(rngTarget.Row + 3, rngTarget.Column + 1).Formula = "=" & rngTarget.Address
+    WS.Cells(rngTarget.Row + 3, rngTarget.Column + 1).Value = "ANSWER"
+    WS.Cells(rngTarget.Row + 3, rngTarget.Column + 1).Interior.ColorIndex = 4
     For intRow = LBound(intQs) To UBound(intQs)
         WS.Cells(rngTarget.Row + 3 + intRow + (1 - LBound(intQs)), rngTarget.Column).Value = intQs(intRow)
     Next intRow

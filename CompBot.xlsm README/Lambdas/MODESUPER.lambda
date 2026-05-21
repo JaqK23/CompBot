@@ -1,1 +1,0 @@
-MODESUPER =LAMBDA(rng, LET(u, TOCOL(UNIQUE(rng), 3), TAKE(SORT(HSTACK(u, COUNTIF(rng, u)), 2, -1), 1)));

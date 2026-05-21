@@ -9,6 +9,22 @@
       "Location": "ADDRESSES_byDiarmuidEarly"
     },
     {
+      "Name": "ARROWSHIFT.lambda",
+      "Description": "Definition of ARROWSHIFT lambda function.",
+      "Type": "ExcelNameText",
+      "ContentType": "ExcelLambda",
+      "Value": "ARROWSHIFT = LAMBDA(starting_cell,arrow, LET(\r\n   Arrows, VSTACK(\"↗\", \"↓\", \"↖\", \"←\", \"→\", \"↙\", \"↘\", \"↑\"),\r\n   Cards, VSTACK(\"NE\", \"S\", \"NW\", \"W\", \"E\", \"SW\", \"SE\", \"N\"),\r\n   Arrowsx, VSTACK(1, 0, -1, -1, 1, -1, 1, 0),\r\n   Arrowsy, VSTACK(-1, 1, -1, 0, 0, 1, 1, -1),\r\n   CardInd, ISERROR(XMATCH(RIGHT(arrow), Arrows, 0)),\r\n   CardComment, \"Multiplier Can Only Be Used On Arrows\",\r\n   d, IF(CardInd, arrow, RIGHT(arrow, 1)),\r\n   m, IF((LEN(arrow) = 1) + CardInd, 1, 1 * LEFT(arrow, LEN(arrow) - 1)),\r\n   xmoveunit, XLOOKUP(d, IF(CardInd, Cards, Arrows), Arrowsx),\r\n   ymoveunit, XLOOKUP(d, IF(CardInd, Cards, Arrows), Arrowsy),\r\n   xmove, xmoveunit * m,\r\n   ymove, ymoveunit * m,\r\n   collet, TAKE(TEXTSPLIT(starting_cell, SEQUENCE(, 10, 0)), , 1),\r\n   startcol, COLUMN(INDIRECT(collet & 1)),\r\n   startrow, 1 * RIGHT(starting_cell, LEN(starting_cell) - LEN(collet)),\r\n   newcell, ADDRESS(startrow + ymove, startcol + xmove, 4),\r\n   newcell\r\n));",
+      "Location": "ARROWSHIFT"
+    },
+    {
+      "Name": "ARROWSHIFT_byEmilieWilliams.lambda",
+      "Description": "Definition of ARROWSHIFT_byEmilieWilliams lambda function.",
+      "Type": "ExcelNameText",
+      "ContentType": "ExcelLambda",
+      "Value": "ARROWSHIFT_byEmilieWilliams = LAMBDA(starting_cell,arrow, LET(\n   Arrows, VSTACK(\"↗\", \"↓\", \"↖\", \"←\", \"→\", \"↙\", \"↘\", \"↑\"),\n   Cards, VSTACK(\"NE\", \"S\", \"NW\", \"W\", \"E\", \"SW\", \"SE\", \"N\"),\n   Arrowsx, VSTACK(1, 0, -1, -1, 1, -1, 1, 0),\n   Arrowsy, VSTACK(-1, 1, -1, 0, 0, 1, 1, -1),\n   CardInd, ISERROR(XMATCH(RIGHT(arrow), Arrows, 0)),\n   CardComment, \"Multiplier Can Only Be Used On Arrows\",\n   d, IF(CardInd, arrow, RIGHT(arrow, 1)),\n   m, IF((LEN(arrow) = 1) + CardInd, 1, 1 * LEFT(arrow, LEN(arrow) - 1)),\n   xmoveunit, XLOOKUP(d, IF(CardInd, Cards, Arrows), Arrowsx),\n   ymoveunit, XLOOKUP(d, IF(CardInd, Cards, Arrows), Arrowsy),\n   xmove, xmoveunit * m,\n   ymove, ymoveunit * m,\n   collet, TAKE(TEXTSPLIT(starting_cell, SEQUENCE(, 10, 0)), , 1),\n   startcol, COLUMN(INDIRECT(collet & 1)),\n   startrow, 1 * RIGHT(starting_cell, LEN(starting_cell) - LEN(collet)),\n   newcell, ADDRESS(startrow + ymove, startcol + xmove, 4),\n   newcell\n));",
+      "Location": "ARROWSHIFT_byEmilieWilliams"
+    },
+    {
       "Name": "BiRow_byPeterBartholomew.lambda",
       "Description": "Definition of BiRow_byPeterBartholomew lambda function.",
       "Type": "ExcelNameText",

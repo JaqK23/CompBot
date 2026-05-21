@@ -1,5 +1,0 @@
-LkpSum =LAMBDA(values,lkpin,lkpout, LET(
-   \\LambdaName, "LkpSum",
-   \\CommandName, "Sum Lookup by Row",
-   BYROW(XLOOKUP(values, lkpin, lkpout), SUM)
-));

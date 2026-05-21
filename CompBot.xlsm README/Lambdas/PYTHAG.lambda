@@ -1,1 +1,0 @@
-PYTHAG =LAMBDA(a,b, SQRT((a * a) + (b * b)));

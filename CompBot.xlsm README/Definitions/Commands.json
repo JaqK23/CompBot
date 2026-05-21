@@ -17,6 +17,21 @@
       ]
     },
     {
+      "Name": "Apply ARROWSHIFT_byEmilieWilliams Lambda",
+      "Description": "Apply ARROWSHIFT_byEmilieWilliams lambda function to active cell, using direction in clipboard.",
+      "Type": "ExcelFormulaCommand",
+      "LaunchCodes": [
+        "ARR"
+      ],
+      "Formula": "=ARROWSHIFT_byEmilieWilliams([[ActiveCell::Formula]], [[Clipboard]])",
+      "Tags": [
+        "WrapWith"
+      ],
+      "FormulaDependencies": [
+        "ARROWSHIFT_byEmilieWilliams.lambda"
+      ]
+    },
+    {
       "Name": "Backup Sheets in Workbook",
       "Description": "Copy all sheets in workbook for backup",
       "Type": "VBAMacroCommand",
@@ -110,18 +125,6 @@
       ]
     },
     {
-      "Name": "Default Settings",
-      "Description": "Updates default settings to those in Default Settings sheet",
-      "Type": "VBAMacroCommand",
-      "LaunchCodes": [
-        "DS"
-      ],
-      "MacroExpression": "modMisc.DefaultSettings()",
-      "Tags": [
-        "Settings"
-      ]
-    },
-    {
       "Name": "Difference of Array Columns by Row",
       "Description": "Returns first column - last column in array",
       "Type": "ExcelFormulaCommand",
@@ -167,6 +170,18 @@
       "MacroExpression": "modCaseSetup.Setup()",
       "Tags": [
         "Prep"
+      ]
+    },
+    {
+      "Name": "Get Current Settings",
+      "Description": "Get current settings for this computer.",
+      "Type": "VBAMacroCommand",
+      "LaunchCodes": [
+        "GS"
+      ],
+      "MacroExpression": "modMisc.GetCurrentSettings()",
+      "Tags": [
+        "Settings"
       ]
     },
     {
@@ -292,6 +307,30 @@
       ]
     },
     {
+      "Name": "Revert Settings",
+      "Description": "Reverts settings to those loaded into the Loaded column.",
+      "Type": "VBAMacroCommand",
+      "LaunchCodes": [
+        "RS"
+      ],
+      "MacroExpression": "modMisc.RevertSettings()",
+      "Tags": [
+        "Settings"
+      ]
+    },
+    {
+      "Name": "Round to 0",
+      "Description": "Round to 0.",
+      "Type": "ExcelFormulaCommand",
+      "LaunchCodes": [
+        "r0"
+      ],
+      "Formula": "=ROUND([[ActiveCell::Formula]],0)",
+      "Tags": [
+        "Convert"
+      ]
+    },
+    {
       "Name": "Save Answers To Left",
       "Description": "Saves references to the selected cells in the green answer cells to the left on the same row.",
       "Type": "VBAMacroCommand",
@@ -388,6 +427,18 @@
       ]
     },
     {
+      "Name": "Update Settings",
+      "Description": "Updates default settings to those in Default Settings sheet",
+      "Type": "VBAMacroCommand",
+      "LaunchCodes": [
+        "US"
+      ],
+      "MacroExpression": "modMisc.UpdateSettings()",
+      "Tags": [
+        "Settings"
+      ]
+    },
+    {
       "Name": "Wrap in ABS",
       "Description": "Wrap in abs.",
       "Type": "ExcelFormulaCommand",
@@ -467,6 +518,18 @@
         "code"
       ],
       "Formula": "=UNICODE([[ActiveCell::Formula]])",
+      "Tags": [
+        "WrapWith"
+      ]
+    },
+    {
+      "Name": "Wrap in UNIQUE",
+      "Description": "Wrap in Unique",
+      "Type": "ExcelFormulaCommand",
+      "LaunchCodes": [
+        "U"
+      ],
+      "Formula": "=UNIQUE([[ActiveCell::Formula]])",
       "Tags": [
         "WrapWith"
       ]

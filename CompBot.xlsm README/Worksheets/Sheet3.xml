@@ -14,6 +14,16 @@
    <NumberFormat/>
    <Protection/>
   </Style>
+  <Style ss:ID="s23" ss:Name="Accent1">
+   <Font ss:FontName="Aptos Narrow" x:Family="Swiss" ss:Size="14"
+    ss:Color="#FFFFFF"/>
+   <Interior ss:Color="#156082" ss:Pattern="Solid"/>
+  </Style>
+  <Style ss:ID="s24" ss:Name="Accent1 80%">
+   <Font ss:FontName="Verdana Pro" x:Family="Swiss" ss:Size="14" ss:Color="#FFFFFF"/>
+   <Interior ss:Color="#1E88B8" ss:Pattern="Solid"/>
+   <NumberFormat/>
+  </Style>
   <Style ss:ID="s19" ss:Name="Comma">
    <NumberFormat ss:Format="_(* #,##0.00_);_(* \(#,##0.00\);_(* &quot;-&quot;??_);_(@_)"/>
   </Style>
@@ -29,16 +39,16 @@
    <Font ss:FontName="Verdana" x:Family="Swiss" ss:Size="15" ss:Color="#0E2841"
     ss:Bold="1"/>
   </Style>
-  <Style ss:ID="s23" ss:Parent="s16">
+  <Style ss:ID="s25" ss:Parent="s16">
    <Alignment ss:Horizontal="CenterAcrossSelection" ss:Vertical="Bottom"/>
   </Style>
-  <Style ss:ID="s24" ss:Parent="s18">
+  <Style ss:ID="s26" ss:Parent="s18">
    <Alignment ss:Horizontal="CenterAcrossSelection" ss:Vertical="Bottom"/>
   </Style>
-  <Style ss:ID="s36">
+  <Style ss:ID="s38">
    <Alignment ss:Horizontal="Right" ss:Vertical="Bottom"/>
   </Style>
-  <Style ss:ID="s37">
+  <Style ss:ID="s39">
    <Borders>
     <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"/>
     <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1"/>
@@ -46,7 +56,7 @@
     <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1"/>
    </Borders>
   </Style>
-  <Style ss:ID="s38">
+  <Style ss:ID="s40">
    <Borders>
     <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"/>
     <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1"/>
@@ -56,22 +66,70 @@
    <Font ss:FontName="Verdana" x:Family="Swiss" ss:Size="16" ss:Color="#0000FF"/>
    <Interior ss:Color="#FFFFCC" ss:Pattern="Solid"/>
   </Style>
-  <Style ss:ID="s39" ss:Parent="s19">
+  <Style ss:ID="s41" ss:Parent="s19">
    <Font ss:FontName="Verdana" x:Family="Swiss" ss:Size="16" ss:Color="#000000"/>
+  </Style>
+  <Style ss:ID="s51" ss:Parent="s23">
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"/>
+    <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1"/>
+    <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1"/>
+    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1"/>
+   </Borders>
+  </Style>
+  <Style ss:ID="s52" ss:Parent="s24">
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"/>
+    <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1"/>
+    <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1"/>
+    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1"/>
+   </Borders>
+  </Style>
+  <Style ss:ID="s53" ss:Parent="s18">
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"/>
+    <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1"/>
+    <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1"/>
+    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1"/>
+   </Borders>
+  </Style>
+  <Style ss:ID="s54" ss:Parent="s16">
+   <Alignment ss:Horizontal="CenterAcrossSelection" ss:Vertical="Bottom"/>
+   <Borders/>
+  </Style>
+  <Style ss:ID="s55" ss:Parent="s18">
+   <Alignment ss:Horizontal="CenterAcrossSelection" ss:Vertical="Bottom"/>
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"/>
+    <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1"/>
+    <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1"/>
+    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1"/>
+   </Borders>
+  </Style>
+  <Style ss:ID="s56" ss:Parent="s18">
+   <Alignment ss:Horizontal="CenterAcrossSelection" ss:Vertical="Bottom"
+    ss:WrapText="1"/>
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"/>
+    <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1"/>
+    <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1"/>
+    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1"/>
+   </Borders>
   </Style>
  </Styles>
  <Names>
-  <NamedRange ss:Name="_distFrom"
-   ss:RefersTo="=LAMBDA(mp,trg,func,LET(vals,TOCOL(mp),rws,TOCOL(SEQUENCE(ROWS(mp))+0*SEQUENCE(,COLUMNS(mp))),cls,TOCOL(SEQUENCE(ROWS(mp))*0+SEQUENCE(,COLUMNS(mp))),Mrws,TOROW(FILTER(rws,vals=trg)),Mcls,TOROW(FILTER(cls,vals=trg)),rdist,ABS(rws-Mrws),cdist,ABS(cls-Mcls),dist,BYROW(MAP(rdist,cdist,func),MIN),WRAPROWS(dist,COLUMNS(mp))))"/>
   <NamedRange ss:Name="_xleta.CELL" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xleta.COLUMN" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xleta.COUNT" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xleta.COUNTA" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xleta.HSTACK" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xleta.LEFT" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xleta.MIN" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xleta.OFFSET" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xleta.ROWS" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xleta.SUM" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xleta.T" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xleta.TAKE" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xleta.TEXT" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xleta.TYPE" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xleta.UNICHAR" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
@@ -172,6 +230,7 @@
   <NamedRange ss:Name="_xlpm.accum" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.Actual" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.add" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.addarr" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.addr" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.addr_col" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.aggregate_function" ss:RefersTo="=#NAME?"
@@ -188,6 +247,7 @@
   <NamedRange ss:Name="_xlpm.array2Cols" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.array2Rows" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.arrow" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.arrowcardind" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.Arrows" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.ArrowsRC" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.Arrowsx" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
@@ -204,6 +264,11 @@
   <NamedRange ss:Name="_xlpm.br" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.c" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.ca" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.Car" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.Card" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.CardComment" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.CardInd" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.Cards" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.cb" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.cc" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.cdist" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
@@ -329,6 +394,7 @@
   <NamedRange ss:Name="_xlpm.map_cell" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.MatchMode" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.Mcls" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
+  <NamedRange ss:Name="_xlpm.mExists" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.month_num" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.mp" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.mrows" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
@@ -476,22 +542,10 @@
   <NamedRange ss:Name="_xlpm.ymove" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.ymoveunit" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
   <NamedRange ss:Name="_xlpm.ymult" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
-  <NamedRange ss:Name="A2C" ss:RefersTo="=LAMBDA(add, COLUMN(INDIRECT(add)))"/>
-  <NamedRange ss:Name="A2R" ss:RefersTo="=LAMBDA(add, ROW(INDIRECT(add)))"/>
   <NamedRange ss:Name="ADDRESSES_byDiarmuidEarly"
    ss:RefersTo="=LAMBDA(rng, ADDRESS(ROW(rng), COLUMN(rng), 4))"/>
-  <NamedRange ss:Name="AMATCH"
-   ss:RefersTo="=LAMBDA(rng,trg,[Actual], LET(vals, TOCOL(rng), strw, IF(Actual = 1, ROW(TAKE(rng, 1, 1)) - 1, 0), stcl, IF(Actual = 1, COLUMN(TAKE(rng, 1, 1)) - 1, 0), rws, TOCOL(SEQUENCE(ROWS(rng)) + 0 * SEQUENCE(, COLUMNS(rng))), cls, TOCOL(SEQUENCE(ROWS(rng)) * 0 + SEQUENCE(, COLUMNS(rng))), Mrws, TOROW(FILTER(rws, (vals = trg) * (vals &lt;&gt; &quot;&quot;))), Mcls, TOROW(FILTER(cls, (vals = trg) * (vals &lt;&gt; &quot;&quot;))), TRANSPOSE(VSTACK(strw + Mrws, stcl + Mcls))))"/>
-  <NamedRange ss:Name="AMATCHADD"
-   ss:RefersTo="=LAMBDA(rng,trg,[Actual], LET(vals, TOCOL(rng), strw, IF(Actual = 1, ROW(TAKE(rng, 1, 1)) - 1, 0), stcl, IF(Actual = 1, COLUMN(TAKE(rng, 1, 1)) - 1, 0), rws, TOCOL(SEQUENCE(ROWS(rng)) + 0 * SEQUENCE(, COLUMNS(rng))), cls, TOCOL(SEQUENCE(ROWS(rng)) * 0 + SEQUENCE(, COLUMNS(rng))), Mrws, TOROW(FILTER(rws, (vals = trg) * (vals &lt;&gt; &quot;&quot;))), Mcls, TOROW(FILTER(cls, (vals = trg) * (vals &lt;&gt; &quot;&quot;))), TRANSPOSE(ADDRESS(strw + Mrws, stcl + Mcls, 4))))"/>
-  <NamedRange ss:Name="APPENDCOLS"
-   ss:RefersTo="=LAMBDA(array1,array2, LET(array1Rows, ROWS(array1), array1Cols, COLUMNS(array1), array2Rows, ROWS(array2), array2Cols, COLUMNS(array2), rowLen, MAX(array1Rows, array2Rows), colLen, array1Cols + array2Cols, newArray, SEQUENCE(rowLen, colLen), colIndex, MOD(newArray - 1, colLen) + 1, rowIndex, 1 + ((newArray - colIndex) / colLen), resultArray, IF(colIndex &gt; array1Cols, INDEX(array2, rowIndex, colIndex - array1Cols), INDEX(array1, rowIndex, colIndex)), resultArray))"/>
-  <NamedRange ss:Name="APPENDROWS"
-   ss:RefersTo="=LAMBDA(array1,array2, LET(array1Rows, ROWS(array1), colIndex, SEQUENCE(, MAX(COLUMNS(array1), COLUMNS(array2))), rowIndex1, SEQUENCE(array1Rows + ROWS(array2)), rowIndex2, rowIndex1 - array1Rows, IF(rowIndex2 &gt;= 1, INDEX(array2, rowIndex2, colIndex), INDEX(array1, rowIndex1, colIndex))))"/>
-  <NamedRange ss:Name="ARROWSHIFT"
-   ss:RefersTo="=LAMBDA(starting_cell,arrow, LET(Arrows, VSTACK(&quot;↗&quot;, &quot;↓&quot;, &quot;↖&quot;, &quot;←&quot;, &quot;→&quot;, &quot;↙&quot;, &quot;↘&quot;, &quot;↑&quot;), Arrowsx, VSTACK(1, 0, -1, -1, 1, -1, 1, 0), Arrowsy, VSTACK(-1, 1, -1, 0, 0, 1, 1, -1), d, RIGHT(arrow, 1), m, IF(LEN(arrow) = 1, 1, 1 * LEFT(arrow, LEN(arrow) - 1)), xmoveunit, XLOOKUP(d, Arrows, Arrowsx), ymoveunit, XLOOKUP(d, Arrows, Arrowsy), xmove, xmoveunit * m, ymove, ymoveunit * m, collet, TAKE(TEXTSPLIT(starting_cell, SEQUENCE(, 10, 0)), , 1), startcol, COLUMN(INDIRECT(collet &amp; 1)), startrow, 1 * RIGHT(starting_cell, LEN(starting_cell) - LEN(collet)), newcell, ADDRESS(startrow + ymove, startcol + xmove, 4), newcell))"/>
-  <NamedRange ss:Name="ARROWTABLE"
-   ss:RefersTo="=LAMBDA(LET(Arrows, VSTACK(&quot;↗&quot;, &quot;↓&quot;, &quot;↖&quot;, &quot;←&quot;, &quot;→&quot;, &quot;↙&quot;, &quot;↘&quot;, &quot;↑&quot;), Arrowsx, VSTACK(1, 0, -1, -1, 1, -1, 1, 0), Arrowsy, VSTACK(-1, 1, -1, 0, 0, 1, 1, -1), headers, HSTACK(&quot;Arrows&quot;, &quot;Arrowsx&quot;, &quot;Arrowsy&quot;), table_arrows, HSTACK(Arrows, Arrowsx, Arrowsy), VSTACK(headers, table_arrows)))"/>
+  <NamedRange ss:Name="ARROWSHIFT_byEmilieWilliams"
+   ss:RefersTo="=LAMBDA(starting_cell,arrow, LET(&#10;   Arrows, VSTACK(&quot;↗&quot;, &quot;↓&quot;, &quot;↖&quot;, &quot;←&quot;, &quot;→&quot;, &quot;↙&quot;, &quot;↘&quot;, &quot;↑&quot;),&#10;   Cards, VSTACK(&quot;NE&quot;, &quot;S&quot;, &quot;NW&quot;, &quot;W&quot;, &quot;E&quot;, &quot;SW&quot;, &quot;SE&quot;, &quot;N&quot;),&#10;   Arrowsx, VSTACK(1, 0, -1, -1, 1, -1, 1, 0),&#10;   Arrowsy, VSTACK(-1, 1, -1, 0, 0, 1, 1, -1),&#10;   CardInd, ISERROR(XMATCH(RIGHT(arrow), Arrows, 0)),&#10;   CardComment, &quot;Multiplier Can Only Be Used On Arrows&quot;,&#10;   d, IF(CardInd, arrow, RIGHT(arrow, 1)),&#10;   m, IF((LEN(arrow) = 1) + CardInd, 1, 1 * LEFT(arrow, LEN(arrow) - 1)),&#10;   xmoveunit, XLOOKUP(d, IF(CardInd, Cards, Arrows), Arrowsx),&#10;   ymoveunit, XLOOKUP(d, IF(CardInd, Cards, Arrows), Arrowsy),&#10;   xmove, xmoveunit * m,&#10;   ymove, ymoveunit * m,&#10;   collet, TAKE(TEXTSPLIT(starting_cell, SEQUENCE(, 10, 0)), , 1),&#10;   startcol, COLUMN(INDIRECT(collet &amp; 1)),&#10;   startrow, 1 * RIGHT(starting_cell, LEN(starting_cell) - LEN(collet)),&#10;   newcell, ADDRESS(startrow + ymove, startcol + xmove, 4),&#10;   newcell&#10;))"/>
   <NamedRange ss:Name="CaseInputs"
    ss:RefersTo="=LAMBDA(     LET(         questions, FILTER(INDIRECT(&quot;Case!$B:$EE&quot;), ISNUMBER(INDIRECT(&quot;Case!$B:$B&quot;))),         result, IF(questions=0, NA(), questions),         clean, HSTACK(TAKE(result,,3), TAKE(result,,-COLUMNS(result)+5)),         IFERROR(clean, &quot;&quot;)     ) )"/>
   <NamedRange ss:Name="COL"
@@ -500,19 +554,9 @@
    ss:RefersTo="=LAMBDA(cell_coordinates, TEXTSPLIT(COLUMN(INDIRECT(cell_coordinates)) &amp; &quot;;&quot; &amp; ROW(INDIRECT(cell_coordinates)), &quot;;&quot;))"/>
   <NamedRange ss:Name="CountChar_byLiannaGerrish"
    ss:RefersTo="=LAMBDA(text,c,LET(\\LambdaName, &quot;CountChar_byLiannaGerrish&quot;, \\CommandName, &quot;Count Characters in a String&quot;, \\Description, &quot;Returns the number of times a character appears in the selected text string&quot;, \\Source, &quot;Lianna Gerrish&quot;, Trimmedtext, TRIM(text), TrimmedtextLength, LEN(Trimmedtext), WhiteSpaceSubstitution, SUBSTITUTE(Trimmedtext, c, &quot;&quot;), TextLengthNoSpaces, LEN(WhiteSpaceSubstitution), TrimmedtextLength - TextLengthNoSpaces + 0))"/>
-  <NamedRange ss:Name="CR2A"
-   ss:RefersTo="=LAMBDA(cnum,rnum, ADDRESS(rnum, cnum, 4))"/>
-  <NamedRange ss:Name="DATEHEADERS"
-   ss:RefersTo="=LAMBDA(start_date,periods,type, LET(month_num, IFS(type = &quot;Y&quot;, 12, type = &quot;Q&quot;, 3, type = &quot;M&quot;, 1), HSTACK(VSTACK(&quot;Start Date&quot;, &quot;End Date&quot;, &quot;Period #&quot;, &quot;Year&quot;, &quot;Month&quot;, &quot;Jan Flag&quot;), VSTACK(EDATE(start_date, SEQUENCE(, periods, 0, month_num)), EOMONTH(EDATE(start_date, SEQUENCE(, periods, 0, month_num)), month_num - 1), SEQUENCE(, periods), YEAR(EDATE(start_date, SEQUENCE(, periods, 0, month_num))), MONTH(EDATE(start_date, SEQUENCE(, periods, 0, month_num))), --MONTH(EDATE(start_date, SEQUENCE(, periods, 0, month_num))) = 1))))"/>
-  <NamedRange ss:Name="DAYSINPERIOD"
-   ss:RefersTo="=LAMBDA(start_date,end_date,period_start_date,days_in_period, MAX(0, MAX(0, MIN(days_in_period, MIN(end_date - period_start_date))) - MAX(0, (start_date - period_start_date))))"/>
-  <NamedRange ss:Name="Decimal_Separator" ss:RefersTo="='Default Settings'!R5C2"/>
-  <NamedRange ss:Name="DICE"
-   ss:RefersTo="=LAMBDA(dice, 1 * XMATCH(dice, {&quot;⚀&quot;;&quot;⚁&quot;;&quot;⚂&quot;;&quot;⚃&quot;;&quot;⚄&quot;;&quot;⚅&quot;}, 0))"/>
+  <NamedRange ss:Name="Decimal_Separator" ss:RefersTo="='Default Settings'!R8C2"/>
   <NamedRange ss:Name="DiffByRow_byJaqKennedy"
    ss:RefersTo="=LAMBDA(Input,LET(\\LambdaName, &quot;DiffByRow&quot;, \\CommandName, &quot;Difference of array columns by row&quot;, \\Description, &quot;Returns first column - last column in array&quot;, \\Source, &quot;Jaq Kennedy&quot;, TAKE(Input, , 1) - TAKE(Input, , -1)))"/>
-  <NamedRange ss:Name="DROPCOL"
-   ss:RefersTo="=LAMBDA(array,column, LET(&#10;   \\LambdaName, &quot;DROPCOL&quot;,&#10;   \\CommandName, \\LambdaName,&#10;   \\Description, &quot;Drops a column from an array&quot;,&#10;   \\Source, &quot;Lianna&quot;,&#10;   MAKEARRAY(&#10;      ROWS(array),&#10;      COLUMNS(array) - 1,&#10;      LAMBDA(i,j, INDEX(array, i, IF(j &lt; column, j, j + 1)))&#10;   )&#10;))"/>
   <NamedRange ss:Name="DROPCOL_byLiannaGerrish"
    ss:RefersTo="=LAMBDA(array,column,LET(\\LambdaName, &quot;DROPCOL&quot;, \\CommandName, \\LambdaName, \\Description, &quot;Drops a column from an array&quot;, \\Source, &quot;Lianna&quot;, MAKEARRAY(ROWS(array), COLUMNS(array) - 1, LAMBDA(i,j, INDEX(array, i, IF(j &lt; column, j, j + 1))))))"/>
   <NamedRange ss:Name="EXTRACTCHAR_byHarryGross"
@@ -522,166 +566,1189 @@
   <NamedRange ss:Name="EXTRACTNUMBERS_byHarryGross"
    ss:RefersTo="=LAMBDA(cell,TEXTSPLIT(cell,TEXTSPLIT(cell,SEQUENCE(10,,0),,1),,1))"/>
   <NamedRange ss:Name="EZINDIRECT_byLiannaGerrish"
-   ss:RefersTo="=LAMBDA(cell,[sheetname],IF(ISOMITTED(sheetname), INDIRECT(cell), INDIRECT(sheetname &amp; &quot;!&quot; &amp; cell)))"/>
-  <NamedRange ss:Name="GETDIST"
-   ss:RefersTo="=LAMBDA(cell_from,cell_to,diag_flag, IFS(diag_flag = 1, MAX(ABS(COLUMN(INDIRECT(cell_from)) - COLUMN(INDIRECT(cell_to))), ABS(ROW(INDIRECT(cell_from)) - ROW(INDIRECT(cell_to)))), diag_flag = 0, ABS(COLUMN(INDIRECT(cell_from)) - COLUMN(INDIRECT(cell_to))) + ABS(ROW(INDIRECT(cell_from)) - ROW(INDIRECT(cell_to)))))"/>
-  <NamedRange ss:Name="GRIDTOCOL_ALL"
-   ss:RefersTo="=LAMBDA(arr, LET(items_arr, TOCOL(arr), rows, TOCOL(SEQUENCE(, COLUMNS(arr)) * 0 &amp; SEQUENCE(ROWS(arr))) * 1, cols, TOCOL(SEQUENCE(ROWS(arr)) * 0 &amp; SEQUENCE(, COLUMNS(arr))) * 1, addr, TOCOL(ADDRESS(rows, cols, 4, 1)), headers, HSTACK(&quot;Items&quot;, &quot;Row #&quot;, &quot;Column #&quot;, &quot;Address&quot;), data_arr, HSTACK(items_arr, rows, cols, addr), VSTACK(headers, data_arr)))"/>
-  <NamedRange ss:Name="I2M"
-   ss:RefersTo="=LAMBDA(arr,row,col, INDEX(arr, MATCH(row, CHOOSECOLS(arr, 1), 0), MATCH(col, CHOOSEROWS(arr, 1), 0)))"/>
+   ss:RefersTo="=LAMBDA(cell,[sheetname],&#10;   IF(ISOMITTED(sheetname), INDIRECT(cell), INDIRECT(&quot;'&quot; &amp; sheetname &amp; &quot;'!&quot; &amp; cell))&#10;)"/>
   <NamedRange ss:Name="IFBLANK"
    ss:RefersTo="=LAMBDA(value,value_if_blank, IF(ISBLANK(value), value_if_blank, value))"/>
-  <NamedRange ss:Name="IFOMITTED"
-   ss:RefersTo="=LAMBDA(value,value_if_omitted, IF(ISOMITTED(value), value_if_omitted, value))"/>
-  <NamedRange ss:Name="IndMatch"
-   ss:RefersTo="=LAMBDA(Input1,Input2, LET(&#10;   \\LambdaName, &quot;IndMatch&quot;,&#10;   \\CommandName, &quot;Indirect Match Lookup&quot;,&#10;   _Step1, SUBSTITUTE(Input1, &quot; &quot;, &quot;_&quot;),&#10;   _Step2, SUBSTITUTE(Input2, &quot; &quot;, &quot;_&quot;),&#10;   _Result, INDIRECT(_Step1)  INDIRECT(_Step2),&#10;   _Result&#10;))"/>
   <NamedRange ss:Name="IsInList_byErikOehm"
    ss:RefersTo="=LAMBDA(array,list,LET(\\LambdaName, &quot;IsInList&quot;, MAP(array, LAMBDA(x, OR(list = x)))))"/>
-  <NamedRange ss:Name="ISNONZERO"
-   ss:RefersTo="=LAMBDA(x, IF(x = 0, FALSE(), TRUE()))"/>
-  <NamedRange ss:Name="Language" ss:RefersTo="='Default Settings'!R9C2"/>
+  <NamedRange ss:Name="LanguageList" ss:RefersTo="='Default Settings'!R6C14"/>
   <NamedRange ss:Name="Letters"
    ss:RefersTo="=LAMBDA([Upp], LET(&#10;   \\LambdaName, &quot;Letters&quot;,&#10;   \\CommandName, &quot;Creates a list of letters&quot;,&#10;   ABC, CHAR(SEQUENCE(26) + 64),&#10;   IF((Upp = 1) + ISOMITTED((Upp)), ABC, LOWER(ABC))&#10;))"/>
-  <NamedRange ss:Name="List_Separator" ss:RefersTo="='Default Settings'!R7C2"/>
-  <NamedRange ss:Name="LISTOFFSET"
-   ss:RefersTo="=LAMBDA(array,curr,offset,booLoop, LET(tarr, IF(ROWS(array) &gt; 1, array, TRANSPOSE(array)), cnt, ROWS(tarr), off, IF(ABS(offset) &gt; cnt, SIGN(offset) * (MOD(ABS(offset) + 1, cnt) - 1), offset), idx, IF(OR(curr + off &lt; 1, curr + off &gt; cnt), IF(booLoop, IF(curr + off &lt; 1, cnt + curr + off, curr + off - cnt), 0), curr + off), return, IF(idx = 0, 0, INDEX(tarr, idx)), return))"/>
-  <NamedRange ss:Name="LkpSum"
-   ss:RefersTo="=LAMBDA(values,lkpin,lkpout, LET(&#10;   \\LambdaName, &quot;LkpSum&quot;,&#10;   \\CommandName, &quot;Sum Lookup by Row&quot;,&#10;   BYROW(XLOOKUP(values, lkpin, lkpout), SUM)&#10;))"/>
-  <NamedRange ss:Name="MAXLOOKUP"
-   ss:RefersTo="=LAMBDA(lookup_array,return_array,[return_type], IF(OR(return_type = 1, ISOMITTED(return_type)), XLOOKUP(MAX(lookup_array), lookup_array, return_array), XLOOKUP(MIN(lookup_array), lookup_array, return_array)))"/>
+  <NamedRange ss:Name="List_Separator" ss:RefersTo="='Default Settings'!R10C2"/>
+  <NamedRange ss:Name="Loaded_Decimal_Separator"
+   ss:RefersTo="='Default Settings'!R8C4"/>
+  <NamedRange ss:Name="Loaded_Language" ss:RefersTo="='Default Settings'!R11C4"/>
+  <NamedRange ss:Name="Loaded_Language_ID" ss:RefersTo="='Default Settings'!R12C4"/>
+  <NamedRange ss:Name="Loaded_List_Separator"
+   ss:RefersTo="='Default Settings'!R10C4"/>
+  <NamedRange ss:Name="Loaded_Thousands_Separator"
+   ss:RefersTo="='Default Settings'!R9C4"/>
+  <NamedRange ss:Name="Loaded_Use_System_Separators"
+   ss:RefersTo="='Default Settings'!R7C4"/>
   <NamedRange ss:Name="MinMax_byJaqKennedy"
    ss:RefersTo="=LAMBDA(Range,LET(\\LambdaName, &quot;MinMax&quot;, \\CommandName, &quot;Get Min and Max of Range&quot;, _GetMin, MIN(Range), _GetMax, MAX(Range), _MinMax, VSTACK(_GetMin, _GetMax), _MinMax))"/>
-  <NamedRange ss:Name="MODESUPER"
-   ss:RefersTo="=LAMBDA(rng, LET(u, TOCOL(UNIQUE(rng), 3), TAKE(SORT(HSTACK(u, COUNTIF(rng, u)), 2, -1), 1)))"/>
-  <NamedRange ss:Name="MODTEXT"
-   ss:RefersTo="=LAMBDA(letter,shift, UNICHAR(MOD(UNICODE(UPPER(letter)) + UPPER(shift) - 65, 26) + 65))"/>
-  <NamedRange ss:Name="NTHINSTANCE"
-   ss:RefersTo="=LAMBDA(text,find,number, FIND(CHAR(160), SUBSTITUTE(text, find, CHAR(160), number)))"/>
-  <NamedRange ss:Name="Permutations"
-   ss:RefersTo="=LAMBDA(array, LET(k, COUNTA(array), k))"/>
-  <NamedRange ss:Name="PRODUCTIF"
-   ss:RefersTo="=LAMBDA(values,condition, REDUCE(1, values, LAMBDA(a,b, IF(condition(b), a * b, a))))"/>
-  <NamedRange ss:Name="PYTHAG" ss:RefersTo="=LAMBDA(a,b, SQRT((a * a) + (b * b)))"/>
-  <NamedRange ss:Name="RATEANNUALTOMONTHLY"
-   ss:RefersTo="=LAMBDA(rate,periods, (1 + rate) ^ (1 / periods) - 1)"/>
-  <NamedRange ss:Name="RATEMONTHLYTOANNUAL"
-   ss:RefersTo="=LAMBDA(rate,periods, (1 + rate) ^ periods - 1)"/>
-  <NamedRange ss:Name="REVERSE_H"
-   ss:RefersTo="=LAMBDA(array, LET(l, COUNTA(TAKE(array, 1)), s, SEQUENCE(, l), SORTBY(array, s, -1)))"/>
-  <NamedRange ss:Name="REVERSE_V"
-   ss:RefersTo="=LAMBDA(array, LET(l, COUNTA(TAKE(array, , 1)), s, SEQUENCE(l), SORTBY(array, s, -1)))"/>
   <NamedRange ss:Name="RightAlignedArray_byJaqKennedy"
    ss:RefersTo="=LAMBDA(input,LET(\\LambdaName, &quot;RightAlignedArray&quot;, \\CommandName, &quot;Align array to right&quot;, \\Description, &quot;Aligns array to the right with blanks to left&quot;, \\Source, &quot;Jaq Kennedy&quot;, _ColsByRow, BYROW(input, COUNT), _Rows, ROWS(input), _Cols, COLUMNS(input), _ColIndex, IF(MOD(SEQUENCE(_Rows, _Cols) - 1, _Cols) + 1 - _Cols + _ColsByRow &lt;= 0, -1, MOD(SEQUENCE(_Rows, _Cols) - 1, _Cols) + 1 - _Cols + _ColsByRow), _RowIndex, SEQUENCE(_Rows), _Result, IFERROR(INDEX(input, _RowIndex, _ColIndex), &quot;&quot;), _Result))"/>
-  <NamedRange ss:Name="ROLL"
-   ss:RefersTo="=LAMBDA(arr,[horizontal],[vertical], LET(horizontal, IF(ISOMITTED(horizontal), 0, horizontal), vertical, IF(ISOMITTED(vertical), 0, vertical), width, COUNT(TAKE(arr, 1)), height, COUNT(TAKE(arr, , 1)), horizontal_mod, IF(ABS(horizontal) &gt; width, MOD(horizontal, width), horizontal), vertical_mod, IF(ABS(vertical) &gt; height, MOD(vertical, height), vertical), h_fixed, IF(horizontal_mod &lt; 0, width + horizontal_mod, horizontal_mod), v_fixed, IF(vertical_mod &lt; 0, height + vertical_mod, vertical_mod), r, IF(horizontal_mod &lt; 0, width - (h_fixed), width - h_fixed), u, IF(vertical_mod &lt; 0, height - (v_fixed), height - v_fixed), lr_roll, IF(OR(h_fixed = 0, h_fixed = width), arr, HSTACK(TAKE(arr, , -h_fixed), TAKE(arr, , r))), final_roll, IF(OR(v_fixed = 0, v_fixed = height), lr_roll, VSTACK(TAKE(lr_roll, -v_fixed), TAKE(lr_roll, u))), final_roll))"/>
-  <NamedRange ss:Name="ROLL_SINGLE"
-   ss:RefersTo="=LAMBDA(arrr,r, LET(arr, TOCOL(arrr), size, COUNT(arr), rr, MOD(r, size), leng, COUNTA(TAKE(arrr, 1)), IF(r = 0, arrr, WRAPROWS(VSTACK(TAKE(arr, -rr), TAKE(arr, size - rr)), leng))))"/>
   <NamedRange ss:Name="ROWCOL"
    ss:RefersTo="=LAMBDA(cell_coordinates,TEXTSPLIT(ROW(INDIRECT(cell_coordinates)) &amp; &quot;;&quot; &amp; COLUMN(INDIRECT(cell_coordinates)), &quot;;&quot;))"/>
-  <NamedRange ss:Name="SET"
-   ss:RefersTo="=LAMBDA(array,val,[posx],[posy], LET(posxx, IF(ISOMITTED(posx), 1, posx), posyy, IF(ISOMITTED(posy), 1, posy), arrr, TOCOL(array), ax, COUNTA(TAKE(array, , 1)), ay, COUNTA(TAKE(array, 1)), pos, (ay * posxx) - ay + posyy, a, TAKE(arrr, pos - 1), b, TAKE(arrr, -COUNTA(arrr) + pos), c, IF(AND(posxx = 1, posyy = 1), VSTACK(val, b), IF(AND(posx = ax, posy = ay), VSTACK(a, val), IF(OR(posx &gt; ax, posy &gt; ay), NA(), VSTACK(a, val, b)))), WRAPROWS(c, ay)))"/>
-  <NamedRange ss:Name="SHIFT"
-   ss:RefersTo="=LAMBDA(cell_coordinates,horizontal_moves,vertical_moves, ADDRESS(ROW(INDIRECT(cell_coordinates)) + vertical_moves, COLUMN(INDIRECT(cell_coordinates)) + horizontal_moves, 4, 1))"/>
-  <NamedRange ss:Name="SHIFT_OOB"
-   ss:RefersTo="=LAMBDA(cell_coordinates,horizontal_moves,vertical_moves, ADDRESS(IF(ROW(INDIRECT(cell_coordinates)) + horizontal_moves &lt; 1, 1, ROW(INDIRECT(cell_coordinates)) + horizontal_moves), IF(COLUMN(INDIRECT(cell_coordinates)) + vertical_moves &lt; 1, 1, COLUMN(INDIRECT(cell_coordinates)) + vertical_moves), 4, 1))"/>
-  <NamedRange ss:Name="TEXTBETWEEN"
-   ss:RefersTo="=LAMBDA(text,start,end, TEXTAFTER(TEXTBEFORE(text, end), start))"/>
-  <NamedRange ss:Name="Thousands_Separator" ss:RefersTo="='Default Settings'!R6C2"/>
-  <NamedRange ss:Name="Thunk" ss:RefersTo="=LAMBDA(x, LAMBDA(x))"/>
+  <NamedRange ss:Name="Thousands_Separator" ss:RefersTo="='Default Settings'!R9C2"/>
   <NamedRange ss:Name="Use_System_Separators"
-   ss:RefersTo="='Default Settings'!R8C2"/>
+   ss:RefersTo="='Default Settings'!R7C2"/>
   <NamedRange ss:Name="XLOOKUP2D_byBendeLeon"
    ss:RefersTo="=LAMBDA(DataSource,RLU,CLU,[RowArray],[ColumnArray],[MatchMode],[SearchMode],[IfNotFound], LET(&#10;   \\LambdaName, &quot;XLOOKUP2D_byBendeLeon&quot;,&#10;   \\CommandName, &quot;2D lookup&quot;,&#10;   \\Source, &quot;Ben de Leon&quot;,&#10;   RCInc, IF(ISOMITTED(RowArray), 1, 0) + IF(ISOMITTED(RowArray), 2, 0),&#10;   UpdatedDataSource, CHOOSE(&#10;      RCInc + 1,&#10;      DataSource,&#10;      DROP(DataSource, , 1),&#10;      DROP(DataSource, 1),&#10;      DROP(DataSource, 1, 1)&#10;   ),&#10;   IFERROR(&#10;      INDEX(&#10;         UpdatedDataSource,&#10;         XMATCH(&#10;            RLU,&#10;            IF(&#10;               ISOMITTED(RowArray),&#10;               DROP(TAKE(DataSource, , 1), 1),&#10;               TAKE(RowArray, , 1)&#10;            ),&#10;            IF(ISOMITTED(MatchMode), 0, MatchMode),&#10;            IF(ISOMITTED(SearchMode), 1, SearchMode)&#10;         ),&#10;         XMATCH(&#10;            CLU,&#10;            IF(&#10;               ISOMITTED(ColumnArray),&#10;               DROP(TAKE(DataSource, 1), , 1),&#10;               TAKE(ColumnArray, 1)&#10;            ),&#10;            IF(ISOMITTED(MatchMode), 0, MatchMode),&#10;            IF(ISOMITTED(SearchMode), 1, SearchMode)&#10;         )&#10;      ),&#10;      IF(ISOMITTED(IfNotFound), NA(), IfNotFound)&#10;   )&#10;))"/>
   <NamedRange ss:Name="XMOD_byJaqKennedy"
    ss:RefersTo="=LAMBDA(value,divisor,LET(\\LambdaName, &quot;XMOD&quot;, \\CommandName, &quot;MOD with max value&quot;, \\Description, &quot;Returns the MOD of a value where the maximum value returns the divisor instead of 0&quot;, \\Source, &quot;Jaq Kennedy&quot;, MOD(value - 1, divisor) + 1))"/>
-  <NamedRange ss:Name="YOUAREHERE"
-   ss:RefersTo="=LAMBDA(cell,[sheetname], IF(ISOMITTED(sheetname), ADDRESS(ROW(cell), COLUMN(cell), 4, TRUE), ADDRESS(ROW(cell), COLUMN(cell), 4, TRUE, sheetname)))"/>
  </Names>
  <Worksheet ss:Name="Default Settings">
-  <Table ss:ExpandedColumnCount="12" ss:ExpandedRowCount="9"
-   ss:DefaultColumnWidth="90" ss:DefaultRowHeight="19.5">
-   <Column ss:Width="195"/>
-   <Column ss:Width="108.75"/>
-   <Column ss:AutoFitWidth="0" ss:Width="30"/>
-   <Column ss:Width="137.25"/>
-   <Column ss:Width="108.75"/>
-   <Column ss:AutoFitWidth="0" ss:Width="14.25"/>
-   <Column ss:AutoFitWidth="0" ss:Width="97.5"/>
-   <Column ss:Width="101.25"/>
-   <Column ss:Width="180"/>
+  <Table ss:ExpandedColumnCount="14" ss:ExpandedRowCount="212"
+   ss:DefaultColumnWidth="91.199999999999989" ss:DefaultRowHeight="19.8">
+   <Column ss:Width="204"/>
+   <Column ss:Width="197.4"/>
+   <Column ss:AutoFitWidth="0" ss:Width="31.200000000000003"/>
+   <Column ss:Width="168"/>
+   <Column ss:Width="139.80000000000001"/>
+   <Column ss:Width="83.4"/>
+   <Column ss:AutoFitWidth="0" ss:Width="19.8"/>
+   <Column ss:Width="105.6"/>
+   <Column ss:Width="188.4"/>
+   <Column ss:Index="11" ss:Hidden="1" ss:AutoFitWidth="0" ss:Width="58.8"/>
+   <Column ss:Hidden="1" ss:AutoFitWidth="0" ss:Width="267"/>
+   <Column ss:Hidden="1" ss:AutoFitWidth="0"/>
+   <Column ss:Hidden="1" ss:AutoFitWidth="0"/>
    <Row ss:Height="21">
-    <Cell ss:StyleID="s23"><Data ss:Type="String">Default Settings Header</Data></Cell>
-    <Cell ss:StyleID="s23"/>
-    <Cell ss:StyleID="s23"/>
-    <Cell ss:StyleID="s23"/>
-    <Cell ss:StyleID="s23"/>
-    <Cell ss:StyleID="s23"/>
-    <Cell ss:StyleID="s23"/>
-    <Cell ss:StyleID="s23"/>
-    <Cell ss:StyleID="s23"/>
-    <Cell ss:StyleID="s23"/>
-    <Cell ss:StyleID="s23"/>
-    <Cell ss:StyleID="s23"/>
+    <Cell ss:StyleID="s54"><Data ss:Type="String">Default Settings Header</Data></Cell>
+    <Cell ss:StyleID="s54"/>
+    <Cell ss:StyleID="s54"/>
+    <Cell ss:StyleID="s54"/>
+    <Cell ss:StyleID="s54"/>
+    <Cell ss:StyleID="s54"/>
+    <Cell ss:StyleID="s54"/>
+    <Cell ss:StyleID="s54"/>
+    <Cell ss:StyleID="s54"/>
+    <Cell ss:StyleID="s54"/>
+    <Cell ss:StyleID="s25"/>
+    <Cell ss:StyleID="s25"/>
    </Row>
-   <Row ss:Height="20.25">
-    <Cell ss:StyleID="s24"><Data ss:Type="String">To update settings run command &quot;Default Settings&quot;. Note this will not change Windows level settings, only Excel</Data></Cell>
-    <Cell ss:StyleID="s24"/>
-    <Cell ss:StyleID="s24"/>
-    <Cell ss:StyleID="s24"/>
-    <Cell ss:StyleID="s24"/>
-    <Cell ss:StyleID="s24"/>
-    <Cell ss:StyleID="s24"/>
-    <Cell ss:StyleID="s24"/>
-    <Cell ss:StyleID="s24"/>
-    <Cell ss:StyleID="s24"/>
-    <Cell ss:StyleID="s24"/>
-    <Cell ss:StyleID="s24"/>
+   <Row ss:Height="20.399999999999999">
+    <Cell ss:StyleID="s55"><Data ss:Type="String">To find the settings on the computer (before overwriting) run &quot;Get Current Settings&quot; to populate the Loaded column below</Data></Cell>
+    <Cell ss:StyleID="s55"/>
+    <Cell ss:StyleID="s55"/>
+    <Cell ss:StyleID="s55"/>
+    <Cell ss:StyleID="s55"/>
+    <Cell ss:StyleID="s55"/>
+    <Cell ss:StyleID="s55"/>
+    <Cell ss:StyleID="s55"/>
+    <Cell ss:StyleID="s55"/>
+    <Cell ss:StyleID="s55"/>
+    <Cell ss:StyleID="s26"/>
+    <Cell ss:StyleID="s26"/>
    </Row>
-   <Row ss:Index="4">
-    <Cell ss:Index="4"><Data ss:Type="String">English (UK/US)</Data></Cell>
+   <Row ss:Height="39.6">
+    <Cell ss:StyleID="s56"><Data ss:Type="String">To update settings run command &quot;Update Settings&quot;. Note this will not change Windows level settings, only Excel, to the settings in yellow.&#10;If Use System Separators = &quot;TRUE&quot;, settings will not be updated. Use &quot;FALSE&quot; to load in your preferred settings.</Data></Cell>
+    <Cell ss:StyleID="s55"/>
+    <Cell ss:StyleID="s55"/>
+    <Cell ss:StyleID="s55"/>
+    <Cell ss:StyleID="s55"/>
+    <Cell ss:StyleID="s55"/>
+    <Cell ss:StyleID="s55"/>
+    <Cell ss:StyleID="s55"/>
+    <Cell ss:StyleID="s55"/>
+    <Cell ss:StyleID="s55"/>
+    <Cell ss:StyleID="s26"/>
+    <Cell ss:StyleID="s26"/>
+   </Row>
+   <Row ss:Index="5">
+    <Cell ss:Index="5" ss:StyleID="s53"><Data ss:Type="String">Add your favourites here</Data></Cell>
+    <Cell ss:StyleID="s39"/>
+   </Row>
+   <Row>
+    <Cell ss:Index="2"><Data ss:Type="String">Inputted Settings</Data></Cell>
+    <Cell ss:Index="4"><Data ss:Type="String">Loaded</Data></Cell>
+    <Cell><Data ss:Type="String">English (UK/US)</Data></Cell>
     <Cell><Data ss:Type="String">Afrikaans</Data></Cell>
-    <Cell ss:Index="7"><Data ss:Type="String">Example</Data></Cell>
+    <Cell ss:Index="8"><Data ss:Type="String">Example</Data></Cell>
+    <Cell ss:Index="11"><Data ss:Type="String">ID</Data></Cell>
+    <Cell><Data ss:Type="String">Language</Data></Cell>
+    <Cell ss:Index="14" ss:ArrayRange="RC:R[205]C" ss:Formula="=UNIQUE(#REF!)"><Data
+      ss:Type="String">Amharic</Data><NamedCell ss:Name="LanguageList"/></Cell>
    </Row>
-   <Row>
-    <Cell ss:StyleID="s36"><Data ss:Type="String">Decimal Separator</Data></Cell>
-    <Cell ss:StyleID="s38"><Data ss:Type="String">.</Data><NamedCell
-      ss:Name="Decimal_Separator"/></Cell>
-    <Cell ss:Index="4" ss:StyleID="s37"><Data ss:Type="String">.</Data></Cell>
-    <Cell ss:StyleID="s37"><Data ss:Type="String">,</Data></Cell>
-    <Cell ss:Index="7" ss:StyleID="s39"><Data ss:Type="Number">1000.23</Data></Cell>
-   </Row>
-   <Row>
-    <Cell ss:StyleID="s36"><Data ss:Type="String">Thousands Separator</Data></Cell>
-    <Cell ss:StyleID="s38"><Data ss:Type="String">,</Data><NamedCell
-      ss:Name="Thousands_Separator"/></Cell>
-    <Cell ss:Index="4" ss:StyleID="s37"><Data ss:Type="String">,</Data></Cell>
-    <Cell ss:StyleID="s37"><Data ss:Type="String"> </Data></Cell>
-    <Cell ss:Index="7" ss:StyleID="s39"><Data ss:Type="Number">1000.23</Data></Cell>
-   </Row>
-   <Row>
-    <Cell ss:StyleID="s36"><Data ss:Type="String">List Separator</Data></Cell>
-    <Cell ss:StyleID="s38"><Data ss:Type="String">,</Data><NamedCell
-      ss:Name="List_Separator"/></Cell>
-    <Cell ss:Index="4" ss:StyleID="s37"><Data ss:Type="String">,</Data></Cell>
-    <Cell ss:StyleID="s37"><Data ss:Type="String">;</Data></Cell>
-    <Cell ss:Index="7" ss:Formula="=CONCAT(R[-2]C[-4],R[-2]C[-3],R[-2]C[-2])"><Data
-      ss:Type="String">.,</Data></Cell>
-    <Cell ss:Formula="=FORMULATEXT(RC[-1])"><Data ss:Type="String">=CONCAT(D9,E9,F9)</Data></Cell>
-   </Row>
-   <Row>
-    <Cell ss:StyleID="s36"><Data ss:Type="String">Use System Separators</Data></Cell>
-    <Cell ss:StyleID="s38"><Data ss:Type="Boolean">1</Data><NamedCell
+   <Row ss:Height="20.399999999999999">
+    <Cell ss:StyleID="s38"><Data ss:Type="String">Use System Separators</Data></Cell>
+    <Cell ss:StyleID="s40"><Data ss:Type="Boolean">0</Data><NamedCell
       ss:Name="Use_System_Separators"/></Cell>
-    <Cell ss:Index="4" ss:StyleID="s37"><Data ss:Type="Boolean">1</Data></Cell>
-    <Cell ss:StyleID="s37"><Data ss:Type="Boolean">0</Data></Cell>
+    <Cell ss:Index="4" ss:StyleID="s51"><Data ss:Type="Boolean">1</Data><NamedCell
+      ss:Name="Loaded_Use_System_Separators"/></Cell>
+    <Cell ss:StyleID="s39"><Data ss:Type="Boolean">1</Data></Cell>
+    <Cell ss:StyleID="s39"><Data ss:Type="Boolean">0</Data></Cell>
+    <Cell ss:Index="11"><Data ss:Type="Number">1118</Data></Cell>
+    <Cell><Data ss:Type="String">Amharic</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Afrikaans</Data></Cell>
+   </Row>
+   <Row ss:Height="20.399999999999999">
+    <Cell ss:StyleID="s38"><Data ss:Type="String">Decimal Separator</Data></Cell>
+    <Cell ss:StyleID="s40"><Data ss:Type="String">.</Data><NamedCell
+      ss:Name="Decimal_Separator"/></Cell>
+    <Cell ss:Index="4" ss:StyleID="s51"><Data ss:Type="String">.</Data><NamedCell
+      ss:Name="Loaded_Decimal_Separator"/></Cell>
+    <Cell ss:StyleID="s39"><Data ss:Type="String">.</Data></Cell>
+    <Cell ss:StyleID="s39"><Data ss:Type="String">,</Data></Cell>
+    <Cell ss:Index="8" ss:StyleID="s41" ss:Formula="=SUM(1000,0.23)"><Data
+      ss:Type="Number">1000.23</Data></Cell>
+    <Cell ss:Formula="=FORMULATEXT(RC[-1])"><Data ss:Type="String">=SUM(1000;0,23)</Data></Cell>
+    <Cell ss:Index="11"><Data ss:Type="Number">54</Data></Cell>
+    <Cell><Data ss:Type="String">Afrikaans</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Albanian</Data></Cell>
+   </Row>
+   <Row ss:Height="20.399999999999999">
+    <Cell ss:StyleID="s38"><Data ss:Type="String">Thousands Separator</Data></Cell>
+    <Cell ss:StyleID="s40"><Data ss:Type="String">,</Data><NamedCell
+      ss:Name="Thousands_Separator"/></Cell>
+    <Cell ss:Index="4" ss:StyleID="s51"><Data ss:Type="String">,</Data><NamedCell
+      ss:Name="Loaded_Thousands_Separator"/></Cell>
+    <Cell ss:StyleID="s39"><Data ss:Type="String">,</Data></Cell>
+    <Cell ss:StyleID="s39"><Data ss:Type="String"> </Data></Cell>
+    <Cell ss:Index="8" ss:StyleID="s41"><Data ss:Type="Number">1000.23</Data></Cell>
+    <Cell ss:Index="11"><Data ss:Type="Number">1052</Data></Cell>
+    <Cell><Data ss:Type="String">Albanian</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Alsatian</Data></Cell>
    </Row>
    <Row>
-    <Cell ss:StyleID="s36"><Data ss:Type="String">Language</Data></Cell>
-    <Cell ss:StyleID="s38"><Data ss:Type="String">English</Data><NamedCell
-      ss:Name="Language"/></Cell>
-    <Cell ss:Index="4" ss:StyleID="s37"><Data ss:Type="String">English</Data></Cell>
-    <Cell ss:StyleID="s37"><Data ss:Type="String">Afrikaans</Data></Cell>
-    <Cell ss:Index="7" ss:StyleID="s18"><Data ss:Type="String">Does not update anything - for notification message only</Data></Cell>
+    <Cell ss:StyleID="s38"><Data ss:Type="String">List Separator</Data></Cell>
+    <Cell ss:StyleID="s52" ss:Formula="=IF(Decimal_Separator=&quot;,&quot;,&quot;;&quot;,&quot;,&quot;)"><Data
+      ss:Type="String">,</Data><NamedCell ss:Name="List_Separator"/></Cell>
+    <Cell ss:Index="4" ss:StyleID="s52"
+     ss:Formula="=IF(Loaded_Decimal_Separator=&quot;,&quot;,&quot;;&quot;,&quot;,&quot;)"><Data
+      ss:Type="String">,</Data><NamedCell ss:Name="Loaded_List_Separator"/></Cell>
+    <Cell ss:StyleID="s52" ss:Formula="=IF(R[-2]C=&quot;,&quot;,&quot;;&quot;,&quot;,&quot;)"><Data
+      ss:Type="String">,</Data></Cell>
+    <Cell ss:StyleID="s52" ss:Formula="=IF(R[-2]C=&quot;,&quot;,&quot;;&quot;,&quot;,&quot;)"><Data
+      ss:Type="String">;</Data></Cell>
+    <Cell ss:Index="8"
+     ss:Formula="=CONCAT(R[-2]C[-4],R[-1]C[-4],RC[-4],R[-3]C[-4])"><Data
+      ss:Type="String">.,,TRUE</Data></Cell>
+    <Cell ss:Formula="=FORMULATEXT(RC[-1])"><Data ss:Type="String">=CONCAT(E12;E13;E14;E11)</Data></Cell>
+    <Cell ss:Index="11"><Data ss:Type="Number">1156</Data></Cell>
+    <Cell><Data ss:Type="String">Alsatian</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Arabic (Algeria)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="s38"><Data ss:Type="String">Language</Data></Cell>
+    <Cell ss:Index="4" ss:StyleID="s52"
+     ss:Formula="=XLOOKUP(Loaded_Language_ID,#REF!,#REF!,&quot;Unknown&quot;,0)"><Data
+      ss:Type="String">English (United States)</Data><NamedCell
+      ss:Name="Loaded_Language"/></Cell>
+    <Cell ss:Index="8" ss:StyleID="s18"><Data ss:Type="String">Does not update anything - for info only</Data></Cell>
+    <Cell ss:Index="11"><Data ss:Type="Number">5121</Data></Cell>
+    <Cell><Data ss:Type="String">Arabic (Algeria)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Arabic (Bahrain)</Data></Cell>
+   </Row>
+   <Row ss:Height="20.399999999999999">
+    <Cell ss:StyleID="s38"><Data ss:Type="String">Language ID</Data></Cell>
+    <Cell ss:Index="4" ss:StyleID="s51"><Data ss:Type="Number">1033</Data><NamedCell
+      ss:Name="Loaded_Language_ID"/></Cell>
+    <Cell ss:Index="8" ss:StyleID="s18"><Data ss:Type="String">Does not update anything - for info only</Data></Cell>
+    <Cell ss:Index="11"><Data ss:Type="Number">15361</Data></Cell>
+    <Cell><Data ss:Type="String">Arabic (Bahrain)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Arabic (Egypt)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">3073</Data></Cell>
+    <Cell><Data ss:Type="String">Arabic (Egypt)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Arabic (Iraq)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">2049</Data></Cell>
+    <Cell><Data ss:Type="String">Arabic (Iraq)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Arabic (Jordan)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">11265</Data></Cell>
+    <Cell><Data ss:Type="String">Arabic (Jordan)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Arabic (Kuwait)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">13313</Data></Cell>
+    <Cell><Data ss:Type="String">Arabic (Kuwait)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Arabic (Lebanon)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">12289</Data></Cell>
+    <Cell><Data ss:Type="String">Arabic (Lebanon)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Arabic (Libya)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">4097</Data></Cell>
+    <Cell><Data ss:Type="String">Arabic (Libya)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Arabic (Morocco)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">6145</Data></Cell>
+    <Cell><Data ss:Type="String">Arabic (Morocco)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Arabic (Oman)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">8193</Data></Cell>
+    <Cell><Data ss:Type="String">Arabic (Oman)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Arabic (Qatar)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">16385</Data></Cell>
+    <Cell><Data ss:Type="String">Arabic (Qatar)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Arabic (Saudi Arabia)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1025</Data></Cell>
+    <Cell><Data ss:Type="String">Arabic (Saudi Arabia)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Arabic (Syria)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">10241</Data></Cell>
+    <Cell><Data ss:Type="String">Arabic (Syria)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Arabic (Tunisia)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">7169</Data></Cell>
+    <Cell><Data ss:Type="String">Arabic (Tunisia)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Arabic (U.A.E.)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">14337</Data></Cell>
+    <Cell><Data ss:Type="String">Arabic (U.A.E.)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Arabic (Yemen)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">9217</Data></Cell>
+    <Cell><Data ss:Type="String">Arabic (Yemen)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Armenian</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1067</Data></Cell>
+    <Cell><Data ss:Type="String">Armenian</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Assamese</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1101</Data></Cell>
+    <Cell><Data ss:Type="String">Assamese</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Azerbaijani (Cyrillic)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">2092</Data></Cell>
+    <Cell><Data ss:Type="String">Azerbaijani (Cyrillic)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Azerbaijani (Latin)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1068</Data></Cell>
+    <Cell><Data ss:Type="String">Azerbaijani (Latin)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Bashkir</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1133</Data></Cell>
+    <Cell><Data ss:Type="String">Bashkir</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Basque</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1069</Data></Cell>
+    <Cell><Data ss:Type="String">Basque</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Belarusian</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1059</Data></Cell>
+    <Cell><Data ss:Type="String">Belarusian</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Bengali (Bangladesh)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">2117</Data></Cell>
+    <Cell><Data ss:Type="String">Bengali (Bangladesh)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Bengali (India)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1093</Data></Cell>
+    <Cell><Data ss:Type="String">Bengali (India)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Bosnian (Cyrillic)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">8218</Data></Cell>
+    <Cell><Data ss:Type="String">Bosnian (Cyrillic)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Bosnian (Latin)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">5146</Data></Cell>
+    <Cell><Data ss:Type="String">Bosnian (Latin)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Breton</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1150</Data></Cell>
+    <Cell><Data ss:Type="String">Breton</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Bulgarian</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1026</Data></Cell>
+    <Cell><Data ss:Type="String">Bulgarian</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Catalan</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1027</Data></Cell>
+    <Cell><Data ss:Type="String">Catalan</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Chinese (Hong Kong SAR)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">3076</Data></Cell>
+    <Cell><Data ss:Type="String">Chinese (Hong Kong SAR)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Chinese (Macao SAR)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">5124</Data></Cell>
+    <Cell><Data ss:Type="String">Chinese (Macao SAR)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Chinese (Simplified, PRC)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">2052</Data></Cell>
+    <Cell><Data ss:Type="String">Chinese (Simplified, PRC)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Chinese (Simplified, Singapore)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">4100</Data></Cell>
+    <Cell><Data ss:Type="String">Chinese (Simplified, Singapore)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Chinese (Traditional, Taiwan)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1028</Data></Cell>
+    <Cell><Data ss:Type="String">Chinese (Traditional, Taiwan)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Corsican</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1155</Data></Cell>
+    <Cell><Data ss:Type="String">Corsican</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Croatian</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1050</Data></Cell>
+    <Cell><Data ss:Type="String">Croatian</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Croatian (Latin, Bosnia)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">4122</Data></Cell>
+    <Cell><Data ss:Type="String">Croatian (Latin, Bosnia)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Czech</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1029</Data></Cell>
+    <Cell><Data ss:Type="String">Czech</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Danish</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1030</Data></Cell>
+    <Cell><Data ss:Type="String">Danish</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Dari</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1164</Data></Cell>
+    <Cell><Data ss:Type="String">Dari</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Divehi</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1125</Data></Cell>
+    <Cell><Data ss:Type="String">Divehi</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Dutch (Belgium)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">2067</Data></Cell>
+    <Cell><Data ss:Type="String">Dutch (Belgium)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Dutch (Netherlands)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1043</Data></Cell>
+    <Cell><Data ss:Type="String">Dutch (Netherlands)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">English (Australia)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">3081</Data></Cell>
+    <Cell><Data ss:Type="String">English (Australia)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">English (Belize)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">10249</Data></Cell>
+    <Cell><Data ss:Type="String">English (Belize)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">English (Canada)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">4105</Data></Cell>
+    <Cell><Data ss:Type="String">English (Canada)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">English (Caribbean)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">9225</Data></Cell>
+    <Cell><Data ss:Type="String">English (Caribbean)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">English (India)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">16393</Data></Cell>
+    <Cell><Data ss:Type="String">English (India)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">English (Ireland)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">6153</Data></Cell>
+    <Cell><Data ss:Type="String">English (Ireland)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">English (Jamaica)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">8201</Data></Cell>
+    <Cell><Data ss:Type="String">English (Jamaica)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">English (Malaysia)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">17417</Data></Cell>
+    <Cell><Data ss:Type="String">English (Malaysia)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">English (New Zealand)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">5129</Data></Cell>
+    <Cell><Data ss:Type="String">English (New Zealand)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">English (Philippines)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">13321</Data></Cell>
+    <Cell><Data ss:Type="String">English (Philippines)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">English (Singapore)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">18441</Data></Cell>
+    <Cell><Data ss:Type="String">English (Singapore)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">English (South Africa)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">7177</Data></Cell>
+    <Cell><Data ss:Type="String">English (South Africa)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">English (Trinidad)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">11273</Data></Cell>
+    <Cell><Data ss:Type="String">English (Trinidad)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">English (United Kingdom)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">2057</Data></Cell>
+    <Cell><Data ss:Type="String">English (United Kingdom)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">English (United States)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1033</Data></Cell>
+    <Cell><Data ss:Type="String">English (United States)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">English (Zimbabwe)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">12297</Data></Cell>
+    <Cell><Data ss:Type="String">English (Zimbabwe)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Estonian</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1061</Data></Cell>
+    <Cell><Data ss:Type="String">Estonian</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Faroese</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1080</Data></Cell>
+    <Cell><Data ss:Type="String">Faroese</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Filipino</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1124</Data></Cell>
+    <Cell><Data ss:Type="String">Filipino</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Finnish</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1035</Data></Cell>
+    <Cell><Data ss:Type="String">Finnish</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">French (Belgium)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">2060</Data></Cell>
+    <Cell><Data ss:Type="String">French (Belgium)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">French (Canada)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">3084</Data></Cell>
+    <Cell><Data ss:Type="String">French (Canada)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">French (France)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1036</Data></Cell>
+    <Cell><Data ss:Type="String">French (France)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">French (Luxembourg)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">5132</Data></Cell>
+    <Cell><Data ss:Type="String">French (Luxembourg)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">French (Monaco)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">6156</Data></Cell>
+    <Cell><Data ss:Type="String">French (Monaco)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">French (Switzerland)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">4108</Data></Cell>
+    <Cell><Data ss:Type="String">French (Switzerland)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Frisian</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1122</Data></Cell>
+    <Cell><Data ss:Type="String">Frisian</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Galician</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1110</Data></Cell>
+    <Cell><Data ss:Type="String">Galician</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Georgian</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1079</Data></Cell>
+    <Cell><Data ss:Type="String">Georgian</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">German (Austria)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">3079</Data></Cell>
+    <Cell><Data ss:Type="String">German (Austria)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">German (Germany)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1031</Data></Cell>
+    <Cell><Data ss:Type="String">German (Germany)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">German (Liechtenstein)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">5127</Data></Cell>
+    <Cell><Data ss:Type="String">German (Liechtenstein)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">German (Luxembourg)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">4103</Data></Cell>
+    <Cell><Data ss:Type="String">German (Luxembourg)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">German (Switzerland)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">2055</Data></Cell>
+    <Cell><Data ss:Type="String">German (Switzerland)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Greek</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1032</Data></Cell>
+    <Cell><Data ss:Type="String">Greek</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Greenlandic</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1135</Data></Cell>
+    <Cell><Data ss:Type="String">Greenlandic</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Gujarati</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1095</Data></Cell>
+    <Cell><Data ss:Type="String">Gujarati</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Hausa (Latin)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1128</Data></Cell>
+    <Cell><Data ss:Type="String">Hausa (Latin)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Hebrew</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1037</Data></Cell>
+    <Cell><Data ss:Type="String">Hebrew</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Hindi</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1081</Data></Cell>
+    <Cell><Data ss:Type="String">Hindi</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Hungarian</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1038</Data></Cell>
+    <Cell><Data ss:Type="String">Hungarian</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Icelandic</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1039</Data></Cell>
+    <Cell><Data ss:Type="String">Icelandic</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Igbo</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1136</Data></Cell>
+    <Cell><Data ss:Type="String">Igbo</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Indonesian</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1057</Data></Cell>
+    <Cell><Data ss:Type="String">Indonesian</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Inuktitut (Syllabics)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1117</Data></Cell>
+    <Cell><Data ss:Type="String">Inuktitut (Syllabics)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Inuktitut (Latin)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">2141</Data></Cell>
+    <Cell><Data ss:Type="String">Inuktitut (Latin)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Irish</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">2108</Data></Cell>
+    <Cell><Data ss:Type="String">Irish</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">isiXhosa</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1076</Data></Cell>
+    <Cell><Data ss:Type="String">isiXhosa</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">isiZulu</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1077</Data></Cell>
+    <Cell><Data ss:Type="String">isiZulu</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Italian (Italy)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1040</Data></Cell>
+    <Cell><Data ss:Type="String">Italian (Italy)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Italian (Switzerland)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">2064</Data></Cell>
+    <Cell><Data ss:Type="String">Italian (Switzerland)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Japanese</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1041</Data></Cell>
+    <Cell><Data ss:Type="String">Japanese</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Kannada</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1099</Data></Cell>
+    <Cell><Data ss:Type="String">Kannada</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Kazakh</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1087</Data></Cell>
+    <Cell><Data ss:Type="String">Kazakh</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Khmer</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1107</Data></Cell>
+    <Cell><Data ss:Type="String">Khmer</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">K'iche</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1158</Data></Cell>
+    <Cell><Data ss:Type="String">K'iche</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Kinyarwanda</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1159</Data></Cell>
+    <Cell><Data ss:Type="String">Kinyarwanda</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Kiswahili</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1089</Data></Cell>
+    <Cell><Data ss:Type="String">Kiswahili</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Konkani</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1111</Data></Cell>
+    <Cell><Data ss:Type="String">Konkani</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Korean</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1042</Data></Cell>
+    <Cell><Data ss:Type="String">Korean</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Kyrgyz</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1088</Data></Cell>
+    <Cell><Data ss:Type="String">Kyrgyz</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Lao</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1108</Data></Cell>
+    <Cell><Data ss:Type="String">Lao</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Latvian</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1062</Data></Cell>
+    <Cell><Data ss:Type="String">Latvian</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Lithuanian</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1063</Data></Cell>
+    <Cell><Data ss:Type="String">Lithuanian</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Lower Sorbian</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">2094</Data></Cell>
+    <Cell><Data ss:Type="String">Lower Sorbian</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Luxembourgish</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1134</Data></Cell>
+    <Cell><Data ss:Type="String">Luxembourgish</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Macedonian</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1071</Data></Cell>
+    <Cell><Data ss:Type="String">Macedonian</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Malay (Brunei)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">2110</Data></Cell>
+    <Cell><Data ss:Type="String">Malay (Brunei)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Malay (Malaysia)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1086</Data></Cell>
+    <Cell><Data ss:Type="String">Malay (Malaysia)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Malayalam</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1100</Data></Cell>
+    <Cell><Data ss:Type="String">Malayalam</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Maltese</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1082</Data></Cell>
+    <Cell><Data ss:Type="String">Maltese</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Maori</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1153</Data></Cell>
+    <Cell><Data ss:Type="String">Maori</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Mapudungun</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1146</Data></Cell>
+    <Cell><Data ss:Type="String">Mapudungun</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Marathi</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1102</Data></Cell>
+    <Cell><Data ss:Type="String">Marathi</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Mohawk</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1148</Data></Cell>
+    <Cell><Data ss:Type="String">Mohawk</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Mongolian (Cyrillic)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1104</Data></Cell>
+    <Cell><Data ss:Type="String">Mongolian (Cyrillic)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Mongolian (Traditional)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">2128</Data></Cell>
+    <Cell><Data ss:Type="String">Mongolian (Traditional)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Nepali</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1121</Data></Cell>
+    <Cell><Data ss:Type="String">Nepali</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Norwegian (Bokmål)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1044</Data></Cell>
+    <Cell><Data ss:Type="String">Norwegian (Bokmål)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Norwegian (Nynorsk)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">2068</Data></Cell>
+    <Cell><Data ss:Type="String">Norwegian (Nynorsk)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Occitan</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1154</Data></Cell>
+    <Cell><Data ss:Type="String">Occitan</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Odia</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1096</Data></Cell>
+    <Cell><Data ss:Type="String">Odia</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Pashto</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1123</Data></Cell>
+    <Cell><Data ss:Type="String">Pashto</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Persian</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1065</Data></Cell>
+    <Cell><Data ss:Type="String">Persian</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Polish</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1045</Data></Cell>
+    <Cell><Data ss:Type="String">Polish</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Portuguese (Brazil)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1046</Data></Cell>
+    <Cell><Data ss:Type="String">Portuguese (Brazil)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Portuguese (Portugal)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">2070</Data></Cell>
+    <Cell><Data ss:Type="String">Portuguese (Portugal)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Punjabi</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1094</Data></Cell>
+    <Cell><Data ss:Type="String">Punjabi</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Quechua (Bolivia)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1131</Data></Cell>
+    <Cell><Data ss:Type="String">Quechua (Bolivia)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Quechua (Ecuador)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">2155</Data></Cell>
+    <Cell><Data ss:Type="String">Quechua (Ecuador)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Quechua (Peru)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">3179</Data></Cell>
+    <Cell><Data ss:Type="String">Quechua (Peru)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Romanian</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1048</Data></Cell>
+    <Cell><Data ss:Type="String">Romanian</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Romansh</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1047</Data></Cell>
+    <Cell><Data ss:Type="String">Romansh</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Russian</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1049</Data></Cell>
+    <Cell><Data ss:Type="String">Russian</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Sami (Inari)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">9275</Data></Cell>
+    <Cell><Data ss:Type="String">Sami (Inari)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Sami (Lule, Norway)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">5179</Data></Cell>
+    <Cell><Data ss:Type="String">Sami (Lule, Norway)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Sami (Lule, Sweden)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">7227</Data></Cell>
+    <Cell><Data ss:Type="String">Sami (Lule, Sweden)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Sami (Northern, Norway)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1083</Data></Cell>
+    <Cell><Data ss:Type="String">Sami (Northern, Norway)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Sami (Northern, Sweden)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">2107</Data></Cell>
+    <Cell><Data ss:Type="String">Sami (Northern, Sweden)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Sami (Northern, Finland)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">3131</Data></Cell>
+    <Cell><Data ss:Type="String">Sami (Northern, Finland)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Sami (Skolt)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">8251</Data></Cell>
+    <Cell><Data ss:Type="String">Sami (Skolt)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Sami (Southern, Norway)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">6203</Data></Cell>
+    <Cell><Data ss:Type="String">Sami (Southern, Norway)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Sami (Southern, Sweden)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">7227</Data></Cell>
+    <Cell><Data ss:Type="String">Sami (Southern, Sweden)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Sanskrit</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1103</Data></Cell>
+    <Cell><Data ss:Type="String">Sanskrit</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Serbian (Cyrillic, Bosnia)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">7194</Data></Cell>
+    <Cell><Data ss:Type="String">Serbian (Cyrillic, Bosnia)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Serbian (Cyrillic, Serbia)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">3098</Data></Cell>
+    <Cell><Data ss:Type="String">Serbian (Cyrillic, Serbia)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Serbian (Latin, Bosnia)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">6170</Data></Cell>
+    <Cell><Data ss:Type="String">Serbian (Latin, Bosnia)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Serbian (Latin, Serbia)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">2074</Data></Cell>
+    <Cell><Data ss:Type="String">Serbian (Latin, Serbia)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Sesotho sa Leboa</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1132</Data></Cell>
+    <Cell><Data ss:Type="String">Sesotho sa Leboa</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Setswana</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1074</Data></Cell>
+    <Cell><Data ss:Type="String">Setswana</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Sinhala</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1115</Data></Cell>
+    <Cell><Data ss:Type="String">Sinhala</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Slovak</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1051</Data></Cell>
+    <Cell><Data ss:Type="String">Slovak</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Slovenian</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1060</Data></Cell>
+    <Cell><Data ss:Type="String">Slovenian</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Spanish (Argentina)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">11274</Data></Cell>
+    <Cell><Data ss:Type="String">Spanish (Argentina)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Spanish (Bolivia)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">16394</Data></Cell>
+    <Cell><Data ss:Type="String">Spanish (Bolivia)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Spanish (Chile)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">13322</Data></Cell>
+    <Cell><Data ss:Type="String">Spanish (Chile)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Spanish (Colombia)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">9226</Data></Cell>
+    <Cell><Data ss:Type="String">Spanish (Colombia)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Spanish (Costa Rica)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">5130</Data></Cell>
+    <Cell><Data ss:Type="String">Spanish (Costa Rica)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Spanish (Dominican Republic)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">7178</Data></Cell>
+    <Cell><Data ss:Type="String">Spanish (Dominican Republic)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Spanish (Ecuador)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">12298</Data></Cell>
+    <Cell><Data ss:Type="String">Spanish (Ecuador)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Spanish (El Salvador)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">17418</Data></Cell>
+    <Cell><Data ss:Type="String">Spanish (El Salvador)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Spanish (Guatemala)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">4106</Data></Cell>
+    <Cell><Data ss:Type="String">Spanish (Guatemala)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Spanish (Honduras)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">18442</Data></Cell>
+    <Cell><Data ss:Type="String">Spanish (Honduras)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Spanish (Mexico)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">2058</Data></Cell>
+    <Cell><Data ss:Type="String">Spanish (Mexico)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Spanish (Nicaragua)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">19466</Data></Cell>
+    <Cell><Data ss:Type="String">Spanish (Nicaragua)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Spanish (Panama)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">6154</Data></Cell>
+    <Cell><Data ss:Type="String">Spanish (Panama)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Spanish (Paraguay)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">15370</Data></Cell>
+    <Cell><Data ss:Type="String">Spanish (Paraguay)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Spanish (Peru)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">10250</Data></Cell>
+    <Cell><Data ss:Type="String">Spanish (Peru)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Spanish (Puerto Rico)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">20490</Data></Cell>
+    <Cell><Data ss:Type="String">Spanish (Puerto Rico)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Spanish (Spain, International)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">3082</Data></Cell>
+    <Cell><Data ss:Type="String">Spanish (Spain, International)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Spanish (Spain, Traditional)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1034</Data></Cell>
+    <Cell><Data ss:Type="String">Spanish (Spain, Traditional)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Spanish (US)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">21514</Data></Cell>
+    <Cell><Data ss:Type="String">Spanish (US)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Spanish (Uruguay)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">14346</Data></Cell>
+    <Cell><Data ss:Type="String">Spanish (Uruguay)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Spanish (Venezuela)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">8202</Data></Cell>
+    <Cell><Data ss:Type="String">Spanish (Venezuela)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Swedish (Finland)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">2077</Data></Cell>
+    <Cell><Data ss:Type="String">Swedish (Finland)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Swedish (Sweden)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1053</Data></Cell>
+    <Cell><Data ss:Type="String">Swedish (Sweden)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Syriac</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1114</Data></Cell>
+    <Cell><Data ss:Type="String">Syriac</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Tajik</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1064</Data></Cell>
+    <Cell><Data ss:Type="String">Tajik</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Tamazight (Latin)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">2143</Data></Cell>
+    <Cell><Data ss:Type="String">Tamazight (Latin)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Tamil</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1097</Data></Cell>
+    <Cell><Data ss:Type="String">Tamil</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Tatar</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1092</Data></Cell>
+    <Cell><Data ss:Type="String">Tatar</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Telugu</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1098</Data></Cell>
+    <Cell><Data ss:Type="String">Telugu</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Thai</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1054</Data></Cell>
+    <Cell><Data ss:Type="String">Thai</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Tibetan</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1105</Data></Cell>
+    <Cell><Data ss:Type="String">Tibetan</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Turkish</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1055</Data></Cell>
+    <Cell><Data ss:Type="String">Turkish</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Turkmen</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1090</Data></Cell>
+    <Cell><Data ss:Type="String">Turkmen</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Uighur</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1152</Data></Cell>
+    <Cell><Data ss:Type="String">Uighur</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Ukrainian</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1058</Data></Cell>
+    <Cell><Data ss:Type="String">Ukrainian</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Upper Sorbian</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1070</Data></Cell>
+    <Cell><Data ss:Type="String">Upper Sorbian</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Urdu</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1056</Data></Cell>
+    <Cell><Data ss:Type="String">Urdu</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Uzbek (Cyrillic)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">2115</Data></Cell>
+    <Cell><Data ss:Type="String">Uzbek (Cyrillic)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Uzbek (Latin)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1091</Data></Cell>
+    <Cell><Data ss:Type="String">Uzbek (Latin)</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Vietnamese</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1066</Data></Cell>
+    <Cell><Data ss:Type="String">Vietnamese</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Welsh</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1106</Data></Cell>
+    <Cell><Data ss:Type="String">Welsh</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Wolof</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1160</Data></Cell>
+    <Cell><Data ss:Type="String">Wolof</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Yakut</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1157</Data></Cell>
+    <Cell><Data ss:Type="String">Yakut</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Yi</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1144</Data></Cell>
+    <Cell><Data ss:Type="String">Yi</Data></Cell>
+    <Cell ss:Index="14"><Data ss:Type="String">Yoruba</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="11"><Data ss:Type="Number">1130</Data></Cell>
+    <Cell><Data ss:Type="String">Yoruba</Data></Cell>
    </Row>
   </Table>
  </Worksheet>

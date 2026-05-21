@@ -1,0 +1,19 @@
+ARROWSHIFT_byEmilieWilliams = LAMBDA(starting_cell,arrow, LET(
+   Arrows, VSTACK("↗", "↓", "↖", "←", "→", "↙", "↘", "↑"),
+   Cards, VSTACK("NE", "S", "NW", "W", "E", "SW", "SE", "N"),
+   Arrowsx, VSTACK(1, 0, -1, -1, 1, -1, 1, 0),
+   Arrowsy, VSTACK(-1, 1, -1, 0, 0, 1, 1, -1),
+   CardInd, ISERROR(XMATCH(RIGHT(arrow), Arrows, 0)),
+   CardComment, "Multiplier Can Only Be Used On Arrows",
+   d, IF(CardInd, arrow, RIGHT(arrow, 1)),
+   m, IF((LEN(arrow) = 1) + CardInd, 1, 1 * LEFT(arrow, LEN(arrow) - 1)),
+   xmoveunit, XLOOKUP(d, IF(CardInd, Cards, Arrows), Arrowsx),
+   ymoveunit, XLOOKUP(d, IF(CardInd, Cards, Arrows), Arrowsy),
+   xmove, xmoveunit * m,
+   ymove, ymoveunit * m,
+   collet, TAKE(TEXTSPLIT(starting_cell, SEQUENCE(, 10, 0)), , 1),
+   startcol, COLUMN(INDIRECT(collet & 1)),
+   startrow, 1 * RIGHT(starting_cell, LEN(starting_cell) - LEN(collet)),
+   newcell, ADDRESS(startrow + ymove, startcol + xmove, 4),
+   newcell
+));

@@ -1,1 +1,1 @@
-Thousands_Separator ='Default Settings'!$C$10
+Thousands_Separator ='Default Settings'!$C$13

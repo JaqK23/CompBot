@@ -1,0 +1,28 @@
+/*
+Applies INDIRECT to array.  
+*/
+EZINDARR_byLiannaGerrish =LAMBDA(addarr,[sheetname], LET(
+   \\LambdaName, "EZINDARR_byLiannaGerrish",
+   \\Description, "Applies INDIRECT to array",
+   IFERROR(
+      IF(
+         COLUMNS(addarr) = 1,
+         IF(
+            OR(ISOMITTED(sheetname), sheetname = ""),
+            INDIRECT(addarr),
+            INDIRECT("'" & sheetname & "'!" & addarr)
+         ),
+         HSTACK(
+            EZINDARR_byLiannaGerrish(
+               TAKE(addarr, , COLUMNS(addarr) / 2),
+               IF(ISOMITTED(sheetname), "", sheetname)
+            ),
+            EZINDARR_byLiannaGerrish(
+               DROP(addarr, , COLUMNS(addarr) / 2),
+               IF(ISOMITTED(sheetname), "", sheetname)
+            )
+         )
+      ),
+      ""
+   )
+));

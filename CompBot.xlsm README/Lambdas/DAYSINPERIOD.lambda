@@ -1,1 +1,0 @@
-DAYSINPERIOD =LAMBDA(start_date,end_date,period_start_date,days_in_period, MAX(0, MAX(0, MIN(days_in_period, MIN(end_date - period_start_date))) - MAX(0, (start_date - period_start_date))));

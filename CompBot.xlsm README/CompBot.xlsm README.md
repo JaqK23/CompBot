@@ -2,14 +2,20 @@
 
 **CompBot.xlsm** contains definitions for:
 
-[38 Robot Commands](#command-definitions)  
-[10 Robot Texts](#text-definitions)  
+[43 Robot Commands](#command-definitions)  
+[12 Robot Texts](#text-definitions)  
 
   
 
 ## Available Robot Commands
 
-[GoTo](#goto) | [LAMBDA](#lambda) | [Maintenance](#maintenance) | [Name](#name) | [Paste](#paste) | [Prep](#prep) | [Settings](#settings) | [WrapWith](#wrapwith) | [Other](#other)
+[Convert](#convert) | [GoTo](#goto) | [LAMBDA](#lambda) | [Maintenance](#maintenance) | [Name](#name) | [Paste](#paste) | [Prep](#prep) | [Settings](#settings) | [WrapWith](#wrapwith) | [Other](#other)
+
+### Convert
+
+| Name | Description |
+| --- | --- |
+| [Round to 0](#round-to-0) | Round to 0. |
 
 ### GoTo
 
@@ -63,15 +69,18 @@
 
 | Name | Description |
 | --- | --- |
-| [Default Settings](#default-settings) | Updates default settings to those in Default Settings sheet |
+| [Get Current Settings](#get-current-settings) | Get current settings for this computer. |
+| [Revert Settings](#revert-settings) | Reverts settings to those loaded into the Loaded column. |
 | [Toggle Calculation Mode](#toggle-calculation-mode) | Toggles calculation mode and places current mode notice in StatusBar |
 | [Toggle Iterative Calculation](#toggle-iterative-calculation) | Toggles iterative calculation and sets status in status bar |
+| [Update Settings](#update-settings) | Updates default settings to those in Default Settings sheet |
 
 ### WrapWith
 
 | Name | Description |
 | --- | --- |
 | [Align Array to Right](#align-array-to-right) | Aligns array to the right with blanks to left |
+| [Apply ARROWSHIFT_byEmilieWilliams Lambda](#apply-arrowshift_byemiliewilliams-lambda) | Apply ARROWSHIFT_byEmilieWilliams lambda function to active cell, using direction in clipboard. |
 | [Difference of Array Columns by Row](#difference-of-array-columns-by-row) | Returns first column - last column in array |
 | [Find Above In Left](#find-above-in-left) | Find above value(s) in left value(s). |
 | [Keep Cell of Array](#keep-cell-of-array) | Keep selected cell of array. |
@@ -88,6 +97,7 @@
 | [Wrap in Take by Copied Cell Columns](#wrap-in-take-by-copied-cell-columns) | Wrap in take by copied cell columns. |
 | [Wrap in UNICHAR](#wrap-in-unichar) | Wrap in unichar. |
 | [Wrap in UNICODE](#wrap-in-unicode) | Wrap in unicode. |
+| [Wrap in UNIQUE](#wrap-in-unique) | Wrap in Unique |
 | [Wrap with IFERROR TEXTBEFORE space](#wrap-with-iferror-textbefore-space) | Wraps current formula with TEXTBEFORE space with IFERROR in case space doesn't exist |
 
 ### Other
@@ -103,6 +113,8 @@
 | Name | Description |
 | --- | --- |
 | [ADDRESSES_byDiarmuidEarly.lambda](#addresses_bydiarmuidearly.lambda) | Definition of ADDRESSES_byDiarmuidEarly lambda function. |
+| [ARROWSHIFT.lambda](#arrowshift.lambda) | Definition of ARROWSHIFT lambda function. |
+| [ARROWSHIFT_byEmilieWilliams.lambda](#arrowshift_byemiliewilliams.lambda) | Definition of ARROWSHIFT_byEmilieWilliams lambda function. |
 | [BiRow_byPeterBartholomew.lambda](#birow_bypeterbartholomew.lambda) | Definition of BiRow_byPeterBartholomew lambda function. |
 | [DiffByRow_byJaqKennedy.lambda](#diffbyrow_byjaqkennedy.lambda) | Definition of DiffByRow_byJaqKennedy lambda function. |
 | [FilterArray_byErikOehm.lambda](#filterarray_byerikoehm.lambda) | Definition of FilterArray_byErikOehm lambda function. |
@@ -130,6 +142,22 @@
 | Formula | ``` =RightAlignedArray_byJaqKennedy(IFBLANK([[ActiveCell::Formula]],"")) ``` |
 | Formula Dependencies | 1. [RightAlignedArray_byJaqKennedy.lambda](#rightalignedarray_byjaqkennedy.lambda) 2. [IFBLANK.lambda](#ifblank.lambda) |
 | Launch Codes | ``` ar ``` |
+
+[^Top](#oa-robot-definitions)
+
+  
+
+### Apply ARROWSHIFT_byEmilieWilliams Lambda
+
+*Apply ARROWSHIFT_byEmilieWilliams lambda function to active cell, using direction in clipboard.*
+
+`@CompBot.xlsm` `!Excel Formula Command` `#WrapWith`
+
+| Property | Value |
+| --- | --- |
+| Formula | ``` =ARROWSHIFT_byEmilieWilliams([[ActiveCell::Formula]], [[Clipboard]]) ``` |
+| Formula Dependencies | [ARROWSHIFT_byEmilieWilliams.lambda](#arrowshift_byemiliewilliams.lambda) |
+| Launch Codes | ``` ARR ``` |
 
 [^Top](#oa-robot-definitions)
 
@@ -174,7 +202,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | [modMisc.CreateBlankSheet](./VBA/modMisc.bas#L11)([[ActiveCell]]) |
+| Macro Expression | [modMisc.CreateBlankSheet](./VBA/modMisc.bas#L12)([[ActiveCell]]) |
 | Macro Workbook Connection | ThisWorkbook |
 | Launch Codes | 1. ``` BS ``` 2. ``` CBS ``` 3. ``` S ``` |
 
@@ -205,7 +233,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | [modCaseSetup.CreateCaseInputsSheet](./VBA/modCaseSetup.bas#L678)([[ActiveCell]]) |
+| Macro Expression | [modCaseSetup.CreateCaseInputsSheet](./VBA/modCaseSetup.bas#L679)([[ActiveCell]]) |
 | Macro Workbook Connection | ThisWorkbook |
 | Launch Codes | 1. ``` CIS ``` 2. ``` IS ``` |
 
@@ -238,21 +266,6 @@
 | --- | --- |
 | Macro Expression | [modCaseSetup.CreateLevelSheets](./VBA/modCaseSetup.bas#L106)() |
 | Launch Codes | 1. ``` CL ``` 2. ``` CLS ``` |
-
-[^Top](#oa-robot-definitions)
-
-  
-
-### Default Settings
-
-*Updates default settings to those in Default Settings sheet*
-
-`@CompBot.xlsm` `!VBA Macro Command` `#Settings`
-
-| Property | Value |
-| --- | --- |
-| Macro Expression | [modMisc.DefaultSettings](./VBA/modMisc.bas#L71)() |
-| Launch Codes | ``` DS ``` |
 
 [^Top](#oa-robot-definitions)
 
@@ -315,6 +328,21 @@
 | Keyboard Shortcut | ``` ^+g ``` |
 | Command After | [Import Lambda Library](#import-lambda-library) |
 | Launch Codes | ``` SC ``` |
+
+[^Top](#oa-robot-definitions)
+
+  
+
+### Get Current Settings
+
+*Get current settings for this computer.*
+
+`@CompBot.xlsm` `!VBA Macro Command` `#Settings`
+
+| Property | Value |
+| --- | --- |
+| Macro Expression | [modMisc.GetCurrentSettings](./VBA/modMisc.bas#L188)() |
+| Launch Codes | ``` GS ``` |
 
 [^Top](#oa-robot-definitions)
 
@@ -458,6 +486,36 @@
 
   
 
+### Revert Settings
+
+*Reverts settings to those loaded into the Loaded column.*
+
+`@CompBot.xlsm` `!VBA Macro Command` `#Settings`
+
+| Property | Value |
+| --- | --- |
+| Macro Expression | [modMisc.RevertSettings](./VBA/modMisc.bas#L131)() |
+| Launch Codes | ``` RS ``` |
+
+[^Top](#oa-robot-definitions)
+
+  
+
+### Round to 0
+
+*Round to 0.*
+
+`@CompBot.xlsm` `!Excel Formula Command` `#Convert`
+
+| Property | Value |
+| --- | --- |
+| Formula | ``` =ROUND([[ActiveCell::Formula]],0) ``` |
+| Launch Codes | ``` r0 ``` |
+
+[^Top](#oa-robot-definitions)
+
+  
+
 ### Save Answers To Left
 
 *Saves references to the selected cells in the green answer cells to the left on the same row.*
@@ -466,7 +524,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | [modCaseSetup.SaveAnswersToLeft](./VBA/modCaseSetup.bas#L844)() |
+| Macro Expression | [modCaseSetup.SaveAnswersToLeft](./VBA/modCaseSetup.bas#L845)() |
 | Launch Codes | ``` SAL ``` |
 
 [^Top](#oa-robot-definitions)
@@ -481,7 +539,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | [modCaseSetup.SaveCopy](./VBA/modCaseSetup.bas#L897)([[ActiveCell]]) |
+| Macro Expression | [modCaseSetup.SaveCopy](./VBA/modCaseSetup.bas#L898)([[ActiveCell]]) |
 | Launch Codes | ``` SA ``` |
 
 [^Top](#oa-robot-definitions)
@@ -556,7 +614,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | [modMisc.ToggleCalculationMode](./VBA/modMisc.bas#L122)() |
+| Macro Expression | [modMisc.ToggleCalculationMode](./VBA/modMisc.bas#L241)() |
 | Launch Codes | ``` TC ``` |
 
 [^Top](#oa-robot-definitions)
@@ -571,8 +629,23 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | [modMisc.ToggleIterativeCalculation](./VBA/modMisc.bas#L139)() |
+| Macro Expression | [modMisc.ToggleIterativeCalculation](./VBA/modMisc.bas#L258)() |
 | Launch Codes | ``` IC ``` |
+
+[^Top](#oa-robot-definitions)
+
+  
+
+### Update Settings
+
+*Updates default settings to those in Default Settings sheet*
+
+`@CompBot.xlsm` `!VBA Macro Command` `#Settings`
+
+| Property | Value |
+| --- | --- |
+| Macro Expression | [modMisc.UpdateSettings](./VBA/modMisc.bas#L72)() |
+| Launch Codes | ``` US ``` |
 
 [^Top](#oa-robot-definitions)
 
@@ -683,6 +756,21 @@
 
   
 
+### Wrap in UNIQUE
+
+*Wrap in Unique*
+
+`@CompBot.xlsm` `!Excel Formula Command` `#WrapWith`
+
+| Property | Value |
+| --- | --- |
+| Formula | ``` =UNIQUE([[ActiveCell::Formula]]) ``` |
+| Launch Codes | ``` U ``` |
+
+[^Top](#oa-robot-definitions)
+
+  
+
 ### Wrap with IFERROR TEXTBEFORE space
 
 *Wraps current formula with TEXTBEFORE space with IFERROR in case space doesn't exist*
@@ -714,6 +802,40 @@
 | Value | ``` /*Returns the cell address of a range*/⁣ ADDRESSES_byDiarmuidEarly = LAMBDA(rng, ADDRESS(ROW(rng), COLUMN(rng), 4)); ``` |
 | Content Type | ExcelFormula |
 | Location | ``` ADDRESSES_byDiarmuidEarly ``` |
+
+[^Top](#oa-robot-definitions)
+
+  
+
+### ARROWSHIFT.lambda
+
+*Definition of ARROWSHIFT lambda function.*
+
+`@CompBot.xlsm` `!Excel Name Text`  
+
+| Property | Value |
+| --- | --- |
+| Text | [ARROWSHIFT.lambda](./Text/ARROWSHIFT.lambda.txt) |
+| Value | ExcelNameText [ARROWSHIFT.lambda] was unable to find name [ARROWSHIFT] in workbook [CompBot]. |
+| Content Type | ExcelLambda |
+| Location | ``` ARROWSHIFT ``` |
+
+[^Top](#oa-robot-definitions)
+
+  
+
+### ARROWSHIFT_byEmilieWilliams.lambda
+
+*Definition of ARROWSHIFT_byEmilieWilliams lambda function.*
+
+`@CompBot.xlsm` `!Excel Name Text`  
+
+| Property | Value |
+| --- | --- |
+| Text | [ARROWSHIFT_byEmilieWilliams.lambda](./Text/ARROWSHIFT_byEmilieWilliams.lambda.txt) |
+| Value | ``` ARROWSHIFT_byEmilieWilliams = LAMBDA(starting_cell,arrow, LET(⁣ Arrows, VSTACK("↗", "↓", "↖", "←", "→", "↙", "↘", "↑"),⁣ Cards, VSTACK("NE", "S", "NW", "W", "E", "SW", "SE", "N"),⁣ Arrowsx, VSTACK(1, 0, -1, -1, 1, -1, 1, 0),⁣ Arrowsy, VSTACK(-1, 1, -1, 0, 0, 1, 1, -1),⁣ CardInd, ISERROR(XMATCH(RIGHT(arrow), Arrows, 0)),⁣ CardComment, "Multiplier Can Only Be Used On Arrows",⁣ d, IF(CardInd, arrow, RIGHT(arrow, 1)),⁣ m, IF((LEN(arrow) = 1) + CardInd, 1, 1 * LEFT(arrow, LEN(arro...``` |
+| Content Type | ExcelLambda |
+| Location | ``` ARROWSHIFT_byEmilieWilliams ``` |
 
 [^Top](#oa-robot-definitions)
 
