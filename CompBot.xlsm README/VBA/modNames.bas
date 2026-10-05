@@ -9,15 +9,15 @@ Option Explicit
 ' Generated:              01/08/2025 01:17 PM
 '----------------------------------------------------------------------------------------------------
 Sub NameUsedRanges(strShtPref As String)
-    Dim WB As Workbook
-    Dim WS As Worksheet
+    Dim wb As Workbook
+    Dim ws As Worksheet
     
-    Set WB = ActiveWorkbook
-    For Each WS In WB.Worksheets
-        If LCase(Mid(WS.Name, 1, Len(strShtPref))) = LCase(strShtPref) Then
-            WS.UsedRange.Name = "Sht_" & SanitizeRangeName(WS.Name)
+    Set wb = ActiveWorkbook
+    For Each ws In wb.Worksheets
+        If LCase(Mid(ws.Name, 1, Len(strShtPref))) = LCase(strShtPref) Then
+            ws.UsedRange.Name = "Sht_" & SanitizeRangeName(ws.Name)
         End If
-    Next WS
+    Next ws
 End Sub
 
 
@@ -28,13 +28,13 @@ End Sub
 ' Generated:              01/08/2025 01:16 PM
 '----------------------------------------------------------------------------------------------------
 Sub NameAllUsedRanges()
-    Dim WB As Workbook
-    Dim WS As Worksheet
+    Dim wb As Workbook
+    Dim ws As Worksheet
     
-    Set WB = ActiveWorkbook
-    For Each WS In WB.Worksheets
+    Set wb = ActiveWorkbook
+    For Each ws In wb.Worksheets
         On Error Resume Next
-        WS.UsedRange.Name = "Sht_" & SanitizeRangeName(WS.Name)
+        ws.UsedRange.Name = "Sht_" & SanitizeRangeName(ws.Name)
         On Error GoTo 0
-    Next WS
+    Next ws
 End Sub

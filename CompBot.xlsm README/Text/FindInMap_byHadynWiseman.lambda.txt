@@ -1,0 +1,1 @@
+FindInMap_byHadynWiseman = LAMBDA(items,mp,LET(g,DROP(GridToCol_byLiannaGerrish(mp,1,,,,,1),1),incells,CHOOSECOLS(g,1),addresses,CHOOSECOLS(g,2),out,FILTER(addresses,ISNUMBER(XMATCH(incells,items)),"Not Found"),IF((ROWS(out)*COLUMNS(out))=1,@out,out)));

@@ -1,0 +1,1 @@
+WhileIterations_byHarryGross =LAMBDA(initialValue,iterativeStep,stopCondition,[currentIterationCount],LET(v,initialValue,iterationCount,IF(ISOMITTED(currentIterationCount),0,currentIterationCount),IF(stopCondition(v),iterationCount,WhileIterations_byHarryGross(iterativeStep(v),iterativeStep,stopCondition,iterationCount+1))));

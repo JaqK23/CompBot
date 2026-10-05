@@ -1,0 +1,22 @@
+VERSION 1.0 CLASS
+BEGIN
+  MultiUse = -1  'True
+END
+Attribute VB_Name = "shtSetupSettings"
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = False
+Attribute VB_PredeclaredId = True
+Attribute VB_Exposed = True
+Option Explicit
+
+' Setup Settings: the yellow cells ARE the setup choices, kept in this copy of CompBot (see
+' modSetupSettings). A changed cell saves CompBot at once when it is open for editing.
+
+Private Sub Worksheet_Activate()
+    modSetupSettings.RefreshSetupSettings
+End Sub
+
+Private Sub Worksheet_Change(ByVal Target As Range)
+    modSetupSettings.SetupSettingsChanged Target
+End Sub
+

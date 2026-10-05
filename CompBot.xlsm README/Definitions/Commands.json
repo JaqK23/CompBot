@@ -45,15 +45,93 @@
       "MacroWorkbookConnection": "ThisWorkbook"
     },
     {
-      "Name": "Clear Lambdas",
-      "Description": "Clear lambdas that aren't in Lambdas table - for Comp Bot maintenance",
+      "Name": "Clear Bonus From Dock",
+      "Description": "Hides one bonus from the dock by hand (type 2, B4, B or Bonus 2)",
       "Type": "VBAMacroCommand",
-      "LaunchCodes": [
-        "CL"
+      "Parameters": [
+        {
+          "Name": "bonus_to_clear",
+          "Type": "InputParameter",
+          "DataType": "String",
+          "Prompt": "Bonus to clear from the dock (e.g. 2, B4, B or Bonus 2)",
+          "CachingPolicy": "CacheForDurationOfCommandExecution"
+        }
       ],
+      "Note": "For bonuses skipped or answered somewhere the dock cannot see. Answered bonuses drop off by themselves. Remembered in the case workbook as a hidden name BonusDock_Cleared; Restore Cleared Bonuses (BQR) brings them all back. Refreshes the dock afterwards.",
+      "CommandAfter": "Show Bonus Dock",
+      "LaunchCodes": [
+        "BQX"
+      ],
+      "MacroExpression": "modBonusDock.ClearBonusFromDock({{bonus_to_clear}})",
+      "Tags": [
+        "Bonus"
+      ]
+    },
+    {
+      "Name": "Clear Lambda Library",
+      "Description": "Forgets your saved lambda library, so ILL and Full Setup Case stop loading it",
+      "Type": "VBAMacroCommand",
+      "Note": "Removes the per-user setting Set Lambda Library (SLL) saved. Changes no workbook and no lambda: the library file itself is untouched. After it, Full Setup Case loads CompBot's lambdas only and ILL reports that no library is set. To SWAP one library for another you do not need this: run SLL again and pick the new file. Added 2026-09-24 (Jaq).",
+      "LaunchCodes": [
+        "CLL"
+      ],
+      "MacroExpression": "modLambdas.ClearLambdaLibrary()",
+      "Tags": [
+        "LAMBDA",
+        "Prep"
+      ]
+    },
+    {
+      "Name": "Clear Lambdas",
+      "Description": "DEV ONLY, DISABLED. Clears lambdas out of CompBot itself (never the active file) that are not in the Lambdas table or needed by a command. Would delete any lambda library a user has pulled into CompBot.",
+      "Type": "VBAMacroCommand",
       "MacroExpression": "modLambdas.ClearLambdas()",
       "Tags": [
         "Maintenance"
+      ],
+      "Enabled": false
+    },
+    {
+      "Name": "Clear Status Bar",
+      "Description": "Clears the status bar",
+      "Type": "VBAMacroCommand",
+      "Note": "Clears the status bar (Application.StatusBar = False), so Excel's own 'Ready' and 'Average / Count / Sum' come back. Several CompBot commands report on the status bar rather than in a dialog, and a message stays until something clears it. Renamed 2026-09-24 from Clear Bonus Status Bar; the old BQS code was dropped the same day (Jaq: nobody else has used it).",
+      "LaunchCodes": [
+        "CSB"
+      ],
+      "MacroExpression": "modBonusDock.ClearBonusStatusBar()",
+      "Tags": [
+        "Bonus"
+      ]
+    },
+    {
+      "Name": "Clear Unused Lambdas",
+      "Description": "Deletes lambdas from the active workbook that nothing refers to, so the case file you submit does not carry every lambda you own",
+      "Type": "VBAMacroCommand",
+      "Note": "Creates a report on used lambdas and clears out unused lambdas from the workbook",
+      "MacroExpression": "modLambdas.ClearUnusedLambdas()"
+    },
+    {
+      "Name": "Clear Unused Lambdas with Report",
+      "Description": "As Clear Unused Lambdas, but writes out what it removed and what it kept; use this one when you want to check before trusting it",
+      "Type": "VBAMacroCommand",
+      "Note": "Creates a report on used lambdas and clears out unused lambdas from the workbook, giving a report on deleted lambdas",
+      "MacroExpression": "modLambdas.ClearUnusedLambdas(1)"
+    },
+    {
+      "Name": "Copy Map And Fill From Legend",
+      "Description": "Copy a color-coded map sheet: stand on a colored legend cell; copies the sheet and fills every map cell on the copy with its color's legend value (white is never a key); each named range on the sheet gets a clr_ twin on the copy",
+      "Type": "VBAMacroCommand",
+      "Note": "2026-10-05 (Jaq): copy + Fill Similar Background Color + clr_ names in one run. Legend = the unbroken run of colored cells through the active cell (down the column, else along the row), or the selection when several cells are selected. A swatch with no value takes the value to its right. Exact color match, one pass, white/no-fill excluded.",
+      "LaunchCodes": [
+        "CFL"
+      ],
+      "MacroExpression": "modGoToSpecial.CopyMapFillFromLegend()",
+      "Tags": [
+        "Fill",
+        "Formatting",
+        "Color",
+        "Map"
       ]
     },
     {
@@ -76,8 +154,8 @@
       "Description": "Creates bonus sheet \"B\" with bonus questions",
       "Type": "VBAMacroCommand",
       "LaunchCodes": [
-        "CB",
-        "CBS"
+        "BQC",
+        "CB"
       ],
       "MacroExpression": "modCaseSetup.CreateBonusSheet()",
       "Tags": [
@@ -100,13 +178,14 @@
     },
     {
       "Name": "Create Data Table",
-      "Description": "Creates a data table on the current sheet for level sheets \"L#\" or active cell = \"Example#\"",
+      "Description": "Builds (or finds) the data table block for the level you are in, beside its inputs, and lands on the last input; fill it with Run Data Table (RDT)",
       "Type": "VBAMacroCommand",
+      "Note": "Run from any cell in a level: on the Case sheet, on an L## sheet, or on the level's Example# cell on any sheet. The new block goes level with the example row, as close as it can to two columns right of the level's last input, moved right only as far as it needs to overlap nothing. If the level already has a block, nothing is built: it takes you to that block's last input. Either way the view scrolls to the block, and you land on the last input cell, ready to build the example calculation beside it; then point ANSWER at your output and run RDT. Refuses when the level's answers already link to a block on another sheet (solve it there). Static results, no What-If table. Merged 2026-09-24 (Jaq): Solve Level's finding and placement under this command's name, codes and end state; it no longer asks you to point at a target cell.",
       "LaunchCodes": [
         "CDT",
         "DT"
       ],
-      "MacroExpression": "modCaseSetup.CreateDataTable([[NewTableTargetToRight]])",
+      "MacroExpression": "modDataTable.CreateDataTable()",
       "Tags": [
         "Prep"
       ]
@@ -126,7 +205,7 @@
     },
     {
       "Name": "Difference of Array Columns by Row",
-      "Description": "Returns first column - last column in array",
+      "Description": "Returns first column minus last column in array",
       "Type": "ExcelFormulaCommand",
       "LaunchCodes": [
         "diff",
@@ -147,23 +226,196 @@
       "MacroExpression": "modUtilities.Eggy()"
     },
     {
+      "Name": "Exclude Blanks",
+      "Description": "Filters blank cells out of the active array, leaving only cells that hold something",
+      "Type": "ExcelFormulaCommand",
+      "LaunchCodes": [
+        "EB"
+      ],
+      "Formula": "=FILTER([[ActiveCell::Formula]],[[ActiveCell::Formula]]<>\"\")"
+    },
+    {
+      "Name": "Exclude Examples",
+      "Description": "Trims the worked-example rows off the top of the selection, leaving just the real questions",
+      "Type": "VBAMacroCommand",
+      "Note": "Promoted into CompBot from A-ZTraining 2026-09-22: the command review found it needed in 23 of 67 surveyed cases, the 2nd most-needed of Jaq's own commands, while living in the training collection rather than the competition one. NOT a straight copy; the A-Z original drops exactly two rows, assuming one example row plus one blank spacer. This walks the rows instead, dropping example-label rows and blank rows until it reaches real content, so two or three worked rows per level (Example3a / 3b, common in 2026 cases) and a missing spacer all behave. It recognises Example / Exemple / Exemplo / Sample via the shared list in modCaseSetup, spaces and all. If it cannot read the label column it falls back to dropping two rows, exactly as the original did. LAUNCH CODE: deliberately the SAME code (XE) as A-ZTraining's copy. Jaq, 2026-09-22: 'it doesn't matter which it runs from, and I'm one of few who'll have both collections.' If you ever need to tell them apart, this is the one that handles multiple example rows.",
+      "LaunchCodes": [
+        "XE"
+      ],
+      "MacroExpression": "modCaseNav.ExcludeExamples()",
+      "Tags": [
+        "Navigation"
+      ]
+    },
+    {
+      "Name": "Extract Characters",
+      "Description": "Split the active cell's text into its individual characters, one per row. Keeps line breaks, accented letters and emoji intact.",
+      "Type": "ExcelFormulaCommand",
+      "Formula": "=SplitText_byHadynWiseman([[ActiveCell::Formula]])",
+      "FormulaDependencies": [
+        "SplitText_byHadynWiseman.lambda"
+      ]
+    },
+    {
+      "Name": "Fill Similar Background Color",
+      "Description": "Copies the selected cells' values over every cell sharing their fill color; turns a color-coded map into data in one run",
+      "Type": "VBAMacroCommand",
+      "Note": "Fills each cell on the sheet that has the same background color with either the value in the cell, or if empty, the value to the right of the cell.",
+      "LaunchCodes": [
+        "FBC"
+      ],
+      "MacroExpression": "modGoToSpecial.FillSimilarBackgroundColor()",
+      "Tags": [
+        "Fill",
+        "Formatting"
+      ]
+    },
+    {
       "Name": "Find Above In Left",
-      "Description": "Find above value(s) in left value(s).",
+      "Description": "Select the empty grid between two lists: marks 1 where the item ABOVE each column is found in the item LEFT of each row",
       "Type": "ExcelFormulaCommand",
       "LaunchCodes": [
         "fal"
       ],
-      "Formula": "=1-ISERROR(FIND([[ActiveCell.Offset(-1,0).SpillParent.SpillingToRange]],[[ActiveCell.Offset(0,-1).SpillParent.SpillingToRange]]))",
+      "Formula": "=1-ISERROR(FIND([[Selection.Rows(1).Offset(-1,0)::Address]],[[Selection.Columns(1).Offset(0,-1)::Address]]))",
+      "DestinationRangeAddress": "[[Selection.Cells(1,1)]]",
       "Tags": [
         "WrapWith"
       ]
     },
     {
+      "Name": "Find Address Of Value On Map",
+      "Description": "Returns the cell ADDRESS of each value you are looking for on a map, the start point the distance commands need",
+      "Type": "ExcelFormulaCommand",
+      "Parameters": [
+        {
+          "Name": "LookFor",
+          "Type": "InputParameter",
+          "DataType": "String",
+          "Prompt": "Value to find, typed plainly (e.g. S, no quotes)"
+        }
+      ],
+      "UserContextFilter": "ExcelSelectionIsSingleCell",
+      "Note": "Point it at a map and it gives back WHERE the things you asked for are, as addresses like \"H12\". One match comes back as a single address; several come back as a column of them; nothing found gives \"Not Found\". WHY IT MATTERS MORE THAN IT LOOKS: Find Nearest On Map (FNM) and Map Distance From Cell (MDC) both need a STARTING ADDRESS as text, and on a real case you rarely know it by eye; the start is 'wherever the S is'. This is the command that produces it, so the three chain together: FAM to locate the start, then MDC or FNM from there. ARGUMENT ORDER, if you ever type the lambda by hand: it is FindInMap(items, map), so the things you are looking for come FIRST, the map second, which is the opposite way round from most of the map lambdas. Wraps FindInMap_byHadynWiseman (which itself uses GridToCol_byLiannaGerrish); owned by CompBot since the lambda review, exposed as a command 2026-09-22.",
+      "LaunchCodes": [
+        "FAM"
+      ],
+      "Formula": "=LET(_l,\"{{LookFor}}\",FindInMap_byHadynWiseman(IFERROR(--_l,_l),[[ActiveCell::Formula]]))",
+      "Tags": [
+        "Array"
+      ],
+      "FormulaDependencies": [
+        "FindInMap_byHadynWiseman.lambda",
+        "GRIDTOCOL_byLiannaGerrish.lambda"
+      ]
+    },
+    {
+      "Name": "Find Nearest On Map",
+      "Description": "Stand on the start (e.g. the S) in a map spill, with the target cell COPIED: lists the nearest targets with their addresses and distances, to the right of the sheet's contents",
+      "Type": "ExcelFormulaCommand",
+      "UserContextFilter": "ExcelSelectionIsSingleCell",
+      "Note": "Returns three columns (Value, Address, Distance) for every matching cell within MaxSteps of the start, SORTED NEAREST FIRST, so the first row is the answer to 'what is closest'. WHAT IT IS FOR: 'which portal is nearest', 'what is the closest resource', 'how far to the nearest wall'. The 2024 and 2025 MEWC Portal cases are the worked example; this answers their level 5 outright. MaxSteps keeps it fast by only looking at a window around the start rather than the whole map. Wraps ClosestOnMap_byHadynWiseman, which in turn uses Distance_byHadynWiseman. Both have been in CompBot's library since the lambda review; no command exposed them until 2026-09-22. THE REASON A WRAPPER MATTERS HERE: the lambda takes ELEVEN parameters. It is not something anyone reconstructs correctly from memory in a timed round, so the capability was effectively out of reach even though it was already owned and tested.",
+      "LaunchCodes": [
+        "FNM"
+      ],
+      "Formula": "=LET(_m,[[ActiveCell.SpillParent::Formula]],ClosestOnMap_byHadynWiseman(_m,FindInMap_byHadynWiseman([[ActiveCell]],_m),ROWS(_m)+COLUMNS(_m),[[Clipboard::Address]]))",
+      "DestinationRangeAddress": "[[AvailableCellToRight]]",
+      "Tags": [
+        "Array"
+      ],
+      "FormulaDependencies": [
+        "ClosestOnMap_byHadynWiseman.lambda",
+        "RowNum_byHadynWiseman.lambda",
+        "ColNum_byHadynWiseman.lambda",
+        "ADDRESSES_byDiarmuidEarly.lambda",
+        "Distance_byHadynWiseman.lambda",
+        "FindInMap_byHadynWiseman.lambda",
+        "GRIDTOCOL_byLiannaGerrish.lambda"
+      ]
+    },
+    {
+      "Name": "First Match By Row",
+      "Description": "For each row, the position of the first cell equal to the COPIED cell's value, or a fallback (blank = never) where the row never matches",
+      "Type": "ExcelFormulaCommand",
+      "Parameters": [
+        {
+          "Name": "IfNotFound",
+          "Type": "InputParameter",
+          "DataType": "String",
+          "Prompt": "Result where the row never matches (leave blank for never)"
+        }
+      ],
+      "UserContextFilter": "ExcelActiveCellIsSpillParent;ExcelSelectionIsSingleCell",
+      "Note": "Promoted into CompBot from A-ZTraining 2026-09-22. Answers 'on which step did this row first hit X': a set completed, a target reached, a state entered. Returns the 1-based column position; an r x c array becomes r x 1. 2026-09-28 (Jaq): the value to find is the COPIED cell (linked, no typing, no quotes); the one popup is the not-found result, blank = never. WHY IT EARNS A PLACE IN THE COMPETITION COLLECTION: chained with Max Of Array By Row (Array Robot, free) it gives a STABLE ARGMAX, highest value, ties going to the earliest position. Needed in 7 of 67 surveyed cases. Self-contained formula, no lambda dependency.",
+      "LaunchCodes": [
+        "FMR"
+      ],
+      "Formula": "=LET(_a,([[ActiveCell::Formula]]),_v,[[Clipboard::Address]],_nf,\"{{IfNotFound}}\",BYROW(_a,LAMBDA(_r,IFERROR(XMATCH(_v,_r),IF(_nf=\"\",\"never\",IFERROR(--_nf,_nf))))))",
+      "Tags": [
+        "Array"
+      ]
+    },
+    {
+      "Name": "Flip Array",
+      "Description": "Reverses the active cell's text (stressed becomes desserts). For a block use FLR (left to right) or FTB (top to bottom)",
+      "Type": "ExcelFormulaCommand",
+      "UserContextFilter": "ExcelSelectionIsSingleCell",
+      "Note": "Mirrors a grid. Horizontal 1 flips left-right, Vertical 1 flips top-bottom, and 0 for BOTH gives the 180-degree point mirror (every cell swapped with its opposite). Unlike Rotate Array the shape never changes. WHAT IT IS FOR: a board read from the other side, a reflected path, a mirrored tile. ONE NICE QUIRK: on a SINGLE CELL it reverses the TEXT of that cell, so it doubles as a reverse-a-string command. TWO THINGS NOT REACHABLE FROM THIS COMMAND, type the lambda by hand for them: DiagonalTopLeft (a transpose) and DiagonalTopRight (an anti-transpose) are the 3rd and 4th arguments, and a 6th argument AddressMoves returns WHERE A GIVEN CELL MOVED TO rather than the flipped grid: Flip_byHadynWiseman(array, 1, 0, , , \"H12\"). Wraps Flip_byHadynWiseman; exposed as a command 2026-09-22.",
+      "LaunchCodes": [
+        "FLP"
+      ],
+      "Formula": "=Flip_byHadynWiseman([[ActiveCell::Formula]])",
+      "Tags": [
+        "Array"
+      ],
+      "FormulaDependencies": [
+        "Flip_byHadynWiseman.lambda",
+        "ADDRESSES_byDiarmuidEarly.lambda"
+      ]
+    },
+    {
+      "Name": "Flip Array Left to Right",
+      "Description": "Mirrors the active array left to right: the last column comes first",
+      "Type": "ExcelFormulaCommand",
+      "UserContextFilter": "ExcelSelectionIsSingleCell",
+      "Note": "2026-09-28 (Jaq): one of the Flip family (FLP text, FLR left-right, FTB top-bottom), replacing Flip Array's two popups.",
+      "LaunchCodes": [
+        "FLR"
+      ],
+      "Formula": "=Flip_byHadynWiseman([[ActiveCell::Formula]],1)",
+      "Tags": [
+        "Array"
+      ],
+      "FormulaDependencies": [
+        "Flip_byHadynWiseman.lambda",
+        "ADDRESSES_byDiarmuidEarly.lambda"
+      ]
+    },
+    {
+      "Name": "Flip Array Top to Bottom",
+      "Description": "Mirrors the active array top to bottom: the last row comes first",
+      "Type": "ExcelFormulaCommand",
+      "UserContextFilter": "ExcelSelectionIsSingleCell",
+      "Note": "2026-09-28 (Jaq): one of the Flip family (FLP text, FLR left-right, FTB top-bottom).",
+      "LaunchCodes": [
+        "FTB"
+      ],
+      "Formula": "=Flip_byHadynWiseman([[ActiveCell::Formula]],,1)",
+      "Tags": [
+        "Array"
+      ],
+      "FormulaDependencies": [
+        "Flip_byHadynWiseman.lambda",
+        "ADDRESSES_byDiarmuidEarly.lambda"
+      ]
+    },
+    {
       "Name": "Full Setup Case",
-      "Description": "Setup case by running Backup and Level sheet creation",
+      "Description": "Sets up the case: saves a _Solve copy, backs up the sheets, creates the level, bonus and Case inputs sheets, then imports lambdas. Choose the steps with SCS",
       "Type": "VBAMacroCommand",
       "ShortCutSendKeyString": "^+g",
-      "CommandAfter": "Import Lambda Library",
+      "Note": "Steps, in order: save a working copy as <name>_Solve (skipped if the file has never been saved or is already a _Solve / _Working copy), back up every sheet, name the used ranges, create the level sheets, the bonus sheet B and the Case inputs sheet; then Import Case Lambdas runs (your library and CompBot's, the winner first). Any step can be switched off per user with Setup Case Settings (SCS); a switched-off step is reported as skipped. A failed step is reported on the status bar and the rest still run. Does NOT unmerge or rename sheets: run Unmerge Multi-Row Merges, M2C or Rename Sheets (rs) yourself first if the case needs them. Save copy step added 2026-09-24 (Jaq); step switches added 2026-09-24.",
+      "CommandAfter": "Import Case Lambdas",
       "LaunchCodes": [
         "SC"
       ],
@@ -185,8 +437,21 @@
       ]
     },
     {
+      "Name": "Go To Example",
+      "Description": "Goes to the level's example row, two cells right of its last input, ready to solve",
+      "Type": "VBAMacroCommand",
+      "Note": "From anywhere in a level (the Case sheet, an L## sheet, or standing on an Example# label), selects the cell two columns right of the level's last input on its example row, where a live solve starts, and scrolls to it. Finds the level exactly as Create Data Table does (shared LocateLevel) and the inputs by the one input rule (LevelInputColumns). Status bar report, no dialogs. Added 2026-09-24 to replace Select Example And Questions (SEQ), which suited A-ZTraining replays rather than a live solve (Jaq).",
+      "LaunchCodes": [
+        "GE"
+      ],
+      "MacroExpression": "modDataTable.GoToExample()",
+      "Tags": [
+        "Navigation"
+      ]
+    },
+    {
       "Name": "Goto Similar Background Color",
-      "Description": "Goto similar background color.",
+      "Description": "Selects every cell in the selection that shares the active cell's fill color, so a color group can be seen or counted at once",
       "Type": "VBAMacroCommand",
       "LaunchCodes": [
         "SBC"
@@ -197,27 +462,40 @@
       ]
     },
     {
-      "Name": "Import Lambda Library",
-      "Description": "Imports CompBot's lambda collection into active workbook",
+      "Name": "Import Case Lambdas",
+      "Description": "Your library (if set) and CompBot's lambdas, the winner first, into the active workbook. Chained after Full Setup Case",
       "Type": "VBAMacroCommand",
-      "LaunchCodes": [
-        "IL"
-      ],
-      "MacroExpression": "modImportLambdas.ImportAllLambdas(\"CompBot.xlsm\")",
+      "Note": "Hidden: it exists to be Full Setup Case's CommandAfter. Loads the user's own lambda library (if Set Lambda Library has been run) and CompBot's lambdas, each only if switched on in Setup Case Settings (SCS). The winner (SCS; CompBot by default) goes first and replaces same-named lambdas; the other goes second and never overwrites, so where names clash the winner's version is the one left. Its report is appended to Full Setup Case's own status-bar line rather than replacing it. Added 2026-09-24; winner and switches 2026-09-24.",
+      "Visibility": "Hidden",
+      "MacroExpression": "modLambdas.ImportCaseLambdas()",
       "Tags": [
         "LAMBDA",
         "Prep"
-      ],
-      "MacroWorkbookConnection": "Lambda Robot"
+      ]
     },
     {
-      "Name": "Import Lambdas From",
-      "Description": "Import lambdas from a specified workbook",
+      "Name": "Import Lambda Library",
+      "Description": "Loads YOUR own lambda library (set once with SLL) into the active workbook",
       "Type": "VBAMacroCommand",
+      "Note": "Everyone keeps their own lambda library in a workbook of their own. Set Lambda Library (SLL) remembers where it is, once; this copies its lambdas into whatever workbook is active. It opens the library read-only with its macros kept quiet and closes it again (or uses it as-is if you already have it open). By default a lambda ALREADY in the file is SKIPPED, never overwritten, and listed on the status bar, so your copy cannot replace CompBot's improved version; if Setup Case Settings (SCS) says your library wins, it replaces instead. Refuses to run with CompBot or the library itself active. No dialogs. WHY NOT KEEP YOUR LAMBDAS INSIDE COMPBOT: a GitHub update replaces CompBot.xlsm wholesale, and most people run it hidden and read-only anyway. The library location is a per-user Windows setting, so it survives every update.",
       "LaunchCodes": [
-        "ILF"
+        "ILL"
       ],
-      "MacroExpression": "modLambdas.ImportLambdasFrom()",
+      "MacroExpression": "modLambdas.ImportLambdaLibrary()",
+      "Tags": [
+        "LAMBDA",
+        "Prep"
+      ]
+    },
+    {
+      "Name": "Import Lambdas From CompBot",
+      "Description": "Loads CompBot's own lambdas into the active workbook, replacing older copies unless SCS says your library wins",
+      "Type": "VBAMacroCommand",
+      "Note": "Copies every lambda CompBot carries into the active workbook, with its description. By default a lambda of the same name already there is REPLACED, so an older case file picks up CompBot's improved versions; if Setup Case Settings (SCS) says your library wins, a same-named lambda is skipped instead. A name that is not a lambda (the case's own range or constant) is never touched. Refuses to run with CompBot itself active. Reports on the status bar; no dialogs. Uses CompBot's own importer (modLambdas.CopyLambdas), shared with Import Lambda Library (ILL), so there is no dependency on another collection. Full Setup Case runs it for you through Import Case Lambdas.",
+      "LaunchCodes": [
+        "ILC"
+      ],
+      "MacroExpression": "modLambdas.ImportLambdasFromCompBot()",
       "Tags": [
         "LAMBDA",
         "Prep"
@@ -225,7 +503,7 @@
     },
     {
       "Name": "Keep Cell of Array",
-      "Description": "Keep selected cell of array.",
+      "Description": "Reduces a spilled array to just the one cell you selected, so a single value can be inspected or reused",
       "Type": "ExcelFormulaCommand",
       "LaunchCodes": [
         "KTC"
@@ -237,6 +515,148 @@
       ]
     },
     {
+      "Name": "Label Connected Regions (4 ways)",
+      "Description": "Numbers each connected blob on a map, cells joining only up, down, left and right",
+      "Type": "ExcelFormulaCommand",
+      "UserContextFilter": "ExcelSelectionIsSingleCell",
+      "Note": "2026-09-28 (Jaq): replaces Label Connected Regions' 0/1 popup. LCR8 lets a corner touch join two cells.",
+      "LaunchCodes": [
+        "LCR4"
+      ],
+      "Formula": "=Regions_byHadynWiseman([[ActiveCell::Formula]],1)",
+      "Tags": [
+        "Array"
+      ],
+      "FormulaDependencies": [
+        "Regions_byHadynWiseman.lambda",
+        "Exists_byHadynWiseman.lambda"
+      ]
+    },
+    {
+      "Name": "Label Connected Regions (8 ways)",
+      "Description": "Numbers each connected blob on a map, a diagonal (corner) touch joining cells too",
+      "Type": "ExcelFormulaCommand",
+      "UserContextFilter": "ExcelSelectionIsSingleCell",
+      "Note": "2026-09-28 (Jaq): the diagonal twin of LCR4.",
+      "LaunchCodes": [
+        "LCR8"
+      ],
+      "Formula": "=Regions_byHadynWiseman([[ActiveCell::Formula]],0)",
+      "Tags": [
+        "Array"
+      ],
+      "FormulaDependencies": [
+        "Regions_byHadynWiseman.lambda",
+        "Exists_byHadynWiseman.lambda"
+      ]
+    },
+    {
+      "Name": "Link Answer Cell",
+      "Description": "Points the level's data table ANSWER cell at the active cell (your calculation's output); then run RDT",
+      "Type": "VBAMacroCommand",
+      "Note": "The step between Create Data Table (CDT) and Run Data Table (RDT). Stand on the cell holding the example calculation's OUTPUT and run it: the ANSWER cell of this level's block (3 rows below the block's input cell, 1 column right) becomes =that cell, absolute. The level is found exactly as CDT finds it, so on a Case sheet with several blocks the right one is used. Refuses when the level has no block yet, or when you are standing on the block itself. Copies nothing, moves nothing. Added 2026-09-24 (Jaq) as CompBot's own take on A-ZTraining's ANS, which searched for the first green ANSWER cell of an Excel What-If table.",
+      "LaunchCodes": [
+        "ANS"
+      ],
+      "MacroExpression": "modDataTable.LinkAnswerCell()",
+      "Tags": [
+        "DataTable"
+      ]
+    },
+    {
+      "Name": "Link Side Cell",
+      "Description": "Adds a SIDE column to the level's data table, pointed at the active cell, so RDT also records a second value per game for a bonus",
+      "Type": "VBAMacroCommand",
+      "Note": "For bonuses that need a DIFFERENT per-game number from the level's calculation (a count, a per-player score), then SUM / MAX / COUNTIF over the games. Stand on the cell holding that number and run it: the next SIDE column of this level's block goes in the first free column right of the block. Check row: SIDE k; ANSWER row: =that cell, light blue; game rows: #N/A until RDT, which recalculates each game once and fills the answer and every SIDE column from the same pass. Up to 5 SIDE columns. If the column is not empty from the Check row down, nothing is written and an orange note above it says which cell is in the way; the next successful LSC clears it. Refuses on the block itself. Then write the bonus formula over the SIDE results and save it with Save Answer To Bonus N (B1 to B5). Added 2026-09-24 (Jaq); spec commandtools\\SPEC-side-bonus-column-260924.md.",
+      "MacroExpression": "modDataTable.LinkSideCell()",
+      "Tags": [
+        "DataTable"
+      ]
+    },
+    {
+      "Name": "List Combinations Of Array",
+      "Description": "Every ordering of all the items in the active array, each used once (10 20 30, 10 30 20, 20 10 30 ...)",
+      "Type": "ExcelFormulaCommand",
+      "UserContextFilter": "ExcelSelectionIsSingleCell",
+      "Note": "THE ONE THAT SOLVES SUBSET-SUM. Set HowMany to the number of items, IgnoreOrder 1, AllowRepeats 0 and AllSizesUpTo 1, and you get EVERY SUBSET of the array; then filter for the ones summing to your target. The 2023 Cribbage case's note calls that job 'not native Excel in any clean form' and proposes building a new lambda for it; CompBot already owned this one, unexposed. Also does plain combinations and permutations, with or without repeats, which covers 'how many ways', 'list every pairing', 'every ordering of these tokens'. WARNING: the output grows fast; every subset of 15 items is 32,767 rows, and of 20 items over a million. Start small and check the shape before trusting it on a big list. Wraps Combinations_byHadynWiseman, which calls PerCom_byBoRydobon. Exposed as a command 2026-09-22.",
+      "LaunchCodes": [
+        "LCA"
+      ],
+      "Formula": "=LET(_a,[[ActiveCell::Formula]],Combinations_byHadynWiseman(_a,COUNTA(_a)))",
+      "Tags": [
+        "Array"
+      ],
+      "FormulaDependencies": [
+        "Combinations_byHadynWiseman.lambda",
+        "PerCom_byBoRydobon.lambda"
+      ]
+    },
+    {
+      "Name": "List Lambdas Used",
+      "Description": "Lists every lambda the active workbook's formulas actually call; worth running before clearing anything",
+      "Type": "VBAMacroCommand",
+      "Note": "Creates a sheet showing all the lambdas actively used in the active workbook",
+      "MacroExpression": "modLambdas.ListLambdasUsed()"
+    },
+    {
+      "Name": "List Pairings Of Two Lists",
+      "Description": "Every pairing of the COPIED list with the active spill (each item of one with each item of the other), written to the right of the sheet's contents",
+      "Type": "ExcelFormulaCommand",
+      "UserContextFilter": "ExcelSelectionIsSingleCell",
+      "Note": "2026-09-28 (Jaq): the other common 'list them all' ask next to List Combinations Of Array. Copy list 1, stand on the spill of list 2, run: two columns, list 1 x list 2, in the next blank cell right of it.",
+      "LaunchCodes": [
+        "LP"
+      ],
+      "Formula": "=LET(_a,TOCOL([[Clipboard::Address]],1),_b,TOCOL([[ActiveCell.SpillParent::Formula]],1),_n,ROWS(_a),_m,ROWS(_b),_i,SEQUENCE(_n*_m)-1,HSTACK(INDEX(_a,INT(_i/_m)+1),INDEX(_b,MOD(_i,_m)+1)))",
+      "DestinationRangeAddress": "[[AvailableCellToRight]]",
+      "Tags": [
+        "Array"
+      ]
+    },
+    {
+      "Name": "Load Game Into Calculation",
+      "Description": "Loads the selected data table game into the example calculation, or restores the example",
+      "Type": "VBAMacroCommand",
+      "Note": "For edge-case testing and troubleshooting. Select a game row in a Create Data Table block (game number or result) and run it: that game goes into the input cell and the calc block shows it. Select the input cell and run again to restore Example#. Run Data Table also restores it.",
+      "LaunchCodes": [
+        "LDT",
+        "LG"
+      ],
+      "MacroExpression": "modDataTable.LoadGameIntoCalculation()",
+      "Tags": [
+        "Prep"
+      ]
+    },
+    {
+      "Name": "Lookup Array from Column N",
+      "Description": "Looks every value of the active array up in a named range or table and returns the column you choose",
+      "Type": "ExcelFormulaCommand",
+      "Parameters": [
+        {
+          "Name": "ColumnNumber",
+          "Type": "InputParameter",
+          "DataType": "Integer",
+          "Prompt": "Column number to return"
+        },
+        {
+          "Name": "LookupRange",
+          "Type": "InputParameter",
+          "DataType": "String",
+          "Prompt": "Named range or table to look up in"
+        }
+      ],
+      "UserContextFilter": "ExcelSelectionIsSingleCell",
+      "Note": "Promoted into CompBot from A-ZTraining 2026-09-22: needed in 7 of 67 surveyed cases. Emits the range NAME rather than a resolved address, so the formula stays readable and survives the table being moved. Exact match, wraps in place. WHERE IT EARNS ITS KEEP: joining a split list back to a stats table, such as 20 racer numbers to their speeds, glyphs to a legend, codes to names. Array Robot's free Paste Lookup does a similar job but is fixed to the LAST column of the copied range; this one lets you pick the column, which is the difference that matters on a wide table. Self-contained formula, no lambda dependency. Same launch code as A-ZTraining's copy, deliberately.",
+      "LaunchCodes": [
+        "LKN"
+      ],
+      "Formula": "=VLOOKUP([[ActiveCell::Formula]],{{LookupRange}},{{ColumnNumber}},FALSE)",
+      "Tags": [
+        "WrapWith",
+        "Lookup"
+      ]
+    },
+    {
       "Name": "Lookup Value by Row",
       "Description": "Returns RC location of a list of values in a range",
       "Type": "ExcelFormulaCommand",
@@ -245,16 +665,131 @@
       ],
       "Formula": "=LkpRCByRow([[ActiveCell::Formula]], [[Clipboard::Address]])",
       "Tags": [
+        "Lookup",
         "WrapWith"
       ],
       "FormulaDependencies": [
         "LkpRCByRow.lambda",
-        "BiRow_byPeterBartholomew.lambda",
+        "BiRow_byHadynWiseman.lambda",
         "LkpRC.lambda",
         "FilterArray_byErikOehm.lambda",
         "IsInList_byErikOehm.lambda",
-        "GRIDTOCOL_byLiannaGerrish.lambda",
-        "ADDRESSES_byDiarmuidEarly.lambda"
+        "GRIDTOCOL_byLiannaGerrish.lambda"
+      ]
+    },
+    {
+      "Name": "Map Distance From Cell (4 ways)",
+      "Description": "How far every cell on a map is from the COPIED start cell(s), moving only up, down, left and right, routing AROUND obstacles",
+      "Type": "ExcelFormulaCommand",
+      "UserContextFilter": "ExcelSelectionIsSingleCell",
+      "Note": "2026-09-28 (Jaq): replaces Map Distance From Cell's two popups. Copy the cell holding the start address (e.g. E26; a range of starts works too), stand on the formula giving the map, run. MDC8 allows diagonals.",
+      "LaunchCodes": [
+        "MDC4"
+      ],
+      "Formula": "=MazeDistance_byHadynWiseman([[ActiveCell::Formula]],[[Clipboard::Address]],,1)",
+      "Tags": [
+        "Array"
+      ],
+      "FormulaDependencies": [
+        "MazeDistance_byHadynWiseman.lambda",
+        "RowNum_byHadynWiseman.lambda",
+        "ColNum_byHadynWiseman.lambda"
+      ]
+    },
+    {
+      "Name": "Map Distance From Cell (8 ways)",
+      "Description": "How far every cell on a map is from the COPIED start cell(s), diagonal moves allowed, routing AROUND obstacles",
+      "Type": "ExcelFormulaCommand",
+      "UserContextFilter": "ExcelSelectionIsSingleCell",
+      "Note": "2026-09-28 (Jaq): the diagonal twin of MDC4. Copy the start cell, stand on the map formula, run.",
+      "LaunchCodes": [
+        "MDC8"
+      ],
+      "Formula": "=MazeDistance_byHadynWiseman([[ActiveCell::Formula]],[[Clipboard::Address]],,0)",
+      "Tags": [
+        "Array"
+      ],
+      "FormulaDependencies": [
+        "MazeDistance_byHadynWiseman.lambda",
+        "RowNum_byHadynWiseman.lambda",
+        "ColNum_byHadynWiseman.lambda"
+      ]
+    },
+    {
+      "Name": "Merged To Centre Across Selection",
+      "Description": "Merged Cells changed to Centre Across Selection",
+      "Type": "VBAMacroCommand",
+      "Note": "Unmerges merged cells across a single row and applies centre across selection formatting instead, so the layout looks the same but the cells select, fill and spill normally. Multi-row merges are left for Unmerge Multi-Row Merges. SCOPE: a selection of more than one cell (or one merged cell) limits it to the merged blocks the selection touches; one ordinary cell means the whole active sheet. Status bar report, no dialogs. Promoted from Jaq's own WiE Robot collection 2026-09-24 with its name, description and launch codes; WiE Robot itself is unchanged.",
+      "LaunchCodes": [
+        "Unmerge",
+        "M2C"
+      ],
+      "MacroExpression": "modMisc.MergedToCAS()",
+      "Tags": [
+        "Prep",
+        "Formatting"
+      ]
+    },
+    {
+      "Name": "MM",
+      "Description": "Applies -- to an array, turning TRUE/FALSE into 1/0 so it can be summed or multiplied",
+      "Type": "ExcelFormulaCommand",
+      "LaunchCodes": [
+        "MM"
+      ],
+      "Formula": "=MM_byHaDang([[ActiveCell::Formula]])",
+      "Tags": [
+        "MM"
+      ],
+      "FormulaDependencies": [
+        "MM_byHaDang.lambda"
+      ]
+    },
+    {
+      "Name": "Modulo Array",
+      "Description": "Wraps the active array with MOD; turns cumulative movement into a position on a looping board",
+      "Type": "ExcelFormulaCommand",
+      "Parameters": [
+        {
+          "Name": "Divisor",
+          "Type": "InputParameter",
+          "DataType": "Integer",
+          "Prompt": "Divide by (e.g. board size)"
+        }
+      ],
+      "UserContextFilter": "ExcelActiveCellIsSpillParent;ExcelSelectionIsSingleCell",
+      "Note": "Promoted into CompBot from A-ZTraining 2026-09-22: needed in 5 of 67 surveyed cases. Use this where the spaces are numbered 0..N-1 and a full lap returns to 0. Where they are numbered 1..N and a full lap should land on N, use Modulo Array 1-Based (MOD1) instead; getting that wrong is an off-by-one that looks plausible all the way to the answer. Self-contained formula, no lambda dependency. Same launch code as A-ZTraining's copy, deliberately.",
+      "LaunchCodes": [
+        "MODA"
+      ],
+      "Formula": "=MOD([[ActiveCell::Formula]],{{Divisor}})",
+      "Tags": [
+        "WrapWith"
+      ]
+    },
+    {
+      "Name": "Modulo Array 1-Based",
+      "Description": "Wraps the active array in BoardGameMove_byHadynWiseman: a board numbered 1 to N, so an exact lap lands on N rather than 0",
+      "Type": "ExcelFormulaCommand",
+      "Parameters": [
+        {
+          "Name": "Divisor",
+          "Type": "InputParameter",
+          "DataType": "Integer",
+          "Prompt": "Divide by (e.g. board size)"
+        }
+      ],
+      "UserContextFilter": "ExcelActiveCellIsSpillParent;ExcelSelectionIsSingleCell",
+      "Note": "Promoted into CompBot from A-ZTraining 2026-09-22. The 1-based partner to Modulo Array (MODA): use this where board spaces are numbered 1..N and a full lap lands on N, and MODA where they are numbered 0..N-1 and a lap returns to 0. 2026-10-05 (Jaq): now writes BoardGameMove_byHadynWiseman, which is exactly MOD(x-1,d)+1, instead of inlining the arithmetic; MOD1_byJaqKennedy (the same thing) was dropped from the lambda set.",
+      "LaunchCodes": [
+        "MOD1"
+      ],
+      "Formula": "=BoardGameMove_byHadynWiseman([[ActiveCell::Formula]],{{Divisor}})",
+      "Tags": [
+        "WrapWith"
+      ],
+      "FormulaDependencies": [
+        "BoardGameMove_byHadynWiseman.lambda"
       ]
     },
     {
@@ -295,9 +830,75 @@
       ]
     },
     {
-      "Name": "Rename Sheets",
-      "Description": "Rename multi-word sheet names",
+      "Name": "Next Bonus In Status Bar",
+      "Description": "Shows the next open bonus question on the status bar (no-dock fallback)",
       "Type": "VBAMacroCommand",
+      "Note": "Each run steps to the next open bonus and wraps round: '[2/3 open] Bonus 2 - 20 pts - Relates to L3: question'. Same detection as Show Bonus Dock; answered and cleared bonuses are skipped. Text is cut at Excel's 255-character status bar limit. Clear Status Bar (CSB) gives the bar back to Excel.",
+      "LaunchCodes": [
+        "BQN"
+      ],
+      "MacroExpression": "modBonusDock.StepBonusStatus(1)",
+      "Tags": [
+        "Bonus"
+      ]
+    },
+    {
+      "Name": "Paste Flattened List With Formatting",
+      "Description": "Turns a copied range into a list, one row per cell, carrying fill color, font color and border flags",
+      "Type": "VBAMacroCommand",
+      "Note": "COPY the range first, then select the cell you want the list to start at, then run this. Columns: Items | Row # | Column # | Address | RCRef | Fill | Font | BdrT | BdrR | BdrB | BdrL. WHAT IT IS FOR: reading a map that is drawn in formatting rather than written in values, such as color-coded terrain, walls drawn as borders, a legend you need to decode. Flatten it, then XLOOKUP the Fill column against the legend, or UNIQUE the Fill column to discover what colors a map actually uses when it has no legend at all. NOTES: colors come back as #RRGGBB hex, not Excel's raw BGR Long, so they are readable and XLOOKUP-able. BLANK CELLS ARE INCLUDED; a blank cell with a fill is the whole point. A border between two cells is one line with two possible owners, so each edge flag ORs both sides; a wall drawn from the neighbour's side still shows. RCRef is packed 10^6*row+column, matching GridToCol. Like a paste, it overwrites the cell you start from; if anything else is in the way (a value or a merged cell in the output block), the list goes to a new sheet next to this one and the start cell becomes a link to it, 'Unable to fit here: see <sheet>', and you stay where you were (2026-10-05, Jaq). Values are read with .Value2, so dates arrive as serial numbers. A CUT range (Ctrl+X) resolves too, not just a copy. Built and tested 2026-09-22; 3000 cells in 0.36s.",
+      "LaunchCodes": [
+        "PFF"
+      ],
+      "MacroExpression": "modFlatten.PasteFlattenedListWithFormatting()",
+      "Tags": [
+        "Paste"
+      ]
+    },
+    {
+      "Name": "Previous Bonus In Status Bar",
+      "Description": "Shows the previous open bonus question on the status bar",
+      "Type": "VBAMacroCommand",
+      "Note": "Mirror of Next Bonus In Status Bar (BQN).",
+      "LaunchCodes": [
+        "BQP"
+      ],
+      "MacroExpression": "modBonusDock.StepBonusStatus(-1)",
+      "Tags": [
+        "Bonus"
+      ]
+    },
+    {
+      "Name": "Record Walk Route",
+      "Description": "Start recording a route: every orthogonal move adds the cells you pass over. Diagonal click finishes",
+      "Type": "VBAMacroCommand",
+      "Note": "Select the starting cell, run this, then walk. ARROW, CTRL+ARROW and an ORTHOGONAL CLICK all count as a move; clicking is often easier when there is no content to Ctrl+Arrow over. Each move adds every cell between the last stop and the new one. A DIAGONAL CLICK ends it (that cell is not part of the route) and writes the route to a new sheet. Stop Walk Route (SWR) ends it by hand. WHAT IT IS FOR: capturing a path that exists only visually (a route drawn on a map in fills or glyphs and recorded nowhere) and turning it into data you can measure. Output columns: Step | Items | Row # | Column # | Address | RCRef | Fill | Font | BdrT | BdrR | BdrB | BdrL | Repeat, the same shape as Paste Flattened List With Formatting, plus the step order. NOTES: a corner cell is recorded ONCE, not twice, where two runs meet. A route that crosses itself keeps EVERY visit in order and flags the revisits in the Repeat column rather than dropping them, because order matters more than uniqueness for a route. A click-and-drag takes the last cell of the selection. This command deliberately does NOT use vbaInit/vbaFin: it needs Application events switched ON to see you move, and it puts the previous setting back when it finishes. Built and tested 2026-09-22.",
+      "LaunchCodes": [
+        "RWR"
+      ],
+      "MacroExpression": "modWalk.StartWalkRoute()",
+      "Tags": [
+        "Bonus"
+      ]
+    },
+    {
+      "Name": "Record Walk Route Here",
+      "Description": "As Record Walk Route, but the route table goes on this sheet, level with where the walk started and to its right, in the first space clear enough to hold it",
+      "Type": "VBAMacroCommand",
+      "Note": "2026-09-28 (Jaq): wanted the route beside the working area as well as the new-sheet version. 2026-10-05 (Jaq): the table goes level with the walk's START cell, at the first position from two columns to its right where a block the size of the table holds no values, no fill and no merges (modWalk.ClearSpotRightOf); only if there is none does it go one column after the sheet's contents. The view scrolls to it. Same day: FinishWalk stops the watcher before writing, which ended a self-retriggering loop that crashed Excel. Stop Walk Route (SWR) ends either mode.",
+      "LaunchCodes": [
+        "RWH"
+      ],
+      "MacroExpression": "modWalk.StartWalkRouteHere()",
+      "Tags": [
+        "Bonus"
+      ]
+    },
+    {
+      "Name": "Rename Sheets",
+      "Description": "Shortens multi-word sheet names to their initials, keeping numbers (Level 1 Data becomes L1D); backups keep their names",
+      "Type": "VBAMacroCommand",
+      "Note": "One character per word (split on spaces and underscores), plus any digits later in that word: Level 1 Data and Level1 Data both become L1D, Level 10 Data L10D. Leaves Case, Case-Varsity, Answers and backup sheets (BU_...) alone, so the original names stay readable on the backups. A name already taken gets _2, _3... Excel updates every formula that refers to a renamed sheet. A short result that looks like a cell address (L1) still needs quotes in formulas. Status bar lists the renames. Rewritten 2026-09-24 (Jaq's C2 notes): it used to drop digits inside a word (Level1 Data and Level2 Data both wanted LD) and renamed the backups.",
       "LaunchCodes": [
         "rs"
       ],
@@ -307,11 +908,25 @@
       ]
     },
     {
+      "Name": "Restore Cleared Bonuses",
+      "Description": "Brings every hand-cleared bonus back into the dock",
+      "Type": "VBAMacroCommand",
+      "Note": "Removes the case workbook's hidden BonusDock_Cleared name, then refreshes the dock.",
+      "CommandAfter": "Show Bonus Dock",
+      "LaunchCodes": [
+        "BQR"
+      ],
+      "MacroExpression": "modBonusDock.RestoreClearedBonuses()",
+      "Tags": [
+        "Bonus"
+      ]
+    },
+    {
       "Name": "Revert Settings",
       "Description": "Reverts settings to those loaded into the Loaded column.",
       "Type": "VBAMacroCommand",
       "LaunchCodes": [
-        "RS"
+        "RVS"
       ],
       "MacroExpression": "modMisc.RevertSettings()",
       "Tags": [
@@ -319,8 +934,28 @@
       ]
     },
     {
+      "Name": "Rotate Array",
+      "Description": "Turns the active array a quarter turn clockwise; run it again for another quarter turn",
+      "Type": "ExcelFormulaCommand",
+      "UserContextFilter": "ExcelSelectionIsSingleCell",
+      "Note": "Rotates a grid. A rows-by-columns block becomes columns-by-rows on a 90 or 270, and keeps its shape on a 180. WHAT IT IS FOR: cases where the board is shown one way up and read another, such as isometric grids, boards viewed from the opposite player's side, tiles that must be turned to fit. ALSO WORTH KNOWING, and not reachable from this command: the lambda takes a third argument, InputAddresses, which returns WHERE A GIVEN CELL MOVED TO after the rotation rather than the rotated grid itself: Rotate_byHadynWiseman(array, turns, \"H12\"). That is the piece the 2025 Bigger Portals case needs for its reflection rule, and its own note proposed building a new lambda for it, not knowing this existed. Type it by hand when you need it. Wraps Rotate_byHadynWiseman; exposed as a command 2026-09-22.",
+      "LaunchCodes": [
+        "ROT"
+      ],
+      "Formula": "=Rotate_byHadynWiseman([[ActiveCell::Formula]],1)",
+      "Tags": [
+        "Array"
+      ],
+      "FormulaDependencies": [
+        "Rotate_byHadynWiseman.lambda",
+        "BiCol_byHadynWiseman.lambda",
+        "BiRow_byHadynWiseman.lambda",
+        "ADDRESSES_byDiarmuidEarly.lambda"
+      ]
+    },
+    {
       "Name": "Round to 0",
-      "Description": "Round to 0.",
+      "Description": "Wraps the active formula in ROUND(...,0) for a whole number. Round once at the END of a chain; rounding each step compounds the error",
       "Type": "ExcelFormulaCommand",
       "LaunchCodes": [
         "r0"
@@ -328,6 +963,133 @@
       "Formula": "=ROUND([[ActiveCell::Formula]],0)",
       "Tags": [
         "Convert"
+      ]
+    },
+    {
+      "Name": "Run Data Table",
+      "Description": "Fills a Create Data Table block with static results game by game, recalculating only when run",
+      "Type": "VBAMacroCommand",
+      "Note": "Replacement for Excel What-If data tables. Point the ANSWER cell at the example's output, then run from any cell on the sheet. Last-run time and any volatile-function warning go to the StatusBar.",
+      "LaunchCodes": [
+        "RDT"
+      ],
+      "MacroExpression": "modDataTable.RunDataTable()",
+      "Tags": [
+        "Prep"
+      ]
+    },
+    {
+      "Name": "Running Total",
+      "Description": "Wraps the active array in a running total (RunningTotal_byJaqKennedy with nothing else set)",
+      "Type": "ExcelFormulaCommand",
+      "UserContextFilter": "ExcelSelectionIsSingleCell",
+      "Note": "2026-09-28 (Jaq): one of three commands replacing Running Total With Reset Or Stop. The lambda's other arguments ([ResetFlags], [ResetTo], [StopAt], [Cap], [IncFlaggedVal]) can be typed into the formula afterwards.",
+      "LaunchCodes": [
+        "RT"
+      ],
+      "Formula": "=RunningTotal_byJaqKennedy([[ActiveCell::Formula]])",
+      "Tags": [
+        "WrapWith"
+      ],
+      "FormulaDependencies": [
+        "RunningTotal_byJaqKennedy.lambda"
+      ]
+    },
+    {
+      "Name": "Running Total with Cap",
+      "Description": "Running total that stops at the COPIED limit and holds there (Cap = 1). Change the final 1 to 0 to keep the crossing row's full value instead",
+      "Type": "ExcelFormulaCommand",
+      "UserContextFilter": "ExcelSelectionIsSingleCell",
+      "Note": "2026-09-28 (Jaq). Copy the limit first. No popup: StopAt comes from the clipboard, Cap is set to 1.",
+      "LaunchCodes": [
+        "RTC"
+      ],
+      "Formula": "=RunningTotal_byJaqKennedy([[ActiveCell::Formula]],,,[[Clipboard]],1)",
+      "Tags": [
+        "WrapWith"
+      ],
+      "FormulaDependencies": [
+        "RunningTotal_byJaqKennedy.lambda"
+      ]
+    },
+    {
+      "Name": "Running Total with Reset",
+      "Description": "Running total that restarts wherever the COPIED flag range holds 1; asks what it restarts at (blank = 0). The flagged row's own value is included",
+      "Type": "ExcelFormulaCommand",
+      "Parameters": [
+        {
+          "Name": "ResetTo",
+          "Type": "InputParameter",
+          "DataType": "String",
+          "Prompt": "What the total restarts at (leave blank for 0)"
+        }
+      ],
+      "UserContextFilter": "ExcelSelectionIsSingleCell",
+      "Note": "2026-09-28 (Jaq). Copy the flag column first (1 = restart here). To leave the flagged row's own value out, add ,,,0 after ResetTo in the formula (IncFlaggedVal = 0).",
+      "LaunchCodes": [
+        "RTR"
+      ],
+      "Formula": "=RunningTotal_byJaqKennedy([[ActiveCell::Formula]],[[Clipboard::Address]],{{ResetTo}})",
+      "Tags": [
+        "WrapWith"
+      ],
+      "FormulaDependencies": [
+        "RunningTotal_byJaqKennedy.lambda"
+      ]
+    },
+    {
+      "Name": "Save Answer To Bonus 1",
+      "Description": "Links the active cell (any sheet) into the Bonus 1 answer cell, goes there and copies it for the submission site.",
+      "Type": "VBAMacroCommand",
+      "UserContextFilter": "ExcelSelectionIsSingleCell",
+      "Note": "Target: sheet B if it has the bonus (Case links to it), else the sheet with 'Bonus Questions'; the MEWC green cell on the 'Bonus 1' row. Writes a live link, selects the answer cell, copies it, reports on the StatusBar. Writes nothing if the row or green cell is missing. Promoted from A-ZTraining 2026-09-24 (A-ZTraining keeps its own copy).",
+      "MacroExpression": "modCaseNav.SaveAnswerToBonus(1)",
+      "Tags": [
+        "Bonus"
+      ]
+    },
+    {
+      "Name": "Save Answer To Bonus 2",
+      "Description": "Links the active cell (any sheet) into the Bonus 2 answer cell, goes there and copies it for the submission site.",
+      "Type": "VBAMacroCommand",
+      "UserContextFilter": "ExcelSelectionIsSingleCell",
+      "Note": "See Save Answer To Bonus 1.",
+      "MacroExpression": "modCaseNav.SaveAnswerToBonus(2)",
+      "Tags": [
+        "Bonus"
+      ]
+    },
+    {
+      "Name": "Save Answer To Bonus 3",
+      "Description": "Links the active cell (any sheet) into the Bonus 3 answer cell, goes there and copies it for the submission site.",
+      "Type": "VBAMacroCommand",
+      "UserContextFilter": "ExcelSelectionIsSingleCell",
+      "Note": "See Save Answer To Bonus 1.",
+      "MacroExpression": "modCaseNav.SaveAnswerToBonus(3)",
+      "Tags": [
+        "Bonus"
+      ]
+    },
+    {
+      "Name": "Save Answer To Bonus 4",
+      "Description": "Links the active cell (any sheet) into the Bonus 4 answer cell, goes there and copies it for the submission site.",
+      "Type": "VBAMacroCommand",
+      "UserContextFilter": "ExcelSelectionIsSingleCell",
+      "Note": "See Save Answer To Bonus 1.",
+      "MacroExpression": "modCaseNav.SaveAnswerToBonus(4)",
+      "Tags": [
+        "Bonus"
+      ]
+    },
+    {
+      "Name": "Save Answer To Bonus 5",
+      "Description": "Links the active cell (any sheet) into the Bonus 5 answer cell, goes there and copies it for the submission site.",
+      "Type": "VBAMacroCommand",
+      "UserContextFilter": "ExcelSelectionIsSingleCell",
+      "Note": "See Save Answer To Bonus 1.",
+      "MacroExpression": "modCaseNav.SaveAnswerToBonus(5)",
+      "Tags": [
+        "Bonus"
       ]
     },
     {
@@ -355,6 +1117,20 @@
       ]
     },
     {
+      "Name": "Save From Example",
+      "Description": "Solve once on the example row, then apply it to every question in the level and save the answers",
+      "Type": "VBAMacroCommand",
+      "UserContextFilter": "ExcelActiveCellIsNotEmpty;ExcelSelectionIsSingleRow",
+      "Note": "Select your solve cells ON THE EXAMPLE ROW (one row, as many columns as your working needs), then run this. It copies them to the first real question row, fills down to the end of the level, saves references into the answer cells, and leaves those on the clipboard ready to paste. Modelled on MEWC Robot's command of the same name, with two deliberate differences: (1) MEWC's copies exactly two rows down, which assumes one example row and one blank row, whereas this one finds the first row whose ANSWER CELL IS EMPTY, because worked examples always carry their answer and real questions never do, so any number of example rows and a missing or doubled spacer all work the same, and it never reads the word 'Example' in any language; (2) the answer column is found by its 'Answer' header text, falling back to the sheet's own answer fill color rather than a hardcoded green, so local chapter cases with a different green still work. Auto Fill Down (Formula Robot) works out how far the level runs, so 10 questions or 20 makes no difference. Added 2026-09-22.",
+      "LaunchCodes": [
+        "SFE"
+      ],
+      "MacroExpression": "modCaseSetup.SaveFromExample()",
+      "Tags": [
+        "Prep"
+      ]
+    },
+    {
       "Name": "Sequence of Row Count",
       "Description": "Sequence of row count of array variable",
       "Type": "ExcelFormulaCommand",
@@ -367,39 +1143,142 @@
       ]
     },
     {
+      "Name": "Set Lambda Library",
+      "Description": "Points CompBot at YOUR lambda library workbook, once; ILL and Full Setup Case then load it",
+      "Type": "VBAMacroCommand",
+      "Note": "A setup-time command, run once before competition (and again only if the library moves). Opens a file picker; choose the workbook your own lambdas live in. The location is saved as a per-user Windows setting (HKCU, VB and VBA Program Settings\\CompBot\\Lambdas), NOT inside CompBot, so it survives every CompBot update. Refuses CompBot itself. Import Lambda Library (ILL) and Full Setup Case read it from then on. Added 2026-09-24.",
+      "LaunchCodes": [
+        "SLL"
+      ],
+      "MacroExpression": "modLambdas.SetLambdaLibrary()",
+      "Tags": [
+        "LAMBDA",
+        "Prep"
+      ]
+    },
+    {
+      "Name": "Setup Case Settings",
+      "Description": "Opens CompBot's Setup Settings sheet: choose which steps Full Setup Case runs, and whose lambdas win a name clash",
+      "Type": "VBAMacroCommand",
+      "Note": "Shows CompBot's Setup Settings sheet (making a hidden CompBot window visible; View > Hide puts it away). A tick box for each Full Setup Case step (save the _Solve copy, backup, name used ranges, level sheets, bonus sheet, Case inputs sheet, import your library, import CompBot's lambdas) and a drop-down for whose lambdas win a name clash: CompBot (default) or Your library. The winner's import replaces a same-named lambda and the other's never does; ILL and ILC follow it too. Also shows the library SLL points at. The choices are a per-user Windows setting (HKCU, VB and VBA Program Settings\\CompBot\\Setup), NOT cells in CompBot, so they survive every CompBot update and work with CompBot read-only; a new machine needs them set again. A change is saved at once. The tick boxes are in-cell checkboxes; an Excel without them shows TRUE/FALSE, which works the same.",
+      "LaunchCodes": [
+        "SCS"
+      ],
+      "MacroExpression": "modSetupSettings.ShowSetupSettings()",
+      "Tags": [
+        "Prep",
+        "Settings"
+      ]
+    },
+    {
+      "Name": "Show Bonus Dock",
+      "Description": "Shows the open bonus questions in a dock on the right; answered ones drop off",
+      "Type": "VBAMacroCommand",
+      "Outputs": [
+        {
+          "Name": "Bonus dock pane",
+          "Type": "ExcelTaskPaneOutput",
+          "TaskPaneTitle": "Bonus Questions",
+          "Scope": "Application"
+        }
+      ],
+      "Note": "Reads the active case workbook: 'Bonus 1' / 'Bonus A' labels in column B, header row above with Answer / Points / Question. Sheet B (Create Bonus Sheet) wins, else Case, else the active sheet. Answer sheets are never read. A bonus is answered when its answer cell holds a value or a real formula; a bare link to an empty cell (Case → B) counts as open. Answered on either B or Case counts. Hand-cleared bonuses (Clear Bonus From Dock) go to the footer. Output: OA Robot's task pane, title 'Bonus Questions', Text content, wrapped at 55 characters by the VBA (HTML renders in a tiny fixed box, Markdown rendered blank; tested 2026-09-16). Re-run to refresh; chain it with CommandAfter behind commands that save bonus answers. Moved into CompBot from the BonusDock collection 2026-09-22.",
+      "LaunchCodes": [
+        "BQ"
+      ],
+      "MacroExpression": "modBonusDock.BonusDockText()",
+      "Tags": [
+        "Bonus"
+      ]
+    },
+    {
       "Name": "Split Text by Delimiter Above",
-      "Description": "Split text by delimiter in the cell above and trim output.",
+      "Description": "Splits the active cell's text DOWN into rows on the delimiter in the cell above (linked, so changing that cell re-splits), and trims each piece",
       "Type": "ExcelFormulaCommand",
       "LaunchCodes": [
         "ST"
       ],
-      "Formula": "=TRIM(TEXTSPLIT([[ActiveCell::Formula]],,[[ActiveCell.Offset(-1,0)]],TRUE))",
+      "Formula": "=TRIM(TEXTSPLIT([[ActiveCell::Formula]],,[[ActiveCell.Offset(-1,0)::Address]],TRUE))",
       "Tags": [
         "WrapWith"
       ]
     },
     {
-      "Name": "Substitute Blank for 0",
-      "Description": "Substitute blank values for 0",
+      "Name": "Split Text by Semicolon",
+      "Description": "Splits the active cell's text on semicolons into an array, trimming each piece",
       "Type": "ExcelFormulaCommand",
+      "Note": "Promoted into CompBot from A-ZTraining 2026-09-22: needed in 9 of 67 surveyed cases. Semicolons are far and away the commonest delimiter in the case library: lists of racer numbers, dice rolls, move sequences, team rosters. NOTE THE BASE LEVEL DOES NOT COVER THIS: Text Robot splits by CHARACTER and by WORD, but nothing free splits on a delimiter you choose, so this is real added coverage rather than a duplicate. Self-contained formula, no lambda dependency. Same launch code as A-ZTraining's copy, deliberately.",
       "LaunchCodes": [
-        "sb0"
+        "S;"
       ],
-      "Formula": "=SUBSTITUTE([[ActiveCell::Formula]],\"\",0)",
+      "Formula": "=TRIM(TEXTSPLIT([[ActiveCell::Formula]],\";\",,TRUE))",
       "Tags": [
         "WrapWith"
       ]
     },
     {
-      "Name": "Substitute Blank for 1",
-      "Description": "Substitute blank cells for 1",
+      "Name": "Stack Sheets From Clipboard",
+      "Description": "Stacks the same block from many sheets into one table, driven by a sheet-name list in the clipboard",
+      "Type": "VBAMacroCommand",
+      "Note": "COPY the sheet-name list first, then select the output cell and run this. The clipboard may hold EITHER two cells, the FIRST and LAST sheet name, taking every sheet between them in tab order (so 64 Area sheets need two cells, not 64), OR the exact list of sheets to stack, in the order given. A row or a column both work. It then finds the BOUNDING USED RANGE across those sheets (the smallest block covering every sheet's data) and writes a StackSheets_byJaqKennedy formula into the active cell. Output columns: Sheet | Value | Address | Row | Col | RCRef, the same shape as GridToCol and Paste Flattened List With Formatting, so the three are interchangeable downstream. WHAT IT IS FOR: cases that split their data across one sheet per area, region or round; the 2024 MEWC Portal case has 64 of them, and nothing can be answered until they are one table. Added 2026-09-22.",
+      "LaunchCodes": [
+        "STK"
+      ],
+      "MacroExpression": "modStackSheets.StackSheetsFromClipboard()",
+      "Tags": [
+        "Array"
+      ]
+    },
+    {
+      "Name": "Stack Sheets From Clipboard, Hide Blanks",
+      "Description": "As Stack Sheets From Clipboard, but drops empty cells. WARNING: it drops zeros too",
+      "Type": "VBAMacroCommand",
+      "Note": "Identical to Stack Sheets From Clipboard (STK) except it passes HideBlanks=1, which is right when the sheets are a sparse map and the empty cells are noise. READ THIS BEFORE USING IT ON NUMBERS: the lambda's filter is (val<>\"\")*(val<>0), so it hides ZEROS as well as blanks (measured during the 2026-09 lambda review). On a numeric grid a real zero silently disappears and your row count is wrong with no error shown. Use the plain STK version on anything where zero is a meaningful value. Added 2026-09-22.",
+      "LaunchCodes": [
+        "STKH"
+      ],
+      "MacroExpression": "modStackSheets.StackSheetsFromClipboardHideBlanks()",
+      "Tags": [
+        "Array"
+      ]
+    },
+    {
+      "Name": "Stop Walk Route",
+      "Description": "Ends a walk route by hand and writes it out, for when a diagonal click is awkward to reach",
+      "Type": "VBAMacroCommand",
+      "Note": "Does the same as the diagonal click that normally ends Record Walk Route (RWR): writes the route to a new sheet, unhooks the event watcher and restores the previous Application.EnableEvents setting. Safe to run when no route is being recorded; it does nothing.",
+      "LaunchCodes": [
+        "SWR"
+      ],
+      "MacroExpression": "modWalk.StopWalkRoute()",
+      "Tags": [
+        "Bonus"
+      ]
+    },
+    {
+      "Name": "Sum False",
+      "Description": "Counts the FALSE (0) values in an array: how many rows fail the test. Anything non-zero, such as 2 from an OR built with +, counts as TRUE",
+      "Type": "ExcelFormulaCommand",
+      "Note": "Added 2026-09-28 (Jaq) as the partner of Sum True: MM turns the array into numbers, =0 flags the FALSE / zero results, and MM with sum counts them.",
+      "LaunchCodes": [
+        "SF"
+      ],
+      "Formula": "=MM_byHaDang(MM_byHaDang([[ActiveCell::Formula]])=0,1)",
+      "FormulaDependencies": [
+        "MM_byHaDang.lambda"
+      ]
+    },
+    {
+      "Name": "Sum True",
+      "Description": "Counts the TRUE values in an array (applies -- and sums it): the usual way to answer 'how many rows pass this test'",
       "Type": "ExcelFormulaCommand",
       "LaunchCodes": [
-        "sb1"
+        "ST",
+        "MMS"
       ],
-      "Formula": "=SUBSTITUTE([[ActiveCell::Formula]],\"\",1)",
-      "Tags": [
-        "WrapWith"
+      "Formula": "=MM_byHaDang([[ActiveCell::Formula]],1)",
+      "FormulaDependencies": [
+        "MM_byHaDang.lambda"
       ]
     },
     {
@@ -427,6 +1306,16 @@
       ]
     },
     {
+      "Name": "Unmerge Multi-Row Merges",
+      "Description": "Unmerges every merged area spanning more than one row (the selection, or the whole sheet), leaving the value in the top-left cell",
+      "Type": "VBAMacroCommand",
+      "Note": "Promoted into CompBot from A-ZTraining 2026-09-22: needed in 7 of 67 surveyed cases, and EVERY sighting was a standalone competition workbook (Tic Tac Toe's 104 three-row merges, Battleship's 408 two-row merges, Where's Wally's 142), never an A-Z training case. WHAT IT IS FOR: vertically merged cells break almost everything; array formulas refuse to spill past them, and the value is only really in the top-left cell. SINGLE-ROW merges are left for Merged To Centre Across Selection (M2C), which replaces them without destroying the layout. SCOPE (2026-09-24, Jaq): a selection of more than one cell, or one merged cell, limits it to the merged blocks the selection touches (a block partly selected is taken whole); one ordinary cell means the whole active sheet, with UsedRange expanded back out to A1. It collects every area first and unmerges in one hit. Status bar report, no dialogs. NO LAUNCH CODE: typing Unmerge also finds M2C, whose launch code is Unmerge.",
+      "MacroExpression": "modMisc.UnmergeMultiRowMerges()",
+      "Tags": [
+        "Prep"
+      ]
+    },
+    {
       "Name": "Update Settings",
       "Description": "Updates default settings to those in Default Settings sheet",
       "Type": "VBAMacroCommand",
@@ -439,8 +1328,30 @@
       ]
     },
     {
+      "Name": "Wrap Flat List Into Grid",
+      "Description": "Folds a single row or column back into a grid of a chosen width, the missing half of Reshape To One Row/Column",
+      "Type": "ExcelFormulaCommand",
+      "Parameters": [
+        {
+          "Name": "RowWidth",
+          "Type": "InputParameter",
+          "DataType": "String",
+          "Prompt": "How many cells per row in the result"
+        }
+      ],
+      "UserContextFilter": "ExcelSelectionIsSingleCell",
+      "Note": "Takes a flat list and lays it out row by row into a grid the width you ask for. WHY IT EXISTS: Array Robot ships Reshape To One (1) Column and Reshape To One (1) Row; both go from a GRID to a LIST. Nothing anywhere went back the other way, in any collection or lambda: the family stopped one member short. Found needed in two surveyed cases by different authors in different years: a 50-column block that is really 5 reels x 10 turns (2023 A Story About the Reels), and a flat 9- or 25-token row that is really a 3x3 or 5x5 board (2026 Sunlight). Ragged input is padded with blanks rather than erroring. Uses native WRAPROWS, so there is no lambda to maintain. Added 2026-09-22.",
+      "LaunchCodes": [
+        "WFG"
+      ],
+      "Formula": "=WRAPROWS(TOCOL([[ActiveCell::Formula]],3),{{RowWidth}},\"\")",
+      "Tags": [
+        "Array"
+      ]
+    },
+    {
       "Name": "Wrap in ABS",
-      "Description": "Wrap in abs.",
+      "Description": "Wraps the active formula in ABS() to make the result positive: distances, differences, gaps, reflections",
       "Type": "ExcelFormulaCommand",
       "LaunchCodes": [
         "ABS"
@@ -452,7 +1363,7 @@
     },
     {
       "Name": "Wrap in Concat",
-      "Description": "Wrap in concat.",
+      "Description": "Wraps the active formula in CONCAT() to join an array into one string with no separator, rebuilding a word from its letters",
       "Type": "ExcelFormulaCommand",
       "LaunchCodes": [
         "con"
@@ -464,24 +1375,12 @@
     },
     {
       "Name": "Wrap in Drop First Row",
-      "Description": "Wrap in drop first row",
+      "Description": "Wraps the active formula in DROP(...,1) to remove a header row from a spilled array",
       "Type": "ExcelFormulaCommand",
       "LaunchCodes": [
         "DF"
       ],
       "Formula": "=DROP([[ActiveCell::Formula]],1)",
-      "Tags": [
-        "WrapWith"
-      ]
-    },
-    {
-      "Name": "Wrap in IFERROR with space",
-      "Description": "Wrap in iferror.",
-      "Type": "ExcelFormulaCommand",
-      "LaunchCodes": [
-        "err"
-      ],
-      "Formula": "=IFERROR([[ActiveCell::Formula]],\" \")",
       "Tags": [
         "WrapWith"
       ]
@@ -500,7 +1399,7 @@
     },
     {
       "Name": "Wrap in UNICHAR",
-      "Description": "Wrap in unichar.",
+      "Description": "Wraps the active formula in UNICHAR() to turn code numbers back into characters: decoding glyphs, emoji or dice faces",
       "Type": "ExcelFormulaCommand",
       "LaunchCodes": [
         "char"
@@ -512,7 +1411,7 @@
     },
     {
       "Name": "Wrap in UNICODE",
-      "Description": "Wrap in unicode.",
+      "Description": "Wraps the active formula in UNICODE() to turn characters into their code numbers, the first step in most cipher and glyph puzzles",
       "Type": "ExcelFormulaCommand",
       "LaunchCodes": [
         "code"
@@ -524,7 +1423,7 @@
     },
     {
       "Name": "Wrap in UNIQUE",
-      "Description": "Wrap in Unique",
+      "Description": "Wraps the active formula in UNIQUE() to strip duplicates: distinct values, distinct colors, distinct answers",
       "Type": "ExcelFormulaCommand",
       "LaunchCodes": [
         "U"

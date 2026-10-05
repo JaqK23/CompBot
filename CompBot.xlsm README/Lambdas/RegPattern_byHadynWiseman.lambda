@@ -1,0 +1,1 @@
+RegPattern_byHadynWiseman =LAMBDA(WordArray,[words_within_words],LET(ar,TOCOL(WordArray,3),sa,SORTBY(ar,LEN(ar),-1),words,IF(words_within_words,"\Q","\b\Q")&sa&IF(words_within_words,"\E","\E\b"), TEXTJOIN("|",1,words)));

@@ -1,0 +1,4 @@
+/*
+Hadyn Wiseman. CREDIT CORRECTED 2026-09-21, was UnPivot_byErikOehm. Two different UnPivot builds exist: Erik's is ~1650 chars with a 5-argument signature and lives in Array Robot Vol 1; this 451-char BiRow build is Hadyn's. An award for the idea does not 
+*/
+UnPivot_byHadynWiseman =LAMBDA(KeepColumns,UnpivotColumns,[HasHeaders],[RemoveBlanks],LET(hh,HasHeaders,rb,RemoveBlanks, r,IF(hh,ROWS(KeepColumns)-1,ROWS(KeepColumns)),c,COLUMNS(UnpivotColumns), k,BiRow_byHadynWiseman(IF(hh,DROP(KeepColumns,1),KeepColumns),LAMBDA(r,IFNA(EXPAND(r,c),r))), h,IF(hh,TOCOL(IFERROR(EXPAND(TAKE(UnpivotColumns,1),r),TAKE(UnpivotColumns,1)))), v,TOCOL(IF(hh,DROP(UnpivotColumns,1),UnpivotColumns)), tbl,IF(hh,HSTACK(k,h,v),HSTACK(k,v)), IF(rb,FILTER(tbl,v<>""),tbl)));

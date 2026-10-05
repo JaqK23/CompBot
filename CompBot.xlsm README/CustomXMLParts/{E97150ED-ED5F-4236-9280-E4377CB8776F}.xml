@@ -1,0 +1,125 @@
+<writeIndexDataTable>
+  <xs:schema id="writeIndexDataTable" xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xs:element name="writeIndexDataTable" msdata:IsDataSet="true" msdata:UseCurrentLocale="true">
+      <xs:complexType>
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+          <xs:element name="CustomXmlPartIndex">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="CollectionName" type="xs:string"/>
+                <xs:element name="ItemName" type="xs:string"/>
+                <xs:element name="ItemDescription" type="xs:string" minOccurs="0"/>
+                <xs:element name="ItemType" type="xs:string" minOccurs="0"/>
+                <xs:element name="ItemSubtype" type="xs:string" minOccurs="0"/>
+                <xs:element name="LastUpdated" type="xs:string" minOccurs="0"/>
+                <xs:element name="CustomXmlPartGuid" type="xs:string" minOccurs="0"/>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:choice>
+      </xs:complexType>
+      <xs:unique name="Constraint1" msdata:PrimaryKey="true">
+        <xs:selector xpath=".//CustomXmlPartIndex"/>
+        <xs:field xpath="CollectionName"/>
+        <xs:field xpath="ItemName"/>
+      </xs:unique>
+    </xs:element>
+  </xs:schema>
+  <CustomXmlPartIndex>
+    <CollectionName>HotkeyCommands</CollectionName>
+    <ItemName>HotkeyCommands</ItemName>
+    <ItemType>JSON</ItemType>
+    <LastUpdated>18/04/2025 21:40:20 +01:00</LastUpdated>
+    <CustomXmlPartGuid>{60136850-0A80-46DA-A7BC-83E4B88FD331}</CustomXmlPartGuid>
+  </CustomXmlPartIndex>
+  <CustomXmlPartIndex>
+    <CollectionName>HotkeyCommands</CollectionName>
+    <ItemName>ADDRESSES_byDiarmuidEarly.lambda</ItemName>
+    <ItemDescription/>
+    <ItemType>Text</ItemType>
+    <ItemSubtype/>
+    <LastUpdated>18/04/2025 21:40:20 +01:00</LastUpdated>
+    <CustomXmlPartGuid>{9C3962FE-B426-46FD-8FB0-7535580B8A92}</CustomXmlPartGuid>
+  </CustomXmlPartIndex>
+  <CustomXmlPartIndex>
+    <CollectionName>HotkeyCommands</CollectionName>
+    <ItemName>BiRow.lambda</ItemName>
+    <ItemDescription/>
+    <ItemType>Text</ItemType>
+    <ItemSubtype/>
+    <LastUpdated>18/04/2025 21:40:20 +01:00</LastUpdated>
+    <CustomXmlPartGuid>{D2670061-FB7D-41F0-AB90-118C32DC6B5A}</CustomXmlPartGuid>
+  </CustomXmlPartIndex>
+  <CustomXmlPartIndex>
+    <CollectionName>HotkeyCommands</CollectionName>
+    <ItemName>DiffByRow_byJaqKennedy.lambda</ItemName>
+    <ItemDescription/>
+    <ItemType>Text</ItemType>
+    <ItemSubtype/>
+    <LastUpdated>18/04/2025 21:40:20 +01:00</LastUpdated>
+    <CustomXmlPartGuid>{1A9F9B0F-1F08-4F37-9A0C-B6CBC0761010}</CustomXmlPartGuid>
+  </CustomXmlPartIndex>
+  <CustomXmlPartIndex>
+    <CollectionName>HotkeyCommands</CollectionName>
+    <ItemName>FilterArray.lambda</ItemName>
+    <ItemDescription/>
+    <ItemType>Text</ItemType>
+    <ItemSubtype/>
+    <LastUpdated>18/04/2025 21:40:20 +01:00</LastUpdated>
+    <CustomXmlPartGuid>{A83826B5-B686-40BC-844F-041648993120}</CustomXmlPartGuid>
+  </CustomXmlPartIndex>
+  <CustomXmlPartIndex>
+    <CollectionName>HotkeyCommands</CollectionName>
+    <ItemName>GRIDTOCOL_byLiannaGerrish.lambda</ItemName>
+    <ItemDescription/>
+    <ItemType>Text</ItemType>
+    <ItemSubtype/>
+    <LastUpdated>18/04/2025 21:40:20 +01:00</LastUpdated>
+    <CustomXmlPartGuid>{4E9FD6E5-37CB-441F-9645-F6D489E32598}</CustomXmlPartGuid>
+  </CustomXmlPartIndex>
+  <CustomXmlPartIndex>
+    <CollectionName>HotkeyCommands</CollectionName>
+    <ItemName>IFBLANK.lambda</ItemName>
+    <ItemDescription/>
+    <ItemType>Text</ItemType>
+    <ItemSubtype/>
+    <LastUpdated>18/04/2025 21:40:20 +01:00</LastUpdated>
+    <CustomXmlPartGuid>{B3FD0068-9C97-44E4-93C5-75B53553265A}</CustomXmlPartGuid>
+  </CustomXmlPartIndex>
+  <CustomXmlPartIndex>
+    <CollectionName>HotkeyCommands</CollectionName>
+    <ItemName>IsInList.lambda</ItemName>
+    <ItemDescription/>
+    <ItemType>Text</ItemType>
+    <ItemSubtype/>
+    <LastUpdated>18/04/2025 21:40:20 +01:00</LastUpdated>
+    <CustomXmlPartGuid>{2EC15307-E297-4155-8C64-BD7C819FC834}</CustomXmlPartGuid>
+  </CustomXmlPartIndex>
+  <CustomXmlPartIndex>
+    <CollectionName>HotkeyCommands</CollectionName>
+    <ItemName>LkpRC.lambda</ItemName>
+    <ItemDescription/>
+    <ItemType>Text</ItemType>
+    <ItemSubtype/>
+    <LastUpdated>18/04/2025 21:40:20 +01:00</LastUpdated>
+    <CustomXmlPartGuid>{148CA7B6-1095-4B59-A609-F0DD3983C05B}</CustomXmlPartGuid>
+  </CustomXmlPartIndex>
+  <CustomXmlPartIndex>
+    <CollectionName>HotkeyCommands</CollectionName>
+    <ItemName>LkpRCByRow.lambda</ItemName>
+    <ItemDescription/>
+    <ItemType>Text</ItemType>
+    <ItemSubtype/>
+    <LastUpdated>18/04/2025 21:40:20 +01:00</LastUpdated>
+    <CustomXmlPartGuid>{77900331-8BCF-4A61-83B4-0F22D244E56E}</CustomXmlPartGuid>
+  </CustomXmlPartIndex>
+  <CustomXmlPartIndex>
+    <CollectionName>HotkeyCommands</CollectionName>
+    <ItemName>RightAlignedArray_byJaqKennedy.lambda</ItemName>
+    <ItemDescription/>
+    <ItemType>Text</ItemType>
+    <ItemSubtype/>
+    <LastUpdated>18/04/2025 21:40:20 +01:00</LastUpdated>
+    <CustomXmlPartGuid>{CC8676E6-6DD4-4D3A-B5C3-FEDBE93B926B}</CustomXmlPartGuid>
+  </CustomXmlPartIndex>
+</writeIndexDataTable>

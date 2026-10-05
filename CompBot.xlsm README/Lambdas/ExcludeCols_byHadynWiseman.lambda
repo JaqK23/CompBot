@@ -1,0 +1,1 @@
+ExcludeCols_byHadynWiseman =LAMBDA(Array,ColumnsToRemove,LET(c,SEQUENCE(COLUMNS(Array)),kc,UNIQUE(VSTACK(c,TOCOL(ColumnsToRemove)),,1),CHOOSECOLS(Array,kc)));

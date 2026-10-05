@@ -1,0 +1,1 @@
+Biggest_byHadynWiseman =LAMBDA(Range,Return,Smallest,[N],[TieKey],[TieOrder],LET(nu,IF(ISOMITTED(N),1,N),dir,IF(Smallest,1,-1),tord,IF(ISOMITTED(TieOrder),1,TieOrder),s,IF(ISOMITTED(TieKey),SORTBY(Return,Range,dir),SORTBY(Return,Range,dir,TieKey,tord)),IF(COUNT(nu)>ROWS(Range)*COLUMNS(Range),Return,IF(COLUMNS(Return)=1,CHOOSEROWS(s,nu),CHOOSECOLS(s,nu)))));

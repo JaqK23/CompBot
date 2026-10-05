@@ -1,0 +1,1 @@
+MissingLetters_byJaqKennedy =LAMBDA(list,[pool],LET(_Pool,IF(ISOMITTED(pool),Alphabet_byHadynWiseman(),pool),NotInList_byJaqKennedy(_Pool,list)));

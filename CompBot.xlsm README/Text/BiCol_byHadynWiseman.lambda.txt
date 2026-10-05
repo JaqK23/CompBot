@@ -1,0 +1,1 @@
+BiCol_byHadynWiseman = LAMBDA(array,function,IF(COLUMNS(array)=1,IF(ROWS(array)=1,function(@array),function(array)),HSTACK(BiCol_byHadynWiseman(TAKE(array,,COLUMNS(array)/2),function),BiCol_byHadynWiseman(DROP(array,,COLUMNS(array)/2),function))));

@@ -1,0 +1,1 @@
+LetterType_byHadynWiseman =LAMBDA(text,[Vowels],[Digits],LET(l,SplitText_byHadynWiseman(text), vo,REGEXTEST(l,"A|E|I|O|U",1), dg,REGEXTEST(l,"[0-9]"), sym,EXACT(UPPER(l),LOWER(l)), upp,EXACT(UPPER(l),l), IF(Digits,IF(sym,IF(dg,"D","S"),"L"),IF(sym,"S",IF(Vowels,IF(vo,"V","C"),IF(upp,"U","L"))))));

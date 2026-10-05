@@ -1,0 +1,1 @@
+VStacks_byHadynWiseman =LAMBDA(Array,NoTimes,[Hstk],IFERROR(REDUCE(Array, SEQUENCE(NoTimes - 1), LAMBDA(a,v, IF(Hstk, HSTACK(a, Array), VSTACK(a, Array)))), Array));

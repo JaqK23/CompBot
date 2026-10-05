@@ -1,0 +1,1 @@
+ExactUnique_byHadynWiseman =LAMBDA(Array,[by_col],[exactly_once],LET( nums,XMATCH("^\Q"&Array&"\E$",Array,3), INDEX(Array,IF(exactly_once,UNIQUE(nums,by_col,1),UNIQUE(nums,by_col)))));

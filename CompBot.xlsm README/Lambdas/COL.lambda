@@ -1,1 +1,0 @@
-COL =LAMBDA(x, IF(ISOMITTED(x), COLUMN(), COLUMN(x)));

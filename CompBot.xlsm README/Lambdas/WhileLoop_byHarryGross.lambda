@@ -1,0 +1,1 @@
+WhileLoop_byHarryGross =LAMBDA(initialValue,iterativeStep,stopCondition,LET(v,initialValue,IF(stopCondition(v),v,WhileLoop_byHarryGross(iterativeStep(v),iterativeStep,stopCondition))));

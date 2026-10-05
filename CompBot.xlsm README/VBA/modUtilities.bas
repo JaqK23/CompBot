@@ -3,6 +3,9 @@ Option Explicit
 Option Base 1
 Private varCalc As Variant
 
+' --- MODULE CONSTANTS ---
+Private Const m_DEBUG_MODE      As Boolean = False
+
 Sub VBAInit()
     Application.ScreenUpdating = False
     varCalc = Application.Calculation
@@ -19,17 +22,17 @@ End Sub
 
 'function to check if a sheet exists in the active workbook
 Function SheetExists(strSht As String) As Boolean
-    Dim WB As Workbook
-    Dim WS As Worksheet
+    Dim wb As Workbook
+    Dim ws As Worksheet
     
-    Set WB = ActiveWorkbook
+    Set wb = ActiveWorkbook
     SheetExists = False
-    For Each WS In WB.Worksheets
-        If WS.Name = strSht Then
+    For Each ws In wb.Worksheets
+        If ws.Name = strSht Then
             SheetExists = True
             Exit For
         End If
-    Next WS
+    Next ws
 End Function
 
 ' --------------------------------------------< OA Robot >--------------------------------------------
@@ -209,14 +212,14 @@ End Sub
 
 'Clears named ranges with RefersTo="=#NAME?"
 Sub ClearNamedRangeErrors()
-    Dim WB As Workbook
+    Dim wb As Workbook
     Dim nmName As Name
     Dim intDel As Integer
     
-    Set WB = ActiveWorkbook
+    Set wb = ActiveWorkbook
     intDel = 0
     
-    For Each nmName In WB.Names
+    For Each nmName In wb.Names
         If nmName.RefersTo = "=#NAME?" Then
             intDel = intDel + 1
             Debug.Print "Deletion number " & CStr(intDel) & ": " & nmName.Name
@@ -253,5 +256,29 @@ End Sub
 ' Generated:              2025-01-30 07:53 PM
 '----------------------------------------------------------------------------------------------------
 Sub GetTime()
-    ActiveCell.Value = Time
+    ActiveCell.value = Time
 End Sub
+' Purpose: Turn off gridlines for a sheet, in whichever window is showing it.
+'          Silent no-op if the sheet is not currently displayed - gridlines are a
+'          window property, and activating the sheet to reach it is not permitted.
+Sub HideGridlines(ByVal wsTarget As Worksheet)
+
+    Dim winItem As Window
+
+    On Error GoTo ErrHandler
+
+    For Each winItem In wsTarget.Parent.Windows
+        If winItem.ActiveSheet Is wsTarget Then winItem.DisplayGridlines = False
+    Next winItem
+
+    Exit Sub
+
+ErrHandler:
+    If m_DEBUG_MODE Then Stop: Resume
+    ' Gridlines are cosmetic, so a failure is only printed. NoteError now lives in modLambdas, beside the
+    ' m_strScanErrors it fills (it could not compile here - Jaq, 2026-09-17).
+    Debug.Print Format$(Now, "yyyy-mm-dd hh:nn:ss") & " | HideGridlines | " & Err.Number & " | " & Err.Description
+End Sub
+
+
+

@@ -1,0 +1,1 @@
+Duplicates_byHadynWiseman =LAMBDA(Array,LET(a,IF(COUNTA(Array)=1,SplitText_byHadynWiseman(Array),TOCOL(Array,3)),UNIQUE(FILTER(a,ISERROR(XMATCH(a,UNIQUE(a,,1)))))));

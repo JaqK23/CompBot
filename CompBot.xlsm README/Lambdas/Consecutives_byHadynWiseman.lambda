@@ -1,0 +1,4 @@
+/*
+Hadyn Wiseman, REPAIRED + MERGED by this review 2026-09-21. Run length of the current run of equal values; [groups] instead returns each element's group size. Merges Hadyn's 2026-09-07 groups branch with our single-cell split, row support, and a Prev fill
+*/
+Consecutives_byHadynWiseman =LAMBDA(array,[groups],LET(src,IF(ROWS(array)*COLUMNS(array)=1,SplitText_byHadynWiseman(array),array),horz,ROWS(src)=1,a,IF(horz,TOCOL(src),src),g,IF(ISOMITTED(groups),0,groups),same,--(Prev(a,1)=a)*(SEQUENCE(ROWS(a))>1),r,IF(g,LET(s,SCAN(0,same,LAMBDA(x,v,IF(v,x,x+1))),INDEX(GROUPBY(s,a,ROWS,0,0),s,2)),SCAN(1,same,LAMBDA(x,v,x*v+1))),IF(horz,TRANSPOSE(r),r)));

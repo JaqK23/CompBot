@@ -1,0 +1,4 @@
+/*
+Union: distinct values in either array, array1's first, as a column. Case-insensitive. skip_blanks_zeros (default TRUE) drops blanks, "" and 0; "" if nothing left.
+*/
+uSet_byJaqKennedy =LAMBDA(array1,array2,[skip_blanks_zeros],LET(skip,IF(ISOMITTED(skip_blanks_zeros),TRUE,skip_blanks_zeros),u,UNIQUE(VSTACK(TOCOL(array1),TOCOL(array2))),IF(skip,FILTER(u,(u<>"")*(u<>0),""),u)));

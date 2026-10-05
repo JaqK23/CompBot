@@ -1,1 +1,0 @@
-EXTRACTCHAR_byHarryGross =LAMBDA(text, MID(text, SEQUENCE(, LEN(text), 1, 1), 1));

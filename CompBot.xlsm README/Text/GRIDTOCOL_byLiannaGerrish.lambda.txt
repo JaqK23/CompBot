@@ -1,15 +1,1 @@
-GRIDTOCOL_byLiannaGerrish = LAMBDA(grid,[ShowAll_0], LET(
-   \\LambdaName, "GRIDTOCOL",
-   items_grid, TOCOL(grid),
-   addr_col, TOCOL(ADDRESSES_byDiarmuidEarly(grid)),
-   rows, ROW(INDIRECT(addr_col)) * 1,
-   cols, COLUMN(INDIRECT(addr_col)) * 1,
-   rcnum, TOCOL(1000000 * rows + 1000 + cols),
-   headers, HSTACK("Items", "Row #", "Column #", "Address", "RCRef"),
-   data_grid, HSTACK(items_grid, rows, cols, addr_col, rcnum),
-   IF(
-      OR(ISOMITTED(ShowAll_0), ShowAll_0 <> 0),
-      VSTACK(headers, FILTER(data_grid, CHOOSECOLS(data_grid, 1) <> 0)),
-      VSTACK(headers, data_grid)
-   )
-));
+GridToCol_byLiannaGerrish = LAMBDA(arr,[Address],[RowCol],[RCRef],[ByColumn],[HideZeros],[ShowBlanks],LET(nv,NOT(ISREF(arr)),bycol,IF(ISOMITTED(ByColumn),0,ByColumn),r0,IF(nv,1,@ROW(arr)),c0,IF(nv,1,@COLUMN(arr)),rws,TOCOL(SEQUENCE(,COLUMNS(arr))*0&SEQUENCE(ROWS(arr),,r0),,bycol)*1,cls,TOCOL(SEQUENCE(ROWS(arr))*0&SEQUENCE(,COLUMNS(arr),c0),,bycol)*1,empt,TOCOL(IF(nv,arr="",ISBLANK(arr)),,bycol),unit,empt*0+1,items,IF(empt,"",TOCOL(arr,,bycol)),wA,IF(ISOMITTED(Address),0,Address),wRC,IF(ISOMITTED(RowCol),0,RowCol),wR,IF(ISOMITTED(RCRef),0,RCRef),any,wA+wRC+wR,sA,IF(any,wA,1),sRC,IF(any,wRC,1),sR,IF(any,wR,1),pick,FILTER({1,2,3,4,5},{1,0,0,0,0}+sRC*{0,1,1,0,0}+sA*{0,0,0,1,0}+sR*{0,0,0,0,1}),headers,CHOOSECOLS(HSTACK("Items","Row #","Column #","Address","RCRef"),pick),data,CHOOSECOLS(HSTACK(items,rws,cls,ADDRESS(rws,cls,4),1000000*rws+cls),pick),keepB,IF(ISOMITTED(ShowBlanks),0,ShowBlanks),dropZ,IF(ISOMITTED(HideZeros),0,HideZeros),ok,IF(keepB,unit,NOT(empt)*unit)*IF(dropZ,(items<>0)*unit,unit),kept,IFERROR(FILTER(data,ok),IF(SEQUENCE(,COLUMNS(data)),"")),VSTACK(headers,kept)));

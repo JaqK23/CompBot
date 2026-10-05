@@ -1,0 +1,4 @@
+/*
+Value at an address or packed row/column number, read from a named range or block (e.g. a Sht_ used-range name). A list of refs returns a list. [oob] (default "OOB") where the ref is outside the source. Not volatile.
+*/
+Fetch_byJaqKennedy =LAMBDA(ref,source,[oob],LET(o,IF(ISOMITTED(oob),"OOB",oob),isr,ISREF(source),r0,IF(isr,ROW(INDEX(source,1,1)),1),c0,IF(isr,COLUMN(INDEX(source,1,1)),1),rr,IF({1},RowNum_byHadynWiseman(ref)-r0+1),cc,IF({1},ColNum_byHadynWiseman(ref)-c0+1),ok,(rr>=1)*(rr<=ROWS(source))*(cc>=1)*(cc<=COLUMNS(source)),MAP(rr,cc,ok,LAMBDA(a,b,k,IF(k,INDEX(source,a,b),o)))));

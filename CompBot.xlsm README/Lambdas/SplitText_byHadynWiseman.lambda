@@ -1,0 +1,1 @@
+SplitText_byHadynWiseman =LAMBDA(Text,[Groups],[Overlap],LET(t,CONCAT(Text),_groups,MAX(Groups,1),IF(Overlap,MID(t,SEQUENCE(LEN(t)-_groups+1),_groups),IF(ISOMITTED(Groups),TOCOL(REGEXEXTRACT(t,"\X",1)),MID(t,SEQUENCE(ROUNDUP(LEN(t)/_groups,0),,,_groups),_groups)))));

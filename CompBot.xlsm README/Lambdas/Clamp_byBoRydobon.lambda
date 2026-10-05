@@ -1,0 +1,1 @@
+Clamp_byBoRydobon =LAMBDA(n,[lower],[upper],LET(lo,IF(ISOMITTED(lower),MIN(n),lower),up,IF(ISOMITTED(upper),MAX(n),upper),IF(n<lo,lo,IF(n>up,up,n))));

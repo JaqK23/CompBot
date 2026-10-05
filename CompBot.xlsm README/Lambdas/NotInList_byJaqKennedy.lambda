@@ -1,0 +1,1 @@
+NotInList_byJaqKennedy =LAMBDA(array,list,IFERROR(FILTER(array,NOT(IsInList_byErikOehm(array,list))),""));

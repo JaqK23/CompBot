@@ -1,0 +1,1 @@
+RowNum_byHadynWiseman =LAMBDA(addresses,IF(ISNUMBER(addresses),INT(addresses/10^6),1*REGEXEXTRACT(addresses,"\d+")));
