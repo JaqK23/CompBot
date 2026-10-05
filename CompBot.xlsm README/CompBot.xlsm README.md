@@ -180,7 +180,7 @@
 | [Setup Case Settings](#setup-case-settings) | Opens CompBot's Setup Settings sheet: choose which steps Full Setup Case runs, and whose lambdas win a name clash |
 | [Toggle Calculation Mode](#toggle-calculation-mode) | Toggles calculation mode and places current mode notice in StatusBar |
 | [Toggle Iterative Calculation](#toggle-iterative-calculation) | Toggles iterative calculation and sets status in status bar |
-| [Update Settings](#update-settings) | Updates default settings to those in Default Settings sheet |
+| [Update Settings](#update-settings) | Updates default settings to those in Regional Settings sheet |
 
 ### WrapWith
 
@@ -1914,7 +1914,7 @@
 
 ### Update Settings
 
-*Updates default settings to those in Default Settings sheet*
+*Updates default settings to those in Regional Settings sheet*
 
 <sup>`@CompBot.xlsm` `!VBA Macro Command` `#Settings`</sup>
 
