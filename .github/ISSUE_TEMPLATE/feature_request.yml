@@ -1,0 +1,22 @@
+name: Feature request
+description: Suggest a new command or an improvement
+title: "[Idea] "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: idea
+    attributes:
+      label: Your idea
+      description: What would you like CompBot to do?
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: Why it helps
+      description: When would you use it? What does it save you?
+  - type: input
+    id: command
+    attributes:
+      label: Related command (optional)
+      description: Is this a change to an existing command?
