@@ -14,6 +14,10 @@ Private Const m_MAX_STATUS      As Long = 250   ' Application.StatusBar rejects 
 Private Const m_SETTINGS_APP     As String = "CompBot"
 Private Const m_SETTINGS_SECTION As String = "Lambdas"
 Private Const m_SETTINGS_KEY     As String = "LibraryPath"
+' Stored values (non-LAMBDA names) ILL copies from the user's library carry this in their Name
+' Manager comment, so a later import can tell its own copy from a name the case defined itself
+' (GitHub #5, Jaq, 2026-10-08: follow whose lambdas win, never overwrite the case's own).
+Private Const m_VALUE_TAG        As String = "[CompBot ILL]"
 
 Private m_strScanErrors         As String
 ' How many lambdas ExpandKeepChain added that nothing DECLARED - reported by
@@ -178,9 +182,9 @@ Public Sub ImportLambdaLibrary()
 
     Set wbTarget = ActiveWorkbook
     If wbTarget Is Nothing Then
-        strStatus = "ILL: no workbook is active."
+        strStatus = "ILL FAILED: no workbook is active."
     ElseIf IsProtectedWorkbook(wbTarget, False) Then
-        strStatus = "ILL: refused. " & wbTarget.Name & " is CompBot or your lambda library; run it in a case file."
+        strStatus = "ILL FAILED: " & wbTarget.Name & " is CompBot or your lambda library; run it in a case file."
     Else
         strStatus = "ILL: " & ImportFromLibrary(wbTarget, True, Not modSetupSettings.CompBotLambdasWin())
     End If
@@ -193,7 +197,7 @@ Cleanup:
 ErrHandler:
     If m_DEBUG_MODE Then Stop: Resume
     NoteError "ImportLambdaLibrary", Err.Number, Err.Description
-    strStatus = "ILL failed: " & Err.Description
+    strStatus = "ILL FAILED: " & Err.Description
     Resume Cleanup
 End Sub
 
@@ -346,7 +350,9 @@ Private Function ImportFromLibrary(ByVal wbTarget As Workbook, ByVal blnListSkip
         blnOpened = True
     End If
 
-    strReport = CopyLambdas(wbLibrary, wbTarget, blnOverwrite, blnListSkipped)
+    ' The library's stored values come too (GitHub #5); CompBot's own non-LAMBDA names are its
+    ' locale settings and never leave it, so only this route passes True.
+    strReport = CopyLambdas(wbLibrary, wbTarget, blnOverwrite, blnListSkipped, True)
 
 Cleanup:
     On Error Resume Next                          ' closing must never raise out of here
@@ -367,22 +373,42 @@ End Function
 ' Purpose: copy every workbook-level LAMBDA from wbSource into wbTarget, with its comment,
 '          and return a one-line report. See the header above for the clash rules.
 '          One bad definition is counted as failed and the rest still copy.
+'          blnValues (the user's library only - GitHub #5): also copy its STORED VALUES, the
+'          non-LAMBDA names with no cell reference (=0.05, ="Red", ={1,2,3}, =SEQUENCE(9)).
+'          A name pointing at a range is skipped and counted: copied, it would become an
+'          external link back to the library. A copied value is tagged m_VALUE_TAG in its
+'          comment. On a clash the winner rule applies, but ONLY to a value carrying the tag:
+'          an untagged name is the case's own and is never overwritten (Jaq, 2026-10-08).
 Private Function CopyLambdas(ByVal wbSource As Workbook, ByVal wbTarget As Workbook, _
                              ByVal blnOverwrite As Boolean, _
-                             Optional ByVal blnListSkipped As Boolean = True) As String
+                             Optional ByVal blnListSkipped As Boolean = True, _
+                             Optional ByVal blnValues As Boolean = False) As String
 
-    Dim dicExisting As Object       ' target's workbook-level names -> True when a LAMBDA
+    ' --- CONSTANTS (local to function) ---
+    Const KIND_OTHER    As Long = 0     ' the case's own name, a range, anything else
+    Const KIND_LAMBDA   As Long = 1
+    Const KIND_TAGGED   As Long = 2     ' a stored value an earlier ILL copied in
+
+    Dim dicExisting As Object       ' target's workbook-level names -> KIND_*
     Dim nmItem      As Name
     Dim nmNew       As Name
     Dim strName     As String
     Dim strRefers   As String
     Dim strSkipped  As String
+    Dim strVSkipped As String
     Dim strReport   As String
+    Dim strComment  As String
     Dim blnReplace  As Boolean
+    Dim blnIsValue  As Boolean
     Dim lngAdded    As Long
     Dim lngReplaced As Long
     Dim lngSkipped  As Long
     Dim lngFailed   As Long
+    Dim lngVAdded   As Long
+    Dim lngVReplaced As Long
+    Dim lngVSkipped As Long
+    Dim lngVFailed  As Long
+    Dim lngRanges   As Long
 
     On Error GoTo ErrHandler
 
@@ -390,39 +416,73 @@ Private Function CopyLambdas(ByVal wbSource As Workbook, ByVal wbTarget As Workb
     dicExisting.CompareMode = vbTextCompare
     For Each nmItem In wbTarget.Names
         If IsWorkbookLevelName(nmItem) Then
-            dicExisting(nmItem.Name) = IsLambdaDefinition(SafeRefersTo(nmItem))
+            If IsLambdaDefinition(SafeRefersTo(nmItem)) Then
+                dicExisting(nmItem.Name) = KIND_LAMBDA
+            ElseIf InStr(1, SafeComment(nmItem), m_VALUE_TAG, vbBinaryCompare) > 0 Then
+                dicExisting(nmItem.Name) = KIND_TAGGED
+            Else
+                dicExisting(nmItem.Name) = KIND_OTHER
+            End If
         End If
     Next nmItem
 
     For Each nmItem In wbSource.Names
         strName = nmItem.Name
         strRefers = SafeRefersTo(nmItem)
-        If IsWorkbookLevelName(nmItem) And IsLambdaDefinition(strRefers) _
-           And StrComp(Left$(strName, 3), "_xl", vbTextCompare) <> 0 Then
+        If Not IsWorkbookLevelName(nmItem) Or StrComp(Left$(strName, 3), "_xl", vbTextCompare) = 0 _
+           Or Len(strRefers) = 0 Then GoTo NextName
 
-            blnReplace = False
-            If dicExisting.Exists(strName) Then
-                If blnOverwrite And dicExisting(strName) Then
+        If IsLambdaDefinition(strRefers) Then
+            blnIsValue = False
+        ElseIf Not blnValues Then
+            GoTo NextName
+        ElseIf IsStoredValue(strRefers) Then
+            blnIsValue = True
+        Else
+            lngRanges = lngRanges + 1                  ' a range or external reference: never copied
+            GoTo NextName
+        End If
+
+        blnReplace = False
+        If dicExisting.Exists(strName) Then
+            If blnIsValue Then
+                If blnOverwrite And dicExisting(strName) = KIND_TAGGED Then
                     blnReplace = True
                 Else
-                    lngSkipped = lngSkipped + 1
-                    strSkipped = strSkipped & ", " & strName
+                    lngVSkipped = lngVSkipped + 1
+                    strVSkipped = strVSkipped & ", " & strName
                     GoTo NextName
                 End If
-            End If
-
-            Set nmNew = Nothing
-            On Error Resume Next                  ' narrow: one bad definition must not stop the rest
-            Set nmNew = wbTarget.Names.Add(Name:=strName, RefersTo:=strRefers)
-            On Error GoTo ErrHandler
-
-            If nmNew Is Nothing Then
-                lngFailed = lngFailed + 1
+            ElseIf blnOverwrite And dicExisting(strName) = KIND_LAMBDA Then
+                blnReplace = True
             Else
-                On Error Resume Next              ' narrow: a comment is nice to have, never fatal
-                nmNew.Comment = nmItem.Comment
-                nmNew.Visible = nmItem.Visible
-                On Error GoTo ErrHandler
+                lngSkipped = lngSkipped + 1
+                strSkipped = strSkipped & ", " & strName
+                GoTo NextName
+            End If
+        End If
+
+        Set nmNew = Nothing
+        On Error Resume Next                  ' narrow: one bad definition must not stop the rest
+        Set nmNew = wbTarget.Names.Add(Name:=strName, RefersTo:=strRefers)
+        On Error GoTo ErrHandler
+
+        If nmNew Is Nothing Then
+            If blnIsValue Then lngVFailed = lngVFailed + 1 Else lngFailed = lngFailed + 1
+        Else
+            strComment = SafeComment(nmItem)
+            If blnIsValue Then
+                ' The tag marks it as ILL's copy; the 255-character comment limit keeps the tag.
+                strComment = Trim$(Left$(Replace(strComment, m_VALUE_TAG, vbNullString), _
+                                         254 - Len(m_VALUE_TAG)) & " " & m_VALUE_TAG)
+            End If
+            On Error Resume Next              ' narrow: a comment is nice to have, never fatal
+            nmNew.Comment = strComment
+            nmNew.Visible = nmItem.Visible
+            On Error GoTo ErrHandler
+            If blnIsValue Then
+                If blnReplace Then lngVReplaced = lngVReplaced + 1 Else lngVAdded = lngVAdded + 1
+            Else
                 If blnReplace Then lngReplaced = lngReplaced + 1 Else lngAdded = lngAdded + 1
             End If
         End If
@@ -437,6 +497,18 @@ NextName:
         strReport = strReport & ")"
     End If
     If lngFailed > 0 Then strReport = strReport & ", " & lngFailed & " FAILED to copy"
+
+    If blnValues Then
+        strReport = strReport & "; values: " & lngVAdded & " added"
+        If blnOverwrite Then strReport = strReport & ", " & lngVReplaced & " updated"
+        If lngVSkipped > 0 Then
+            strReport = strReport & ", " & lngVSkipped & " skipped (the case's own or CompBot wins"
+            If blnListSkipped Then strReport = strReport & ": " & Mid$(strVSkipped, 3)
+            strReport = strReport & ")"
+        End If
+        If lngVFailed > 0 Then strReport = strReport & ", " & lngVFailed & " FAILED to copy"
+        If lngRanges > 0 Then strReport = strReport & ", " & lngRanges & " range name(s) not copied"
+    End If
     CopyLambdas = strReport & "."
     Exit Function
 
@@ -522,6 +594,29 @@ End Function
 ' Purpose: True when a RefersTo string is a LAMBDA definition.
 Private Function IsLambdaDefinition(ByVal strRefers As String) As Boolean
     IsLambdaDefinition = (InStr(1, Replace(strRefers, " ", vbNullString), "=LAMBDA(", vbTextCompare) = 1)
+End Function
+
+
+' Purpose: True when a non-LAMBDA RefersTo holds no cell, sheet or external reference - a stored
+'          value that means the same in any workbook (=0.05, ="Red", ={1,2,3}, =SEQUENCE(9)).
+'          A "!" outside quoted text marks a sheet reference, "[" an external workbook, and
+'          #REF! a broken one. Text in quotes is ignored, so ="Hi!" is still a value.
+Private Function IsStoredValue(ByVal strRefers As String) As Boolean
+
+    Dim strBare As String
+
+    If Left$(strRefers, 1) <> "=" Then Exit Function
+    strBare = StripStringLiterals(strRefers)
+    IsStoredValue = (InStr(1, strBare, "!") = 0 And InStr(1, strBare, "[") = 0 _
+                     And InStr(1, strBare, "#REF", vbTextCompare) = 0)
+End Function
+
+
+' Purpose: a name's comment, or "" where Excel will not give one up.
+Private Function SafeComment(ByVal nmItem As Name) As String
+    On Error Resume Next                          ' narrow: a name's comment can be unreadable
+    SafeComment = nmItem.Comment
+    On Error GoTo 0
 End Function
 
 
@@ -1729,6 +1824,7 @@ Private Sub NoteError(ByVal strProc As String, ByVal lngNumber As Long, ByVal st
     Debug.Print Format$(Now, "yyyy-mm-dd hh:nn:ss") & " | " & strProc & " | " & _
                 lngNumber & " | " & strDescription
 End Sub
+
 
 
 

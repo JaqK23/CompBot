@@ -1,1 +1,1 @@
-Thousands_Separator ='Default Settings'!$C$13
+Thousands_Separator ='Regional Settings'!$C$13

@@ -1,6 +1,6 @@
 Attribute VB_Name = "modMisc"
 Option Explicit
-Private Const SETTINGS_SHEET As String = "Default Settings"
+Private Const SETTINGS_SHEET As String = "Regional Settings"
 Private Const m_DEBUG_MODE   As Boolean = False
 
 '--------------------------------------------< OA Robot >--------------------------------------------
@@ -244,7 +244,7 @@ End Sub
 'Update Default Settings to those specified
 '--------------------------------------------< OA Robot >--------------------------------------------
 ' Command Name:           Update Settings
-' Description:            Updates default settings to those in Default Settings sheet
+' Description:            Updates default settings to those in Regional Settings sheet
 ' Macro Expression:       modMisc.DefaultSettings()
 ' Generated:              01/03/2025 10:19 PM
 '----------------------------------------------------------------------------------------------------

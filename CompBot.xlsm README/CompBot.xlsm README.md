@@ -2,7 +2,7 @@
 
 \*\*CompBot.xlsm\*\* contains definitions for:
 
-[101 Robot Commands](#command-definitions)<BR>[33 Robot Texts](#text-definitions)<BR>
+[104 Robot Commands](#command-definitions)<BR>[33 Robot Texts](#text-definitions)<BR>
 
 <BR>
 
@@ -96,7 +96,7 @@
 | --- | --- |
 | [Clear Lambda Library](#clear-lambda-library) | Forgets your saved lambda library, so ILL and Full Setup Case stop loading it |
 | [Import Case Lambdas](#import-case-lambdas) | Your library (if set) and CompBot's lambdas, the winner first, into the active workbook. Chained after Full Setup Case |
-| [Import Lambda Library](#import-lambda-library) | Loads YOUR own lambda library (set once with SLL) into the active workbook |
+| [Import Lambda Library](#import-lambda-library) | Loads YOUR own lambda library (set once with SLL) into the active workbook: its lambdas and its stored values (named constants) |
 | [Import Lambdas From CompBot](#import-lambdas-from-compbot) | Loads CompBot's own lambdas into the active workbook, replacing older copies unless SCS says your library wins |
 | [Set Lambda Library](#set-lambda-library) | Points CompBot at YOUR lambda library workbook, once; ILL and Full Setup Case then load it |
 
@@ -152,22 +152,25 @@
 | --- | --- |
 | [Backup Sheets in Workbook](#backup-sheets-in-workbook) | Copy all sheets in workbook for backup |
 | [Clear Lambda Library](#clear-lambda-library) | Forgets your saved lambda library, so ILL and Full Setup Case stop loading it |
+| [Clear Solve Folder](#clear-solve-folder) | Forgets your Solve folder, so Full Setup Case saves the \_Solve copy next to the case again |
 | [Create Blank Sheet](#create-blank-sheet) | Creates a blank sheet named based on cell value (Sht otherwise) |
 | [Create Bonus Sheet](#create-bonus-sheet) | Creates bonus sheet "B" with bonus questions |
-| [Create Case Inputs Sheet](#create-case-inputs-sheet) | Creates a case inputs sheet with the inputs for the current case |
+| [Create Case Inputs Sheet](#create-case-inputs-sheet) | Creates a case inputs sheet: one row per game with its Game and Level, then every input; names each level L01\_Inputs, L02\_Inputs, ... |
 | [Create Data Table](#create-data-table) | Builds (or finds) the data table block for the level you are in, beside its inputs, and lands on the last input; fill it with Run Data Table (RDT) |
 | [Create Level Sheets](#create-level-sheets) | Creates a sheet for each level in the Case sheet |
 | [Full Setup Case](#full-setup-case) | Sets up the case: saves a \_Solve copy, backs up the sheets, creates the level, bonus and Case inputs sheets, then imports lambdas. Choose the steps with SCS |
 | [Import Case Lambdas](#import-case-lambdas) | Your library (if set) and CompBot's lambdas, the winner first, into the active workbook. Chained after Full Setup Case |
-| [Import Lambda Library](#import-lambda-library) | Loads YOUR own lambda library (set once with SLL) into the active workbook |
+| [Import Lambda Library](#import-lambda-library) | Loads YOUR own lambda library (set once with SLL) into the active workbook: its lambdas and its stored values (named constants) |
 | [Import Lambdas From CompBot](#import-lambdas-from-compbot) | Loads CompBot's own lambdas into the active workbook, replacing older copies unless SCS says your library wins |
+| [Level Inputs](#level-inputs) | Type a level, or levels like 4\-5 or 3,5\-6: their inputs land as an array to work on, with headers and game\/level beside them (blank \= this sheet's level) |
 | [Load Game Into Calculation](#load-game-into-calculation) | Loads the selected data table game into the example calculation, or restores the example |
 | [Merged To Centre Across Selection](#merged-to-centre-across-selection) | Merged Cells changed to Centre Across Selection |
 | [Rename Sheets](#rename-sheets) | Shortens multi\-word sheet names to their initials, keeping numbers (Level 1 Data becomes L1D); backups keep their names |
 | [Run Data Table](#run-data-table) | Fills a Create Data Table block with static results game by game, recalculating only when run |
 | [Save Copy of File](#save-copy-of-file) | Enable editing and save copy of file with suffix based on active cell (otherwise Working) |
-| [Save From Example](#save-from-example) | Solve once on the example row, then apply it to every question in the level and save the answers |
+| [Save From Example](#save-from-example) | Select your answer formula on the example row; the working right of the inputs is copied to every question and the answers linked |
 | [Set Lambda Library](#set-lambda-library) | Points CompBot at YOUR lambda library workbook, once; ILL and Full Setup Case then load it |
+| [Set Solve Folder](#set-solve-folder) | Choose the folder Full Setup Case saves your \_Solve copy into, once (e.g. OneDrive) |
 | [Setup Case Settings](#setup-case-settings) | Opens CompBot's Setup Settings sheet: choose which steps Full Setup Case runs, and whose lambdas win a name clash |
 | [Unmerge Multi\-Row Merges](#unmerge-multi-row-merges) | Unmerges every merged area spanning more than one row (the selection, or the whole sheet), leaving the value in the top\-left cell |
 
@@ -310,7 +313,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modCaseSetup.Backup](./VBA/modCaseSetup.bas#L392)()</code> |
+| Macro Expression | <code>[modCaseSetup.Backup](./VBA/modCaseSetup.bas#L418)()</code> |
 | Macro Workbook Connection | ThisWorkbook |
 | Launch Codes | <code>BU</code> |
 
@@ -359,7 +362,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modLambdas.ClearLambdaLibrary](./VBA/modLambdas.bas#L136)()</code> |
+| Macro Expression | <code>[modLambdas.ClearLambdaLibrary](./VBA/modLambdas.bas#L140)()</code> |
 | Launch Codes | <code>CLL</code> |
 
 [^Top](#oa-robot-definitions)
@@ -374,8 +377,25 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modLambdas.ClearLambdas](./VBA/modLambdas.bas#L561)()</code> |
+| Macro Expression | <code>[modLambdas.ClearLambdas](./VBA/modLambdas.bas#L656)()</code> |
 | Enabled | ☐Yes ☑No |
+
+[^Top](#oa-robot-definitions)
+
+<BR>
+
+### Clear Solve Folder
+
+*Forgets your Solve folder, so Full Setup Case saves the \_Solve copy next to the case again*
+
+<sup>`@CompBot.xlsm` `!VBA Macro Command` `#Prep`</sup>
+
+> \*\*Note:\*\* Removes the per\-user setting Set Solve Folder (SSF) saved. Changes no folder and no file. To switch to a different folder you do not need this: run SSF again. Added 2026\-10\-08 (GitHub \#4).
+
+| Property | Value |
+| --- | --- |
+| Macro Expression | <code>[modSetupSettings.ClearSolveFolder](./VBA/modSetupSettings.bas#L135)()</code> |
+| Launch Codes | <code>CSF</code> |
 
 [^Top](#oa-robot-definitions)
 
@@ -408,7 +428,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modLambdas.ClearUnusedLambdas](./VBA/modLambdas.bas#L1480)()</code> |
+| Macro Expression | <code>[modLambdas.ClearUnusedLambdas](./VBA/modLambdas.bas#L1575)()</code> |
 
 [^Top](#oa-robot-definitions)
 
@@ -424,7 +444,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modLambdas.ClearUnusedLambdas](./VBA/modLambdas.bas#L1480)(1)</code> |
+| Macro Expression | <code>[modLambdas.ClearUnusedLambdas](./VBA/modLambdas.bas#L1575)(1)</code> |
 
 [^Top](#oa-robot-definitions)
 
@@ -471,7 +491,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modCaseSetup.CreateBonusSheet](./VBA/modCaseSetup.bas#L833)()</code> |
+| Macro Expression | <code>[modCaseSetup.CreateBonusSheet](./VBA/modCaseSetup.bas#L859)()</code> |
 | Launch Codes | <ol><li><code>BQC</code></li><li><code>CB</code></li></ol> |
 
 [^Top](#oa-robot-definitions)
@@ -480,14 +500,15 @@
 
 ### Create Case Inputs Sheet
 
-*Creates a case inputs sheet with the inputs for the current case*
+*Creates a case inputs sheet: one row per game with its Game and Level, then every input; names each level L01\_Inputs, L02\_Inputs, ...*
 
 <sup>`@CompBot.xlsm` `!VBA Macro Command` `#Prep`</sup>
 
+> \*\*Note:\*\* Run by Full Setup Case. Column B is the game number and column C its LEVEL (from the case's own Level column; a case with none gets no levels), so the header row's filter shows one level at a time; the inputs follow from column D. Each level's rows are also named L01\_Inputs, L02\_Inputs, ... (Game, Level and the input columns that level uses), for the Name Box and for Level Inputs (LI), which drops one or more levels' inputs into the active cell. Level column and names added 2026\-10\-08 (GitHub \#3, Ben de Leon). The same day its unused MacroWorkbookConnection reference ('ThisWorkbook', which named no Connection) was removed, so it runs like every other CompBot macro command.
+
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modCaseSetup.CreateCaseInputsSheet](./VBA/modCaseSetup.bas#L1303)([[ActiveCell]])</code> |
-| Macro Workbook Connection | ThisWorkbook |
+| Macro Expression | <code>[modCaseSetup.CreateCaseInputsSheet](./VBA/modCaseSetup.bas#L1329)([[ActiveCell]])</code> |
 | Launch Codes | <ol><li><code>CIS</code></li><li><code>IS</code></li></ol> |
 
 [^Top](#oa-robot-definitions)
@@ -519,7 +540,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modCaseSetup.CreateLevelSheets](./VBA/modCaseSetup.bas#L550)()</code> |
+| Macro Expression | <code>[modCaseSetup.CreateLevelSheets](./VBA/modCaseSetup.bas#L576)()</code> |
 | Launch Codes | <ol><li><code>CL</code></li><li><code>CLS</code></li></ol> |
 
 [^Top](#oa-robot-definitions)
@@ -784,7 +805,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modCaseSetup.Setup](./VBA/modCaseSetup.bas#L58)()</code> |
+| Macro Expression | <code>[modCaseSetup.Setup](./VBA/modCaseSetup.bas#L62)()</code> |
 | Keyboard Shortcut | <code>^+g</code> |
 | Command After | [Import Case Lambdas](#import-case-lambdas) |
 | Launch Codes | <code>SC</code> |
@@ -850,7 +871,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modLambdas.ImportCaseLambdas](./VBA/modLambdas.bas#L248)()</code> |
+| Macro Expression | <code>[modLambdas.ImportCaseLambdas](./VBA/modLambdas.bas#L252)()</code> |
 | Visibility | Hidden |
 
 [^Top](#oa-robot-definitions)
@@ -859,15 +880,15 @@
 
 ### Import Lambda Library
 
-*Loads YOUR own lambda library (set once with SLL) into the active workbook*
+*Loads YOUR own lambda library (set once with SLL) into the active workbook: its lambdas and its stored values (named constants)*
 
 <sup>`@CompBot.xlsm` `!VBA Macro Command` `#LAMBDA` `#Prep`</sup>
 
-> \*\*Note:\*\* Everyone keeps their own lambda library in a workbook of their own. Set Lambda Library (SLL) remembers where it is, once; this copies its lambdas into whatever workbook is active. It opens the library read\-only with its macros kept quiet and closes it again (or uses it as\-is if you already have it open). By default a lambda ALREADY in the file is SKIPPED, never overwritten, and listed on the status bar, so your copy cannot replace CompBot's improved version; if Setup Case Settings (SCS) says your library wins, it replaces instead. Refuses to run with CompBot or the library itself active. No dialogs. WHY NOT KEEP YOUR LAMBDAS INSIDE COMPBOT: a GitHub update replaces CompBot.xlsm wholesale, and most people run it hidden and read\-only anyway. The library location is a per\-user Windows setting, so it survives every update.
+> \*\*Note:\*\* Everyone keeps their own lambda library in a workbook of their own. Set Lambda Library (SLL) remembers where it is, once; this copies its lambdas, and its STORED VALUES (named constants and arrays such as \=0.05, \="Red", \={1,2,3}, and formula names with no cell reference), into whatever workbook is active. Names that point at ranges in the library are not copied (they would link back to the library file); the status bar counts them. It opens the library read\-only with its macros kept quiet and closes it again (or uses it as\-is if you already have it open). By default a lambda ALREADY in the file is skipped (left as it is) and listed on the status bar, so your copy does not replace CompBot's improved version; if Setup Case Settings (SCS) says your library wins, it replaces instead. Stored values follow the same rule; ILL marks the values it copies with \[CompBot ILL\] in their Name Manager comment, and those are the ones it updates. Refuses to run with CompBot or the library itself active. No dialogs; failures start ILL FAILED on the status bar. WHY NOT KEEP YOUR LAMBDAS INSIDE COMPBOT: a GitHub update replaces CompBot.xlsm wholesale, and most people run it hidden and read\-only anyway. The library location is a per\-user Windows setting, so it survives every update. Stored values added 2026\-10\-08 (GitHub \#5, Fabian Sjöblom).
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modLambdas.ImportLambdaLibrary](./VBA/modLambdas.bas#L171)()</code> |
+| Macro Expression | <code>[modLambdas.ImportLambdaLibrary](./VBA/modLambdas.bas#L175)()</code> |
 | Launch Codes | <code>ILL</code> |
 
 [^Top](#oa-robot-definitions)
@@ -884,7 +905,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modLambdas.ImportLambdasFromCompBot](./VBA/modLambdas.bas#L207)()</code> |
+| Macro Expression | <code>[modLambdas.ImportLambdasFromCompBot](./VBA/modLambdas.bas#L211)()</code> |
 | Launch Codes | <code>ILC</code> |
 
 [^Top](#oa-robot-definitions)
@@ -940,6 +961,36 @@
 | Formula Dependencies | <ol><li>[Regions_byHadynWiseman.lambda](#regions_byhadynwisemanlambda)</li><li>[Exists_byHadynWiseman.lambda](#exists_byhadynwisemanlambda)</li></ol> |
 | User Context Filter | ExcelSelectionIsSingleCell |
 | Launch Codes | <code>LCR8</code> |
+
+[^Top](#oa-robot-definitions)
+
+<BR>
+
+### Level Inputs
+
+*Type a level, or levels like 4\-5 or 3,5\-6: their inputs land as an array to work on, with headers and game\/level beside them (blank \= this sheet's level)*
+
+<sup>`@CompBot.xlsm` `!VBA Macro Command` `#Prep`</sup>
+
+> \*\*Note:\*\* For solving bonuses that ask about one level's games: from any sheet, type the levels the way you would say them (4, 4\-5, 3,5\-6; any number of levels, so 5\-, 8\- and 10\-level cases work). From the active cell (say Z5): Game \| Level headers in Z5 with the game and level numbers as their own array in Z6\#; the INPUTS as an array of their own two columns right, in AB6\#, with their headers above in AB5. You finish on AB6, ready to work on the inputs. Input columns blank for every chosen level are left out, empty inputs stay blank rather than showing 0, and columns holding nothing but the result are auto\-fitted. The formulas are built to be read: LET names levels, caseInputs, levelRows (a FILTER using IsInList\_byErikOehm, which this command loads as a dependency), tidyRows, inputs, usedCols. The data is the CaseInputs table that Create Case Inputs Sheet (CIS) builds during Full Setup Case, with its Level column; a case with no Level column has no levels tagged and this command says so. Left blank on a level sheet (L06) it uses that level. It checks that the four anchor cells are empty before writing, and if a spill would run into anything the result is taken back out. Every outcome is on the status bar; a failure starts LEVEL INPUTS FAILED. Launch code LI (the name's initials too); LLI also works. Added 2026\-10\-08 (GitHub \#3, Ben de Leon).
+
+| Property | Value |
+| --- | --- |
+| Macro Expression | <code>[modCaseNav.LoadLevelInputs](./VBA/modCaseNav.bas#L480)({{Levels}})</code> |
+| Formula Dependencies | [IsInList_byErikOehm.lambda](#isinlist_byerikoehmlambda) |
+| Parameters | <ol><li>[Levels](#level-inputs--levels)</li></ol> |
+| Launch Codes | <ol><li><code>LI</code></li><li><code>LLI</code></li></ol> |
+
+<BR>
+
+#### Level Inputs \>\> Levels
+
+<sup>`!Input Parameter` </sup>
+
+| Property | Value |
+| --- | --- |
+| Prompt | <code>Levels, e.g. 4 or 4\-5 or 3,5\-6 (blank \= this sheet's level)</code> |
+| Data Type | String |
 
 [^Top](#oa-robot-definitions)
 
@@ -1007,7 +1058,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modLambdas.ListLambdasUsed](./VBA/modLambdas.bas#L848)()</code> |
+| Macro Expression | <code>[modLambdas.ListLambdasUsed](./VBA/modLambdas.bas#L943)()</code> |
 
 [^Top](#oa-robot-definitions)
 
@@ -1378,7 +1429,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modCaseSetup.RenameSht](./VBA/modCaseSetup.bas#L266)()</code> |
+| Macro Expression | <code>[modCaseSetup.RenameSht](./VBA/modCaseSetup.bas#L292)()</code> |
 | Launch Codes | <code>rs</code> |
 
 [^Top](#oa-robot-definitions)
@@ -1631,7 +1682,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modCaseSetup.SaveAnswersToLeft](./VBA/modCaseSetup.bas#L1589)()</code> |
+| Macro Expression | <code>[modCaseSetup.SaveAnswersToLeft](./VBA/modCaseSetup.bas#L1693)()</code> |
 | Launch Codes | <code>SAL</code> |
 
 [^Top](#oa-robot-definitions)
@@ -1646,7 +1697,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modCaseSetup.SaveCopy](./VBA/modCaseSetup.bas#L1945)([[ActiveCell]])</code> |
+| Macro Expression | <code>[modCaseSetup.SaveCopy](./VBA/modCaseSetup.bas#L2307)([[ActiveCell]])</code> |
 | Launch Codes | <code>SA</code> |
 
 [^Top](#oa-robot-definitions)
@@ -1655,16 +1706,16 @@
 
 ### Save From Example
 
-*Solve once on the example row, then apply it to every question in the level and save the answers*
+*Select your answer formula on the example row; the working right of the inputs is copied to every question and the answers linked*
 
 <sup>`@CompBot.xlsm` `!VBA Macro Command` `#Prep`</sup>
 
-> \*\*Note:\*\* Select your solve cells ON THE EXAMPLE ROW (one row, as many columns as your working needs), then run this. It copies them to the first real question row, fills down to the end of the level, saves references into the answer cells, and leaves those on the clipboard ready to paste. Modelled on MEWC Robot's command of the same name, with two deliberate differences: (1) MEWC's copies exactly two rows down, which assumes one example row and one blank row, whereas this one finds the first row whose ANSWER CELL IS EMPTY, because worked examples always carry their answer and real questions never do, so any number of example rows and a missing or doubled spacer all work the same, and it never reads the word 'Example' in any language; (2) the answer column is found by its 'Answer' header text, falling back to the sheet's own answer fill color rather than a hardcoded green, so local chapter cases with a different green still work. Auto Fill Down (Formula Robot) works out how far the level runs, so 10 questions or 20 makes no difference. Added 2026\-09\-22.
+> \*\*Note:\*\* Select ONE cell: your answer formula on the example row. Every calculation on that row to the right of the case's last input comes with it, on either side of the answer, spills and typed values included, out to the last filled cell (a gap of 3+ empty columns, or a column with typed values on the question rows such as a case table, ends it). It is copied to every question row of the level and the answer cells are linked to your answer column, ready to paste from the clipboard. Re\-run it after correcting the example: links it wrote earlier are replaced. Before copying it checks the cells it will fill, and stops and says so if any of them hold case content. Every outcome is on the status bar; a failure starts SAVE FROM EXAMPLE FAILED. Modelled on MEWC Robot's command of the same name, but finds the first question by its empty answer cell (any number of example rows) and the answer column by its 'Answer' header, falling back to the sheet's own answer colour. Added 2026\-09\-22; working and re\-run rules 2026\-10\-08 (GitHub \#2).
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modCaseSetup.SaveFromExample](./VBA/modCaseSetup.bas#L1820)()</code> |
-| User Context Filter | ExcelActiveCellIsNotEmpty AND ExcelSelectionIsSingleRow |
+| Macro Expression | <code>[modCaseSetup.SaveFromExample](./VBA/modCaseSetup.bas#L1926)()</code> |
+| User Context Filter | ExcelActiveCellIsNotEmpty AND ExcelSelectionIsSingleCell |
 | Launch Codes | <code>SFE</code> |
 
 [^Top](#oa-robot-definitions)
@@ -1696,8 +1747,25 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modLambdas.SetLambdaLibrary](./VBA/modLambdas.bas#L90)()</code> |
+| Macro Expression | <code>[modLambdas.SetLambdaLibrary](./VBA/modLambdas.bas#L94)()</code> |
 | Launch Codes | <code>SLL</code> |
+
+[^Top](#oa-robot-definitions)
+
+<BR>
+
+### Set Solve Folder
+
+*Choose the folder Full Setup Case saves your \_Solve copy into, once (e.g. OneDrive)*
+
+<sup>`@CompBot.xlsm` `!VBA Macro Command` `#Prep`</sup>
+
+> \*\*Note:\*\* A setup\-time command, run once (and again only if the folder moves). Opens a folder picker. The folder is saved as a per\-user Windows setting (HKCU, VB and VBA Program Settings\\CompBot\\Setup), NOT inside CompBot, so it survives every CompBot update. A OneDrive or SharePoint folder is stored as its local synced path. If the folder is missing when you run Full Setup Case, the copy goes next to the case and the status bar says so. Undo with Clear Solve Folder (CSF). Added 2026\-10\-08 (GitHub \#4).
+
+| Property | Value |
+| --- | --- |
+| Macro Expression | <code>[modSetupSettings.SetSolveFolder](./VBA/modSetupSettings.bas#L86)()</code> |
+| Launch Codes | <code>SSF</code> |
 
 [^Top](#oa-robot-definitions)
 
@@ -1713,7 +1781,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modSetupSettings.ShowSetupSettings](./VBA/modSetupSettings.bas#L71)()</code> |
+| Macro Expression | <code>[modSetupSettings.ShowSetupSettings](./VBA/modSetupSettings.bas#L185)()</code> |
 | Launch Codes | <code>SCS</code> |
 
 [^Top](#oa-robot-definitions)

@@ -13,6 +13,9 @@ Private Const m_COPY_SUFFIX         As String = "Solve"
 ' Measured over all 152 library cases (crossref\level_gaps.txt, 2026-09-14): marker gaps are
 ' either 1 row (Contents lists, 9 cases, all 2026 UK) or 15+ rows (real levels). Nothing between.
 Private Const m_CONTENTS_MAX_GAP    As Long = 4
+' Save From Example: empty columns allowed between helpers in the working. A wider gap ends it, so
+' a case table further right on the example row is never copied down (Jaq, 2026-10-08).
+Private Const m_SFE_MAX_GAP         As Long = 2
 ' The words a case may use to label a worked-example row, matched at the LEFT of the cell.
 ' English, French, Brazilian Portuguese. ADD A LANGUAGE HERE AND NOWHERE ELSE - every example-row
 ' test in CompBot goes through ExamplePrefixLen, which reads this list.
@@ -33,6 +36,7 @@ Private m_strCaseSheet              As String   ' the answer given to it
 Private m_strStepError              As String   ' last failure recorded by a step, read by Setup
 Private m_strStepNote               As String   ' a step that skipped itself on purpose, read by Setup
 Private m_blnLogWritten             As Boolean  ' LogError actually wrote a line this Setup run
+Private m_strSetupInfo              As String   ' something a step did that the user should know, read by Setup
 
 'general case setup
 '--------------------------------------------< OA Robot >--------------------------------------------
@@ -79,6 +83,7 @@ Public Sub Setup()
     m_blnCaseAsked = False
     m_strCaseSheet = vbNullString
     m_blnLogWritten = False
+    m_strSetupInfo = vbNullString
 
     RunSetupStep "SaveCopy", strFailed, strNotes
     RunSetupStep "Backup", strFailed, strNotes
@@ -104,8 +109,10 @@ Cleanup:
     Else
         strMsg = "Full Setup Case: FAILED -" & strFailed & " Other steps ran."
     End If
+    If Len(m_strSetupInfo) > 0 Then strMsg = strMsg & " " & m_strSetupInfo
     If Len(strNotes) > 0 Then strMsg = strMsg & " Skipped -" & strNotes
     Application.StatusBar = Left$(strMsg, m_MAX_STATUS)
+    m_strSetupInfo = vbNullString
 
     ' Land on a sheet ready to work: the bonus sheet if one was made, else Level 1.
     ' Activate is deliberate here - putting the user on a sheet is the purpose.
@@ -175,10 +182,17 @@ End Sub
 '          touched (Jaq, 2026-09-24). Skipped, with a note, when the workbook has never been saved
 '          (no folder to write into) or is already a working copy (Setup run a second time, or a
 '          Save Copy of File (SA) copy with the default suffix).
+'          The copy goes into the user's Solve folder when one is set with Set Solve Folder (SSF;
+'          GitHub #4, Gabe Sotero), else next to the case. A Solve folder that no longer exists (a
+'          new machine, a renamed folder) is not created: the copy goes next to the case instead,
+'          and Setup's message says where it went.
 Private Sub SaveSolveCopy()
 
     Dim wb As Workbook
-    Dim strOld As String
+    Dim strFolder As String
+    Dim strWhy As String
+    Dim strSaved As String
+    Dim blnFellBack As Boolean
 
     On Error GoTo ErrHandler
 
@@ -196,11 +210,23 @@ Private Sub SaveSolveCopy()
         GoTo Cleanup
     End If
 
-    strOld = wb.FullName
-    SaveCopy m_COPY_SUFFIX
-    ' SaveCopy reports its own refusals on the StatusBar and returns quietly; Setup's own message
-    ' would overwrite that, so a copy that did not happen is recorded as a failure here.
-    If StrComp(wb.FullName, strOld, vbTextCompare) = 0 Then m_strStepError = "no copy saved"
+    strFolder = modSetupSettings.SolveFolder()
+    If Len(strFolder) > 0 Then
+        If Len(Dir$(strFolder, vbDirectory)) = 0 Then
+            blnFellBack = True
+            strFolder = vbNullString
+        End If
+    End If
+
+    ' SaveCopyTo hands its reason back rather than writing it to the StatusBar, which Setup's
+    ' own message would overwrite: a copy that did not happen is a failure, and says why.
+    strWhy = SaveCopyTo(wb, m_COPY_SUFFIX, strFolder, strSaved)
+    If Len(strWhy) > 0 Then
+        m_strStepError = strWhy
+    ElseIf blnFellBack Then
+        ' Not a skip and not a failure: the copy was made, just not where the user asked.
+        m_strSetupInfo = "Solve folder not found, so the _Solve copy is with the case: " & strSaved
+    End If
 
 Cleanup:
     Exit Sub
@@ -1329,7 +1355,7 @@ Public Sub CreateCaseInputsSheet(Optional ByVal strDetailed As String = "")
     'freeze panes below header
     With ActiveWindow
         If .FreezePanes Then .FreezePanes = False
-        .SplitColumn = 2
+        .SplitColumn = 3            ' Game and Level stay in view
         .SplitRow = 2
         .FreezePanes = True
     End With
@@ -1390,6 +1416,8 @@ Private Sub DetailedInputs(ByVal ws As Worksheet, ByVal wsNew As Worksheet)
     Dim booSkip As Boolean
     Dim lngHdrAnsCol As Long
     Dim lngScan As Long
+    Dim lngLevelCol As Long         ' this level's "Level" column on the case sheet, 0 if none
+    Dim varLevel As Variant         ' the level written for the current game (Empty if none)
 
     ' Last row: column B's last row, or the last cell with content if that is lower (the final
     ' game's extra rows can sit below the last game number). Find, not UsedRange, which
@@ -1461,6 +1489,17 @@ Private Sub DetailedInputs(ByVal ws As Worksheet, ByVal wsNew As Worksheet)
                     Exit For
                 End If
             Next lngScan
+            ' THE LEVEL OF EACH GAME (GitHub #3, Ben de Leon / Jaq, 2026-10-08): CaseInputs carries
+            ' it in column C so a level can be filtered, named (L06_Inputs) and loaded (Level Inputs).
+            ' Read from the case's own "Level" column in the preamble (left of Answer). A case with
+            ' no Level column gets no level at all - not a guess (Jaq): Level Inputs then says so.
+            lngLevelCol = 0
+            For lngScan = 3 To lngHdrAnsCol - 1
+                If SafeText(varData(lngHdrRow, lngScan)) = "Level" Then
+                    lngLevelCol = lngScan
+                    Exit For
+                End If
+            Next lngScan
             ' reset current column numbers
             If lngInc > 0 Then ReDim lngIncCols(1 To lngInc)
             ' formulas for this one row only - example inputs that are formulas are not inputs
@@ -1494,9 +1533,9 @@ Private Sub DetailedInputs(ByVal ws As Worksheet, ByVal wsNew As Worksheet)
                         lngInc = lngInc + 1
                         ' headers accumulate across levels, so the output can be wider than the
                         ' source - grow the output arrays only when a new slot is needed
-                        If lngInc + 1 > UBound(varOut, 2) Then
-                            ReDim Preserve varOut(1 To lngEndRow, 1 To lngInc + 1)
-                            ReDim Preserve varHdrOut(1 To 1, 1 To lngInc + 1)
+                        If lngInc + 2 > UBound(varOut, 2) Then
+                            ReDim Preserve varOut(1 To lngEndRow, 1 To lngInc + 2)
+                            ReDim Preserve varHdrOut(1 To 1, 1 To lngInc + 2)
                         End If
                         If lngInc = 1 Then
                             ReDim strHeaders(1 To 1)
@@ -1536,38 +1575,103 @@ Private Sub DetailedInputs(ByVal ws As Worksheet, ByVal wsNew As Worksheet)
             strGame = strCV
             lngContLeft = lngExCont
             lngRowOut = lngRowOut + 1
-            LoadGameRow varData, varOut, lngRow, lngRowOut, strGame, lngIncCols, lngInc
+            varLevel = Empty
+            If lngLevelCol > 0 Then
+                If IsNumeric(SafeText(varData(lngRow, lngLevelCol))) And _
+                   Len(SafeText(varData(lngRow, lngLevelCol))) > 0 Then varLevel = CLng(varData(lngRow, lngLevelCol))
+            End If
+            LoadGameRow varData, varOut, lngRow, lngRowOut, strGame, varLevel, lngIncCols, lngInc
 
         ElseIf Len(strCV) = 0 And lngContLeft > 0 Then
-            ' extra row of a multi-row game (e.g. Player 2), capped at the example's count
+            ' extra row of a multi-row game (e.g. Player 2), capped at the example's count; it
+            ' carries its game's number and level
             lngContLeft = lngContLeft - 1
             lngRowOut = lngRowOut + 1
-            LoadGameRow varData, varOut, lngRow, lngRowOut, strGame, lngIncCols, lngInc
+            LoadGameRow varData, varOut, lngRow, lngRowOut, strGame, varLevel, lngIncCols, lngInc
 
         Else
             lngContLeft = 0
         End If
     Next lngRow
 
-    ' One write each for the headers and the game rows.
-    If lngInc > 0 Then wsNew.Cells(HDR_OUT_ROW, 3).Resize(1, lngInc).value = varHdrOut
-    If lngRowOut > 0 Then wsNew.Cells(FIRST_OUT_ROW, 2).Resize(lngRowOut, lngInc + 1).value = varOut
+    ' One write each for the headers and the game rows: Game in B, Level in C, inputs from D.
+    wsNew.Cells(HDR_OUT_ROW, 2).Resize(1, 2).value = Array("Game", "Level")
+    If lngInc > 0 Then wsNew.Cells(HDR_OUT_ROW, 4).Resize(1, lngInc).value = varHdrOut
+    If lngRowOut > 0 Then
+        wsNew.Cells(FIRST_OUT_ROW, 2).Resize(lngRowOut, lngInc + 2).value = varOut
+        wsNew.Cells(HDR_OUT_ROW, 2).Resize(lngRowOut + 1, lngInc + 2).AutoFilter
+        NameLevelInputs wsNew, varOut, lngRowOut, FIRST_OUT_ROW, lngInc + 2
+    End If
     wsNew.UsedRange.Columns.AutoFit
 
 End Sub
 
-' Purpose: Copy one game row from the source array into the output array: game # first, then each
-'          mapped input as text ("'" keeps "1/2", "007" and the like as typed). Part of DetailedInputs;
-'          no handler of its own, errors propagate to CreateCaseInputsSheet.
+' Purpose: One workbook-level name per level on the CaseInputs sheet - L01_Inputs, L02_Inputs, ... -
+'          covering that level's rows from Game (column B) to the last column THAT LEVEL uses, so a
+'          level with one input is three columns wide, not the width of the whole sheet (headers
+'          accumulate across levels). Level Inputs (LI) stacks several with IFNA(VSTACK(...),"")
+'          (GitHub #3, 2026-10-08). "L1" alone would be a cell address, hence the two digits and
+'          the suffix. A level whose rows are not all together gets its first to last row. Part of
+'          DetailedInputs; errors propagate to CreateCaseInputsSheet.
+Private Sub NameLevelInputs(ByVal wsNew As Worksheet, ByRef varOut() As Variant, ByVal lngRows As Long, _
+                            ByVal lngFirstRow As Long, ByVal lngWidth As Long)
+
+    Dim dicFirst As Object
+    Dim dicLast  As Object
+    Dim dicCols  As Object
+    Dim varKey   As Variant
+    Dim lngR     As Long
+    Dim lngC     As Long
+    Dim lngLevel As Long
+
+    Set dicFirst = CreateObject("Scripting.Dictionary")
+    Set dicLast = CreateObject("Scripting.Dictionary")
+    Set dicCols = CreateObject("Scripting.Dictionary")
+    For lngR = 1 To lngRows
+        If IsNumeric(varOut(lngR, 2)) And Not IsEmpty(varOut(lngR, 2)) Then
+            lngLevel = CLng(varOut(lngR, 2))
+            If lngLevel > 0 Then
+                If Not dicFirst.Exists(lngLevel) Then
+                    dicFirst(lngLevel) = lngR
+                    dicCols(lngLevel) = 2                 ' Game and Level at least
+                End If
+                dicLast(lngLevel) = lngR
+                For lngC = lngWidth To dicCols(lngLevel) + 1 Step -1
+                    If Not IsEmpty(varOut(lngR, lngC)) Then
+                        dicCols(lngLevel) = lngC
+                        Exit For
+                    End If
+                Next lngC
+            End If
+        End If
+    Next lngR
+
+    For Each varKey In dicFirst.Keys
+        wsNew.Parent.Names.Add Name:=LevelInputsName(CLng(varKey)), _
+            RefersTo:="='" & wsNew.Name & "'!" & _
+                      wsNew.Cells(lngFirstRow + dicFirst(varKey) - 1, 2).Resize( _
+                          dicLast(varKey) - dicFirst(varKey) + 1, dicCols(varKey)).Address
+    Next varKey
+End Sub
+
+' Purpose: The name of a level's inputs on CaseInputs: 6 -> "L06_Inputs". Shared with Level Inputs (LI).
+Public Function LevelInputsName(ByVal lngLevel As Long) As String
+    LevelInputsName = "L" & Format$(lngLevel, "00") & "_Inputs"
+End Function
+
+' Purpose: Copy one game row from the source array into the output array: game # first, its level
+'          second, then each mapped input as text ("'" keeps "1/2", "007" and the like as typed).
+'          Part of DetailedInputs; no handler of its own, errors propagate to CreateCaseInputsSheet.
 Private Sub LoadGameRow(ByRef varData As Variant, ByRef varOut() As Variant, ByVal lngSrcRow As Long, _
-                        ByVal lngOutRow As Long, ByVal strGame As String, ByRef lngIncCols() As Long, _
-                        ByVal lngInc As Long)
+                        ByVal lngOutRow As Long, ByVal strGame As String, ByVal varLevel As Variant, _
+                        ByRef lngIncCols() As Long, ByVal lngInc As Long)
     Dim lngHdr As Long
 
     varOut(lngOutRow, 1) = strGame
+    varOut(lngOutRow, 2) = varLevel
     For lngHdr = 1 To lngInc
         If lngIncCols(lngHdr) <> 0 Then
-            varOut(lngOutRow, lngHdr + 1) = "'" & SafeText(varData(lngSrcRow, lngIncCols(lngHdr)))
+            varOut(lngOutRow, lngHdr + 2) = "'" & SafeText(varData(lngSrcRow, lngIncCols(lngHdr)))
         End If
     Next lngHdr
 End Sub
@@ -1803,9 +1907,11 @@ End Function
 ' Purpose: Solve once on the worked-example row, then apply it to every game in the level and save the
 '          answers - in one command.
 '
-'          Select your solve cells ON THE EXAMPLE ROW (one row, however many columns), then run this.
-'          It copies them to the first real question row, fills down to the end of the level, then
-'          saves references into the answer cells and leaves them on the clipboard to paste.
+'          Select your answer formula ON THE EXAMPLE ROW (one cell), then run this. Every calculation
+'          column around it on that row - left back to the case's inputs, right out to the last
+'          formula - comes with it. It copies that working to every question row of the level, then
+'          saves references to the answer column into the answer cells and leaves them on the
+'          clipboard to paste.
 '
 '          HOW IT DIFFERS FROM MEWC ROBOT'S "Save From Example", which it is modelled on:
 '            1. MEWC's copies to Offset(2) - exactly two rows down. That assumes one example row and
@@ -1821,6 +1927,7 @@ Public Sub SaveFromExample()
 
     ' --- CONSTANTS (local to function) ---
     Const MAX_SCAN_ROWS As Long = 200
+    Const FAILED_PREFIX As String = "SAVE FROM EXAMPLE FAILED: "
 
     Dim ws          As Worksheet
     Dim rngSel      As Range
@@ -1833,13 +1940,29 @@ Public Sub SaveFromExample()
     Dim lngRow      As Long
     Dim lngColour   As Long
     Dim strCell     As String
+    Dim rngSrc      As Range
+    Dim lngLastCol  As Long
+    Dim lngStartCol As Long
+    Dim lngAnsOffset As Long
+    Dim strClash    As String
+    Dim strStatus   As String
 
     On Error GoTo ErrHandler
 
+    ' EVERY OUTCOME GOES TO THE STATUS BAR (Jaq, 2026-10-08): never a dialog, but a run that did
+    ' nothing must say so, in capitals, with what happened. It used to stop silently on several
+    ' of these, which mid-case looks exactly like success.
+    If TypeName(Selection) <> "Range" Then
+        strStatus = FAILED_PREFIX & "select your answer formula - one cell on the example row."
+        GoTo Cleanup
+    End If
     Set rngSel = Selection
-    If rngSel Is Nothing Then GoTo Cleanup
-    If rngSel.Areas.Count <> 1 Then GoTo Cleanup
-    If rngSel.Rows.Count <> 1 Then GoTo Cleanup
+    ' ONE cell. The old command took the LAST selected column as the answer; a user who learned
+    ' it that way and selects the whole working must be told, not silently given the active cell.
+    If rngSel.Cells.CountLarge <> 1 Then
+        strStatus = FAILED_PREFIX & "select your answer formula - one cell on the example row."
+        GoTo Cleanup
+    End If
 
     Set ws = rngSel.Worksheet
     lngExRow = rngSel.Row
@@ -1858,9 +1981,22 @@ Public Sub SaveFromExample()
             End If
         Next lngRow
     End If
-    If lngAnsCol = 0 Then GoTo Cleanup
+    If lngAnsCol = 0 Then
+        strStatus = FAILED_PREFIX & "no Answer column found for this level (no ""Answer"" header above, no answer colour on the row)."
+        GoTo Cleanup
+    End If
 
-    lngSolveCol = rngSel.Cells(1, 1).Column
+    ' The answer is the ACTIVE cell (Jaq, 2026-10-08): one cell selected on the example row.
+    lngSolveCol = ActiveCell.Column
+    If ActiveCell.Row <> lngExRow Or Left$(ActiveCell.Formula, 1) <> "=" Then
+        strStatus = FAILED_PREFIX & "the answer cell selected (" & ActiveCell.Address(False, False) & _
+                    ") is not a formula. Select your answer formula on the example row."
+        GoTo Cleanup
+    End If
+    If lngSolveCol <= lngAnsCol + 1 Then
+        strStatus = FAILED_PREFIX & "the answer formula must be right of the case's Answer column."
+        GoTo Cleanup
+    End If
 
     ' First real question row = the first row below the example that HAS CONTENT and whose
     ' ANSWER CELL IS EMPTY. Worked examples always carry their answer; questions do not, so
@@ -1880,14 +2016,18 @@ Public Sub SaveFromExample()
             ' still the header, so step over it and keep looking.
             strCell = SafeText(ws.Cells(lngRow, 2).Value2)
             If IsSectionBreak(strCell) And Not IsExampleLabel(strCell) Then Exit For
-            If Len(SafeText(ws.Cells(lngRow, lngAnsCol).Value2)) = 0 Then
+            ' RE-RUNNABLE (Jaq, 2026-10-08): an answer cell that only links to its own row
+            ' (=M14, what this command writes) is a previous run, not an answer - so after
+            ' correcting the example, running again overwrites the working and the links.
+            If Len(SafeText(ws.Cells(lngRow, lngAnsCol).Value2)) = 0 _
+               Or IsSameRowLink(ws.Cells(lngRow, lngAnsCol)) Then
                 lngFirstRow = lngRow
                 Exit For
             End If
         End If
     Next lngRow
     If lngFirstRow = 0 Then
-        Application.StatusBar = "Save From Example: no question row with an empty answer cell below the example."
+        strStatus = FAILED_PREFIX & "no question row below the example whose answer cell is empty (or holds an earlier Save From Example link)."
         GoTo Cleanup
     End If
 
@@ -1912,28 +2052,248 @@ Public Sub SaveFromExample()
     ' initialized"), which took the fill-down AND the answer-saving with it, silently,
     ' because both live after it. The level's extent is the case's own structure and this
     ' module already knows how to read it.
-    Set rngBlock = ws.Range(ws.Cells(lngFirstRow, lngSolveCol), _
-                            ws.Cells(lngLastRow, lngSolveCol + rngSel.Columns.Count - 1))
-    rngSel.Copy rngBlock
+    '
+    ' THE INTERIM CALCULATIONS COME TOO (GitHub #2, Jaq, 2026-10-08). Most examples build up to
+    ' the answer through helper columns on either side of it. This used to copy the selected
+    ' cells only, so the helpers stayed behind and every copied answer was an error or wrong.
+    ' The working is now everything on the example row right of the LAST INPUT (Jaq, 2026-10-08):
+    '   LEFT  - from the first cell after the last input (ExampleWorkingStart: A-Z's Select Last
+    '           Input rule, plus any column that holds its own content on the question rows).
+    '   RIGHT - out to the last non-empty cell before a gap of m_SFE_MAX_GAP+1 empty columns, so a
+    '           case table further right on the row is never taken. Typed values are allowed.
+    ' Blank columns (up to the gap) and the cells a spill fills are allowed on both sides.
+    lngStartCol = ExampleWorkingStart(ws, lngExRow, lngSolveCol, lngAnsCol, lngFirstRow, lngLastRow)
+    lngLastCol = ExampleWorkingEnd(ws, lngExRow, lngSolveCol, lngFirstRow, lngLastRow)
+    lngAnsOffset = lngSolveCol - lngStartCol + 1
+
+    Set rngSrc = ws.Range(ws.Cells(lngExRow, lngStartCol), ws.Cells(lngExRow, lngLastCol))
+    Set rngBlock = ws.Range(ws.Cells(lngFirstRow, lngStartCol), ws.Cells(lngLastRow, lngLastCol))
+
+    ' Never overwrite typed case content: the block may only land on empty cells or on formulas
+    ' (an earlier run of this command). Refuse rather than guess.
+    strClash = FirstConstantIn(rngBlock)
+    If Len(strClash) > 0 Then
+        strStatus = FAILED_PREFIX & "nothing changed - the working " & rngSrc.Address(False, False) & _
+                    " would overwrite case content in " & strClash & ". Move the working to empty columns."
+        GoTo Cleanup
+    End If
+
+    rngSrc.Copy rngBlock
     Application.CutCopyMode = False
 
-    ' The answer lives in the LAST column of the filled block - the working may be several
-    ' columns wide, and only its result is the answer.
-    rngBlock.Columns(rngBlock.Columns.Count).Select
+    rngBlock.Columns(lngAnsOffset).Select
 
     ' Hand the answer column straight over rather than letting it be rediscovered by fill
     ' colour. It was worked out from the "Answer" header above, which is the reliable
     ' route; the colour scan is only the fallback for a sheet that has no header.
     SaveAnswersToLeft lngAnsCol
 
+    strStatus = "Save From Example: copied " & rngSrc.Address(False, False) & " to rows " & lngFirstRow & "-" & _
+                lngLastRow & "; answers linked to column " & _
+                Replace(ws.Cells(1, lngSolveCol).Address(False, False), "1", vbNullString) & "."
+
 Cleanup:
+    If Len(strStatus) > 0 Then Application.StatusBar = Left$(strStatus, m_MAX_STATUS)
     Exit Sub
 
 ErrHandler:
     If m_DEBUG_MODE Then Stop: Resume
+    strStatus = FAILED_PREFIX & Err.Number & ": " & Err.Description & " (see " & LogLocation() & ")"
     LogError "SaveFromExample", Err.Number, Err.Description
     Resume Cleanup
 End Sub
+
+' Purpose: The first column of the worked example's working on row lngRow: the first non-empty
+'          column after the LAST INPUT, and never right of the answer cell lngFromCol.
+'          The last input follows A-Z's Select Last Input (Jaq, 2026-10-08): the first input sits two
+'          columns right of the Answer column (the one between is Score), and the inputs run on until
+'          the first blank cell on the example row. A column after that run whose question rows
+'          (lngFirstRow..lngLastRow) already hold their OWN content - anything other than the example's
+'          formula - is an input too (one with a blank example cell), so the boundary moves past it.
+'          A column holding the SAME formula (R1C1) is working from an earlier run of this command.
+'          Typed values in the working are allowed. Returns lngFromCol on error. Never raises.
+Private Function ExampleWorkingStart(ByVal ws As Worksheet, ByVal lngRow As Long, ByVal lngFromCol As Long, _
+                                     ByVal lngAnsCol As Long, ByVal lngFirstRow As Long, _
+                                     ByVal lngLastRow As Long) As Long
+
+    Dim lngCol       As Long
+    Dim lngLastInput As Long
+
+    On Error GoTo ErrHandler
+
+    ExampleWorkingStart = lngFromCol
+
+    ' The unbroken run of inputs from two columns right of Answer.
+    lngLastInput = lngAnsCol + 1
+    For lngCol = lngAnsCol + 2 To lngFromCol - 1
+        If Len(CStr(ws.Cells(lngRow, lngCol).Formula)) = 0 Then Exit For
+        lngLastInput = lngCol
+    Next lngCol
+
+    ' Any later column (left of the answer cell) with its own content on the question rows is an input.
+    For lngCol = lngLastInput + 1 To lngFromCol - 1
+        If HasOwnContentBelow(ws, lngRow, lngCol, lngFirstRow, lngLastRow) Then lngLastInput = lngCol
+    Next lngCol
+
+    ' The working starts at the first non-empty example cell after the last input.
+    For lngCol = lngLastInput + 1 To lngFromCol
+        If Len(CStr(ws.Cells(lngRow, lngCol).Formula)) > 0 Then
+            ExampleWorkingStart = lngCol
+            Exit For
+        End If
+    Next lngCol
+
+Cleanup:
+    Exit Function
+
+ErrHandler:
+    If m_DEBUG_MODE Then Stop: Resume
+    ExampleWorkingStart = lngFromCol
+    Resume Cleanup
+End Function
+
+' Purpose: The last column of the worked example's working on row lngRow: lngFromCol, or the last
+'          non-empty cell to its right, whichever is further. Everything right of the last input is
+'          working (Jaq, 2026-10-08), typed values included; up to m_SFE_MAX_GAP empty columns between
+'          helpers are allowed, and a wider gap ends the working - whatever lies beyond it is case
+'          content (a reference table), never copied. A cell a spill fills counts as filled.
+'          One read of the row. Never raises; returns lngFromCol on error.
+Private Function ExampleWorkingEnd(ByVal ws As Worksheet, ByVal lngRow As Long, ByVal lngFromCol As Long, _
+                                   ByVal lngFirstRow As Long, ByVal lngLastRow As Long) As Long
+
+    Dim varFormulas As Variant
+    Dim varValues   As Variant
+    Dim lngEnd      As Long
+    Dim lngCol      As Long
+    Dim lngGap      As Long
+    Dim strF        As String
+
+    On Error GoTo ErrHandler
+
+    ExampleWorkingEnd = lngFromCol
+    lngEnd = ws.Cells(lngRow, ws.Columns.Count).End(xlToLeft).Column
+    If lngEnd <= lngFromCol Then GoTo Cleanup
+
+    ' The row's last used cell is at most a few hundred columns away; one read of formulas and
+    ' one of values (a spill-filled cell has a value but no formula of its own).
+    varFormulas = ws.Range(ws.Cells(lngRow, lngFromCol), ws.Cells(lngRow, lngEnd)).Formula
+    varValues = ws.Range(ws.Cells(lngRow, lngFromCol), ws.Cells(lngRow, lngEnd)).Value2
+
+    ' Column 1 of the arrays is the answer cell itself. The block ends at the last cell with a
+    ' formula or a typed value: a spill-filled cell keeps the gap closed but is not copied, so
+    ' the copy spills again.
+    For lngCol = 2 To UBound(varFormulas, 2)
+        strF = CStr(varFormulas(1, lngCol))
+        ' A case table off to the right usually starts above the example and runs down through
+        ' the question rows (Jaq, 2026-10-08): a column that already holds its own content there
+        ' is the case's, and the working ended before it.
+        ' But if the example cell there is one of YOUR formulas, the working runs into the case's
+        ' content: include it, so the overwrite check refuses rather than leaving a helper behind.
+        If HasOwnContentBelow(ws, lngRow, lngFromCol + lngCol - 1, lngFirstRow, lngLastRow) Then
+            If Left$(strF, 1) = "=" Then ExampleWorkingEnd = lngFromCol + lngCol - 1
+            Exit For
+        End If
+        If Len(strF) > 0 Then
+            ExampleWorkingEnd = lngFromCol + lngCol - 1
+            lngGap = 0
+        ElseIf Not IsEmpty(varValues(1, lngCol)) Then
+            lngGap = 0                            ' filled by a spill
+        Else
+            lngGap = lngGap + 1
+            If lngGap > m_SFE_MAX_GAP Then Exit For
+        End If
+    Next lngCol
+
+Cleanup:
+    Exit Function
+
+ErrHandler:
+    If m_DEBUG_MODE Then Stop: Resume
+    ExampleWorkingEnd = lngFromCol
+    Resume Cleanup
+End Function
+
+' Purpose: True if column lngCol holds a TYPED value on any question row lngFirstRow..lngLastRow.
+'          Typed values there are the case's - an input, a reference table - never Save From Example
+'          working. Formulas there are an earlier run of the command (possibly before the example
+'          was corrected) and are overwritten, so they do not count; nor does a cell a spill fills.
+'          lngExRow is unused, kept so callers read naturally. On error, True: treat it as the case's.
+Private Function HasOwnContentBelow(ByVal ws As Worksheet, ByVal lngExRow As Long, ByVal lngCol As Long, _
+                                    ByVal lngFirstRow As Long, ByVal lngLastRow As Long) As Boolean
+
+    On Error GoTo ErrHandler
+
+    HasOwnContentBelow = (Len(FirstConstantIn(ws.Range(ws.Cells(lngFirstRow, lngCol), _
+                                                        ws.Cells(lngLastRow, lngCol)))) > 0)
+
+Cleanup:
+    Exit Function
+
+ErrHandler:
+    If m_DEBUG_MODE Then Stop: Resume
+    HasOwnContentBelow = True
+    Resume Cleanup
+End Function
+
+' Purpose: True if rngCell's formula is nothing but a reference to another cell on its own row
+'          (R1C1 "=RC[n]"), which is what Save Answers To Left writes. Never raises.
+Private Function IsSameRowLink(ByVal rngCell As Range) As Boolean
+
+    Dim strF As String
+    Dim strN As String
+
+    On Error GoTo ErrHandler
+
+    strF = CStr(rngCell.FormulaR1C1)
+    If Left$(strF, 4) <> "=RC[" Or Right$(strF, 1) <> "]" Then GoTo Cleanup
+    strN = Mid$(strF, 5, Len(strF) - 5)
+    IsSameRowLink = (Len(strN) > 0 And IsNumeric(strN))
+
+Cleanup:
+    Exit Function
+
+ErrHandler:
+    If m_DEBUG_MODE Then Stop: Resume
+    IsSameRowLink = False
+    Resume Cleanup
+End Function
+
+' Purpose: The address of the first non-empty, non-formula cell in rngTest, or "" if every cell is
+'          empty or a formula. One read. Never raises: an unreadable range counts as a clash.
+Private Function FirstConstantIn(ByVal rngTest As Range) As String
+
+    Dim varFormulas As Variant
+    Dim lngR        As Long
+    Dim lngC        As Long
+    Dim strF        As String
+
+    On Error GoTo ErrHandler
+
+    varFormulas = rngTest.Formula
+    If Not IsArray(varFormulas) Then
+        strF = CStr(varFormulas)
+        If Len(strF) > 0 And Left$(strF, 1) <> "=" Then FirstConstantIn = rngTest.Address(False, False)
+        GoTo Cleanup
+    End If
+
+    For lngR = 1 To UBound(varFormulas, 1)
+        For lngC = 1 To UBound(varFormulas, 2)
+            strF = CStr(varFormulas(lngR, lngC))
+            If Len(strF) > 0 And Left$(strF, 1) <> "=" Then
+                FirstConstantIn = rngTest.Cells(lngR, lngC).Address(False, False)
+                GoTo Cleanup
+            End If
+        Next lngC
+    Next lngR
+
+Cleanup:
+    Exit Function
+
+ErrHandler:
+    If m_DEBUG_MODE Then Stop: Resume
+    FirstConstantIn = rngTest.Address(False, False)
+    Resume Cleanup
+End Function
 
 'sub to allow editing and save a working copy of the active workbook
 '--------------------------------------------< OA Robot >--------------------------------------------
@@ -1942,36 +2302,83 @@ End Sub
 ' Macro Expression:       modCaseSetup.EnableEditingAndSaveCopy([[ActiveCell]])
 ' Generated:              01/08/2025 05:11 PM
 '----------------------------------------------------------------------------------------------------
+' Purpose: Save Copy of File (SA). Saves the active workbook as name_<suffix> next to itself and
+'          carries on in the copy. The outcome goes to the StatusBar; no MsgBox, ever.
 Sub SaveCopy(Optional strSuff As String = "Working")
-    Dim wb As Workbook
-    Dim strPath As String
-    Dim strBase As String
-    Dim strExt As String
-    Dim lngDot As Long
-    Dim lngTry As Long
 
-    ' Set WB to the active workbook
+    Dim wb As Workbook
+    Dim strWhy As String
+    Dim strSaved As String
+
+    On Error GoTo ErrHandler
+
     Set wb = ActiveWorkbook
-    If IsError(strSuff) Then
-        strSuff = "Working"
-    ElseIf Len(strSuff) = 0 Then
-        strSuff = "Working"
+    If wb Is Nothing Then GoTo Cleanup
+
+    strWhy = SaveCopyTo(wb, strSuff, vbNullString, strSaved)
+    If Len(strWhy) > 0 Then
+        Application.StatusBar = Left$("Save Copy: " & strWhy, m_MAX_STATUS)
+    Else
+        ' The local path, not wb.FullName: on OneDrive that is the https:// URL.
+        Application.StatusBar = Left$("Save Copy: now working in " & strSaved, m_MAX_STATUS)
     End If
 
-    ' No MsgBox anywhere in this routine. CompBot is used under time pressure in
-    ' competition, where a modal dialog hidden behind a window is worse than a
-    ' silent no-op. Anything worth saying goes to the status bar.
-    If wb Is Nothing Then Exit Sub
+Cleanup:
+    Exit Sub
+
+ErrHandler:
+    If m_DEBUG_MODE Then Stop: Resume
+    LogError "SaveCopy", Err.Number, Err.Description
+    Application.StatusBar = Left$("Save Copy failed: " & Err.Description & " (see " & LogLocation() & ")", m_MAX_STATUS)
+    Resume Cleanup
+End Sub
+
+' Purpose: Save wb as name_<suffix> and carry on in the copy. The copy goes in strFolder when one is
+'          given, else next to wb. Returns "" when the copy was saved, else the reason it was not;
+'          strSaved is set to the local path the copy was saved to. Never raises: an error is
+'          logged and returned as the reason.
+'          ONEDRIVE / SHAREPOINT (GitHub #1, Ashleigh Roberts): a workbook opened from a synced
+'          folder reports wb.Path as an https:// URL. Dir$ cannot test a URL, so the free-name
+'          check failed and the copy was never made. The folder is now resolved to its local
+'          synced path first (ResolveLocalPath), and the copy is saved there; OneDrive syncs it.
+Private Function SaveCopyTo(ByVal wb As Workbook, ByVal strSuff As String, _
+                            ByVal strFolder As String, ByRef strSaved As String) As String
+
+    Dim strDir  As String
+    Dim strPath As String
+    Dim strBase As String
+    Dim strExt  As String
+    Dim lngDot  As Long
+    Dim lngTry  As Long
+    Dim lngErr  As Long
+    Dim strErr  As String
+    Dim blnAlerts As Boolean
+
+    On Error GoTo ErrHandler
+    blnAlerts = Application.DisplayAlerts
+
+    If Len(strSuff) = 0 Then strSuff = "Working"
+
+    ' An unsaved workbook has no folder to write the copy into.
+    If Len(wb.Path) = 0 Then
+        SaveCopyTo = "save the workbook first."
+        GoTo Cleanup
+    End If
+
+    If Len(strFolder) > 0 Then
+        strDir = ResolveLocalPath(strFolder)
+    Else
+        strDir = ResolveLocalPath(wb.Path)
+    End If
+    If Len(strDir) = 0 Then
+        SaveCopyTo = "can't find this file's local folder (OneDrive/SharePoint not synced?). " & _
+                     "Save the case to a local or synced folder, or set one with SSF."
+        GoTo Cleanup
+    End If
 
     ' Allow editing if the workbook is protected
     If wb.ProtectStructure Then
         wb.Unprotect ' Unprotect the workbook (password may be required if protected with one)
-    End If
-
-    ' An unsaved workbook has no folder to write the copy into.
-    If Len(wb.Path) = 0 Then
-        Application.StatusBar = "Save Copy: save the workbook first."
-        Exit Sub
     End If
 
     ' Split on the LAST dot so any extension survives - .xlsm, .xlsb, .xltm.
@@ -1986,25 +2393,57 @@ Sub SaveCopy(Optional strSuff As String = "Working")
         strExt = vbNullString
     End If
 
-    strPath = wb.Path & "\" & strBase & "_" & strSuff & strExt
+    strPath = JoinPath(strDir, strBase & "_" & strSuff & strExt)
 
     ' Do not overwrite an existing copy, but never block either - bump a counter
     ' until the name is free. A slightly different file name beats a popup.
     lngTry = 1
     Do While Len(Dir$(strPath)) > 0 And lngTry < 100
         lngTry = lngTry + 1
-        strPath = wb.Path & "\" & strBase & "_" & strSuff & "_" & lngTry & strExt
+        strPath = JoinPath(strDir, strBase & "_" & strSuff & "_" & lngTry & strExt)
     Loop
 
     If Len(Dir$(strPath)) > 0 Then
-        Application.StatusBar = "Save Copy: no free file name found."
-        Exit Sub
+        SaveCopyTo = "no free file name found in " & strDir & "."
+        GoTo Cleanup
     End If
 
     ' Keep the workbook's own format, so macros survive an .xlsm.
+    ' OneDrive can raise 1004 on a SaveAs that DID happen (seen 2026-10-08, saving over a name OneDrive
+    ' was still syncing a delete of): the workbook is renamed and the file is there. That is a saved
+    ' copy - log it and carry on. Anything else is a real failure.
+    ' NO PROMPTS (Jaq, 2026-10-08): a case whose author set "remove personal information on save"
+    ' makes Excel stop on a "Be careful! ... personal information" warning (seen on the 2026 UK
+    ' International Women's Day case, whose data is names). Alerts are off for the SaveAs alone;
+    ' the free-name check above means nothing can be overwritten without asking.
+    blnAlerts = Application.DisplayAlerts
+    Application.DisplayAlerts = False
+    On Error Resume Next                          ' narrow: the SaveAs only
     wb.SaveAs Filename:=strPath, FileFormat:=wb.FileFormat
+    lngErr = Err.Number
+    strErr = Err.Description
+    On Error GoTo ErrHandler
+    Application.DisplayAlerts = blnAlerts
+    If lngErr <> 0 Then
+        If StrComp(wb.Name, Mid$(strPath, InStrRev(strPath, "\") + 1), vbTextCompare) = 0 _
+           And Len(Dir$(strPath)) > 0 Then
+            LogError "SaveCopyTo (copy saved anyway)", lngErr, strErr
+        Else
+            Err.Raise lngErr, "SaveCopyTo", strErr
+        End If
+    End If
+    strSaved = strPath
 
-End Sub
+Cleanup:
+    Application.DisplayAlerts = blnAlerts         ' never left off, whatever happened
+    Exit Function
+
+ErrHandler:
+    If m_DEBUG_MODE Then Stop: Resume
+    If LogError("SaveCopyTo", Err.Number, Err.Description) Then m_blnLogWritten = True
+    SaveCopyTo = Err.Number & ": " & Err.Description
+    Resume Cleanup
+End Function
 
 ' ====================================================================================================
 '  Private helpers
@@ -2687,6 +3126,7 @@ ErrHandler:
     If m_DEBUG_MODE Then Stop: Resume
     SafeText = vbNullString
 End Function
+
 
 
 

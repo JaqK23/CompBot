@@ -14,57 +14,38 @@
    <NumberFormat/>
    <Protection/>
   </Style>
-  <Style ss:ID="s18" ss:Name="Explanatory Text">
-   <Font ss:FontName="Verdana" x:Family="Swiss" ss:Size="16" ss:Color="#7F7F7F"
-    ss:Italic="1"/>
+  <Style ss:ID="s46">
+   <Font ss:FontName="Segoe UI" x:Family="Swiss" ss:Size="16" ss:Color="#000000"/>
   </Style>
-  <Style ss:ID="s16" ss:Name="Heading 1">
-   <Borders>
-    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="3"
-     ss:Color="#156082"/>
-   </Borders>
-   <Font ss:FontName="Verdana" x:Family="Swiss" ss:Size="15" ss:Color="#0E2841"
+  <Style ss:ID="s47">
+   <Font ss:FontName="Segoe UI" x:Family="Swiss" ss:Size="16" ss:Color="#000000"/>
+   <Interior ss:Color="#FEFFCE" ss:Pattern="Solid"/>
+  </Style>
+  <Style ss:ID="s48">
+   <Alignment ss:Horizontal="Left" ss:Vertical="Center" ss:Indent="1"/>
+   <Font ss:FontName="Segoe UI" x:Family="Swiss" ss:Size="14" ss:Color="#1B647E"
     ss:Bold="1"/>
+   <Interior ss:Color="#FEFFCE" ss:Pattern="Solid"/>
   </Style>
-  <Style ss:ID="s17" ss:Name="Heading 2">
-   <Borders>
-    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="3"
-     ss:Color="#64BEE6"/>
-   </Borders>
-   <Font ss:FontName="Verdana" x:Family="Swiss" ss:Size="13" ss:Color="#0E2841"
+  <Style ss:ID="s49">
+   <Font ss:FontName="Segoe UI" x:Family="Swiss" ss:Size="16" ss:Color="#000000"/>
+   <Interior ss:Color="#1B647E" ss:Pattern="Solid"/>
+  </Style>
+  <Style ss:ID="s50">
+   <Alignment ss:Horizontal="Left" ss:Vertical="Center" ss:Indent="1"/>
+   <Font ss:FontName="Segoe UI" x:Family="Swiss" ss:Size="16" ss:Color="#FEFFCE"
     ss:Bold="1"/>
+   <Interior ss:Color="#1B647E" ss:Pattern="Solid"/>
   </Style>
-  <Style ss:ID="s26" ss:Parent="s16">
-   <Alignment ss:Horizontal="CenterAcrossSelection" ss:Vertical="Top"/>
+  <Style ss:ID="s51">
+   <Font ss:FontName="Segoe UI" x:Family="Swiss" ss:Size="16" ss:Color="#000000"/>
+   <Interior ss:Color="#0E3442" ss:Pattern="Solid"/>
   </Style>
-  <Style ss:ID="s27" ss:Parent="s16">
-   <Alignment ss:Horizontal="CenterAcrossSelection" ss:Vertical="Bottom"/>
-  </Style>
-  <Style ss:ID="s28" ss:Parent="s18">
-   <Alignment ss:Horizontal="CenterAcrossSelection" ss:Vertical="Top"/>
-  </Style>
-  <Style ss:ID="s29" ss:Parent="s18">
-   <Alignment ss:Horizontal="CenterAcrossSelection" ss:Vertical="Bottom"/>
-  </Style>
-  <Style ss:ID="s30" ss:Parent="s17">
-   <Alignment ss:Horizontal="CenterAcrossSelection" ss:Vertical="Top"/>
-  </Style>
-  <Style ss:ID="s31" ss:Parent="s17">
-   <Alignment ss:Horizontal="CenterAcrossSelection" ss:Vertical="Bottom"/>
-  </Style>
-  <Style ss:ID="s32">
-   <Alignment ss:Vertical="Top"/>
-  </Style>
-  <Style ss:ID="s33">
-   <Alignment ss:Vertical="Top" ss:WrapText="1"/>
-  </Style>
-  <Style ss:ID="s99">
-   <Alignment ss:Vertical="Top" ss:WrapText="1"/>
-   <Font ss:FontName="Verdana" x:Family="Swiss" ss:Size="16" ss:Color="#000000"/>
-  </Style>
-  <Style ss:ID="s100">
-   <Alignment ss:Vertical="Top"/>
-   <Font ss:FontName="Verdana" x:Family="Swiss" ss:Size="16" ss:Color="#000000"/>
+  <Style ss:ID="s52">
+   <Alignment ss:Horizontal="Left" ss:Vertical="Center" ss:Indent="1"/>
+   <Font ss:FontName="Segoe UI" x:Family="Swiss" ss:Size="13" ss:Color="#FEFFCE"
+    ss:Bold="1"/>
+   <Interior ss:Color="#0E3442" ss:Pattern="Solid"/>
   </Style>
  </Styles>
  <Names>
@@ -1202,788 +1183,159 @@
   <NamedRange ss:Name="YouAreHere_byLiannaGerrish"
    ss:RefersTo="=LAMBDA(cell,[sheetname],LET(_a,ADDRESS(ROW(cell),COLUMN(cell),4,TRUE),IF(ISOMITTED(sheetname),_a,&quot;'&quot;&amp;sheetname&amp;&quot;'!&quot;&amp;_a)))"/>
  </Names>
- <Worksheet ss:Name="Info_Commands">
-  <Table ss:ExpandedColumnCount="9" ss:ExpandedRowCount="111"
-   ss:DefaultColumnWidth="90" ss:DefaultRowHeight="19.5">
-   <Column ss:StyleID="s32" ss:Width="297.75"/>
-   <Column ss:StyleID="s32" ss:AutoFitWidth="0" ss:Width="173.25"/>
-   <Column ss:StyleID="s32" ss:Width="540"/>
-   <Column ss:StyleID="s32" ss:AutoFitWidth="0" ss:Width="301.5"/>
-   <Column ss:StyleID="s32" ss:Width="146.25"/>
-   <Column ss:AutoFitWidth="0" ss:Width="17.25" ss:Span="3"/>
-   <Row ss:Height="21">
-    <Cell ss:StyleID="s26"><Data ss:Type="String">CompBot</Data></Cell>
-    <Cell ss:StyleID="s26"/>
-    <Cell ss:StyleID="s26"/>
-    <Cell ss:StyleID="s26"/>
-    <Cell ss:StyleID="s26"/>
-    <Cell ss:StyleID="s27"/>
-    <Cell ss:StyleID="s27"/>
-    <Cell ss:StyleID="s27"/>
-    <Cell ss:StyleID="s27"/>
-   </Row>
-   <Row ss:Height="20.25">
-    <Cell ss:StyleID="s28"><Data ss:Type="String">by Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s28"/>
-    <Cell ss:StyleID="s28"/>
-    <Cell ss:StyleID="s28"/>
-    <Cell ss:StyleID="s28"/>
-    <Cell ss:StyleID="s29"/>
-    <Cell ss:StyleID="s29"/>
-    <Cell ss:StyleID="s29"/>
-    <Cell ss:StyleID="s29"/>
-   </Row>
-   <Row ss:Index="4" ss:Height="20.25">
-    <Cell ss:StyleID="s30"><Data ss:Type="String">Robot Commands</Data></Cell>
-    <Cell ss:StyleID="s30"/>
-    <Cell ss:StyleID="s30"/>
-    <Cell ss:StyleID="s30"/>
-    <Cell ss:StyleID="s30"/>
-    <Cell ss:StyleID="s31"/>
-    <Cell ss:StyleID="s31"/>
-    <Cell ss:StyleID="s31"/>
-    <Cell ss:StyleID="s31"/>
-   </Row>
-   <Row ss:Height="20.25">
-    <Cell ss:StyleID="s28"><Data ss:Type="String">Current list of CompBot Commands</Data></Cell>
-    <Cell ss:StyleID="s28"/>
-    <Cell ss:StyleID="s28"/>
-    <Cell ss:StyleID="s28"/>
-    <Cell ss:StyleID="s28"/>
-    <Cell ss:StyleID="s29"/>
-    <Cell ss:StyleID="s29"/>
-    <Cell ss:StyleID="s29"/>
-    <Cell ss:StyleID="s29"/>
-   </Row>
-   <Row>
-    <Cell ss:Formula="=ROWS(#REF!)"><Data ss:Type="Number">104</Data></Cell>
-   </Row>
-   <Row>
-    <Cell><Data ss:Type="String">Name</Data></Cell>
-    <Cell><Data ss:Type="String">Creator</Data></Cell>
-    <Cell><Data ss:Type="String">Description</Data></Cell>
-    <Cell><Data ss:Type="String">Parameters</Data></Cell>
-    <Cell><Data ss:Type="String">Launch Code</Data></Cell>
-   </Row>
-   <Row>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Align Array to Right</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Aligns array to the right with blanks to left</Data></Cell>
-    <Cell ss:StyleID="s33"/>
-    <Cell><Data ss:Type="String">ar</Data></Cell>
-   </Row>
-   <Row ss:Height="58.5">
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Apply ARROWSHIFT_byEmilieWilliams Lambda</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Apply ARROWSHIFT_byEmilieWilliams lambda function to active cell, using direction in clipboard.</Data></Cell>
-    <Cell ss:StyleID="s33"/>
-    <Cell><Data ss:Type="String">ARR</Data></Cell>
-   </Row>
-   <Row>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Backup Sheets in Workbook</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Copy all sheets in workbook for backup</Data></Cell>
-    <Cell ss:StyleID="s33"/>
-    <Cell><Data ss:Type="String">BU</Data></Cell>
-   </Row>
-   <Row ss:Height="39">
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Clear Bonus From Dock</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Hides one bonus from the dock by hand (type 2, B4, B or Bonus 2)</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">bonus_to_clear: Bonus to clear from the dock (e.g. 2, B4, B or Bonus 2)</Data></Cell>
-    <Cell><Data ss:Type="String">BQX</Data></Cell>
-   </Row>
-   <Row ss:Height="39">
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Clear Lambda Library</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Forgets your saved lambda library, so ILL and Full Setup Case stop loading it</Data></Cell>
-    <Cell ss:StyleID="s33"/>
-    <Cell><Data ss:Type="String">CLL</Data></Cell>
-   </Row>
-   <Row ss:Height="78">
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Clear Lambdas</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">DEV ONLY, DISABLED. Clears lambdas out of CompBot itself (never the active file) that are not in the Lambdas table or needed by a command. Would delete any lambda library a user has pulled into CompBot.</Data></Cell>
-    <Cell ss:StyleID="s33"/>
-   </Row>
-   <Row ss:Height="39">
-    <Cell ss:StyleID="s99"><Data ss:Type="String">Clear Solve Folder</Data></Cell>
-    <Cell ss:StyleID="s100"><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s99"><Data ss:Type="String">Forgets your Solve folder, so Full Setup Case saves the _Solve copy next to the case again</Data></Cell>
-    <Cell ss:StyleID="s99"/>
-    <Cell ss:StyleID="s100"><Data ss:Type="String">CSF</Data></Cell>
-   </Row>
-   <Row>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Clear Status Bar</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Clears the status bar</Data></Cell>
-    <Cell ss:StyleID="s33"/>
-    <Cell><Data ss:Type="String">CSB</Data></Cell>
-   </Row>
-   <Row ss:Height="58.5">
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Clear Unused Lambdas</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Deletes lambdas from the active workbook that nothing refers to, so the case file you submit does not carry every lambda you own</Data></Cell>
-    <Cell ss:StyleID="s33"/>
-   </Row>
-   <Row ss:AutoFitHeight="0" ss:Height="52.5">
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Clear Unused Lambdas with Report</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">As Clear Unused Lambdas, but writes out what it removed and what it kept; use this one when you want to check before trusting it</Data></Cell>
-    <Cell ss:StyleID="s33"/>
-   </Row>
-   <Row ss:AutoFitHeight="0" ss:Height="52.5">
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Copy Map And Fill From Legend</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Copy a color-coded map sheet: stand on a colored legend cell; copies the sheet and fills every map cell on the copy with its color's legend value (white is never a key); each named range on the sheet gets a clr_ twin on the copy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">none</Data></Cell>
-    <Cell><Data ss:Type="String">CFL</Data></Cell>
-   </Row>
-   <Row>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Create Blank Sheet</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Creates a blank sheet named based on cell value (Sht otherwise)</Data></Cell>
-    <Cell ss:StyleID="s33"/>
-    <Cell><Data ss:Type="String">BS, CBS, S</Data></Cell>
-   </Row>
-   <Row>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Create Bonus Sheet</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Creates bonus sheet &quot;B&quot; with bonus questions</Data></Cell>
-    <Cell ss:StyleID="s33"/>
-    <Cell><Data ss:Type="String">BQC, CB</Data></Cell>
-   </Row>
-   <Row ss:Height="58.5">
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Create Case Inputs Sheet</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Creates a case inputs sheet: one row per game with its Game and Level, then every input; names each level L01_Inputs, L02_Inputs, ...</Data></Cell>
-    <Cell ss:StyleID="s33"/>
-    <Cell><Data ss:Type="String">CIS, IS</Data></Cell>
-   </Row>
-   <Row ss:Height="58.5">
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Create Data Table</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Builds (or finds) the data table block for the level you are in, beside its inputs, and lands on the last input; fill it with Run Data Table (RDT)</Data></Cell>
-    <Cell ss:StyleID="s33"/>
-    <Cell><Data ss:Type="String">CDT, DT</Data></Cell>
-   </Row>
-   <Row>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Create Level Sheets</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Creates a sheet for each level in the Case sheet</Data></Cell>
-    <Cell ss:StyleID="s33"/>
-    <Cell><Data ss:Type="String">CL, CLS</Data></Cell>
-   </Row>
-   <Row>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Difference of Array Columns by Row</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Returns first column minus last column in array</Data></Cell>
-    <Cell ss:StyleID="s33"/>
-    <Cell><Data ss:Type="String">diff, dbr</Data></Cell>
-   </Row>
-   <Row>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Eggy</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Easter Egg Fun</Data></Cell>
-    <Cell ss:StyleID="s33"/>
-   </Row>
-   <Row ss:Height="39">
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Exclude Blanks</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Filters blank cells out of the active array, leaving only cells that hold something</Data></Cell>
-    <Cell ss:StyleID="s33"/>
-    <Cell><Data ss:Type="String">EB</Data></Cell>
-   </Row>
-   <Row ss:Height="39">
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Exclude Examples</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Trims the worked-example rows off the top of the selection, leaving just the real questions</Data></Cell>
-    <Cell ss:StyleID="s33"/>
-    <Cell><Data ss:Type="String">XE</Data></Cell>
-   </Row>
-   <Row ss:Height="39">
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Extract Characters</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Split the active cell's text into its individual characters, one per row. Keeps line breaks, accented letters and emoji intact.</Data></Cell>
-    <Cell ss:StyleID="s33"/>
-   </Row>
-   <Row ss:Height="39">
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Fill Similar Background Color</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Copies the selected cells' values over every cell sharing their fill color; turns a color-coded map into data in one run</Data></Cell>
-    <Cell ss:StyleID="s33"/>
-    <Cell><Data ss:Type="String">FBC</Data></Cell>
-   </Row>
-   <Row ss:Height="39">
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Find Above In Left</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Select the empty grid between two lists: marks 1 where the item ABOVE each column is found in the item LEFT of each row</Data></Cell>
-    <Cell ss:StyleID="s33"/>
-    <Cell><Data ss:Type="String">fal</Data></Cell>
-   </Row>
-   <Row ss:Height="39">
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Find Address Of Value On Map</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Returns the cell ADDRESS of each value you are looking for on a map, the start point the distance commands need</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">LookFor: the value to find, typed plainly (no quotes)</Data></Cell>
-    <Cell><Data ss:Type="String">FAM</Data></Cell>
-   </Row>
-   <Row ss:Height="58.5">
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Find Nearest On Map</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Stand on the start (e.g. the S) in a map spill, with the target cell COPIED: lists the nearest targets with their addresses and distances, to the right of the map</Data></Cell>
-    <Cell ss:StyleID="s33"/>
-    <Cell><Data ss:Type="String">FNM</Data></Cell>
-   </Row>
-   <Row ss:Height="58.5">
-    <Cell ss:StyleID="s33"><Data ss:Type="String">First Match By Row</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">For each row, the position of the first cell equal to the COPIED cell's value, or a fallback (blank = never) where the row never matches</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">IfNotFound: result where the row never matches (leave blank for never)</Data></Cell>
-    <Cell><Data ss:Type="String">FMR</Data></Cell>
-   </Row>
-   <Row ss:Height="39">
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Flip Array</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Reverses the active cell's text (stressed becomes desserts). For a block use FLR (left to right) or FTB (top to bottom)</Data></Cell>
-    <Cell ss:StyleID="s33"/>
-    <Cell><Data ss:Type="String">FLP</Data></Cell>
-   </Row>
-   <Row>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Flip Array Left to Right</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Mirrors the active array left to right: the last column comes first</Data></Cell>
-    <Cell ss:StyleID="s33"/>
-    <Cell><Data ss:Type="String">FLR</Data></Cell>
-   </Row>
-   <Row>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Flip Array Top to Bottom</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Mirrors the active array top to bottom: the last row comes first</Data></Cell>
-    <Cell ss:StyleID="s33"/>
-    <Cell><Data ss:Type="String">FTB</Data></Cell>
-   </Row>
-   <Row ss:Height="58.5">
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Full Setup Case</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Sets up the case: saves a _Solve copy, backs up the sheets, creates the level, bonus and Case inputs sheets, then imports lambdas. Choose the steps with SCS</Data></Cell>
-    <Cell ss:StyleID="s33"/>
-    <Cell><Data ss:Type="String">SC, Ctrl+Shift+G</Data></Cell>
-   </Row>
-   <Row>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Get Current Settings</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Get current settings for this computer.</Data></Cell>
-    <Cell ss:StyleID="s33"/>
-    <Cell><Data ss:Type="String">GS</Data></Cell>
-   </Row>
-   <Row ss:Height="39">
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Go To Example</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Goes to the level's example row, two cells right of its last input, ready to solve</Data></Cell>
-    <Cell ss:StyleID="s33"/>
-    <Cell><Data ss:Type="String">GE</Data></Cell>
-   </Row>
-   <Row ss:Height="39">
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Goto Similar Background Color</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Selects every cell in the selection that shares the active cell's fill color, so a color group can be seen or counted at once</Data></Cell>
-    <Cell ss:StyleID="s33"/>
-    <Cell><Data ss:Type="String">SBC</Data></Cell>
-   </Row>
-   <Row ss:Height="39">
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Import Case Lambdas</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Your library (if set), then CompBot's lambdas, into the active workbook. Chained after Full Setup Case</Data></Cell>
-    <Cell ss:StyleID="s33"/>
-   </Row>
-   <Row ss:Height="58.5">
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Import Lambda Library</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Loads YOUR own lambda library (set once with SLL) into the active workbook: its lambdas and its stored values (named constants)</Data></Cell>
-    <Cell ss:StyleID="s33"/>
-    <Cell><Data ss:Type="String">ILL</Data></Cell>
-   </Row>
-   <Row ss:Height="39">
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Import Lambdas From CompBot</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Loads CompBot's own lambdas into the active workbook, replacing older copies unless SCS says your library wins</Data></Cell>
-    <Cell ss:StyleID="s33"/>
-    <Cell><Data ss:Type="String">ILC</Data></Cell>
-   </Row>
-   <Row ss:Height="39">
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Keep Cell of Array</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Reduces a spilled array to just the one cell you selected, so a single value can be inspected or reused</Data></Cell>
-    <Cell ss:StyleID="s33"/>
-    <Cell><Data ss:Type="String">KTC</Data></Cell>
-   </Row>
-   <Row ss:Height="39">
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Label Connected Regions (4 ways)</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Numbers each connected blob on a map, cells joining only up, down, left and right</Data></Cell>
-    <Cell ss:StyleID="s33"/>
-    <Cell><Data ss:Type="String">LCR4</Data></Cell>
-   </Row>
-   <Row ss:Height="39">
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Label Connected Regions (8 ways)</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Numbers each connected blob on a map, a diagonal (corner) touch joining cells too</Data></Cell>
-    <Cell ss:StyleID="s33"/>
-    <Cell><Data ss:Type="String">LCR8</Data></Cell>
-   </Row>
-   <Row ss:Height="58.5">
-    <Cell ss:StyleID="s99"><Data ss:Type="String">Level Inputs</Data></Cell>
-    <Cell ss:StyleID="s100"><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s99"><Data ss:Type="String">Type a level, or levels like 4-5 or 3,5-6: their inputs land as an array to work on, with headers and game/level beside them (blank = this sheet's level)</Data></Cell>
-    <Cell ss:StyleID="s99"><Data ss:Type="String">Levels: Levels, e.g. 4 or 4-5 or 3,5-6 (blank = this sheet's level)</Data></Cell>
-    <Cell ss:StyleID="s100"><Data ss:Type="String">LI, LLI</Data></Cell>
-   </Row>
-   <Row ss:Height="39">
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Link Answer Cell</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Points the level's data table ANSWER cell at the active cell (your calculation's output); then run RDT</Data></Cell>
-    <Cell ss:StyleID="s33"/>
-    <Cell><Data ss:Type="String">ANS</Data></Cell>
-   </Row>
-   <Row ss:Height="58.5">
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Link Side Cell</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Adds a SIDE column to the level's data table, pointed at the active cell, so RDT also records a second value per game for a bonus</Data></Cell>
-    <Cell ss:StyleID="s33"/>
-    <Cell><Data ss:Type="String">LSC</Data></Cell>
-   </Row>
-   <Row ss:Height="39">
-    <Cell ss:StyleID="s33"><Data ss:Type="String">List Combinations Of Array</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Every ordering of all the items in the active array, each used once (10 20 30, 10 30 20, 20 10 30 ...)</Data></Cell>
-    <Cell ss:StyleID="s33"/>
-    <Cell><Data ss:Type="String">LCA</Data></Cell>
-   </Row>
-   <Row ss:Height="39">
-    <Cell ss:StyleID="s33"><Data ss:Type="String">List Lambdas Used</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Lists every lambda the active workbook's formulas actually call; worth running before clearing anything</Data></Cell>
-    <Cell ss:StyleID="s33"/>
-   </Row>
-   <Row ss:Height="58.5">
-    <Cell ss:StyleID="s33"><Data ss:Type="String">List Pairings Of Two Lists</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Every pairing of the COPIED list with the active spill (each item of one with each item of the other), written to the right of the spill</Data></Cell>
-    <Cell ss:StyleID="s33"/>
-    <Cell><Data ss:Type="String">LP</Data></Cell>
-   </Row>
-   <Row ss:Height="39">
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Load Game Into Calculation</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Loads the selected data table game into the example calculation, or restores the example</Data></Cell>
-    <Cell ss:StyleID="s33"/>
-    <Cell><Data ss:Type="String">LDT, LG</Data></Cell>
-   </Row>
-   <Row ss:Height="58.5">
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Lookup Array from Column N</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Looks every value of the active array up in a named range or table and returns the column you choose</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">ColumnNumber: Column number to return | LookupRange: Named range or table to look up in</Data></Cell>
-    <Cell><Data ss:Type="String">LKN</Data></Cell>
-   </Row>
-   <Row>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Lookup Value by Row</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Returns RC location of a list of values in a range</Data></Cell>
-    <Cell ss:StyleID="s33"/>
-    <Cell><Data ss:Type="String">lkp</Data></Cell>
-   </Row>
-   <Row ss:Height="39">
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Map Distance From Cell (4 ways)</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">How far every cell on a map is from the COPIED start cell(s), moving only up, down, left and right, routing AROUND obstacles</Data></Cell>
-    <Cell ss:StyleID="s33"/>
-    <Cell><Data ss:Type="String">MDC4</Data></Cell>
-   </Row>
-   <Row ss:Height="39">
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Map Distance From Cell (8 ways)</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">How far every cell on a map is from the COPIED start cell(s), diagonal moves allowed, routing AROUND obstacles</Data></Cell>
-    <Cell ss:StyleID="s33"/>
-    <Cell><Data ss:Type="String">MDC8</Data></Cell>
-   </Row>
-   <Row>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Merged To Centre Across Selection</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Merged Cells changed to Centre Across Selection</Data></Cell>
-    <Cell ss:StyleID="s33"/>
-    <Cell><Data ss:Type="String">Unmerge, M2C</Data></Cell>
-   </Row>
-   <Row ss:Height="39">
-    <Cell ss:StyleID="s33"><Data ss:Type="String">MM</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Applies &#45;- to an array, turning TRUE/FALSE into 1/0 so it can be summed or multiplied</Data></Cell>
-    <Cell ss:StyleID="s33"/>
-    <Cell><Data ss:Type="String">MM</Data></Cell>
-   </Row>
-   <Row ss:Height="39">
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Modulo Array</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Wraps the active array with MOD; turns cumulative movement into a position on a looping board</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Divisor: Divide by (e.g. board size)</Data></Cell>
-    <Cell><Data ss:Type="String">MODA</Data></Cell>
-   </Row>
-   <Row ss:Height="39">
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Modulo Array 1-Based</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Wraps the active array in BoardGameMove_byHadynWiseman: a board numbered 1 to N, so an exact lap lands on N rather than 0</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Divisor: Divide by (e.g. board size)</Data></Cell>
-    <Cell><Data ss:Type="String">MOD1</Data></Cell>
-   </Row>
-   <Row>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Name All Used Ranges</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Renames used range in all sheets</Data></Cell>
-    <Cell ss:StyleID="s33"/>
-    <Cell><Data ss:Type="String">NA, NAUR</Data></Cell>
-   </Row>
-   <Row ss:Height="39">
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Name Used Ranges</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Names used range in all sheets starting with the prefix as provided in the active cell</Data></Cell>
-    <Cell ss:StyleID="s33"/>
-    <Cell><Data ss:Type="String">NURS</Data></Cell>
-   </Row>
-   <Row>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Negative Values</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Negative values. with errors as blank</Data></Cell>
-    <Cell ss:StyleID="s33"/>
-    <Cell><Data ss:Type="String">neg</Data></Cell>
-   </Row>
-   <Row ss:Height="39">
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Next Bonus In Status Bar</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Shows the next open bonus question on the status bar (no-dock fallback)</Data></Cell>
-    <Cell ss:StyleID="s33"/>
-    <Cell><Data ss:Type="String">BQN</Data></Cell>
-   </Row>
-   <Row ss:Height="39">
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Paste Flattened List With Formatting</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Turns a copied range into a list, one row per cell, carrying fill color, font color and border flags</Data></Cell>
-    <Cell ss:StyleID="s33"/>
-    <Cell><Data ss:Type="String">PFF</Data></Cell>
-   </Row>
-   <Row>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Previous Bonus In Status Bar</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Shows the previous open bonus question on the status bar</Data></Cell>
-    <Cell ss:StyleID="s33"/>
-    <Cell><Data ss:Type="String">BQP</Data></Cell>
-   </Row>
-   <Row ss:Height="39">
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Record Walk Route</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Start recording a route: every orthogonal move adds the cells you pass over. Diagonal click finishes</Data></Cell>
-    <Cell ss:StyleID="s33"/>
-    <Cell><Data ss:Type="String">RWR</Data></Cell>
-   </Row>
-   <Row ss:Height="58.5">
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Record Walk Route Here</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">As Record Walk Route, but the route table goes on this sheet, level with where the walk started and to its right, in the first space clear enough to hold it</Data></Cell>
-    <Cell ss:StyleID="s33"/>
-    <Cell><Data ss:Type="String">RWH</Data></Cell>
-   </Row>
-   <Row ss:Height="39">
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Rename Sheets</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Shortens multi-word sheet names to their initials, keeping numbers (Level 1 Data becomes L1D); backups keep their names</Data></Cell>
-    <Cell ss:StyleID="s33"/>
-    <Cell><Data ss:Type="String">rs</Data></Cell>
-   </Row>
-   <Row>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Restore Cleared Bonuses</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Brings every hand-cleared bonus back into the dock</Data></Cell>
-    <Cell ss:StyleID="s33"/>
-    <Cell><Data ss:Type="String">BQR</Data></Cell>
-   </Row>
-   <Row>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Revert Settings</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Reverts settings to those loaded into the Loaded column.</Data></Cell>
-    <Cell ss:StyleID="s33"/>
-    <Cell><Data ss:Type="String">RVS</Data></Cell>
-   </Row>
-   <Row ss:Height="39">
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Rotate Array</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Turns the active array a quarter turn clockwise; run it again for another quarter turn</Data></Cell>
-    <Cell ss:StyleID="s33"/>
-    <Cell><Data ss:Type="String">ROT</Data></Cell>
-   </Row>
-   <Row ss:Height="58.5">
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Round to 0</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Wraps the active formula in ROUND(...,0) for a whole number. Round once at the END of a chain; rounding each step compounds the error</Data></Cell>
-    <Cell ss:StyleID="s33"/>
-    <Cell><Data ss:Type="String">r0</Data></Cell>
-   </Row>
-   <Row ss:Height="39">
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Run Data Table</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Fills a Create Data Table block with static results game by game, recalculating only when run</Data></Cell>
-    <Cell ss:StyleID="s33"/>
-    <Cell><Data ss:Type="String">RDT</Data></Cell>
-   </Row>
-   <Row ss:Height="39">
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Running Total</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Wraps the active array in a running total (RunningTotal_byJaqKennedy with nothing else set)</Data></Cell>
-    <Cell ss:StyleID="s33"/>
-    <Cell><Data ss:Type="String">RT</Data></Cell>
-   </Row>
-   <Row ss:Height="58.5">
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Running Total with Cap</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Running total that stops at the COPIED limit and holds there (Cap = 1). Change the final 1 to 0 to keep the crossing row's full value instead</Data></Cell>
-    <Cell ss:StyleID="s33"/>
-    <Cell><Data ss:Type="String">RTC</Data></Cell>
-   </Row>
-   <Row ss:Height="58.5">
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Running Total with Reset</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Running total that restarts wherever the COPIED flag range holds 1; asks what it restarts at (blank = 0). The flagged row's own value is included</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">ResetTo: what the total restarts at (leave blank for 0)</Data></Cell>
-    <Cell><Data ss:Type="String">RTR</Data></Cell>
-   </Row>
-   <Row ss:Height="39">
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Save Answer To Bonus 1</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Links the active cell (any sheet) into the Bonus 1 answer cell, goes there and copies it for the submission site.</Data></Cell>
-    <Cell ss:StyleID="s33"/>
-    <Cell><Data ss:Type="String">B1</Data></Cell>
-   </Row>
-   <Row ss:Height="39">
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Save Answer To Bonus 2</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Links the active cell (any sheet) into the Bonus 2 answer cell, goes there and copies it for the submission site.</Data></Cell>
-    <Cell ss:StyleID="s33"/>
-    <Cell><Data ss:Type="String">B2</Data></Cell>
-   </Row>
-   <Row ss:Height="39">
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Save Answer To Bonus 3</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Links the active cell (any sheet) into the Bonus 3 answer cell, goes there and copies it for the submission site.</Data></Cell>
-    <Cell ss:StyleID="s33"/>
-    <Cell><Data ss:Type="String">B3</Data></Cell>
-   </Row>
-   <Row ss:Height="39">
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Save Answer To Bonus 4</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Links the active cell (any sheet) into the Bonus 4 answer cell, goes there and copies it for the submission site.</Data></Cell>
-    <Cell ss:StyleID="s33"/>
-    <Cell><Data ss:Type="String">B4</Data></Cell>
-   </Row>
-   <Row ss:Height="39">
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Save Answer To Bonus 5</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Links the active cell (any sheet) into the Bonus 5 answer cell, goes there and copies it for the submission site.</Data></Cell>
-    <Cell ss:StyleID="s33"/>
-    <Cell><Data ss:Type="String">B5</Data></Cell>
-   </Row>
-   <Row ss:Height="39">
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Save Answers To Left</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Saves references to the selected cells in the green answer cells to the left on the same row.</Data></Cell>
-    <Cell ss:StyleID="s33"/>
-    <Cell><Data ss:Type="String">SAL</Data></Cell>
-   </Row>
-   <Row ss:Height="39">
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Save Copy of File</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Enable editing and save copy of file with suffix based on active cell (otherwise Working)</Data></Cell>
-    <Cell ss:StyleID="s33"/>
-    <Cell><Data ss:Type="String">SA</Data></Cell>
-   </Row>
-   <Row ss:Height="58.5">
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Save From Example</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Select your answer formula on the example row; the working right of the inputs is copied to every question and the answers linked</Data></Cell>
-    <Cell ss:StyleID="s33"/>
-    <Cell><Data ss:Type="String">SFE</Data></Cell>
-   </Row>
-   <Row>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Sequence of Row Count</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Sequence of row count of array variable</Data></Cell>
-    <Cell ss:StyleID="s33"/>
-    <Cell><Data ss:Type="String">src</Data></Cell>
-   </Row>
-   <Row ss:Height="39">
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Set Lambda Library</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Points CompBot at YOUR lambda library workbook, once; ILL and Full Setup Case then load it</Data></Cell>
-    <Cell ss:StyleID="s33"/>
-    <Cell><Data ss:Type="String">SLL</Data></Cell>
-   </Row>
-   <Row ss:Height="39">
-    <Cell ss:StyleID="s99"><Data ss:Type="String">Set Solve Folder</Data></Cell>
-    <Cell ss:StyleID="s100"><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s99"><Data ss:Type="String">Choose the folder Full Setup Case saves your _Solve copy into, once (e.g. OneDrive)</Data></Cell>
-    <Cell ss:StyleID="s99"/>
-    <Cell ss:StyleID="s100"><Data ss:Type="String">SSF</Data></Cell>
-   </Row>
-   <Row ss:Height="39">
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Setup Case Settings</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Opens CompBot's Setup Settings sheet: choose which steps Full Setup Case runs, and whose lambdas win a name clash</Data></Cell>
-    <Cell ss:StyleID="s33"/>
-    <Cell><Data ss:Type="String">SCS</Data></Cell>
-   </Row>
-   <Row ss:Height="39">
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Show Bonus Dock</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Shows the open bonus questions in a dock on the right; answered ones drop off</Data></Cell>
-    <Cell ss:StyleID="s33"/>
-    <Cell><Data ss:Type="String">BQ</Data></Cell>
-   </Row>
-   <Row ss:Height="58.5">
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Split Text by Delimiter Above</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Splits the active cell's text DOWN into rows on the delimiter in the cell above (linked, so changing that cell re-splits), and trims each piece</Data></Cell>
-    <Cell ss:StyleID="s33"/>
-    <Cell><Data ss:Type="String">ST</Data></Cell>
-   </Row>
-   <Row ss:Height="39">
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Split Text by Semicolon</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Splits the active cell's text on semicolons into an array, trimming each piece</Data></Cell>
-    <Cell ss:StyleID="s33"/>
-    <Cell><Data ss:Type="String">S;</Data></Cell>
-   </Row>
-   <Row ss:Height="39">
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Stack Sheets From Clipboard</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Stacks the same block from many sheets into one table, driven by a sheet-name list in the clipboard</Data></Cell>
-    <Cell ss:StyleID="s33"/>
-    <Cell><Data ss:Type="String">STK</Data></Cell>
-   </Row>
-   <Row ss:Height="39">
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Stack Sheets From Clipboard, Hide Blanks</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">As Stack Sheets From Clipboard, but drops empty cells. WARNING: it drops zeros too</Data></Cell>
-    <Cell ss:StyleID="s33"/>
-    <Cell><Data ss:Type="String">STKH</Data></Cell>
-   </Row>
-   <Row ss:Height="39">
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Stop Walk Route</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Ends a walk route by hand and writes it out, for when a diagonal click is awkward to reach</Data></Cell>
-    <Cell ss:StyleID="s33"/>
-    <Cell><Data ss:Type="String">SWR</Data></Cell>
-   </Row>
-   <Row ss:Height="39">
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Sum False</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Counts the FALSE (0) values in an array: how many rows fail the test</Data></Cell>
-    <Cell ss:StyleID="s33"/>
-    <Cell><Data ss:Type="String">SF</Data></Cell>
-   </Row>
-   <Row ss:Height="39">
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Sum True</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Counts the TRUE values in an array (applies &#45;- and sums it): the usual way to answer 'how many rows pass this test'</Data></Cell>
-    <Cell ss:StyleID="s33"/>
-    <Cell><Data ss:Type="String">ST  ·  MMS</Data></Cell>
-   </Row>
-   <Row ss:Height="39">
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Toggle Calculation Mode</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Toggles calculation mode and places current mode notice in StatusBar</Data></Cell>
-    <Cell ss:StyleID="s33"/>
-    <Cell><Data ss:Type="String">TC</Data></Cell>
-   </Row>
-   <Row>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Toggle Iterative Calculation</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Toggles iterative calculation and sets status in status bar</Data></Cell>
-    <Cell ss:StyleID="s33"/>
-    <Cell><Data ss:Type="String">IC</Data></Cell>
-   </Row>
-   <Row ss:Height="58.5">
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Unmerge Multi-Row Merges</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Unmerges every merged area spanning more than one row (the selection, or the whole sheet), leaving the value in the top-left cell</Data></Cell>
-    <Cell ss:StyleID="s33"/>
-   </Row>
-   <Row>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Update Settings</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Updates default settings to those in Regional Settings sheet</Data></Cell>
-    <Cell ss:StyleID="s33"/>
-    <Cell><Data ss:Type="String">US</Data></Cell>
-   </Row>
-   <Row ss:Height="39">
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Wrap Flat List Into Grid</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Folds a single row or column back into a grid of a chosen width, the missing half of Reshape To One Row/Column</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">RowWidth: How many cells per row in the result</Data></Cell>
-    <Cell><Data ss:Type="String">WFG</Data></Cell>
-   </Row>
-   <Row ss:Height="39">
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Wrap in ABS</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Wraps the active formula in ABS() to make the result positive: distances, differences, gaps, reflections</Data></Cell>
-    <Cell ss:StyleID="s33"/>
-    <Cell><Data ss:Type="String">ABS</Data></Cell>
-   </Row>
-   <Row ss:Height="39">
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Wrap in Concat</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Wraps the active formula in CONCAT() to join an array into one string with no separator, rebuilding a word from its letters</Data></Cell>
-    <Cell ss:StyleID="s33"/>
-    <Cell><Data ss:Type="String">con</Data></Cell>
-   </Row>
-   <Row ss:Height="39">
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Wrap in Drop First Row</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Wraps the active formula in DROP(...,1) to remove a header row from a spilled array</Data></Cell>
-    <Cell ss:StyleID="s33"/>
-    <Cell><Data ss:Type="String">DF</Data></Cell>
-   </Row>
-   <Row ss:Height="39">
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Wrap in Take by Copied Cell Columns</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Wrap in take by copied cell columns.</Data></Cell>
-    <Cell ss:StyleID="s33"/>
-    <Cell><Data ss:Type="String">TCC</Data></Cell>
-   </Row>
-   <Row ss:Height="39">
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Wrap in UNICHAR</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Wraps the active formula in UNICHAR() to turn code numbers back into characters: decoding glyphs, emoji or dice faces</Data></Cell>
-    <Cell ss:StyleID="s33"/>
-    <Cell><Data ss:Type="String">char</Data></Cell>
-   </Row>
-   <Row ss:Height="58.5">
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Wrap in UNICODE</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Wraps the active formula in UNICODE() to turn characters into their code numbers, the first step in most cipher and glyph puzzles</Data></Cell>
-    <Cell ss:StyleID="s33"/>
-    <Cell><Data ss:Type="String">code</Data></Cell>
-   </Row>
-   <Row ss:Height="39">
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Wrap in UNIQUE</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Wraps the active formula in UNIQUE() to strip duplicates: distinct values, distinct colors, distinct answers</Data></Cell>
-    <Cell ss:StyleID="s33"/>
-    <Cell><Data ss:Type="String">U</Data></Cell>
-   </Row>
-   <Row ss:Height="39">
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Wrap with IFERROR TEXTBEFORE space</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Wraps current formula with TEXTBEFORE space with IFERROR in case space doesn't exist</Data></Cell>
-    <Cell ss:StyleID="s33"/>
-    <Cell><Data ss:Type="String">tbse</Data></Cell>
+ <Worksheet ss:Name="CompBot">
+  <Table ss:ExpandedColumnCount="18" ss:ExpandedRowCount="11" ss:StyleID="s46"
+   ss:DefaultColumnWidth="90" ss:DefaultRowHeight="25.5">
+   <Column ss:StyleID="s46" ss:AutoFitWidth="0" ss:Width="26.25"/>
+   <Column ss:StyleID="s46" ss:AutoFitWidth="0" ss:Width="94.5" ss:Span="16"/>
+   <Row ss:AutoFitHeight="0" ss:Height="36" ss:Span="1"/>
+   <Row ss:Index="3" ss:AutoFitHeight="0" ss:Height="30">
+    <Cell ss:Index="2" ss:StyleID="s48"><Data ss:Type="String">OA ROBOT COMMAND COLLECTION</Data></Cell>
+    <Cell ss:StyleID="s47"/>
+    <Cell ss:StyleID="s47"/>
+    <Cell ss:StyleID="s47"/>
+    <Cell ss:StyleID="s47"/>
+   </Row>
+   <Row ss:AutoFitHeight="0" ss:Height="18">
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+   </Row>
+   <Row ss:AutoFitHeight="0" ss:Height="30">
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+   </Row>
+   <Row ss:AutoFitHeight="0" ss:Height="30">
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+   </Row>
+   <Row ss:AutoFitHeight="0" ss:Height="30">
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+   </Row>
+   <Row ss:AutoFitHeight="0" ss:Height="30">
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s50"><Data ss:Type="String">VERSION 2026.10</Data></Cell>
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+   </Row>
+   <Row ss:AutoFitHeight="0" ss:Height="18">
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+    <Cell ss:StyleID="s49"/>
+   </Row>
+   <Row ss:AutoFitHeight="0" ss:Height="12"/>
+   <Row ss:AutoFitHeight="0" ss:Height="30">
+    <Cell ss:StyleID="s51"/>
+    <Cell ss:StyleID="s52"><Data ss:Type="String">101 COMMANDS   •   75 LAMBDAS   •   CTRL+SHIFT+O OPENS THE PALETTE   •   BY JAQ KENNEDY</Data></Cell>
+    <Cell ss:StyleID="s51"/>
+    <Cell ss:StyleID="s51"/>
+    <Cell ss:StyleID="s51"/>
+    <Cell ss:StyleID="s51"/>
+    <Cell ss:StyleID="s51"/>
+    <Cell ss:StyleID="s51"/>
+    <Cell ss:StyleID="s51"/>
+    <Cell ss:StyleID="s51"/>
+    <Cell ss:StyleID="s51"/>
+    <Cell ss:StyleID="s51"/>
+    <Cell ss:StyleID="s51"/>
+    <Cell ss:StyleID="s51"/>
+    <Cell ss:StyleID="s51"/>
+    <Cell ss:StyleID="s51"/>
+    <Cell ss:StyleID="s51"/>
+    <Cell ss:StyleID="s51"/>
    </Row>
   </Table>
  </Worksheet>

@@ -462,6 +462,437 @@ ErrHandler:
 End Function
 
 
+'--------------------------------------------< OA Robot >--------------------------------------------
+' Command Name:           Level Inputs   (launch codes LI, LLI)
+' Macro Expression:       modCaseNav.LoadLevelInputs({{Levels}})
+'----------------------------------------------------------------------------------------------------
+' Purpose: put one or more levels' inputs into the active cell as a formula, wherever you are -
+'          usually the bonus sheet (GitHub #3, Ben de Leon / Jaq, 2026-10-08). Type the levels the
+'          way you would say them: "4", "4-5", "3,5-6"; any number of levels, so 5-level, 8-level
+'          and 10-level cases all work. Left blank, it uses the level of the sheet you are on (L06).
+'          The INPUTS spill as an array of their own (two columns right of the active cell, one row
+'          down), ready to work on, with their headers above for information; Game and Level spill
+'          as a separate array from below the active cell. Input columns blank for every chosen
+'          level are left out, and empty inputs show blank, not 0. The names are made by Create Case Inputs Sheet (CIS, part of Full Setup
+'          Case): each is that level's rows on CaseInputs - Game, Level and the input columns that
+'          level uses. Never overwrites: the four anchor cells must be empty. Every outcome goes to
+'          the status bar.
+Public Sub LoadLevelInputs(Optional ByVal varLevels As Variant)
+
+    ' --- CONSTANTS (local to function) ---
+    Const PROC_NAME     As String = "LoadLevelInputs"
+    Const FAILED_PREFIX As String = "LEVEL INPUTS FAILED: "
+    Const HEADER_ROW    As Long = 2     ' CaseInputs' header row (modCaseSetup.DetailedInputs)
+    Const IS_IN_LIST    As String = "IsInList_byErikOehm"   ' CompBot lambda: (array, list) -> TRUE/FALSE each
+
+    Dim wb          As Workbook
+    Dim rngTarget   As Range
+    Dim rngInfoHdr  As Range
+    Dim rngInfo     As Range
+    Dim rngInHdr    As Range
+    Dim rngData     As Range
+    Dim rngTable    As Range
+    Dim strTable    As String
+    Dim colLevels   As Collection
+    Dim varLevel    As Variant
+    Dim strLevels   As String
+    Dim strName     As String
+    Dim strArgs     As String
+    Dim strStack    As String
+    Dim strInputs   As String
+    Dim strHeaderRow As String
+    Dim strShown    As String
+    Dim strStatus   As String
+    Dim strWhy      As String
+    Dim strBlocked  As String
+    Dim strInLevels As String
+    Dim strLoaded   As String
+
+    On Error GoTo ErrHandler
+
+    If Not IsMissing(varLevels) Then
+        If Not IsError(varLevels) Then strLevels = Trim$(CStr(varLevels))
+    End If
+
+    Set wb = ActiveWorkbook
+    If wb Is Nothing Or TypeName(Selection) <> "Range" Then
+        strStatus = FAILED_PREFIX & "select the empty cell the inputs should go in."
+        GoTo Cleanup
+    End If
+    Set rngTarget = ActiveCell
+
+    ' Blank: the level of the sheet you are on.
+    If Len(strLevels) = 0 Then
+        If modCaseSetup.IsLevelSheetName(rngTarget.Worksheet.Name) Then
+            strLevels = CStr(Val(Mid$(rngTarget.Worksheet.Name, 2)))
+        Else
+            strStatus = FAILED_PREFIX & "type the level(s), e.g. 4 or 4-5 or 3,5-6 (blank only works on a level sheet)."
+            GoTo Cleanup
+        End If
+    End If
+
+    Set colLevels = ParseLevelList(strLevels, strWhy)
+    If colLevels Is Nothing Then
+        strStatus = FAILED_PREFIX & """" & strLevels & """ - " & strWhy
+        GoTo Cleanup
+    End If
+
+    ' The whole CaseInputs table the level names cover: Game in its first column, Level in its
+    ' second, then every input column. No names at all: the case's games carry no level (it has
+    ' no Level column - Jaq, 2026-10-08: say so, never guess), or CIS has not run.
+    Set rngTable = LevelInputsTable(wb)
+    If rngTable Is Nothing Then
+        strStatus = FAILED_PREFIX & "no levels are tagged in this file - the case has no Level column, " & _
+                    "or Create Case Inputs Sheet (CIS) has not run."
+        GoTo Cleanup
+    End If
+
+    ' Every chosen level must exist (its L06_Inputs name is the proof CIS found it).
+    For Each varLevel In colLevels
+        strName = modCaseSetup.LevelInputsName(CLng(varLevel))
+        If Not WorkbookNameExists(wb, strName) Then
+            strStatus = FAILED_PREFIX & "there is no level " & varLevel & " on CaseInputs (no " & strName & ")."
+            GoTo Cleanup
+        End If
+        strArgs = strArgs & "," & varLevel
+        strShown = strShown & "," & varLevel
+    Next varLevel
+    strArgs = Mid$(strArgs, 2)
+
+    ' THE LAYOUT (Jaq, 2026-10-08) - the inputs are an array to work on directly, nothing else in it:
+    '   active cell (Z5)      Game | Level headers       two columns right (AB5)  the input headers
+    '   below it    (Z6#)     game and level numbers     below that       (AB6#)  THE INPUTS
+    ' Headers are for information; the cursor finishes on the inputs. All four anchors must be free.
+    Set rngInfoHdr = rngTarget
+    Set rngInfo = rngTarget.Offset(1, 0)
+    Set rngInHdr = rngTarget.Offset(0, 2)
+    Set rngData = rngTarget.Offset(1, 2)
+    If Len(CStr(rngInfoHdr.Formula)) > 0 Or Len(CStr(rngInfo.Formula)) > 0 _
+       Or Len(CStr(rngInHdr.Formula)) > 0 Or Len(CStr(rngData.Formula)) > 0 Then
+        strStatus = FAILED_PREFIX & rngInfoHdr.Address(False, False) & ":" & rngData.Address(False, False) & _
+                    " is not empty (game info here, inputs two columns right, headers above each). " & _
+                    "Select an empty area; nothing was overwritten."
+        GoTo Cleanup
+    End If
+
+    ' The formulas - written to be READ by the user who gets them (Jaq, 2026-10-08), so the LET
+    ' names say what each step is:
+    '   levels      the levels asked for, e.g. {3,5,6}
+    '   caseInputs  the CaseInputs table: Game, Level, then every input column
+    '   levelRows   FILTER of caseInputs by its Level column against levels (IsInList_byErikOehm,
+    '               or XMATCH where the file lacks it) - one FILTER, so the
+    '               rows come in the case's own order. (Not VSTACK of the level names: VSTACK of a
+    '               blank-tested range gives #VALUE! on text over 255 characters, and dice-roll
+    '               inputs run to 448 on 2023 SA Steppies - found 2026-10-08.)
+    '   tidyRows    an EMPTY input shown blank: through a reference it reads 0, which looks like a
+    '               real input (IWD case). LEN, not ="": Excel's = and <> give #VALUE! over 255
+    '               characters.
+    '   inputs      tidyRows without Game and Level
+    '   usedCols    TRUE for an input column with anything in it for these levels; the others are
+    '               left out of the inputs and their headers alike, so each header stays over its column.
+    strTable = "'" & rngTable.Worksheet.Name & "'!" & rngTable.Address
+    strHeaderRow = "'" & rngTable.Worksheet.Name & "'!" & _
+                   rngTable.Worksheet.Cells(HEADER_ROW, rngTable.Column).Resize(1, rngTable.Columns.Count).Address
+    ' The level test uses CompBot's IsInList lambda (Jaq, 2026-10-08), and the command makes sure it
+    ' is there: Full Setup Case normally imports it, but not if the lambda import is switched off in
+    ' SCS, so a missing copy is added from CompBot first (added only - an existing one is never
+    ' replaced). Only if that copy fails is the same test written out with XMATCH, so the formula
+    ' never shows #NAME?.
+    If Not WorkbookNameExists(wb, IS_IN_LIST) Then
+        If CopyLambdaFromCompBot(wb, IS_IN_LIST) Then strLoaded = "; " & IS_IN_LIST & " loaded from CompBot"
+    End If
+    If WorkbookNameExists(wb, IS_IN_LIST) Then
+        strInLevels = IS_IN_LIST & "(INDEX(caseInputs,,2),levels)"
+    Else
+        strInLevels = "ISNUMBER(XMATCH(INDEX(caseInputs,,2),levels))"
+    End If
+    strStack = "LET(levels,{" & strArgs & "},caseInputs," & strTable & _
+               ",levelRows,FILTER(caseInputs," & strInLevels & ")" & _
+               ",tidyRows,IF(LEN(levelRows)=0,"""",levelRows),"
+    strInputs = strStack & "inputs,DROP(tidyRows,,2),usedCols,BYCOL(inputs,LAMBDA(col,SUM(LEN(col))>0)),"
+    rngInfoHdr.Formula2 = "=TAKE(" & strHeaderRow & ",,2)"
+    rngInfo.Formula2 = "=" & strStack & "TAKE(tidyRows,,2))"
+    rngInHdr.Formula2 = "=" & strInputs & "FILTER(DROP(" & strHeaderRow & ",,2),usedCols,""""))"
+    rngData.Formula2 = "=" & strInputs & "FILTER(inputs,usedCols,""""))"
+
+    ' A spill that runs into something below or to the right shows #SPILL! - the result never
+    ' lands, so take all four back out and say so rather than leave a half-written block.
+    strBlocked = SpillBlocked(Array(rngInfoHdr, rngInfo, rngInHdr, rngData))
+    If Len(strBlocked) > 0 Then
+        rngInfoHdr.ClearContents
+        rngInfo.ClearContents
+        rngInHdr.ClearContents
+        rngData.ClearContents
+        strStatus = FAILED_PREFIX & "the result needs more room - something is in the way of " & strBlocked & _
+                    ". Pick a spot with empty space below and to the right; nothing was left behind."
+        GoTo Cleanup
+    End If
+
+    ' Fit each column the result fills, but only a column holding nothing else (Jaq, 2026-10-08):
+    ' short inputs in a wide column are hard to read; a column shared with the user's work is left alone.
+    FitOwnColumns Array(rngInfoHdr, rngInfo, rngInHdr, rngData)
+
+    ' Select is deliberate: finish on the inputs, ready to work on them (Jaq, 2026-10-08).
+    rngData.Select
+    strStatus = "Level Inputs: level " & Mid$(strShown, 2) & " - inputs in " & rngData.Address(False, False) & _
+                "# (headers above), game and level in " & rngInfo.Address(False, False) & "#; blank columns left out" & _
+                strLoaded & "."
+
+Cleanup:
+    Application.StatusBar = Left$(strStatus, m_MAX_STATUS)
+    Exit Sub
+
+ErrHandler:
+    If m_DEBUG_MODE Then Stop: Resume
+    LogError PROC_NAME, Err.Number, Err.Description
+    strStatus = FAILED_PREFIX & Err.Number & ": " & Err.Description & " (see " & LogLocation() & ")"
+    Resume Cleanup
+End Sub
+
+
+' Purpose: "3,5-6" -> 3, 5, 6 in the order typed (a range may run either way: 7-5 is 7, 6, 5).
+'          Spaces are ignored; a repeated level is kept once. Returns Nothing, with the reason in
+'          strWhy, for anything else - a letter, an empty part, a level below 1 or above 99.
+Private Function ParseLevelList(ByVal strText As String, ByRef strWhy As String) As Collection
+
+    ' --- CONSTANTS (local to function) ---
+    Const MAX_LEVEL As Long = 99
+
+    Dim colOut  As Collection
+    Dim dicSeen As Object
+    Dim varPart As Variant
+    Dim strPart As String
+    Dim lngDash As Long
+    Dim lngFrom As Long
+    Dim lngTo   As Long
+    Dim lngStep As Long
+    Dim lngL    As Long
+
+    On Error GoTo ErrHandler
+
+    Set colOut = New Collection
+    Set dicSeen = CreateObject("Scripting.Dictionary")
+
+    For Each varPart In Split(Replace(strText, " ", vbNullString), ",")
+        strPart = CStr(varPart)
+        lngDash = InStr(1, strPart, "-")
+        If lngDash > 0 Then
+            If Not IsWholeNumber(Left$(strPart, lngDash - 1)) Or Not IsWholeNumber(Mid$(strPart, lngDash + 1)) Then
+                strWhy = "use level numbers, e.g. 4 or 4-5 or 3,5-6."
+                GoTo Cleanup
+            End If
+            lngFrom = CLng(Left$(strPart, lngDash - 1))
+            lngTo = CLng(Mid$(strPart, lngDash + 1))
+        ElseIf IsWholeNumber(strPart) Then
+            lngFrom = CLng(strPart)
+            lngTo = lngFrom
+        Else
+            strWhy = "use level numbers, e.g. 4 or 4-5 or 3,5-6."
+            GoTo Cleanup
+        End If
+        If lngFrom < 1 Or lngTo < 1 Or lngFrom > MAX_LEVEL Or lngTo > MAX_LEVEL Then
+            strWhy = "levels run from 1 to " & MAX_LEVEL & "."
+            GoTo Cleanup
+        End If
+        lngStep = IIf(lngTo >= lngFrom, 1, -1)
+        For lngL = lngFrom To lngTo Step lngStep
+            If Not dicSeen.Exists(lngL) Then
+                dicSeen(lngL) = True
+                colOut.Add lngL
+            End If
+        Next lngL
+    Next varPart
+
+    If colOut.Count > 0 Then Set ParseLevelList = colOut Else strWhy = "no level given."
+
+Cleanup:
+    Exit Function
+
+ErrHandler:
+    If m_DEBUG_MODE Then Stop: Resume
+    strWhy = "could not read it (" & Err.Description & ")."
+    Set ParseLevelList = Nothing
+    Resume Cleanup
+End Function
+
+
+' Purpose: Add CompBot's own lambda strName to wb, with its comment, when wb has none of that name.
+'          Never replaces anything. Returns True if it was added. Never raises.
+Private Function CopyLambdaFromCompBot(ByVal wb As Workbook, ByVal strName As String) As Boolean
+
+    Dim nmSource As Name
+    Dim nmNew    As Name
+
+    On Error GoTo ErrHandler
+
+    If WorkbookNameExists(wb, strName) Then GoTo Cleanup
+    Set nmSource = ThisWorkbook.Names(strName)
+    Set nmNew = wb.Names.Add(Name:=strName, RefersTo:=nmSource.RefersTo)
+    On Error Resume Next                          ' narrow: a comment is nice to have, never fatal
+    nmNew.Comment = nmSource.Comment
+    On Error GoTo ErrHandler
+    CopyLambdaFromCompBot = True
+
+Cleanup:
+    Exit Function
+
+ErrHandler:
+    If m_DEBUG_MODE Then Stop: Resume
+    LogError "CopyLambdaFromCompBot", Err.Number, Err.Description
+    CopyLambdaFromCompBot = False
+    Resume Cleanup
+End Function
+
+
+' Purpose: The addresses (comma-separated) of the cells in varCells whose formula shows #SPILL!,
+'          or "". Never raises: an unreadable cell counts as blocked.
+Private Function SpillBlocked(ByVal varCells As Variant) As String
+
+    ' --- CONSTANTS (local to function) ---
+    Const ERR_SPILL As Long = 2045          ' xlErrSpill
+
+    Dim varCell As Variant
+    Dim varVal  As Variant
+    Dim strOut  As String
+
+    On Error GoTo ErrHandler
+
+    For Each varCell In varCells
+        varVal = varCell.value
+        If IsError(varVal) Then
+            If varVal = CVErr(ERR_SPILL) Then strOut = strOut & ", " & varCell.Address(False, False)
+        End If
+    Next varCell
+    SpillBlocked = Mid$(strOut, 3)
+
+Cleanup:
+    Exit Function
+
+ErrHandler:
+    If m_DEBUG_MODE Then Stop: Resume
+    SpillBlocked = "the result"
+    Resume Cleanup
+End Function
+
+
+' Purpose: AutoFit every column the results in varCells fill (each cell's spill, or the cell alone),
+'          but only a column where those results are ALL there is - a column that also holds the
+'          user's own work keeps its width. Never raises: a column that cannot be checked is left alone.
+Private Sub FitOwnColumns(ByVal varCells As Variant)
+
+    Dim varCell  As Variant
+    Dim rngOurs  As Range
+    Dim rngArea  As Range
+    Dim rngCol   As Range
+    Dim ws       As Worksheet
+    Dim lngCol   As Long
+    Dim lngFirst As Long
+    Dim lngLast  As Long
+
+    On Error GoTo ErrHandler
+
+    For Each varCell In varCells
+        Set rngArea = Nothing
+        On Error Resume Next                      ' narrow: a single-value result has no spill
+        If varCell.HasSpill Then Set rngArea = varCell.SpillingToRange
+        On Error GoTo ErrHandler
+        If rngArea Is Nothing Then Set rngArea = varCell
+        If rngOurs Is Nothing Then Set rngOurs = rngArea Else Set rngOurs = Union(rngOurs, rngArea)
+    Next varCell
+    If rngOurs Is Nothing Then GoTo Cleanup
+
+    Set ws = rngOurs.Worksheet
+    lngFirst = ws.Columns.Count
+    For Each rngArea In rngOurs.Areas
+        If rngArea.Column < lngFirst Then lngFirst = rngArea.Column
+        If rngArea.Column + rngArea.Columns.Count - 1 > lngLast Then lngLast = rngArea.Column + rngArea.Columns.Count - 1
+    Next rngArea
+
+    For lngCol = lngFirst To lngLast
+        Set rngCol = ws.Columns(lngCol)
+        If Not Intersect(rngCol, rngOurs) Is Nothing Then
+            If Application.WorksheetFunction.CountA(rngCol) = _
+               Application.WorksheetFunction.CountA(Intersect(rngCol, rngOurs)) Then rngCol.AutoFit
+        End If
+    Next lngCol
+
+Cleanup:
+    Exit Sub
+
+ErrHandler:
+    If m_DEBUG_MODE Then Stop: Resume
+    Resume Cleanup
+End Sub
+
+
+' Purpose: The CaseInputs table the level names cover - from the first level's first row to the
+'          last level's last row, and from Game across to the widest level's last column - or
+'          Nothing if the file has no L##_Inputs names. Never raises.
+Private Function LevelInputsTable(ByVal wb As Workbook) As Range
+
+    Dim nmItem   As Name
+    Dim rngName  As Range
+    Dim wsTable  As Worksheet
+    Dim lngTop   As Long
+    Dim lngLeft  As Long
+    Dim lngBottom As Long
+    Dim lngRight As Long
+
+    On Error GoTo ErrHandler
+
+    For Each nmItem In wb.Names
+        If nmItem.Name Like "L##_Inputs" And TypeName(nmItem.Parent) = "Workbook" Then
+            Set rngName = Nothing
+            On Error Resume Next                  ' narrow: a name whose range was deleted
+            Set rngName = nmItem.RefersToRange
+            On Error GoTo ErrHandler
+            If Not rngName Is Nothing Then
+                If wsTable Is Nothing Then
+                    Set wsTable = rngName.Worksheet
+                    lngTop = rngName.Row
+                    lngLeft = rngName.Column
+                End If
+                If rngName.Row < lngTop Then lngTop = rngName.Row
+                If rngName.Column < lngLeft Then lngLeft = rngName.Column
+                If rngName.Row + rngName.Rows.Count - 1 > lngBottom Then lngBottom = rngName.Row + rngName.Rows.Count - 1
+                If rngName.Column + rngName.Columns.Count - 1 > lngRight Then lngRight = rngName.Column + rngName.Columns.Count - 1
+            End If
+        End If
+    Next nmItem
+
+    If Not wsTable Is Nothing Then
+        Set LevelInputsTable = wsTable.Range(wsTable.Cells(lngTop, lngLeft), wsTable.Cells(lngBottom, lngRight))
+    End If
+
+Cleanup:
+    Exit Function
+
+ErrHandler:
+    If m_DEBUG_MODE Then Stop: Resume
+    Set LevelInputsTable = Nothing
+    Resume Cleanup
+End Function
+
+
+' Purpose: True for 1 to 3 digits and nothing else ("06" counts; "4.5", "", "x" do not).
+Private Function IsWholeNumber(ByVal strText As String) As Boolean
+    IsWholeNumber = (Len(strText) >= 1 And Len(strText) <= 3 And Not strText Like "*[!0-9]*")
+End Function
+
+
+' Purpose: True if wb has a WORKBOOK-level name strName. Narrow probe; never raises.
+Private Function WorkbookNameExists(ByVal wb As Workbook, ByVal strName As String) As Boolean
+
+    Dim nmProbe As Name
+
+    On Error Resume Next                          ' narrow: probing for a name that may not exist
+    Set nmProbe = wb.Names(strName)
+    On Error GoTo 0
+    If Not nmProbe Is Nothing Then WorkbookNameExists = (TypeName(nmProbe.Parent) = "Workbook")
+End Function
+
+
+
 
 
 

@@ -92,6 +92,19 @@
       "Enabled": false
     },
     {
+      "Name": "Clear Solve Folder",
+      "Description": "Forgets your Solve folder, so Full Setup Case saves the _Solve copy next to the case again",
+      "Type": "VBAMacroCommand",
+      "Note": "Removes the per-user setting Set Solve Folder (SSF) saved. Changes no folder and no file. To switch to a different folder you do not need this: run SSF again. Added 2026-10-08 (GitHub #4).",
+      "LaunchCodes": [
+        "CSF"
+      ],
+      "MacroExpression": "modSetupSettings.ClearSolveFolder()",
+      "Tags": [
+        "Prep"
+      ]
+    },
+    {
       "Name": "Clear Status Bar",
       "Description": "Clears the status bar",
       "Type": "VBAMacroCommand",
@@ -164,8 +177,9 @@
     },
     {
       "Name": "Create Case Inputs Sheet",
-      "Description": "Creates a case inputs sheet with the inputs for the current case",
+      "Description": "Creates a case inputs sheet: one row per game with its Game and Level, then every input; names each level L01_Inputs, L02_Inputs, ...",
       "Type": "VBAMacroCommand",
+      "Note": "Run by Full Setup Case. Column B is the game number and column C its LEVEL (from the case's own Level column; a case with none gets no levels), so the header row's filter shows one level at a time; the inputs follow from column D. Each level's rows are also named L01_Inputs, L02_Inputs, ... (Game, Level and the input columns that level uses), for the Name Box and for Level Inputs (LI), which drops one or more levels' inputs into the active cell. Level column and names added 2026-10-08 (GitHub #3, Ben de Leon). The same day its unused MacroWorkbookConnection reference ('ThisWorkbook', which named no Connection) was removed, so it runs like every other CompBot macro command.",
       "LaunchCodes": [
         "CIS",
         "IS"
@@ -173,8 +187,7 @@
       "MacroExpression": "modCaseSetup.CreateCaseInputsSheet([[ActiveCell]])",
       "Tags": [
         "Prep"
-      ],
-      "MacroWorkbookConnection": "ThisWorkbook"
+      ]
     },
     {
       "Name": "Create Data Table",
@@ -475,9 +488,9 @@
     },
     {
       "Name": "Import Lambda Library",
-      "Description": "Loads YOUR own lambda library (set once with SLL) into the active workbook",
+      "Description": "Loads YOUR own lambda library (set once with SLL) into the active workbook: its lambdas and its stored values (named constants)",
       "Type": "VBAMacroCommand",
-      "Note": "Everyone keeps their own lambda library in a workbook of their own. Set Lambda Library (SLL) remembers where it is, once; this copies its lambdas into whatever workbook is active. It opens the library read-only with its macros kept quiet and closes it again (or uses it as-is if you already have it open). By default a lambda ALREADY in the file is SKIPPED, never overwritten, and listed on the status bar, so your copy cannot replace CompBot's improved version; if Setup Case Settings (SCS) says your library wins, it replaces instead. Refuses to run with CompBot or the library itself active. No dialogs. WHY NOT KEEP YOUR LAMBDAS INSIDE COMPBOT: a GitHub update replaces CompBot.xlsm wholesale, and most people run it hidden and read-only anyway. The library location is a per-user Windows setting, so it survives every update.",
+      "Note": "Everyone keeps their own lambda library in a workbook of their own. Set Lambda Library (SLL) remembers where it is, once; this copies its lambdas, and its STORED VALUES (named constants and arrays such as =0.05, =\"Red\", ={1,2,3}, and formula names with no cell reference), into whatever workbook is active. Names that point at ranges in the library are not copied (they would link back to the library file); the status bar counts them. It opens the library read-only with its macros kept quiet and closes it again (or uses it as-is if you already have it open). By default a lambda ALREADY in the file is skipped (left as it is) and listed on the status bar, so your copy does not replace CompBot's improved version; if Setup Case Settings (SCS) says your library wins, it replaces instead. Stored values follow the same rule; ILL marks the values it copies with [CompBot ILL] in their Name Manager comment, and those are the ones it updates. Refuses to run with CompBot or the library itself active. No dialogs; failures start ILL FAILED on the status bar. WHY NOT KEEP YOUR LAMBDAS INSIDE COMPBOT: a GitHub update replaces CompBot.xlsm wholesale, and most people run it hidden and read-only anyway. The library location is a per-user Windows setting, so it survives every update. Stored values added 2026-10-08 (GitHub #5, Fabian Sjöblom).",
       "LaunchCodes": [
         "ILL"
       ],
@@ -548,6 +561,31 @@
       "FormulaDependencies": [
         "Regions_byHadynWiseman.lambda",
         "Exists_byHadynWiseman.lambda"
+      ]
+    },
+    {
+      "Name": "Level Inputs",
+      "Description": "Type a level, or levels like 4-5 or 3,5-6: their inputs land as an array to work on, with headers and game/level beside them (blank = this sheet's level)",
+      "Type": "VBAMacroCommand",
+      "Parameters": [
+        {
+          "Name": "Levels",
+          "Type": "InputParameter",
+          "DataType": "String",
+          "Prompt": "Levels, e.g. 4 or 4-5 or 3,5-6 (blank = this sheet's level)"
+        }
+      ],
+      "Note": "For solving bonuses that ask about one level's games: from any sheet, type the levels the way you would say them (4, 4-5, 3,5-6; any number of levels, so 5-, 8- and 10-level cases work). From the active cell (say Z5): Game | Level headers in Z5 with the game and level numbers as their own array in Z6#; the INPUTS as an array of their own two columns right, in AB6#, with their headers above in AB5. You finish on AB6, ready to work on the inputs. Input columns blank for every chosen level are left out, empty inputs stay blank rather than showing 0, and columns holding nothing but the result are auto-fitted. The formulas are built to be read: LET names levels, caseInputs, levelRows (a FILTER using IsInList_byErikOehm, which this command loads as a dependency), tidyRows, inputs, usedCols. The data is the CaseInputs table that Create Case Inputs Sheet (CIS) builds during Full Setup Case, with its Level column; a case with no Level column has no levels tagged and this command says so. Left blank on a level sheet (L06) it uses that level. It checks that the four anchor cells are empty before writing, and if a spill would run into anything the result is taken back out. Every outcome is on the status bar; a failure starts LEVEL INPUTS FAILED. Launch code LI (the name's initials too); LLI also works. Added 2026-10-08 (GitHub #3, Ben de Leon).",
+      "LaunchCodes": [
+        "LI",
+        "LLI"
+      ],
+      "MacroExpression": "modCaseNav.LoadLevelInputs({{Levels}})",
+      "Tags": [
+        "Prep"
+      ],
+      "FormulaDependencies": [
+        "IsInList_byErikOehm.lambda"
       ]
     },
     {
@@ -1118,10 +1156,10 @@
     },
     {
       "Name": "Save From Example",
-      "Description": "Solve once on the example row, then apply it to every question in the level and save the answers",
+      "Description": "Select your answer formula on the example row; the working right of the inputs is copied to every question and the answers linked",
       "Type": "VBAMacroCommand",
-      "UserContextFilter": "ExcelActiveCellIsNotEmpty;ExcelSelectionIsSingleRow",
-      "Note": "Select your solve cells ON THE EXAMPLE ROW (one row, as many columns as your working needs), then run this. It copies them to the first real question row, fills down to the end of the level, saves references into the answer cells, and leaves those on the clipboard ready to paste. Modelled on MEWC Robot's command of the same name, with two deliberate differences: (1) MEWC's copies exactly two rows down, which assumes one example row and one blank row, whereas this one finds the first row whose ANSWER CELL IS EMPTY, because worked examples always carry their answer and real questions never do, so any number of example rows and a missing or doubled spacer all work the same, and it never reads the word 'Example' in any language; (2) the answer column is found by its 'Answer' header text, falling back to the sheet's own answer fill color rather than a hardcoded green, so local chapter cases with a different green still work. Auto Fill Down (Formula Robot) works out how far the level runs, so 10 questions or 20 makes no difference. Added 2026-09-22.",
+      "UserContextFilter": "ExcelActiveCellIsNotEmpty;ExcelSelectionIsSingleCell",
+      "Note": "Select ONE cell: your answer formula on the example row. Every calculation on that row to the right of the case's last input comes with it, on either side of the answer, spills and typed values included, out to the last filled cell (a gap of 3+ empty columns, or a column with typed values on the question rows such as a case table, ends it). It is copied to every question row of the level and the answer cells are linked to your answer column, ready to paste from the clipboard. Re-run it after correcting the example: links it wrote earlier are replaced. Before copying it checks the cells it will fill, and stops and says so if any of them hold case content. Every outcome is on the status bar; a failure starts SAVE FROM EXAMPLE FAILED. Modelled on MEWC Robot's command of the same name, but finds the first question by its empty answer cell (any number of example rows) and the answer column by its 'Answer' header, falling back to the sheet's own answer colour. Added 2026-09-22; working and re-run rules 2026-10-08 (GitHub #2).",
       "LaunchCodes": [
         "SFE"
       ],
@@ -1153,6 +1191,19 @@
       "MacroExpression": "modLambdas.SetLambdaLibrary()",
       "Tags": [
         "LAMBDA",
+        "Prep"
+      ]
+    },
+    {
+      "Name": "Set Solve Folder",
+      "Description": "Choose the folder Full Setup Case saves your _Solve copy into, once (e.g. OneDrive)",
+      "Type": "VBAMacroCommand",
+      "Note": "A setup-time command, run once (and again only if the folder moves). Opens a folder picker. The folder is saved as a per-user Windows setting (HKCU, VB and VBA Program Settings\\CompBot\\Setup), NOT inside CompBot, so it survives every CompBot update. A OneDrive or SharePoint folder is stored as its local synced path. If the folder is missing when you run Full Setup Case, the copy goes next to the case and the status bar says so. Undo with Clear Solve Folder (CSF). Added 2026-10-08 (GitHub #4).",
+      "LaunchCodes": [
+        "SSF"
+      ],
+      "MacroExpression": "modSetupSettings.SetSolveFolder()",
+      "Tags": [
         "Prep"
       ]
     },
@@ -1317,7 +1368,7 @@
     },
     {
       "Name": "Update Settings",
-      "Description": "Updates default settings to those in Default Settings sheet",
+      "Description": "Updates default settings to those in Regional Settings sheet",
       "Type": "VBAMacroCommand",
       "LaunchCodes": [
         "US"

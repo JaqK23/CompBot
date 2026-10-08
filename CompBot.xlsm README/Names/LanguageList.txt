@@ -1,1 +1,1 @@
-LanguageList ='Default Settings'!$O$10
+LanguageList ='Regional Settings'!$O$10

@@ -37,11 +37,11 @@
   <Style ss:ID="s29" ss:Parent="s18">
    <Alignment ss:Horizontal="CenterAcrossSelection" ss:Vertical="Bottom"/>
   </Style>
-  <Style ss:ID="s38" ss:Parent="s16">
+  <Style ss:ID="s34" ss:Parent="s16">
    <Alignment ss:Horizontal="CenterAcrossSelection" ss:Vertical="Bottom"/>
    <Borders/>
   </Style>
-  <Style ss:ID="s39" ss:Parent="s18">
+  <Style ss:ID="s35" ss:Parent="s18">
    <Alignment ss:Horizontal="CenterAcrossSelection" ss:Vertical="Bottom"/>
    <Borders>
     <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"/>
@@ -50,7 +50,7 @@
     <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1"/>
    </Borders>
   </Style>
-  <Style ss:ID="s40" ss:Parent="s18">
+  <Style ss:ID="s36" ss:Parent="s18">
    <Alignment ss:Horizontal="CenterAcrossSelection" ss:Vertical="Bottom"
     ss:WrapText="1"/>
    <Borders>
@@ -60,10 +60,10 @@
     <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1"/>
    </Borders>
   </Style>
-  <Style ss:ID="s43">
+  <Style ss:ID="s39">
    <Alignment ss:Horizontal="Right" ss:Vertical="Bottom"/>
   </Style>
-  <Style ss:ID="s44" ss:Parent="s22">
+  <Style ss:ID="s40" ss:Parent="s22">
    <Borders>
     <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"/>
     <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1"/>
@@ -72,7 +72,7 @@
    </Borders>
    <Font ss:FontName="Verdana" x:Family="Swiss" ss:Size="14" ss:Color="#FFFFFF"/>
   </Style>
-  <Style ss:ID="s47">
+  <Style ss:ID="s43">
    <Alignment ss:Horizontal="Center" ss:Vertical="Bottom"/>
    <Borders>
     <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"/>
@@ -83,7 +83,7 @@
    <Font ss:FontName="Verdana" x:Family="Swiss" ss:Size="16" ss:Color="#0000FF"/>
    <Interior ss:Color="#FFFFCC" ss:Pattern="Solid"/>
   </Style>
-  <Style ss:ID="s48">
+  <Style ss:ID="s44">
    <Alignment ss:Horizontal="Center" ss:Vertical="Bottom"/>
    <Borders>
     <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"/>
@@ -94,10 +94,10 @@
    <Font ss:FontName="Verdana" x:Family="Swiss" ss:Size="16" ss:Color="#0000FF"/>
    <Interior ss:Color="#FFFFCC" ss:Pattern="Solid"/>
   </Style>
-  <Style ss:ID="s49">
+  <Style ss:ID="s45">
    <Alignment ss:Horizontal="Center" ss:Vertical="Bottom"/>
   </Style>
-  <Style ss:ID="s51" ss:Parent="s22">
+  <Style ss:ID="s54" ss:Parent="s22">
    <Borders>
     <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"/>
     <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1"/>
@@ -106,6 +106,9 @@
    </Borders>
    <Font ss:FontName="Verdana" x:Family="Swiss" ss:Size="14" ss:Color="#FFFFFF"/>
    <Interior ss:Color="#156082" ss:Pattern="Solid"/>
+  </Style>
+  <Style ss:ID="s98">
+   <Font ss:FontName="Verdana" x:Family="Swiss" ss:Size="16" ss:Color="#ED7D31"/>
   </Style>
  </Styles>
  <Names>
@@ -1244,7 +1247,7 @@
    ss:RefersTo="=LAMBDA(cell,[sheetname],LET(_a,ADDRESS(ROW(cell),COLUMN(cell),4,TRUE),IF(ISOMITTED(sheetname),_a,&quot;'&quot;&amp;sheetname&amp;&quot;'!&quot;&amp;_a)))"/>
  </Names>
  <Worksheet ss:Name="Setup Settings">
-  <Table ss:ExpandedColumnCount="26" ss:ExpandedRowCount="28"
+  <Table ss:ExpandedColumnCount="26" ss:ExpandedRowCount="31"
    ss:DefaultColumnWidth="90" ss:DefaultRowHeight="19.5">
    <Column ss:AutoFitWidth="0" ss:Width="240.75"/>
    <Column ss:Width="219"/>
@@ -1265,44 +1268,44 @@
    </Row>
    <Row ss:AutoFitHeight="0" ss:Span="1"/>
    <Row ss:Index="5" ss:AutoFitHeight="0" ss:Height="21">
-    <Cell ss:StyleID="s38"><Data ss:Type="String">Setup Case Settings</Data></Cell>
-    <Cell ss:StyleID="s38"/>
-    <Cell ss:StyleID="s38"/>
-    <Cell ss:StyleID="s38"/>
-    <Cell ss:StyleID="s38"/>
-    <Cell ss:StyleID="s38"/>
-    <Cell ss:StyleID="s38"/>
-    <Cell ss:StyleID="s38"/>
-    <Cell ss:StyleID="s38"/>
-    <Cell ss:StyleID="s38"/>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Setup Case Settings</Data></Cell>
+    <Cell ss:StyleID="s34"/>
+    <Cell ss:StyleID="s34"/>
+    <Cell ss:StyleID="s34"/>
+    <Cell ss:StyleID="s34"/>
+    <Cell ss:StyleID="s34"/>
+    <Cell ss:StyleID="s34"/>
+    <Cell ss:StyleID="s34"/>
+    <Cell ss:StyleID="s34"/>
+    <Cell ss:StyleID="s34"/>
     <Cell ss:StyleID="s27"/>
     <Cell ss:StyleID="s27"/>
    </Row>
    <Row ss:AutoFitHeight="0" ss:Height="20.25">
-    <Cell ss:StyleID="s39"><Data ss:Type="String">Choose what Full Setup Case (SC, Ctrl+Shift+G) does. Tick or untick a step, or pick whose lambdas win.</Data></Cell>
-    <Cell ss:StyleID="s39"/>
-    <Cell ss:StyleID="s39"/>
-    <Cell ss:StyleID="s39"/>
-    <Cell ss:StyleID="s39"/>
-    <Cell ss:StyleID="s39"/>
-    <Cell ss:StyleID="s39"/>
-    <Cell ss:StyleID="s39"/>
-    <Cell ss:StyleID="s39"/>
-    <Cell ss:StyleID="s39"/>
+    <Cell ss:StyleID="s35"><Data ss:Type="String">Choose what Full Setup Case (SC, Ctrl+Shift+G) does. Tick or untick a step, or pick whose lambdas win.</Data></Cell>
+    <Cell ss:StyleID="s35"/>
+    <Cell ss:StyleID="s35"/>
+    <Cell ss:StyleID="s35"/>
+    <Cell ss:StyleID="s35"/>
+    <Cell ss:StyleID="s35"/>
+    <Cell ss:StyleID="s35"/>
+    <Cell ss:StyleID="s35"/>
+    <Cell ss:StyleID="s35"/>
+    <Cell ss:StyleID="s35"/>
     <Cell ss:StyleID="s29"/>
     <Cell ss:StyleID="s29"/>
    </Row>
    <Row ss:AutoFitHeight="0" ss:Height="39">
-    <Cell ss:StyleID="s40"><Data ss:Type="String">Kept in this copy of CompBot, so your choices go wherever it goes. Open CompBot for editing to keep a change; a CompBot update puts them back to all on.</Data></Cell>
-    <Cell ss:StyleID="s39"/>
-    <Cell ss:StyleID="s39"/>
-    <Cell ss:StyleID="s39"/>
-    <Cell ss:StyleID="s39"/>
-    <Cell ss:StyleID="s39"/>
-    <Cell ss:StyleID="s39"/>
-    <Cell ss:StyleID="s39"/>
-    <Cell ss:StyleID="s39"/>
-    <Cell ss:StyleID="s39"/>
+    <Cell ss:StyleID="s36"><Data ss:Type="String">Kept in this copy of CompBot, so your choices go wherever it goes. Open CompBot for editing to keep a change; a CompBot update puts them back to all on.</Data></Cell>
+    <Cell ss:StyleID="s35"/>
+    <Cell ss:StyleID="s35"/>
+    <Cell ss:StyleID="s35"/>
+    <Cell ss:StyleID="s35"/>
+    <Cell ss:StyleID="s35"/>
+    <Cell ss:StyleID="s35"/>
+    <Cell ss:StyleID="s35"/>
+    <Cell ss:StyleID="s35"/>
+    <Cell ss:StyleID="s35"/>
     <Cell ss:StyleID="s29"/>
     <Cell ss:StyleID="s29"/>
    </Row>
@@ -1312,81 +1315,96 @@
     <Cell ss:Index="4"><Data ss:Type="String">What it does</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
-    <Cell ss:StyleID="s43"><Data ss:Type="String">Save a _Solve copy</Data></Cell>
-    <Cell ss:StyleID="s48"><Data ss:Type="Boolean">1</Data></Cell>
+    <Cell ss:StyleID="s39"><Data ss:Type="String">Save a _Solve copy</Data></Cell>
+    <Cell ss:StyleID="s44"><Data ss:Type="Boolean">1</Data></Cell>
     <Cell ss:Index="4" ss:StyleID="s18"><Data ss:Type="String">Saves the case as name_Solve first, so the original file is never touched.</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
-    <Cell ss:StyleID="s43"><Data ss:Type="String">Back up every sheet</Data></Cell>
-    <Cell ss:StyleID="s48"><Data ss:Type="Boolean">1</Data></Cell>
+    <Cell ss:StyleID="s39"><Data ss:Type="String">Back up every sheet</Data></Cell>
+    <Cell ss:StyleID="s44"><Data ss:Type="Boolean">1</Data></Cell>
     <Cell ss:Index="4" ss:StyleID="s18"><Data ss:Type="String">A BU_ copy of every sheet (BU).</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
-    <Cell ss:StyleID="s43"><Data ss:Type="String">Name the used ranges</Data></Cell>
-    <Cell ss:StyleID="s48"><Data ss:Type="Boolean">1</Data></Cell>
+    <Cell ss:StyleID="s39"><Data ss:Type="String">Name the used ranges</Data></Cell>
+    <Cell ss:StyleID="s44"><Data ss:Type="Boolean">1</Data></Cell>
     <Cell ss:Index="4" ss:StyleID="s18"><Data ss:Type="String">A Sht_ name for each sheet's data (NA).</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
-    <Cell ss:StyleID="s43"><Data ss:Type="String">Create the level sheets</Data></Cell>
-    <Cell ss:StyleID="s48"><Data ss:Type="Boolean">1</Data></Cell>
+    <Cell ss:StyleID="s39"><Data ss:Type="String">Create the level sheets</Data></Cell>
+    <Cell ss:StyleID="s44"><Data ss:Type="Boolean">1</Data></Cell>
     <Cell ss:Index="4" ss:StyleID="s18"><Data ss:Type="String">One sheet per level: L01, L02... Untick to solve on the Case sheet.</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
-    <Cell ss:StyleID="s43"><Data ss:Type="String">Create the bonus sheet</Data></Cell>
-    <Cell ss:StyleID="s48"><Data ss:Type="Boolean">1</Data></Cell>
+    <Cell ss:StyleID="s39"><Data ss:Type="String">Create the bonus sheet</Data></Cell>
+    <Cell ss:StyleID="s44"><Data ss:Type="Boolean">1</Data></Cell>
     <Cell ss:Index="4" ss:StyleID="s18"><Data ss:Type="String">Sheet B, for the bonus questions.</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
-    <Cell ss:StyleID="s43"><Data ss:Type="String">Create the Case inputs sheet</Data></Cell>
-    <Cell ss:StyleID="s48"><Data ss:Type="Boolean">1</Data></Cell>
+    <Cell ss:StyleID="s39"><Data ss:Type="String">Create the Case inputs sheet</Data></Cell>
+    <Cell ss:StyleID="s44"><Data ss:Type="Boolean">1</Data></Cell>
     <Cell ss:Index="4" ss:StyleID="s18"><Data ss:Type="String">The inputs on a sheet of their own (CIS).</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
-    <Cell ss:StyleID="s43"><Data ss:Type="String">Import your lambda library</Data></Cell>
-    <Cell ss:StyleID="s48"><Data ss:Type="Boolean">1</Data></Cell>
+    <Cell ss:StyleID="s39"><Data ss:Type="String">Import your lambda library</Data></Cell>
+    <Cell ss:StyleID="s44"><Data ss:Type="Boolean">1</Data></Cell>
     <Cell ss:Index="4" ss:StyleID="s18"><Data ss:Type="String">Your own lambdas, if a library is set with SLL.</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
-    <Cell ss:StyleID="s43"><Data ss:Type="String">Import CompBot's lambdas</Data></Cell>
-    <Cell ss:StyleID="s48"><Data ss:Type="Boolean">1</Data></Cell>
+    <Cell ss:StyleID="s39"><Data ss:Type="String">Import CompBot's lambdas</Data></Cell>
+    <Cell ss:StyleID="s44"><Data ss:Type="Boolean">1</Data></Cell>
     <Cell ss:Index="4" ss:StyleID="s18"><Data ss:Type="String">CompBot's own lambdas (ILC).</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
-    <Cell ss:StyleID="s43"><Data ss:Type="String">Whose lambdas win a clash</Data></Cell>
-    <Cell ss:StyleID="s47"><Data ss:Type="String">CompBot</Data></Cell>
+    <Cell ss:StyleID="s39"><Data ss:Type="String">Whose lambdas win a clash</Data></Cell>
+    <Cell ss:StyleID="s43"><Data ss:Type="String">CompBot</Data></Cell>
     <Cell ss:Index="4" ss:StyleID="s18"><Data ss:Type="String">CompBot or Your library. The winner replaces a lambda of the same name; the other never does. ILL and ILC follow it too.</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0"/>
    <Row ss:AutoFitHeight="0">
-    <Cell><Data ss:Type="String">Your lambda library</Data></Cell>
+    <Cell><Data ss:Type="String">Your lambda library and Solve folder</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
-    <Cell ss:StyleID="s43"><Data ss:Type="String">Library file</Data></Cell>
-    <Cell ss:StyleID="s44"><Data ss:Type="String">none set</Data></Cell>
+    <Cell ss:StyleID="s39"><Data ss:Type="String">Library file</Data></Cell>
+    <Cell ss:StyleID="s40"><Data ss:Type="String">none set</Data></Cell>
     <Cell ss:Index="4" ss:StyleID="s18"><Data ss:Type="String">Set with Set Lambda Library (SLL); forgotten with Clear Lambda Library (CLL). Shown here, not changed here.</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
-    <Cell ss:StyleID="s43"><Data ss:Type="String">Full path</Data></Cell>
-    <Cell ss:MergeAcross="6" ss:StyleID="s51"><Data ss:Type="String">Run Set Lambda Library (SLL) to choose one</Data></Cell>
+    <Cell ss:StyleID="s39"><Data ss:Type="String">Full path</Data></Cell>
+    <Cell ss:MergeAcross="6" ss:StyleID="s54"><Data ss:Type="String">Run Set Lambda Library (SLL) to choose one</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:StyleID="s39"><Data ss:Type="String">Solve folder</Data></Cell>
+    <Cell ss:StyleID="s40"><Data ss:Type="String">none set</Data></Cell>
+    <Cell ss:Index="4" ss:StyleID="s18"><Data ss:Type="String">Set with Set Solve Folder (SSF); forgotten with Clear Solve Folder (CSF). Full Setup Case saves the _Solve copy here, or next to the case if none is set or it is missing. Shown here, not changed here.</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:StyleID="s39"><Data ss:Type="String">Full path</Data></Cell>
+    <Cell ss:MergeAcross="6" ss:StyleID="s54"><Data ss:Type="String">Run Set Solve Folder (SSF) to choose one</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0"/>
    <Row>
-    <Cell><Data ss:Type="String">On a new or shared machine (the arena)</Data></Cell>
+    <Cell><Data ss:Type="String">Your checklist: on a new or shared machine (the arena)</Data></Cell>
+    <Cell ss:Index="4" ss:StyleID="s98"><Data ss:Type="String">For you to tick as you go. Ticking a box does NOT run anything: run each command yourself.</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
-    <Cell ss:StyleID="s43"><Data ss:Type="String">Excel's separators</Data></Cell>
-    <Cell ss:StyleID="s49"><Data ss:Type="Boolean">0</Data></Cell>
+    <Cell ss:StyleID="s39"><Data ss:Type="String">Excel's separators</Data></Cell>
+    <Cell ss:StyleID="s45"><Data ss:Type="Boolean">0</Data></Cell>
     <Cell ss:Index="4" ss:StyleID="s18"><Data ss:Type="String">Non-US English settings? Run Get Current Settings (GS), then Update Settings (US); Revert Settings (RVS) before you leave.</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
-    <Cell ss:StyleID="s43"><Data ss:Type="String">Your lambda library</Data></Cell>
-    <Cell ss:StyleID="s49"><Data ss:Type="Boolean">0</Data></Cell>
+    <Cell ss:StyleID="s39"><Data ss:Type="String">Your lambda library</Data></Cell>
+    <Cell ss:StyleID="s45"><Data ss:Type="Boolean">0</Data></Cell>
     <Cell ss:Index="4" ss:StyleID="s18"><Data ss:Type="String">Relink it with Set Lambda Library (SLL): its location will have changed.</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
-    <Cell ss:StyleID="s43"><Data ss:Type="String">These setup choices</Data></Cell>
-    <Cell ss:StyleID="s49"><Data ss:Type="Boolean">0</Data></Cell>
+    <Cell ss:StyleID="s39"><Data ss:Type="String">These setup choices</Data></Cell>
+    <Cell ss:StyleID="s45"><Data ss:Type="Boolean">0</Data></Cell>
     <Cell ss:Index="4" ss:StyleID="s18"><Data ss:Type="String">Review them above before your first Full Setup Case.</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:StyleID="s39"><Data ss:Type="String">Your Solve folder</Data></Cell>
+    <Cell ss:StyleID="s45"><Data ss:Type="Boolean">0</Data></Cell>
+    <Cell ss:Index="4" ss:StyleID="s18"><Data ss:Type="String">Re-set it with Set Solve Folder (SSF): this machine's folders will differ.</Data></Cell>
    </Row>
   </Table>
  </Worksheet>

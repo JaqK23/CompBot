@@ -1,1 +1,1 @@
-List_Separator ='Default Settings'!$C$14
+List_Separator ='Regional Settings'!$C$14

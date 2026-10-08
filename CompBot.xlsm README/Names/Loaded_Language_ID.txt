@@ -1,1 +1,1 @@
-Loaded_Language_ID ='Default Settings'!$E$16
+Loaded_Language_ID ='Regional Settings'!$E$16

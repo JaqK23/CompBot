@@ -1,1 +1,1 @@
-Loaded_List_Separator ='Default Settings'!$E$14
+Loaded_List_Separator ='Regional Settings'!$E$14

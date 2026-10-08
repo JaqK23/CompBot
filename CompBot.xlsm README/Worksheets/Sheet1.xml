@@ -1237,7 +1237,7 @@
     <Cell ss:StyleID="s31"/>
    </Row>
    <Row ss:Height="20.25">
-    <Cell ss:StyleID="s28"><Data ss:Type="String">Limited collection included with CompBot for demonstration. To add lambdas to your workbook, view the Load Lambdas sheet or run &quot;Import Lambdas From CompBot&quot; (ILC) or &quot;Import Lambda Library&quot; (ILL)</Data></Cell>
+    <Cell ss:StyleID="s28"><Data ss:Type="String">Limited collection included with CompBot for demonstration. To add lambdas to your workbook, run &quot;Import Lambdas From CompBot&quot; (ILC) or &quot;Import Lambda Library&quot; (ILL)</Data></Cell>
     <Cell ss:StyleID="s28"/>
     <Cell ss:StyleID="s28"/>
     <Cell ss:StyleID="s28"/>
@@ -1257,11 +1257,158 @@
     <Cell><Data ss:Type="String">Parameters</Data></Cell>
     <Cell><Data ss:Type="String">Array friendly</Data></Cell>
    </Row>
+   <Row>
+    <Cell><Data ss:Type="String">Addresses_byDiarmuidEarly</Data></Cell>
+    <Cell><Data ss:Type="String">Diarmuid Early</Data></Cell>
+    <Cell><Data ss:Type="String">Returns the A1 address of every cell in a range</Data></Cell>
+    <Cell><Data ss:Type="String">rng: the range whose addresses you want. Must be a real RANGE, not an array; it reads ROW() and COLUMN() off the sheet.</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">No: needs a real RANGE</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">Alphabet_byHadynWiseman</Data></Cell>
+    <Cell><Data ss:Type="String">Hadyn Wiseman</Data></Cell>
+    <Cell><Data ss:Type="String">Returns A to Z as a 26-row array</Data></Cell>
+    <Cell><Data ss:Type="String">N/A</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Yes</Data></Cell>
+   </Row>
    <Row ss:Height="156">
     <Cell><Data ss:Type="String">ArrayShift_byHadynWiseman</Data></Cell>
     <Cell><Data ss:Type="String">Hadyn Wiseman</Data></Cell>
     <Cell><Data ss:Type="String">Shifts an array by rows and columns, either filling the gap or wrapping it round</Data></Cell>
     <Cell ss:StyleID="s33"><Data ss:Type="String">Array: the block to shift.&#10;[RowShift]: how many rows to move it down. Negative moves it up.&#10;[ColumnShift]: how many columns to move it right. Negative moves it left.&#10;[Fill]: what to put in the space the shift opens up.&#10;[WrapAround]: 0 = the far end falls off. 1 = it comes back round the other side, which is exactly a deck cut.</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Yes</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">ArrowsLookup_byHadynWiseman</Data></Cell>
+    <Cell><Data ss:Type="String">Hadyn Wiseman</Data></Cell>
+    <Cell><Data ss:Type="String">Normalises an arrow glyph or compass abbreviation into one consistent form</Data></Cell>
+    <Cell><Data ss:Type="String">Direction: an arrow glyph or a compass abbreviation. Normalises whichever notation a case happens to use into one internal form.</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Yes</Data></Cell>
+   </Row>
+   <Row ss:Height="58.5">
+    <Cell><Data ss:Type="String">BiCol_byHadynWiseman</Data></Cell>
+    <Cell><Data ss:Type="String">Hadyn Wiseman</Data></Cell>
+    <Cell><Data ss:Type="String">Applies a function to each column, allowing it to return an array (BYCOL that tolerates arrays)</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">array: the block to walk across.&#10;function: a LAMBDA applied to each COLUMN, allowed to return an array.</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Yes</Data></Cell>
+   </Row>
+   <Row ss:Height="117">
+    <Cell><Data ss:Type="String">Biggest_byHadynWiseman</Data></Cell>
+    <Cell><Data ss:Type="String">Hadyn Wiseman</Data></Cell>
+    <Cell><Data ss:Type="String">Returns the LABEL belonging to the nth largest or smallest number, with an optional tie-break key</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Range: the NUMBERS to rank.&#10;Return: the LABELS to return, lined up with Range. This is the whole point; you get the name, not the score.&#10;[Smallest]: 0 for largest, 1 for smallest. REQUIRED, not optional.&#10;[N]: which one; 1 is the biggest, 2 the second biggest. Omitted = 1.</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Yes</Data></Cell>
+   </Row>
+   <Row ss:Height="58.5">
+    <Cell><Data ss:Type="String">BiRow_byHadynWiseman</Data></Cell>
+    <Cell><Data ss:Type="String">Hadyn Wiseman</Data></Cell>
+    <Cell><Data ss:Type="String">Applies a function to each row, allowing it to return an array (BYROW that tolerates arrays)</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">array: the block to walk down.&#10;function: a LAMBDA applied to each ROW. Unlike native BYROW, it may return an ARRAY per row instead of a single value.</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Yes</Data></Cell>
+   </Row>
+   <Row ss:Height="39">
+    <Cell><Data ss:Type="String">BoardGameMove_byHadynWiseman</Data></Cell>
+    <Cell><Data ss:Type="String">Hadyn Wiseman</Data></Cell>
+    <Cell><Data ss:Type="String">Laps a counter round a board numbered 1 to N: past the last space it carries on from 1</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">MoveValue: the position after the move.&#10;EndSpace: how many spaces the board has.</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Yes</Data></Cell>
+   </Row>
+   <Row ss:Height="195">
+    <Cell><Data ss:Type="String">Bounce_byBoRydobon</Data></Cell>
+    <Cell><Data ss:Type="String">Bo Rydobon</Data></Cell>
+    <Cell><Data ss:Type="String">Returns a run of positions that reflect off a lower and upper wall</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">n: how many steps to generate.&#10;max: the upper wall.&#10;[min]: the lower wall. Omitted = 1.&#10;[start]: where the walk starts. Omitted = min.&#10;[step]: how far each step moves. Omitted = 1.&#10;[leave0Clip1Bounce2]: WHAT HAPPENS WHEN A STEP WOULD OVERSHOOT A WALL. 0 carries on past the wall, then turns; 1 stops at the wall; 2 reflects back off it. With a step that always lands exactly on the wall (a step of 1, for instance) all three give the same sequence.</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">n/a: takes numbers, not a block</Data></Cell>
+   </Row>
+   <Row ss:Height="136.5">
+    <Cell><Data ss:Type="String">ByRectangle_byBoRydobon</Data></Cell>
+    <Cell><Data ss:Type="String">Bo Rydobon</Data></Cell>
+    <Cell><Data ss:Type="String">Applies a function to every rectangular window of a range</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Range: the grid. A REAL RANGE; it builds a:b spans internally, so an array will not do.&#10;Function: what to work out for each window.&#10;Rows: how many rows the window is.&#10;[Columns]: how many columns. Omitted, it is square.&#10;[No_Overlap]: 1 steps a whole window at a time instead of one cell at a time.</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">No: needs a real RANGE</Data></Cell>
+   </Row>
+   <Row ss:Height="195">
+    <Cell ss:StyleID="Default"><Data ss:Type="String">CardSets_byHadynWiseman</Data></Cell>
+    <Cell><Data ss:Type="String">Hadyn Wiseman</Data></Cell>
+    <Cell><Data ss:Type="String">Finds sets or runs in a hand, with ace-high, ace-low, wrap-around and custom rank orders</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Cards: the hand.&#10;CardsInRun: how many cards make a set or a run.&#10;[Ace_High]: 1 counts the ace above the king.&#10;[Ace_Low]: 1 counts the ace below the two. Both can be on at once.&#10;[Sets]: 1 looks for SETS (same rank), 0 for RUNS (consecutive).&#10;[CustomCardList]: your own rank order, for a game that is not a standard deck.&#10;[WrapAroundRuns]: 1 lets a run pass through the end of the order and back round.</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Yes</Data></Cell>
+   </Row>
+   <Row ss:Height="78">
+    <Cell><Data ss:Type="String">Clamp_byBoRydobon</Data></Cell>
+    <Cell><Data ss:Type="String">Bo Rydobon</Data></Cell>
+    <Cell><Data ss:Type="String">Keeps a number, or every number in an array, between an optional lower and upper bound</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">n: the number, or an array of numbers, to limit.&#10;[lower]: smallest allowed value. Omitted, it defaults to MIN(n), i.e. no lower limit is applied.&#10;[upper]: largest allowed value. Omitted, it defaults to MAX(n).</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Yes</Data></Cell>
+   </Row>
+   <Row ss:Height="331.5">
+    <Cell><Data ss:Type="String">ClosestOnMap_byHadynWiseman</Data></Cell>
+    <Cell><Data ss:Type="String">Hadyn Wiseman</Data></Cell>
+    <Cell><Data ss:Type="String">Returns the nearest matching item on a grid with its value, address and distance</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">mp: the map.&#10;start: where you are searching from.&#10;steps: how far to look.&#10;[Items]: what you are looking for.&#10;[DistFunc]: the metric to measure with, YOUR OWN definition of how far apart two cells are. In the 2026-09-20 cut this one parameter replaced the five separate dh/dv/dd/py/kn switches the old body had. It is a LAMBDA(from, to) where FROM is the one start address and TO is the whole column of candidate addresses at once, so build it out of things that work on arrays (RowNum, ColNum, ABS, SQRT) and it returns one distance per candidate. Omit it and you get king moves: diagonals cost the same as straight steps. See the worked examples below.&#10;[ShowBlanks]: include cells with nothing in them.&#10;[RCaa_CRaa_RCad_CRad_RCda_CRda_RCdd_CRdd]: the tie-break ORDER when two targets are equally close, i.e. which of the eight directions wins.</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">No: needs a real RANGE</Data></Cell>
+   </Row>
+   <Row ss:Height="58.5">
+    <Cell><Data ss:Type="String">Coins_byHadynWiseman</Data></Cell>
+    <Cell><Data ss:Type="String">Hadyn Wiseman</Data></Cell>
+    <Cell><Data ss:Type="String">Returns how many of each denomination greedily makes up a target, largest first</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Target: the amount to make up.&#10;Coins: the denominations available, in any order; it sorts them largest first.</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Yes</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">ColNum_byHadynWiseman</Data></Cell>
+    <Cell><Data ss:Type="String">Hadyn Wiseman</Data></Cell>
+    <Cell><Data ss:Type="String">Converts an A1 address, or a packed row/column number, to its column number</Data></Cell>
+    <Cell><Data ss:Type="String">address: an A1 address as text (&quot;C5&quot;), OR a number already packed as row*1000000+column. It tests which it was given, so passing an already-converted number is harmless.</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Yes</Data></Cell>
+   </Row>
+   <Row ss:Height="136.5">
+    <Cell><Data ss:Type="String">Combinations_byHadynWiseman</Data></Cell>
+    <Cell><Data ss:Type="String">Hadyn Wiseman</Data></Cell>
+    <Cell><Data ss:Type="String">Lists the ways of choosing c items from a set, ordered or unordered, with or without repeats</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Array: the items to choose from.&#10;c: how many to choose.&#10;[RemoveOrder]: 1 treats {1,2} and {2,1} as the SAME selection. WITHOUT IT YOU GET PERMUTATIONS; see the watch-out, because the name says otherwise.&#10;[AllowRepeatItems]: 1 lets an item be picked more than once.&#10;[Cumulative]: 1 returns every size up to c, not just size c.</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Yes</Data></Cell>
+   </Row>
+   <Row ss:Height="117">
+    <Cell><Data ss:Type="String">Consecutives_byHadynWiseman</Data></Cell>
+    <Cell><Data ss:Type="String">Hadyn Wiseman</Data></Cell>
+    <Cell><Data ss:Type="String">Returns how long the current run of identical values is, at every position</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">array: the list to measure runs in. A single cell, or a single text value, is split into characters first. A row and a column both work, and the answer comes back the same way round.&#10;[groups]: 1 returns each element's GROUP SIZE (the length of the run it belongs to) instead of the running count. Omitted or 0 gives the running count.</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Yes</Data></Cell>
+   </Row>
+   <Row ss:Height="136.5">
+    <Cell><Data ss:Type="String">CountOcc_byHadynWiseman</Data></Cell>
+    <Cell><Data ss:Type="String">Hadyn Wiseman</Data></Cell>
+    <Cell><Data ss:Type="String">Counts occurrences of a character or substring within text, optionally case-sensitive</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">OccOf: WHAT YOU ARE LOOKING FOR, and it comes FIRST, which is the opposite way round from most of Excel. Getting this backwards returns a number rather than an error, so nothing tells you.&#10;Text: the text to look in.&#10;[Case]: 1 makes it case-sensitive. Omitted, 'A' and 'a' count as the same.</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Yes</Data></Cell>
+   </Row>
+   <Row ss:Height="58.5">
+    <Cell><Data ss:Type="String">Dice_byHadynWiseman</Data></Cell>
+    <Cell><Data ss:Type="String">Hadyn Wiseman</Data></Cell>
+    <Cell><Data ss:Type="String">Decodes dice glyphs into their pip values, listed or totalled</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Dice: the dice glyphs to decode.&#10;[add]: 1 SUMS the pips instead of listing them.&#10;[join]: join the values into one string.</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Yes</Data></Cell>
+   </Row>
+   <Row ss:Height="175.5">
+    <Cell><Data ss:Type="String">Distance_byHadynWiseman</Data></Cell>
+    <Cell><Data ss:Type="String">Hadyn Wiseman</Data></Cell>
+    <Cell><Data ss:Type="String">Returns the distance between two cells with independent horizontal, vertical and diagonal step costs, or as straight-line or knight moves; it ignores the map</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">start: the first cell, as an address.&#10;end: the second cell.&#10;[h]: cost of a horizontal step.&#10;[v]: cost of a vertical step.&#10;[d]: cost of a diagonal step. Omitted, diagonals are not treated separately.&#10;[pythag]: 1 for straight-line (Euclidean) distance instead of steps.&#10;[knight]: 1 for the number of KNIGHT MOVES between the two cells.</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Yes</Data></Cell>
+   </Row>
+   <Row ss:Height="97.5">
+    <Cell><Data ss:Type="String">DistFrom_byDiarmuidEarly</Data></Cell>
+    <Cell><Data ss:Type="String">Diarmuid Early</Data></Cell>
+    <Cell><Data ss:Type="String">Returns how far every cell is from the nearest cell holding a given VALUE, under any metric you supply</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">mp: the map.&#10;trg: the VALUE to measure distance to; not a cell, a value. That is the difference from MazeDistance, which wants an address.&#10;func: a LAMBDA taking the row gap and the column gap and returning a distance. ANY metric you like, Euclidean included.</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Yes</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">Duplicates_byHadynWiseman</Data></Cell>
+    <Cell><Data ss:Type="String">Hadyn Wiseman</Data></Cell>
+    <Cell><Data ss:Type="String">Returns the values that appear more than once, or the repeated letters of a single piece of text</Data></Cell>
+    <Cell><Data ss:Type="String">Array: the list to examine. A single text value is split into characters first, so it also answers 'which letter is repeated?'</Data></Cell>
     <Cell ss:StyleID="s33"><Data ss:Type="String">Yes</Data></Cell>
    </Row>
    <Row ss:Height="97.5">
@@ -1278,431 +1425,11 @@
     <Cell ss:StyleID="s33"><Data ss:Type="String">Array: the block to take columns out of.&#10;ColumnsToRemove: which column numbers to DROP. The opposite of CHOOSECOLS, which makes you list the ones to keep.</Data></Cell>
     <Cell ss:StyleID="s33"><Data ss:Type="String">Yes</Data></Cell>
    </Row>
-   <Row ss:Height="156">
-    <Cell><Data ss:Type="String">Flip_byHadynWiseman</Data></Cell>
-    <Cell><Data ss:Type="String">Hadyn Wiseman</Data></Cell>
-    <Cell><Data ss:Type="String">Mirrors an array left-to-right, top-to-bottom or in either diagonal, optionally carrying addresses through the same flip</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Array: the block to flip.&#10;[Horizontal]: 1 mirrors left-to-right.&#10;[Vertical]: 1 mirrors top-to-bottom.&#10;[DiagonalTopLeft]: 1 reflects in the leading diagonal (a transpose).&#10;[DiagonalTopRight]: 1 reflects in the other diagonal.&#10;[AddressMoves]: addresses to carry through the same flip, so you can find out where a cell ENDED UP.</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">No: needs a real RANGE</Data></Cell>
-   </Row>
-   <Row ss:Height="136.5">
-    <Cell><Data ss:Type="String">Fold_byHadynWiseman</Data></Cell>
-    <Cell><Data ss:Type="String">Hadyn Wiseman</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Folds an array along an arrow, with characters that pass through instead of colliding</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Array: the block to fold.&#10;Arrow: which way to fold it; the arrow points the way the flap travels.&#10;[PassthroughChars]: characters that do NOT collide when two layers land on the same cell, e.g. a blank.&#10;[LinesToFold]: how many rows or columns of the flap to fold over.&#10;[AddressMoves]: addresses to carry through the fold.</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">No: needs a real RANGE</Data></Cell>
-   </Row>
-   <Row ss:Height="175.5">
-    <Cell><Data ss:Type="String">OffsetA_byPeterScharl</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Peter Scharl</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Returns a block offset within an array, padding rather than stepping outside it (a non-volatile OFFSET)</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">arr: the array to look inside. Values come back, NOT a reference; that is the difference from OFFSET and the reason it is not volatile.&#10;rows: how far down to start.&#10;[cols]: how far right to start.&#10;[h]: how many rows to return. Omitted = all of them.&#10;[w]: how many columns to return. Omitted = all of them.&#10;[pad_with]: what to return for a position that falls OUTSIDE the array. It cannot step outside and fetch real data; it pads.</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Yes</Data></Cell>
-   </Row>
-   <Row ss:Height="97.5">
-    <Cell><Data ss:Type="String">Rotate_byHadynWiseman</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Hadyn Wiseman</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Turns an array through quarter turns, optionally carrying addresses through the same rotation</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Array: the block to turn.&#10;[Rotation]: 1 = a quarter turn, 2 = a half turn, 3 = three quarters, 4 = leave it. Omitted = 1.&#10;[InputAddresses]: addresses to put through the same rotation, so you can say where a particular cell ended up.</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">No: needs a real RANGE</Data></Cell>
-   </Row>
-   <Row ss:Height="39">
-    <Cell><Data ss:Type="String">RunningCount_byHadynWiseman</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Hadyn Wiseman</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Returns which occurrence of its own value each item is</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Array: the list to count through. Answers 'which occurrence of this value is this one?', not how many there are in total.</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Yes</Data></Cell>
-   </Row>
-   <Row ss:Height="390">
-    <Cell><Data ss:Type="String">GridToCol_byLiannaGerrish</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Lianna Gerrish</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Converts a grid to a single column with the row number, column number, address and packed coordinate of each cell, or just the columns asked for, reading along the rows or down the columns</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">arr: the grid to flatten. ARRAY-SAFE: it builds the coordinates with SEQUENCE rather than reading ROW()/COLUMN() off the sheet, which is why it works on anything. Given a RANGE the row and column numbers are real sheet coordinates; given a typed ARRAY the array's own top-left counts as A1.&#10;[Address]: 1 asks for the ADDRESS column (B2, C3, ...).&#10;[RowCol]: 1 asks for the Row # and Column # columns, two columns, not one.&#10;[RCRef]: 1 asks for the packed row*10^6+col column the rest of the toolbox speaks.&#10;[ByColumn]: 1 walks DOWN THE COLUMNS instead of along the rows. This is the half of Flatten that GridToCol absorbed when Flatten was retired.&#10;[HideZeros]: 1 drops the cells holding a zero. Off by default; a zero is a real value and hiding it is the caller's choice, not the default.&#10;[ShowBlanks]: 1 KEEPS the empty cells, which are dropped by default. A blank reports as &quot;&quot;, never as 0, so it cannot be mistaken for a real zero, which is exactly the bug this caused in FindInMap.</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Yes</Data></Cell>
-   </Row>
-   <Row ss:Height="136.5">
-    <Cell><Data ss:Type="String">Snake_byHadynWiseman</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Hadyn Wiseman</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Reads a grid in serpentine order, reversing direction on alternate lines</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Array: the grid to linearise.&#10;[ByCol]: 1 snakes down the columns instead of along the rows.&#10;[StartRorC]: which row or column to start from.&#10;[SwapEvery]: how many lines before the direction flips. 1 is the ordinary boustrophedon zig-zag.&#10;[AddressMoves]: addresses to carry through the same reordering.</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">No: needs a real RANGE</Data></Cell>
-   </Row>
-   <Row ss:Height="97.5">
-    <Cell><Data ss:Type="String">UnPivot_byHadynWiseman</Data></Cell>
-    <Cell><Data ss:Type="String">Hadyn Wiseman</Data></Cell>
-    <Cell><Data ss:Type="String">Converts a wide block into a long one, repeating the key columns once per value</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">KeepColumns: the columns that stay as they are and get REPEATED down the output.&#10;UnpivotColumns: the block that gets turned from wide into long.&#10;[HasHeaders]: 1 if the first row is a header row.&#10;[RemoveBlanks]: 1 drops rows whose value is empty.</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Yes</Data></Cell>
-   </Row>
-   <Row ss:Height="58.5">
-    <Cell><Data ss:Type="String">UnSplivot_byJJ</Data></Cell>
-    <Cell><Data ss:Type="String">JJ</Data></Cell>
-    <Cell><Data ss:Type="String">Splits a delimited column and unpivots it in one step, repeating the other columns for each token</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">table: the whole block. Column 1 is the one that gets SPLIT; columns 2 onwards are repeated once per token.&#10;delim: the delimiter inside column 1.</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Yes</Data></Cell>
-   </Row>
-   <Row ss:Height="78">
-    <Cell><Data ss:Type="String">VStacks_byHadynWiseman</Data></Cell>
-    <Cell><Data ss:Type="String">Hadyn Wiseman</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Repeats a block n times, stacked or side by side</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Array: the block to repeat.&#10;NoTimes: how many copies.&#10;[Hstk]: 1 stacks them side by side instead of on top of each other.</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Yes</Data></Cell>
-   </Row>
-   <Row ss:Height="58.5">
-    <Cell><Data ss:Type="String">YouAreHere_byLiannaGerrish</Data></Cell>
-    <Cell><Data ss:Type="String">Lianna Gerrish</Data></Cell>
-    <Cell><Data ss:Type="String">Converts a cell to its A1 address as text, optionally sheet-qualified</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">cell: the cell whose address you want as text.&#10;[sheetname]: include a sheet name in the address, for a reference that has to survive being used on another sheet.</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">No</Data></Cell>
-   </Row>
-   <Row ss:Height="195">
-    <Cell ss:StyleID="Default"><Data ss:Type="String">CardSets_byHadynWiseman</Data></Cell>
-    <Cell><Data ss:Type="String">Hadyn Wiseman</Data></Cell>
-    <Cell><Data ss:Type="String">Finds sets or runs in a hand, with ace-high, ace-low, wrap-around and custom rank orders</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Cards: the hand.&#10;CardsInRun: how many cards make a set or a run.&#10;[Ace_High]: 1 counts the ace above the king.&#10;[Ace_Low]: 1 counts the ace below the two. Both can be on at once.&#10;[Sets]: 1 looks for SETS (same rank), 0 for RUNS (consecutive).&#10;[CustomCardList]: your own rank order, for a game that is not a standard deck.&#10;[WrapAroundRuns]: 1 lets a run pass through the end of the order and back round.</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Yes</Data></Cell>
-   </Row>
-   <Row ss:Height="58.5">
-    <Cell><Data ss:Type="String">Dice_byHadynWiseman</Data></Cell>
-    <Cell><Data ss:Type="String">Hadyn Wiseman</Data></Cell>
-    <Cell><Data ss:Type="String">Decodes dice glyphs into their pip values, listed or totalled</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Dice: the dice glyphs to decode.&#10;[add]: 1 SUMS the pips instead of listing them.&#10;[join]: join the values into one string.</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Yes</Data></Cell>
-   </Row>
-   <Row ss:Height="39">
-    <Cell><Data ss:Type="String">BoardGameMove_byHadynWiseman</Data></Cell>
-    <Cell><Data ss:Type="String">Hadyn Wiseman</Data></Cell>
-    <Cell><Data ss:Type="String">Laps a counter round a board numbered 1 to N: past the last space it carries on from 1</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">MoveValue: the position after the move.&#10;EndSpace: how many spaces the board has.</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Yes</Data></Cell>
-   </Row>
-   <Row ss:Height="136.5">
-    <Cell><Data ss:Type="String">ByRectangle_byBoRydobon</Data></Cell>
-    <Cell><Data ss:Type="String">Bo Rydobon</Data></Cell>
-    <Cell><Data ss:Type="String">Applies a function to every rectangular window of a range</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Range: the grid. A REAL RANGE; it builds a:b spans internally, so an array will not do.&#10;Function: what to work out for each window.&#10;Rows: how many rows the window is.&#10;[Columns]: how many columns. Omitted, it is square.&#10;[No_Overlap]: 1 steps a whole window at a time instead of one cell at a time.</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">No: needs a real RANGE</Data></Cell>
-   </Row>
-   <Row ss:Height="331.5">
-    <Cell><Data ss:Type="String">ClosestOnMap_byHadynWiseman</Data></Cell>
-    <Cell><Data ss:Type="String">Hadyn Wiseman</Data></Cell>
-    <Cell><Data ss:Type="String">Returns the nearest matching item on a grid with its value, address and distance</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">mp: the map.&#10;start: where you are searching from.&#10;steps: how far to look.&#10;[Items]: what you are looking for.&#10;[DistFunc]: the metric to measure with, YOUR OWN definition of how far apart two cells are. In the 2026-09-20 cut this one parameter replaced the five separate dh/dv/dd/py/kn switches the old body had. It is a LAMBDA(from, to) where FROM is the one start address and TO is the whole column of candidate addresses at once, so build it out of things that work on arrays (RowNum, ColNum, ABS, SQRT) and it returns one distance per candidate. Omit it and you get king moves: diagonals cost the same as straight steps. See the worked examples below.&#10;[ShowBlanks]: include cells with nothing in them.&#10;[RCaa_CRaa_RCad_CRad_RCda_CRda_RCdd_CRdd]: the tie-break ORDER when two targets are equally close, i.e. which of the eight directions wins.</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">No: needs a real RANGE</Data></Cell>
-   </Row>
-   <Row ss:Height="175.5">
-    <Cell><Data ss:Type="String">Distance_byHadynWiseman</Data></Cell>
-    <Cell><Data ss:Type="String">Hadyn Wiseman</Data></Cell>
-    <Cell><Data ss:Type="String">Returns the distance between two cells with independent horizontal, vertical and diagonal step costs, or as straight-line or knight moves; it ignores the map</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">start: the first cell, as an address.&#10;end: the second cell.&#10;[h]: cost of a horizontal step.&#10;[v]: cost of a vertical step.&#10;[d]: cost of a diagonal step. Omitted, diagonals are not treated separately.&#10;[pythag]: 1 for straight-line (Euclidean) distance instead of steps.&#10;[knight]: 1 for the number of KNIGHT MOVES between the two cells.</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Yes</Data></Cell>
-   </Row>
-   <Row ss:Height="97.5">
-    <Cell><Data ss:Type="String">DistFrom_byDiarmuidEarly</Data></Cell>
-    <Cell><Data ss:Type="String">Diarmuid Early</Data></Cell>
-    <Cell><Data ss:Type="String">Returns how far every cell is from the nearest cell holding a given VALUE, under any metric you supply</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">mp: the map.&#10;trg: the VALUE to measure distance to; not a cell, a value. That is the difference from MazeDistance, which wants an address.&#10;func: a LAMBDA taking the row gap and the column gap and returning a distance. ANY metric you like, Euclidean included.</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Yes</Data></Cell>
-   </Row>
-   <Row ss:Height="117">
-    <Cell><Data ss:Type="String">FindInMap_byHadynWiseman</Data></Cell>
-    <Cell><Data ss:Type="String">Hadyn Wiseman</Data></Cell>
-    <Cell><Data ss:Type="String">Returns the A1 address of every cell in a grid holding a given value</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">items: the value, or values, to find. A LIST finds all of them in one call.&#10;mp: the map to look in. A RANGE or a typed ARRAY; both work. Given a range you get real sheet addresses; given an array, the array's own top-left counts as A1 and the addresses are relative to that.</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Yes: with an array, its top-left counts as A1</Data></Cell>
-   </Row>
-   <Row ss:Height="234">
-    <Cell><Data ss:Type="String">GetBlock_byJaqKennedy</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell><Data ss:Type="String">Gets a block of cells in a range or array based on an address and block size</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Arr: the grid to cut a block out of. A RANGE or a typed ARRAY; both work. Given a range, AnchorCell is a real sheet address; given an array, the array's own top-left counts as A1 and the anchor is read relative to that.&#10;AnchorCell: the address the block is positioned around.&#10;RowSize: how many rows the block has.&#10;[ColSize]: how many columns. Blank gives a SQUARE block.&#10;[Pos]: where the anchor sits in the block (TL, TR, C, BL, BR). Blank is the CENTRE, which is what 'the cells around this one' means.&#10;[Fill]: what to use where the block runs off the edge of the grid.&#10;[WrapAround]: 1 wraps round the grid instead of filling.</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Yes: with an array, its top-left counts as A1</Data></Cell>
-   </Row>
-   <Row ss:Height="234">
-    <Cell><Data ss:Type="String">HugWall_byHadynWiseman</Data></Cell>
-    <Cell><Data ss:Type="String">Hadyn Wiseman</Data></Cell>
-    <Cell><Data ss:Type="String">Follows a wall around a grid by the left-hand or right-hand rule</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">mp: the map.&#10;st: where to start.&#10;first_direction: which way to set off, as an arrow or a compass letter.&#10;[AntiClockwise]: 1 for the left-hand rule instead of the right-hand one.&#10;[AllowMp]: which cells may be walked on, as an array of TRUE/FALSE.&#10;[Steps]: how many steps to take before stopping.&#10;[ReferenceMap]: locates an array on the sheet.&#10;[Show_on_map]: 1 draws the path onto the map instead of listing the cells.</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">No: needs a real RANGE</Data></Cell>
-   </Row>
-   <Row ss:Height="195">
-    <Cell><Data ss:Type="String">LineOfSight_byHadynWiseman</Data></Cell>
-    <Cell><Data ss:Type="String">Hadyn Wiseman</Data></Cell>
-    <Cell><Data ss:Type="String">Returns what a cell can see across a grid, with blockers stopping the view</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">mp: the map. RANGE ONLY; handed an array it returns the TEXT 'Map is not a range, add reference map', and because that is a string and not an error, IFERROR will not catch it.&#10;Projections: the cell, or cells, doing the looking.&#10;blockers: what stops a line of sight.&#10;[No_Diag]: 1 to look only along rows and columns.&#10;[Distance]: how far the line of sight reaches.&#10;[Custom_RC_Directions]: your own list of directions to look along.&#10;[Fill]: what to mark the cells that cannot be seen with.</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">No: needs a real RANGE</Data></Cell>
-   </Row>
-   <Row ss:Height="156">
-    <Cell><Data ss:Type="String">LineOfSightCount_byHadynWiseman</Data></Cell>
-    <Cell><Data ss:Type="String">Hadyn Wiseman</Data></Cell>
-    <Cell><Data ss:Type="String">Counts how many of a given item are visible from a cell</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">st: the cell doing the looking.&#10;mp: the map. RANGE ONLY, same as LineOfSight.&#10;ItemsToCount: what you are counting sightings of.&#10;[Blockers]: what stops the view.&#10;[No_Diag]: 1 for rows and columns only.&#10;[Distance]: how far the eye reaches.&#10;[Custom_Directions]: your own directions to look along.&#10;[ReferenceMap]: locates an array on the sheet.</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">No: needs a real RANGE</Data></Cell>
-   </Row>
-   <Row ss:Height="156">
-    <Cell><Data ss:Type="String">Maze_byHadynWiseman</Data></Cell>
-    <Cell><Data ss:Type="String">Hadyn Wiseman</Data></Cell>
-    <Cell><Data ss:Type="String">Returns which cells can be reached from a starting cell, obeying walls</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">mp: the map.&#10;st: where you start from.&#10;[targets]: optional cells of interest.&#10;[No_Diag]: 1 for 4-way, 0 for 8-way.&#10;[AllowMp]: which cells may be entered, as an array of TRUE/FALSE.&#10;[Custom_Directions]: your own move list.&#10;[ReferenceMap]: locates an array on the sheet.</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Yes: dual mode, PASS AN ARRAY (the range path uses implicit intersection and only works alongside the map)</Data></Cell>
-   </Row>
-   <Row ss:Height="409.5">
-    <Cell><Data ss:Type="String">MazeDistance_byHadynWiseman</Data></Cell>
-    <Cell><Data ss:Type="String">Hadyn Wiseman</Data></Cell>
-    <Cell><Data ss:Type="String">Returns the shortest distance across a grid, obeying walls. Weighted, so it takes the cheapest route rather than the fewest steps</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">mp: the map. A RANGE, or an ARRAY with [ReferenceMap] to say where it sits.&#10;st: the start cell, as a SHEET address: &quot;B12&quot;, not &quot;A1-for-the-map's-corner&quot;.&#10;[Targets]: where you are going. OMIT IT and you get the distance to EVERY cell, a whole distance field in one call.&#10;[No_Diag]: 1 = 4-way movement, 0 = 8-way. The commonest thing a case changes.&#10;[Allowmp]: which cells may be entered, as an ARRAY OF TRUE/FALSE. Never a bare TRUE; see the watch-out.&#10;[Show_Steps]: 1 returns the NUMBER OF STEPS instead of the accumulated cost.&#10;[Cus_Dir]: your own list of moves as packed numbers, so knight moves, hex moves and teleports all become ordinary steps.&#10;[Mazelam]: YOUR OWN price list for entering a cell. Normally a cell costs whatever is written in it; this replaces that rule. It is a LAMBDA of SEVEN arguments, in this order: the contents of the cell you are LEAVING, the contents of the cell you are ENTERING, where you are leaving from, where you are going, how many steps you have taken, how far you have come, and which DIRECTION the move is in. Return the cost of making that move. THE ONE THING TO KNOW: it is handed the whole search frontier at once, not one cell at a time, so all seven arrive as ARRAYS and it must give back an array of the same shape. A bare 1 will not do; write toValue*0+1, which is 1 in the right shape. The three position arguments are PACKED coordinates, so INT(to/10^6) is the row it is moving into and MOD(to,10^6) the column, and the direction is the difference between the two: 1 or -1 sideways, a million up or down, and anything else diagonal. See the examples below.&#10;[ReferenceMap]: a real range that locates an ARRAY on the sheet.</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Yes: dual mode, PASS AN ARRAY (the range path uses implicit intersection and only works alongside the map)</Data></Cell>
-   </Row>
-   <Row ss:Height="234">
-    <Cell><Data ss:Type="String">MoveOnMap_byHadynWiseman</Data></Cell>
-    <Cell><Data ss:Type="String">Hadyn Wiseman</Data></Cell>
-    <Cell><Data ss:Type="String">Walks a direction across a grid, stopping, gliding, bouncing or wrapping at obstacles, and optionally returning the whole path</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">St: the starting cell.&#10;Dir: which way to go, as an arrow glyph or a compass letter.&#10;[Steps]: how many steps to take.&#10;[mp]: the map, if the walk has to respect walls.&#10;[Path]: 1 returns EVERY cell visited instead of just the last one.&#10;[Stop]: 1 stops dead at a blocker.&#10;[Glide]: 1 slides until something stops it, like a curling stone.&#10;[Bounce]: 1 reflects off the wall and comes back.&#10;[Wrap]: 1 comes round the other side of the map.&#10;[RefMap]: locates an array on the sheet.&#10;[mpA]: which cells may be entered, as an array of TRUE/FALSE.&#10;[ShowDir]: also report the direction being travelled at the end.</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">No: needs a real RANGE</Data></Cell>
-   </Row>
-   <Row ss:Height="253.5">
-    <Cell><Data ss:Type="String">NetworkGraph_byHadynWiseman</Data></Cell>
-    <Cell><Data ss:Type="String">Hadyn Wiseman</Data></Cell>
-    <Cell><Data ss:Type="String">Returns the cheapest (or dearest) route over an origin/destination edge table, with its cost or its route</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Starts: the node, or nodes, to start from.&#10;OriginDestinationTable: the edges, as a two-column from/to table. This is the NON-GRID half of pathfinding; use it once a grid has been contracted to a graph.&#10;[Weights]: the cost of each edge.&#10;[Function]: a callback to work the cost out instead.&#10;[Targets]: where you are going. Omit for every node at once.&#10;[BiDirectional]: 1 if every edge can be travelled both ways.&#10;[StartWeights]: a cost already carried at each start node.&#10;[MaximiseW]: 1 finds the DEAREST route rather than the cheapest.&#10;[StepLimit]: stop after this many hops.&#10;[ShowRoute]: 1 returns the route itself, not just its cost.</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Yes</Data></Cell>
-   </Row>
-   <Row ss:Height="195">
-    <Cell><Data ss:Type="String">Regions_byHadynWiseman</Data></Cell>
-    <Cell><Data ss:Type="String">Hadyn Wiseman</Data></Cell>
-    <Cell><Data ss:Type="String">Labels each connected region of a grid, so separate areas can be counted or told apart</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">mp: the map.&#10;[No_Diag]: 1 = cells touch only edge-to-edge, 0 = diagonals count as touching.&#10;[Allowmp]: which cells take part, as an array of TRUE/FALSE. Omitted, it groups cells of EQUAL VALUE instead, a different question and a useful one.&#10;[Cus_Dir]: your own idea of which cells are neighbours.&#10;[Mazelam]: a callback deciding what counts as connected. Same seven-argument shape as MazeDistance's, and its worked examples are the ones to read.</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Yes: dual mode, PASS AN ARRAY (the range path uses implicit intersection and only works alongside the map)</Data></Cell>
-   </Row>
-   <Row ss:Height="39">
-    <Cell><Data ss:Type="String">IsInList_byErikOehm</Data></Cell>
-    <Cell><Data ss:Type="String">Erik Oehm</Data></Cell>
-    <Cell><Data ss:Type="String">Returns a boolean for matches in an array to a list</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">array: the value or values to test.&#10;list: the list to test them against.</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Yes</Data></Cell>
-   </Row>
-   <Row ss:Height="58.5">
-    <Cell><Data ss:Type="String">NotInList_byJaqKennedy</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell><Data ss:Type="String">Returns the items of a list that do not appear in another list</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">array: the list you are checking. A LIST, not a grid; see the watch-out.&#10;list: the list to check it against.</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Yes: but a LIST, not a grid; flatten a 2-D block with TOCOL</Data></Cell>
-   </Row>
-   <Row ss:Height="78">
-    <Cell><Data ss:Type="String">nSet_byJaqKennedy</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell><Data ss:Type="String">Returns the values found in both arrays (their intersection), each once</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">array1: the first list or block; its order is kept.&#10;array2: the list or block to check against.&#10;[skip_blanks_zeros]: TRUE (the default) leaves out blanks, empty text and 0. FALSE keeps them.</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Yes: any shape, returned as one column</Data></Cell>
-   </Row>
-   <Row ss:Height="78">
-    <Cell><Data ss:Type="String">uSet_byJaqKennedy</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell><Data ss:Type="String">Returns every value found in either array (their union), each once</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">array1: the first list or block; its values come first.&#10;array2: the second list or block; its new values follow.&#10;[skip_blanks_zeros]: TRUE (the default) leaves out blanks, empty text and 0. FALSE keeps them.</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Yes: any shape, returned as one column</Data></Cell>
-   </Row>
-   <Row ss:Height="214.5">
-    <Cell><Data ss:Type="String">StackSheets_byJaqKennedy</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Turns many same-shaped sheets into one table, one row per cell, carrying the sheet name and the cell's address, row, column and packed coordinate</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">blocks: the sheets already stacked on top of each other. VSTACK takes a 3D reference, so VSTACK(Area1:Area64!A1:P16) is the whole job in one go.&#10;names: the sheet names, in the same order as the blocks. &quot;Area&quot;&amp;SEQUENCE(64) when they are numbered; a literal list when they are not.&#10;[TopLeft]: where the block sits on its own sheet, as an address. Blank means A1. Get it wrong and every address is out by the same amount.&#10;[HideBlanks]: 1 drops the empty and zero cells. Blank keeps every cell.</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Yes: and VSTACK of a 3D reference is how you feed it</Data></Cell>
-   </Row>
-   <Row ss:Height="195">
-    <Cell><Data ss:Type="String">XLOOKUP2D_byBendeLeon</Data></Cell>
-    <Cell><Data ss:Type="String">Ben de Leon</Data></Cell>
-    <Cell><Data ss:Type="String">Looks up a value by row key and column key together</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">DataSource: the whole table INCLUDING its row labels and header row.&#10;RLU: the row key to look up.&#10;CLU: the column key to look up.&#10;[RowArray]: supply the row labels separately, when they are not the table's first column.&#10;[ColumnArray]: supply the column labels separately.&#10;[MatchMode]: as XLOOKUP: 0 exact, -1 or 1 nearest, 2 wildcard.&#10;[SearchMode]: as XLOOKUP: 1 first-to-last, -1 last-to-first.&#10;[IfNotFound]: what to return instead of an error.</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Yes</Data></Cell>
-   </Row>
-   <Row ss:Height="58.5">
-    <Cell><Data ss:Type="String">BiCol_byHadynWiseman</Data></Cell>
-    <Cell><Data ss:Type="String">Hadyn Wiseman</Data></Cell>
-    <Cell><Data ss:Type="String">Applies a function to each column, allowing it to return an array (BYCOL that tolerates arrays)</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">array: the block to walk across.&#10;function: a LAMBDA applied to each COLUMN, allowed to return an array.</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Yes</Data></Cell>
-   </Row>
-   <Row ss:Height="58.5">
-    <Cell><Data ss:Type="String">BiRow_byHadynWiseman</Data></Cell>
-    <Cell><Data ss:Type="String">Hadyn Wiseman</Data></Cell>
-    <Cell><Data ss:Type="String">Applies a function to each row, allowing it to return an array (BYROW that tolerates arrays)</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">array: the block to walk down.&#10;function: a LAMBDA applied to each ROW. Unlike native BYROW, it may return an ARRAY per row instead of a single value.</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Yes</Data></Cell>
-   </Row>
-   <Row ss:Height="97.5">
-    <Cell><Data ss:Type="String">WhileIterations_byHarryGross</Data></Cell>
-    <Cell><Data ss:Type="String">Harry Gross</Data></Cell>
-    <Cell><Data ss:Type="String">Repeats a step until a condition holds and returns how many steps it took</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">initialValue: the starting state.&#10;iterativeStep: a LAMBDA that produces the next state.&#10;stopCondition: a LAMBDA returning TRUE when to stop.&#10;[currentIterationCount]: bookkeeping, the count so far. Leave it alone; the recursion passes it to itself.</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Yes</Data></Cell>
-   </Row>
-   <Row ss:Height="78">
-    <Cell><Data ss:Type="String">WhileLoop_byHarryGross</Data></Cell>
-    <Cell><Data ss:Type="String">Harry Gross</Data></Cell>
-    <Cell><Data ss:Type="String">Repeats a step until a condition holds and returns the final state</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">initialValue: the starting state.&#10;iterativeStep: a LAMBDA that turns the state into the next state.&#10;stopCondition: a LAMBDA that returns TRUE when you want to stop. Returns THE STATE at that point.</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Yes</Data></Cell>
-   </Row>
-   <Row ss:Height="195">
-    <Cell><Data ss:Type="String">Bounce_byBoRydobon</Data></Cell>
-    <Cell><Data ss:Type="String">Bo Rydobon</Data></Cell>
-    <Cell><Data ss:Type="String">Returns a run of positions that reflect off a lower and upper wall</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">n: how many steps to generate.&#10;max: the upper wall.&#10;[min]: the lower wall. Omitted = 1.&#10;[start]: where the walk starts. Omitted = min.&#10;[step]: how far each step moves. Omitted = 1.&#10;[leave0Clip1Bounce2]: WHAT HAPPENS WHEN A STEP WOULD OVERSHOOT A WALL. 0 carries on past the wall, then turns; 1 stops at the wall; 2 reflects back off it. With a step that always lands exactly on the wall (a step of 1, for instance) all three give the same sequence.</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">n/a: takes numbers, not a block</Data></Cell>
-   </Row>
-   <Row ss:Height="78">
-    <Cell><Data ss:Type="String">Clamp_byBoRydobon</Data></Cell>
-    <Cell><Data ss:Type="String">Bo Rydobon</Data></Cell>
-    <Cell><Data ss:Type="String">Keeps a number, or every number in an array, between an optional lower and upper bound</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">n: the number, or an array of numbers, to limit.&#10;[lower]: smallest allowed value. Omitted, it defaults to MIN(n), i.e. no lower limit is applied.&#10;[upper]: largest allowed value. Omitted, it defaults to MAX(n).</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Yes</Data></Cell>
-   </Row>
-   <Row ss:Height="117">
-    <Cell><Data ss:Type="String">Biggest_byHadynWiseman</Data></Cell>
-    <Cell><Data ss:Type="String">Hadyn Wiseman</Data></Cell>
-    <Cell><Data ss:Type="String">Returns the LABEL belonging to the nth largest or smallest number, with an optional tie-break key</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Range: the NUMBERS to rank.&#10;Return: the LABELS to return, lined up with Range. This is the whole point; you get the name, not the score.&#10;[Smallest]: 0 for largest, 1 for smallest. REQUIRED, not optional.&#10;[N]: which one; 1 is the biggest, 2 the second biggest. Omitted = 1.</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Yes</Data></Cell>
-   </Row>
-   <Row>
-    <Cell><Data ss:Type="String">ModeSuper_byLiannaGerrish</Data></Cell>
-    <Cell><Data ss:Type="String">Lianna Gerrish</Data></Cell>
-    <Cell><Data ss:Type="String">Returns the most frequent value AND how many times it appears</Data></Cell>
-    <Cell><Data ss:Type="String">rng: the values to count. MUST BE A REAL RANGE, not a typed array; it uses COUNTIF inside, and COUNTIF on an array returns the WRONG ANSWER SILENTLY.</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">No: needs a real RANGE</Data></Cell>
-   </Row>
-   <Row>
-    <Cell><Data ss:Type="String">Addresses_byDiarmuidEarly</Data></Cell>
-    <Cell><Data ss:Type="String">Diarmuid Early</Data></Cell>
-    <Cell><Data ss:Type="String">Returns the A1 address of every cell in a range</Data></Cell>
-    <Cell><Data ss:Type="String">rng: the range whose addresses you want. Must be a real RANGE, not an array; it reads ROW() and COLUMN() off the sheet.</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">No: needs a real RANGE</Data></Cell>
-   </Row>
-   <Row>
-    <Cell><Data ss:Type="String">Alphabet_byHadynWiseman</Data></Cell>
-    <Cell><Data ss:Type="String">Hadyn Wiseman</Data></Cell>
-    <Cell><Data ss:Type="String">Returns A to Z as a 26-row array</Data></Cell>
-    <Cell><Data ss:Type="String">N/A</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Yes</Data></Cell>
-   </Row>
-   <Row>
-    <Cell><Data ss:Type="String">ArrowsLookup_byHadynWiseman</Data></Cell>
-    <Cell><Data ss:Type="String">Hadyn Wiseman</Data></Cell>
-    <Cell><Data ss:Type="String">Normalises an arrow glyph or compass abbreviation into one consistent form</Data></Cell>
-    <Cell><Data ss:Type="String">Direction: an arrow glyph or a compass abbreviation. Normalises whichever notation a case happens to use into one internal form.</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Yes</Data></Cell>
-   </Row>
-   <Row>
-    <Cell><Data ss:Type="String">ColNum_byHadynWiseman</Data></Cell>
-    <Cell><Data ss:Type="String">Hadyn Wiseman</Data></Cell>
-    <Cell><Data ss:Type="String">Converts an A1 address, or a packed row/column number, to its column number</Data></Cell>
-    <Cell><Data ss:Type="String">address: an A1 address as text (&quot;C5&quot;), OR a number already packed as row*1000000+column. It tests which it was given, so passing an already-converted number is harmless.</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Yes</Data></Cell>
-   </Row>
    <Row ss:Height="78">
     <Cell><Data ss:Type="String">Exists_byHadynWiseman</Data></Cell>
     <Cell><Data ss:Type="String">Hadyn Wiseman</Data></Cell>
     <Cell><Data ss:Type="String">Returns TRUE where an item is found in a list, with an optional substring mode</Data></Cell>
     <Cell ss:StyleID="s33"><Data ss:Type="String">Item: the value (or array of values) you are looking for.&#10;List: the list to look in.&#10;[SearchMode]: 0 or omitted = whole-value match. 1 = SUBSTRING match, so &quot;cat&quot; is found inside &quot;concatenate&quot;.</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Yes</Data></Cell>
-   </Row>
-   <Row ss:Height="156">
-    <Cell><Data ss:Type="String">Fetch_byJaqKennedy</Data></Cell>
-    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell><Data ss:Type="String">Returns the value at an address or packed row/column number, read from a named range or block</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">ref: the cell, as an A1 address (&quot;C10&quot;) or a packed row*1000000+column number. A list returns a list.&#10;source: the named range or block to read from, e.g. the Sht_ name Name Used Ranges gives a sheet. Given a RANGE, ref is a real sheet address; given an ARRAY, its top-left counts as A1. Required: reading the formula's own sheet by default needs INDIRECT, which is volatile.&#10;[oob]: what to return where ref is outside source. Default &quot;OOB&quot;.</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Yes: with an array, its top-left counts as A1</Data></Cell>
-   </Row>
-   <Row ss:Height="39">
-    <Cell><Data ss:Type="String">RCRefConvert_byHadynWiseman</Data></Cell>
-    <Cell><Data ss:Type="String">Hadyn Wiseman</Data></Cell>
-    <Cell><Data ss:Type="String">Converts between an A1 address and a packed row/column number, and decodes an arrow glyph into the packed step it means</Data></Cell>
-    <Cell><Data ss:Type="String">St: either an A1 address (converted to a packed number), a packed number (converted back to an address), or one of the eight arrow glyphs (converted to the packed MOVE that arrow means).</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Yes: it is arithmetic on a packed number or an address</Data></Cell>
-   </Row>
-   <Row>
-    <Cell><Data ss:Type="String">RowNum_byHadynWiseman</Data></Cell>
-    <Cell><Data ss:Type="String">Hadyn Wiseman</Data></Cell>
-    <Cell><Data ss:Type="String">Converts an A1 address, or a packed row/column number, to its row number</Data></Cell>
-    <Cell><Data ss:Type="String">addresses: an A1 address as text (&quot;C5&quot;), OR a packed row*1000000+column number. Plural because it takes a whole array of them at once.</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Yes</Data></Cell>
-   </Row>
-   <Row ss:Height="58.5">
-    <Cell><Data ss:Type="String">Coins_byHadynWiseman</Data></Cell>
-    <Cell><Data ss:Type="String">Hadyn Wiseman</Data></Cell>
-    <Cell><Data ss:Type="String">Returns how many of each denomination greedily makes up a target, largest first</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Target: the amount to make up.&#10;Coins: the denominations available, in any order; it sorts them largest first.</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Yes</Data></Cell>
-   </Row>
-   <Row ss:Height="136.5">
-    <Cell><Data ss:Type="String">Combinations_byHadynWiseman</Data></Cell>
-    <Cell><Data ss:Type="String">Hadyn Wiseman</Data></Cell>
-    <Cell><Data ss:Type="String">Lists the ways of choosing c items from a set, ordered or unordered, with or without repeats</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Array: the items to choose from.&#10;c: how many to choose.&#10;[RemoveOrder]: 1 treats {1,2} and {2,1} as the SAME selection. WITHOUT IT YOU GET PERMUTATIONS; see the watch-out, because the name says otherwise.&#10;[AllowRepeatItems]: 1 lets an item be picked more than once.&#10;[Cumulative]: 1 returns every size up to c, not just size c.</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Yes</Data></Cell>
-   </Row>
-   <Row ss:Height="97.5">
-    <Cell><Data ss:Type="String">KnapSackInteger_byHadynWiseman</Data></Cell>
-    <Cell><Data ss:Type="String">Hadyn Wiseman</Data></Cell>
-    <Cell><Data ss:Type="String">Returns the best total value that fits a weight capacity, or which items to take</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Capacity: how much weight the sack holds.&#10;Weights: the weight of each item.&#10;Values: the value of each item, lined up with Weights.&#10;[items]: return WHICH items were chosen instead of the total value.</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Yes</Data></Cell>
-   </Row>
-   <Row ss:Height="39">
-    <Cell><Data ss:Type="String">OptimiseTSP_byHadynWiseman</Data></Cell>
-    <Cell><Data ss:Type="String">Hadyn Wiseman</Data></Cell>
-    <Cell><Data ss:Type="String">Improves a greedy tour and returns its cost and route</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">GreedyResult: the output of TSPGreedy, which this improves.&#10;DistanceMatrix: the same distance matrix.</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Yes</Data></Cell>
-   </Row>
-   <Row ss:Height="156">
-    <Cell><Data ss:Type="String">PerCom_byBoRydobon</Data></Cell>
-    <Cell><Data ss:Type="String">Bo Rydobon</Data></Cell>
-    <Cell><Data ss:Type="String">Lists the permutations or combinations of c items chosen from n</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">n: how many items there are, as a COUNT rather than a list.&#10;c: how many to choose.&#10;[P0C1]: 0 = permutations (order matters), 1 = combinations (it does not). The name is literally 'permutation 0 / combination 1', and it is idiosyncratic enough that it is how the attribution audit proved the lambda is Bo's.&#10;[rep]: 1 allows repeats.&#10;[cum]: 1 returns every size up to c.</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">n/a: takes numbers, not a block</Data></Cell>
-   </Row>
-   <Row ss:Height="78">
-    <Cell><Data ss:Type="String">TSPFull_byHadynWiseman</Data></Cell>
-    <Cell><Data ss:Type="String">Hadyn Wiseman</Data></Cell>
-    <Cell><Data ss:Type="String">Returns the cost of the exact shortest tour over a distance matrix</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">DistanceMatrix: a square matrix of distances.&#10;[StartNodeNumber]: which node to start at.&#10;[ReturnToStart]: 1 for a closed tour.&#10;[StepLimit]: a cap on how far it will search.</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Yes</Data></Cell>
-   </Row>
-   <Row ss:Height="97.5">
-    <Cell><Data ss:Type="String">TSPGreedy_byHadynWiseman</Data></Cell>
-    <Cell><Data ss:Type="String">Hadyn Wiseman</Data></Cell>
-    <Cell><Data ss:Type="String">Returns the cost of a nearest-neighbour tour over a distance matrix</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">DistanceMatrix: a square matrix of distances between every pair of nodes.&#10;[StartNodeNumber]: which node to start at.&#10;[ReturnToStart]: 1 for a closed tour that comes home, 0 for an open one.</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Yes</Data></Cell>
-   </Row>
-   <Row>
-    <Cell><Data ss:Type="String">Duplicates_byHadynWiseman</Data></Cell>
-    <Cell><Data ss:Type="String">Hadyn Wiseman</Data></Cell>
-    <Cell><Data ss:Type="String">Returns the values that appear more than once, or the repeated letters of a single piece of text</Data></Cell>
-    <Cell><Data ss:Type="String">Array: the list to examine. A single text value is split into characters first, so it also answers 'which letter is repeated?'</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Yes</Data></Cell>
-   </Row>
-   <Row ss:Height="78">
-    <Cell><Data ss:Type="String">Prev</Data></Cell>
-    <Cell><Data ss:Type="String">not established; ships uncredited</Data></Cell>
-    <Cell><Data ss:Type="String">Shifts a list by n places so each row can see an earlier one, filling the gap it opens</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">arr: the list to shift.&#10;[n]: how many places to shift it down. 1 is 'the one before'.&#10;[fill]: what to put in the gap the shift opens at the top. Omitted, it uses &quot;X&quot;.</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Yes</Data></Cell>
-   </Row>
-   <Row ss:Height="117">
-    <Cell><Data ss:Type="String">Consecutives_byHadynWiseman</Data></Cell>
-    <Cell><Data ss:Type="String">Hadyn Wiseman</Data></Cell>
-    <Cell><Data ss:Type="String">Returns how long the current run of identical values is, at every position</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">array: the list to measure runs in. A single cell, or a single text value, is split into characters first. A row and a column both work, and the answer comes back the same way round.&#10;[groups]: 1 returns each element's GROUP SIZE (the length of the run it belongs to) instead of the running count. Omitted or 0 gives the running count.</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Yes</Data></Cell>
-   </Row>
-   <Row ss:Height="136.5">
-    <Cell><Data ss:Type="String">CountOcc_byHadynWiseman</Data></Cell>
-    <Cell><Data ss:Type="String">Hadyn Wiseman</Data></Cell>
-    <Cell><Data ss:Type="String">Counts occurrences of a character or substring within text, optionally case-sensitive</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">OccOf: WHAT YOU ARE LOOKING FOR, and it comes FIRST, which is the opposite way round from most of Excel. Getting this backwards returns a number rather than an error, so nothing tells you.&#10;Text: the text to look in.&#10;[Case]: 1 makes it case-sensitive. Omitted, 'A' and 'a' count as the same.</Data></Cell>
     <Cell ss:StyleID="s33"><Data ss:Type="String">Yes</Data></Cell>
    </Row>
    <Row ss:Height="58.5">
@@ -1733,12 +1460,89 @@
     <Cell ss:StyleID="s33"><Data ss:Type="String">text: the mixed text to pull capitals out of.&#10;[AsRuns]: TRUE returns each run of capitals separately.</Data></Cell>
     <Cell ss:StyleID="s33"><Data ss:Type="String">n/a: takes text, not a block</Data></Cell>
    </Row>
+   <Row ss:Height="156">
+    <Cell><Data ss:Type="String">Fetch_byJaqKennedy</Data></Cell>
+    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
+    <Cell><Data ss:Type="String">Returns the value at an address or packed row/column number, read from a named range or block</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">ref: the cell, as an A1 address (&quot;C10&quot;) or a packed row*1000000+column number. A list returns a list.&#10;source: the named range or block to read from, e.g. the Sht_ name Name Used Ranges gives a sheet. Given a RANGE, ref is a real sheet address; given an ARRAY, its top-left counts as A1. Required: reading the formula's own sheet by default needs INDIRECT, which is volatile.&#10;[oob]: what to return where ref is outside source. Default &quot;OOB&quot;.</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Yes: with an array, its top-left counts as A1</Data></Cell>
+   </Row>
+   <Row ss:Height="117">
+    <Cell><Data ss:Type="String">FindInMap_byHadynWiseman</Data></Cell>
+    <Cell><Data ss:Type="String">Hadyn Wiseman</Data></Cell>
+    <Cell><Data ss:Type="String">Returns the A1 address of every cell in a grid holding a given value</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">items: the value, or values, to find. A LIST finds all of them in one call.&#10;mp: the map to look in. A RANGE or a typed ARRAY; both work. Given a range you get real sheet addresses; given an array, the array's own top-left counts as A1 and the addresses are relative to that.</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Yes: with an array, its top-left counts as A1</Data></Cell>
+   </Row>
+   <Row ss:Height="156">
+    <Cell><Data ss:Type="String">Flip_byHadynWiseman</Data></Cell>
+    <Cell><Data ss:Type="String">Hadyn Wiseman</Data></Cell>
+    <Cell><Data ss:Type="String">Mirrors an array left-to-right, top-to-bottom or in either diagonal, optionally carrying addresses through the same flip</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Array: the block to flip.&#10;[Horizontal]: 1 mirrors left-to-right.&#10;[Vertical]: 1 mirrors top-to-bottom.&#10;[DiagonalTopLeft]: 1 reflects in the leading diagonal (a transpose).&#10;[DiagonalTopRight]: 1 reflects in the other diagonal.&#10;[AddressMoves]: addresses to carry through the same flip, so you can find out where a cell ENDED UP.</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">No: needs a real RANGE</Data></Cell>
+   </Row>
+   <Row ss:Height="136.5">
+    <Cell><Data ss:Type="String">Fold_byHadynWiseman</Data></Cell>
+    <Cell><Data ss:Type="String">Hadyn Wiseman</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Folds an array along an arrow, with characters that pass through instead of colliding</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Array: the block to fold.&#10;Arrow: which way to fold it; the arrow points the way the flap travels.&#10;[PassthroughChars]: characters that do NOT collide when two layers land on the same cell, e.g. a blank.&#10;[LinesToFold]: how many rows or columns of the flap to fold over.&#10;[AddressMoves]: addresses to carry through the fold.</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">No: needs a real RANGE</Data></Cell>
+   </Row>
+   <Row ss:Height="234">
+    <Cell><Data ss:Type="String">GetBlock_byJaqKennedy</Data></Cell>
+    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
+    <Cell><Data ss:Type="String">Gets a block of cells in a range or array based on an address and block size</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Arr: the grid to cut a block out of. A RANGE or a typed ARRAY; both work. Given a range, AnchorCell is a real sheet address; given an array, the array's own top-left counts as A1 and the anchor is read relative to that.&#10;AnchorCell: the address the block is positioned around.&#10;RowSize: how many rows the block has.&#10;[ColSize]: how many columns. Blank gives a SQUARE block.&#10;[Pos]: where the anchor sits in the block (TL, TR, C, BL, BR). Blank is the CENTRE, which is what 'the cells around this one' means.&#10;[Fill]: what to use where the block runs off the edge of the grid.&#10;[WrapAround]: 1 wraps round the grid instead of filling.</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Yes: with an array, its top-left counts as A1</Data></Cell>
+   </Row>
+   <Row ss:Height="390">
+    <Cell><Data ss:Type="String">GridToCol_byLiannaGerrish</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Lianna Gerrish</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Converts a grid to a single column with the row number, column number, address and packed coordinate of each cell, or just the columns asked for, reading along the rows or down the columns</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">arr: the grid to flatten. ARRAY-SAFE: it builds the coordinates with SEQUENCE rather than reading ROW()/COLUMN() off the sheet, which is why it works on anything. Given a RANGE the row and column numbers are real sheet coordinates; given a typed ARRAY the array's own top-left counts as A1.&#10;[Address]: 1 asks for the ADDRESS column (B2, C3, ...).&#10;[RowCol]: 1 asks for the Row # and Column # columns, two columns, not one.&#10;[RCRef]: 1 asks for the packed row*10^6+col column the rest of the toolbox speaks.&#10;[ByColumn]: 1 walks DOWN THE COLUMNS instead of along the rows. This is the half of Flatten that GridToCol absorbed when Flatten was retired.&#10;[HideZeros]: 1 drops the cells holding a zero. Off by default; a zero is a real value and hiding it is the caller's choice, not the default.&#10;[ShowBlanks]: 1 KEEPS the empty cells, which are dropped by default. A blank reports as &quot;&quot;, never as 0, so it cannot be mistaken for a real zero, which is exactly the bug this caused in FindInMap.</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Yes</Data></Cell>
+   </Row>
+   <Row ss:Height="234">
+    <Cell><Data ss:Type="String">HugWall_byHadynWiseman</Data></Cell>
+    <Cell><Data ss:Type="String">Hadyn Wiseman</Data></Cell>
+    <Cell><Data ss:Type="String">Follows a wall around a grid by the left-hand or right-hand rule</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">mp: the map.&#10;st: where to start.&#10;first_direction: which way to set off, as an arrow or a compass letter.&#10;[AntiClockwise]: 1 for the left-hand rule instead of the right-hand one.&#10;[AllowMp]: which cells may be walked on, as an array of TRUE/FALSE.&#10;[Steps]: how many steps to take before stopping.&#10;[ReferenceMap]: locates an array on the sheet.&#10;[Show_on_map]: 1 draws the path onto the map instead of listing the cells.</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">No: needs a real RANGE</Data></Cell>
+   </Row>
+   <Row ss:Height="39">
+    <Cell><Data ss:Type="String">IsInList_byErikOehm</Data></Cell>
+    <Cell><Data ss:Type="String">Erik Oehm</Data></Cell>
+    <Cell><Data ss:Type="String">Returns a boolean for matches in an array to a list</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">array: the value or values to test.&#10;list: the list to test them against.</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Yes</Data></Cell>
+   </Row>
+   <Row ss:Height="97.5">
+    <Cell><Data ss:Type="String">KnapSackInteger_byHadynWiseman</Data></Cell>
+    <Cell><Data ss:Type="String">Hadyn Wiseman</Data></Cell>
+    <Cell><Data ss:Type="String">Returns the best total value that fits a weight capacity, or which items to take</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Capacity: how much weight the sack holds.&#10;Weights: the weight of each item.&#10;Values: the value of each item, lined up with Weights.&#10;[items]: return WHICH items were chosen instead of the total value.</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Yes</Data></Cell>
+   </Row>
    <Row ss:Height="78">
     <Cell><Data ss:Type="String">LetterType_byHadynWiseman</Data></Cell>
     <Cell><Data ss:Type="String">Hadyn Wiseman</Data></Cell>
     <Cell><Data ss:Type="String">Returns a code for each character: U upper case, L lower case, S anything else; or V vowel / C consonant; or L letter / D digit</Data></Cell>
     <Cell ss:StyleID="s33"><Data ss:Type="String">text: the text to classify, one code per character.&#10;[Vowels]: 1 = V for vowels and C for consonants, instead of U and L.&#10;[Digits]: 1 = L for any letter and D for digits (S for anything else).</Data></Cell>
     <Cell ss:StyleID="s33"><Data ss:Type="String">Yes</Data></Cell>
+   </Row>
+   <Row ss:Height="195">
+    <Cell><Data ss:Type="String">LineOfSight_byHadynWiseman</Data></Cell>
+    <Cell><Data ss:Type="String">Hadyn Wiseman</Data></Cell>
+    <Cell><Data ss:Type="String">Returns what a cell can see across a grid, with blockers stopping the view</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">mp: the map. RANGE ONLY; handed an array it returns the TEXT 'Map is not a range, add reference map', and because that is a string and not an error, IFERROR will not catch it.&#10;Projections: the cell, or cells, doing the looking.&#10;blockers: what stops a line of sight.&#10;[No_Diag]: 1 to look only along rows and columns.&#10;[Distance]: how far the line of sight reaches.&#10;[Custom_RC_Directions]: your own list of directions to look along.&#10;[Fill]: what to mark the cells that cannot be seen with.</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">No: needs a real RANGE</Data></Cell>
+   </Row>
+   <Row ss:Height="156">
+    <Cell><Data ss:Type="String">LineOfSightCount_byHadynWiseman</Data></Cell>
+    <Cell><Data ss:Type="String">Hadyn Wiseman</Data></Cell>
+    <Cell><Data ss:Type="String">Counts how many of a given item are visible from a cell</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">st: the cell doing the looking.&#10;mp: the map. RANGE ONLY, same as LineOfSight.&#10;ItemsToCount: what you are counting sightings of.&#10;[Blockers]: what stops the view.&#10;[No_Diag]: 1 for rows and columns only.&#10;[Distance]: how far the eye reaches.&#10;[Custom_Directions]: your own directions to look along.&#10;[ReferenceMap]: locates an array on the sheet.</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">No: needs a real RANGE</Data></Cell>
    </Row>
    <Row ss:Height="175.5">
     <Cell><Data ss:Type="String">MassSubstitute_byHadynWiseman</Data></Cell>
@@ -1747,6 +1551,20 @@
     <Cell ss:StyleID="s33"><Data ss:Type="String">Text: the text to work on.&#10;OldText: a LIST of things to replace.&#10;[NewText]: a list of what to replace them with, lined up with OldText.&#10;[CaseSensitive]: 1 to match case exactly.&#10;[InstanceNumber]: replace only the nth occurrence rather than all of them.&#10;[Regexmode]: 1 treats OldText as a regular expression; pairs with RegPattern.</Data></Cell>
     <Cell ss:StyleID="s33"><Data ss:Type="String">Yes</Data></Cell>
    </Row>
+   <Row ss:Height="156">
+    <Cell><Data ss:Type="String">Maze_byHadynWiseman</Data></Cell>
+    <Cell><Data ss:Type="String">Hadyn Wiseman</Data></Cell>
+    <Cell><Data ss:Type="String">Returns which cells can be reached from a starting cell, obeying walls</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">mp: the map.&#10;st: where you start from.&#10;[targets]: optional cells of interest.&#10;[No_Diag]: 1 for 4-way, 0 for 8-way.&#10;[AllowMp]: which cells may be entered, as an array of TRUE/FALSE.&#10;[Custom_Directions]: your own move list.&#10;[ReferenceMap]: locates an array on the sheet.</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Yes: dual mode, PASS AN ARRAY (the range path uses implicit intersection and only works alongside the map)</Data></Cell>
+   </Row>
+   <Row ss:Height="409.5">
+    <Cell><Data ss:Type="String">MazeDistance_byHadynWiseman</Data></Cell>
+    <Cell><Data ss:Type="String">Hadyn Wiseman</Data></Cell>
+    <Cell><Data ss:Type="String">Returns the shortest distance across a grid, obeying walls. Weighted, so it takes the cheapest route rather than the fewest steps</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">mp: the map. A RANGE, or an ARRAY with [ReferenceMap] to say where it sits.&#10;st: the start cell, as a SHEET address: &quot;B12&quot;, not &quot;A1-for-the-map's-corner&quot;.&#10;[Targets]: where you are going. OMIT IT and you get the distance to EVERY cell, a whole distance field in one call.&#10;[No_Diag]: 1 = 4-way movement, 0 = 8-way. The commonest thing a case changes.&#10;[Allowmp]: which cells may be entered, as an ARRAY OF TRUE/FALSE. Never a bare TRUE; see the watch-out.&#10;[Show_Steps]: 1 returns the NUMBER OF STEPS instead of the accumulated cost.&#10;[Cus_Dir]: your own list of moves as packed numbers, so knight moves, hex moves and teleports all become ordinary steps.&#10;[Mazelam]: YOUR OWN price list for entering a cell. Normally a cell costs whatever is written in it; this replaces that rule. It is a LAMBDA of SEVEN arguments, in this order: the contents of the cell you are LEAVING, the contents of the cell you are ENTERING, where you are leaving from, where you are going, how many steps you have taken, how far you have come, and which DIRECTION the move is in. Return the cost of making that move. THE ONE THING TO KNOW: it is handed the whole search frontier at once, not one cell at a time, so all seven arrive as ARRAYS and it must give back an array of the same shape. A bare 1 will not do; write toValue*0+1, which is 1 in the right shape. The three position arguments are PACKED coordinates, so INT(to/10^6) is the row it is moving into and MOD(to,10^6) the column, and the direction is the difference between the two: 1 or -1 sideways, a million up or down, and anything else diagonal. See the examples below.&#10;[ReferenceMap]: a real range that locates an ARRAY on the sheet.</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Yes: dual mode, PASS AN ARRAY (the range path uses implicit intersection and only works alongside the map)</Data></Cell>
+   </Row>
    <Row ss:Height="117">
     <Cell><Data ss:Type="String">MissingLetters_byJaqKennedy</Data></Cell>
     <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
@@ -1754,11 +1572,116 @@
     <Cell ss:StyleID="s33"><Data ss:Type="String">list: what you HAVE. A LIST, not a word; see the watch-out.&#10;[pool]: the complete set to check against. Blank is the 26 letters, which is the case that names the lambda; pass anything else and it answers 'which of THESE are missing' for any set you like. Underneath it is NotInList_byJaqKennedy(pool, list); this lambda is that one with the alphabet already filled in.</Data></Cell>
     <Cell ss:StyleID="s33"><Data ss:Type="String">Yes: it takes a list, from a range or an array</Data></Cell>
    </Row>
+   <Row>
+    <Cell><Data ss:Type="String">ModeSuper_byLiannaGerrish</Data></Cell>
+    <Cell><Data ss:Type="String">Lianna Gerrish</Data></Cell>
+    <Cell><Data ss:Type="String">Returns the most frequent value AND how many times it appears</Data></Cell>
+    <Cell><Data ss:Type="String">rng: the values to count. MUST BE A REAL RANGE, not a typed array; it uses COUNTIF inside, and COUNTIF on an array returns the WRONG ANSWER SILENTLY.</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">No: needs a real RANGE</Data></Cell>
+   </Row>
+   <Row ss:Height="234">
+    <Cell><Data ss:Type="String">MoveOnMap_byHadynWiseman</Data></Cell>
+    <Cell><Data ss:Type="String">Hadyn Wiseman</Data></Cell>
+    <Cell><Data ss:Type="String">Walks a direction across a grid, stopping, gliding, bouncing or wrapping at obstacles, and optionally returning the whole path</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">St: the starting cell.&#10;Dir: which way to go, as an arrow glyph or a compass letter.&#10;[Steps]: how many steps to take.&#10;[mp]: the map, if the walk has to respect walls.&#10;[Path]: 1 returns EVERY cell visited instead of just the last one.&#10;[Stop]: 1 stops dead at a blocker.&#10;[Glide]: 1 slides until something stops it, like a curling stone.&#10;[Bounce]: 1 reflects off the wall and comes back.&#10;[Wrap]: 1 comes round the other side of the map.&#10;[RefMap]: locates an array on the sheet.&#10;[mpA]: which cells may be entered, as an array of TRUE/FALSE.&#10;[ShowDir]: also report the direction being travelled at the end.</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">No: needs a real RANGE</Data></Cell>
+   </Row>
+   <Row ss:Height="253.5">
+    <Cell><Data ss:Type="String">NetworkGraph_byHadynWiseman</Data></Cell>
+    <Cell><Data ss:Type="String">Hadyn Wiseman</Data></Cell>
+    <Cell><Data ss:Type="String">Returns the cheapest (or dearest) route over an origin/destination edge table, with its cost or its route</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Starts: the node, or nodes, to start from.&#10;OriginDestinationTable: the edges, as a two-column from/to table. This is the NON-GRID half of pathfinding; use it once a grid has been contracted to a graph.&#10;[Weights]: the cost of each edge.&#10;[Function]: a callback to work the cost out instead.&#10;[Targets]: where you are going. Omit for every node at once.&#10;[BiDirectional]: 1 if every edge can be travelled both ways.&#10;[StartWeights]: a cost already carried at each start node.&#10;[MaximiseW]: 1 finds the DEAREST route rather than the cheapest.&#10;[StepLimit]: stop after this many hops.&#10;[ShowRoute]: 1 returns the route itself, not just its cost.</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Yes</Data></Cell>
+   </Row>
+   <Row ss:Height="58.5">
+    <Cell><Data ss:Type="String">NotInList_byJaqKennedy</Data></Cell>
+    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
+    <Cell><Data ss:Type="String">Returns the items of a list that do not appear in another list</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">array: the list you are checking. A LIST, not a grid; see the watch-out.&#10;list: the list to check it against.</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Yes: but a LIST, not a grid; flatten a 2-D block with TOCOL</Data></Cell>
+   </Row>
+   <Row ss:Height="78">
+    <Cell><Data ss:Type="String">nSet_byJaqKennedy</Data></Cell>
+    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
+    <Cell><Data ss:Type="String">Returns the values found in both arrays (their intersection), each once</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">array1: the first list or block; its order is kept.&#10;array2: the list or block to check against.&#10;[skip_blanks_zeros]: TRUE (the default) leaves out blanks, empty text and 0. FALSE keeps them.</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Yes: any shape, returned as one column</Data></Cell>
+   </Row>
+   <Row ss:Height="175.5">
+    <Cell><Data ss:Type="String">OffsetA_byPeterScharl</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Peter Scharl</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Returns a block offset within an array, padding rather than stepping outside it (a non-volatile OFFSET)</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">arr: the array to look inside. Values come back, NOT a reference; that is the difference from OFFSET and the reason it is not volatile.&#10;rows: how far down to start.&#10;[cols]: how far right to start.&#10;[h]: how many rows to return. Omitted = all of them.&#10;[w]: how many columns to return. Omitted = all of them.&#10;[pad_with]: what to return for a position that falls OUTSIDE the array. It cannot step outside and fetch real data; it pads.</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Yes</Data></Cell>
+   </Row>
+   <Row ss:Height="39">
+    <Cell><Data ss:Type="String">OptimiseTSP_byHadynWiseman</Data></Cell>
+    <Cell><Data ss:Type="String">Hadyn Wiseman</Data></Cell>
+    <Cell><Data ss:Type="String">Improves a greedy tour and returns its cost and route</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">GreedyResult: the output of TSPGreedy, which this improves.&#10;DistanceMatrix: the same distance matrix.</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Yes</Data></Cell>
+   </Row>
+   <Row ss:Height="156">
+    <Cell><Data ss:Type="String">PerCom_byBoRydobon</Data></Cell>
+    <Cell><Data ss:Type="String">Bo Rydobon</Data></Cell>
+    <Cell><Data ss:Type="String">Lists the permutations or combinations of c items chosen from n</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">n: how many items there are, as a COUNT rather than a list.&#10;c: how many to choose.&#10;[P0C1]: 0 = permutations (order matters), 1 = combinations (it does not). The name is literally 'permutation 0 / combination 1', and it is idiosyncratic enough that it is how the attribution audit proved the lambda is Bo's.&#10;[rep]: 1 allows repeats.&#10;[cum]: 1 returns every size up to c.</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">n/a: takes numbers, not a block</Data></Cell>
+   </Row>
+   <Row ss:Height="78">
+    <Cell><Data ss:Type="String">Prev</Data></Cell>
+    <Cell><Data ss:Type="String">not established; ships uncredited</Data></Cell>
+    <Cell><Data ss:Type="String">Shifts a list by n places so each row can see an earlier one, filling the gap it opens</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">arr: the list to shift.&#10;[n]: how many places to shift it down. 1 is 'the one before'.&#10;[fill]: what to put in the gap the shift opens at the top. Omitted, it uses &quot;X&quot;.</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Yes</Data></Cell>
+   </Row>
+   <Row ss:Height="39">
+    <Cell><Data ss:Type="String">RCRefConvert_byHadynWiseman</Data></Cell>
+    <Cell><Data ss:Type="String">Hadyn Wiseman</Data></Cell>
+    <Cell><Data ss:Type="String">Converts between an A1 address and a packed row/column number, and decodes an arrow glyph into the packed step it means</Data></Cell>
+    <Cell><Data ss:Type="String">St: either an A1 address (converted to a packed number), a packed number (converted back to an address), or one of the eight arrow glyphs (converted to the packed MOVE that arrow means).</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Yes: it is arithmetic on a packed number or an address</Data></Cell>
+   </Row>
+   <Row ss:Height="195">
+    <Cell><Data ss:Type="String">Regions_byHadynWiseman</Data></Cell>
+    <Cell><Data ss:Type="String">Hadyn Wiseman</Data></Cell>
+    <Cell><Data ss:Type="String">Labels each connected region of a grid, so separate areas can be counted or told apart</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">mp: the map.&#10;[No_Diag]: 1 = cells touch only edge-to-edge, 0 = diagonals count as touching.&#10;[Allowmp]: which cells take part, as an array of TRUE/FALSE. Omitted, it groups cells of EQUAL VALUE instead, a different question and a useful one.&#10;[Cus_Dir]: your own idea of which cells are neighbours.&#10;[Mazelam]: a callback deciding what counts as connected. Same seven-argument shape as MazeDistance's, and its worked examples are the ones to read.</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Yes: dual mode, PASS AN ARRAY (the range path uses implicit intersection and only works alongside the map)</Data></Cell>
+   </Row>
    <Row ss:Height="97.5">
     <Cell><Data ss:Type="String">RegPattern_byHadynWiseman</Data></Cell>
     <Cell><Data ss:Type="String">Hadyn Wiseman</Data></Cell>
     <Cell><Data ss:Type="String">Builds a regular expression that matches any word in a list, longest first</Data></Cell>
     <Cell ss:StyleID="s33"><Data ss:Type="String">WordArray: the list of words to build a pattern from. LONGEST FIRST, so 'catalog' is matched before 'cat' and you do not get a half-match.&#10;[words_within_words]: 1 allows a match inside a longer word; omitted, it wraps the pattern in word boundaries.</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Yes</Data></Cell>
+   </Row>
+   <Row ss:Height="97.5">
+    <Cell><Data ss:Type="String">Rotate_byHadynWiseman</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Hadyn Wiseman</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Turns an array through quarter turns, optionally carrying addresses through the same rotation</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Array: the block to turn.&#10;[Rotation]: 1 = a quarter turn, 2 = a half turn, 3 = three quarters, 4 = leave it. Omitted = 1.&#10;[InputAddresses]: addresses to put through the same rotation, so you can say where a particular cell ended up.</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">No: needs a real RANGE</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">RowNum_byHadynWiseman</Data></Cell>
+    <Cell><Data ss:Type="String">Hadyn Wiseman</Data></Cell>
+    <Cell><Data ss:Type="String">Converts an A1 address, or a packed row/column number, to its row number</Data></Cell>
+    <Cell><Data ss:Type="String">addresses: an A1 address as text (&quot;C5&quot;), OR a packed row*1000000+column number. Plural because it takes a whole array of them at once.</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Yes</Data></Cell>
+   </Row>
+   <Row ss:Height="39">
+    <Cell><Data ss:Type="String">RunningCount_byHadynWiseman</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Hadyn Wiseman</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Returns which occurrence of its own value each item is</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Array: the list to count through. Answers 'which occurrence of this value is this one?', not how many there are in total.</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Yes</Data></Cell>
+   </Row>
+   <Row ss:Height="156">
+    <Cell><Data ss:Type="String">RunningTotal_byJaqKennedy</Data></Cell>
+    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
+    <Cell><Data ss:Type="String">Running total that can restart at chosen rows, and cap or stop at a limit</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">values: the numbers to accumulate.&#10;[ResetFlags]: 1 where the total restarts.&#10;[ResetTo]: what the total restarts at. Default 0.&#10;[StopAt]: the limit.&#10;[Cap]: 1 (default) holds the total at StopAt; 0 keeps the crossing row's full value.&#10;[IncFlaggedVal]: 1 (default) adds the flagged row's own value to the restart; 0 leaves it out.</Data></Cell>
     <Cell ss:StyleID="s33"><Data ss:Type="String">Yes</Data></Cell>
    </Row>
    <Row ss:Height="156">
@@ -1768,6 +1691,13 @@
     <Cell ss:StyleID="s33"><Data ss:Type="String">Text: the text to shift.&#10;Shift: how many places to move each letter along the alphabet.&#10;[AlongShift]: an EXTRA shift that grows with the position; character 1 moves by Shift, character 2 by Shift+AlongShift, and so on. One case called this its only invented mechanic.&#10;[AlongLettersOnly]: 1 counts only letters when working out the position, so spaces and punctuation do not advance the shift.&#10;[NoWrapAround]: 1 stops z rolling round to a.</Data></Cell>
     <Cell ss:StyleID="s33"><Data ss:Type="String">Yes</Data></Cell>
    </Row>
+   <Row ss:Height="136.5">
+    <Cell><Data ss:Type="String">Snake_byHadynWiseman</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Hadyn Wiseman</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Reads a grid in serpentine order, reversing direction on alternate lines</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Array: the grid to linearise.&#10;[ByCol]: 1 snakes down the columns instead of along the rows.&#10;[StartRorC]: which row or column to start from.&#10;[SwapEvery]: how many lines before the direction flips. 1 is the ordinary boustrophedon zig-zag.&#10;[AddressMoves]: addresses to carry through the same reordering.</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">No: needs a real RANGE</Data></Cell>
+   </Row>
    <Row ss:Height="117">
     <Cell><Data ss:Type="String">SplitText_byHadynWiseman</Data></Cell>
     <Cell><Data ss:Type="String">Hadyn Wiseman</Data></Cell>
@@ -1775,12 +1705,82 @@
     <Cell ss:StyleID="s33"><Data ss:Type="String">Text: the string to split.&#10;[Groups]: how many characters per piece. Omitted = one character each.&#10;[Overlap]: 1 = the pieces OVERLAP, sliding one character at a time. That is what makes it more than TEXTSPLIT and is how you scan for n-grams.</Data></Cell>
     <Cell ss:StyleID="s33"><Data ss:Type="String">Yes</Data></Cell>
    </Row>
-   <Row ss:Height="156">
-    <Cell><Data ss:Type="String">RunningTotal_byJaqKennedy</Data></Cell>
+   <Row ss:Height="214.5">
+    <Cell><Data ss:Type="String">StackSheets_byJaqKennedy</Data></Cell>
     <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell><Data ss:Type="String">Running total that can restart at chosen rows, and cap or stop at a limit</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">values: the numbers to accumulate.&#10;[ResetFlags]: 1 where the total restarts.&#10;[ResetTo]: what the total restarts at. Default 0.&#10;[StopAt]: the limit.&#10;[Cap]: 1 (default) holds the total at StopAt; 0 keeps the crossing row's full value.&#10;[IncFlaggedVal]: 1 (default) adds the flagged row's own value to the restart; 0 leaves it out.</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Turns many same-shaped sheets into one table, one row per cell, carrying the sheet name and the cell's address, row, column and packed coordinate</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">blocks: the sheets already stacked on top of each other. VSTACK takes a 3D reference, so VSTACK(Area1:Area64!A1:P16) is the whole job in one go.&#10;names: the sheet names, in the same order as the blocks. &quot;Area&quot;&amp;SEQUENCE(64) when they are numbered; a literal list when they are not.&#10;[TopLeft]: where the block sits on its own sheet, as an address. Blank means A1. Get it wrong and every address is out by the same amount.&#10;[HideBlanks]: 1 drops the empty and zero cells. Blank keeps every cell.</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Yes: and VSTACK of a 3D reference is how you feed it</Data></Cell>
+   </Row>
+   <Row ss:Height="78">
+    <Cell><Data ss:Type="String">TSPFull_byHadynWiseman</Data></Cell>
+    <Cell><Data ss:Type="String">Hadyn Wiseman</Data></Cell>
+    <Cell><Data ss:Type="String">Returns the cost of the exact shortest tour over a distance matrix</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">DistanceMatrix: a square matrix of distances.&#10;[StartNodeNumber]: which node to start at.&#10;[ReturnToStart]: 1 for a closed tour.&#10;[StepLimit]: a cap on how far it will search.</Data></Cell>
     <Cell ss:StyleID="s33"><Data ss:Type="String">Yes</Data></Cell>
+   </Row>
+   <Row ss:Height="97.5">
+    <Cell><Data ss:Type="String">TSPGreedy_byHadynWiseman</Data></Cell>
+    <Cell><Data ss:Type="String">Hadyn Wiseman</Data></Cell>
+    <Cell><Data ss:Type="String">Returns the cost of a nearest-neighbour tour over a distance matrix</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">DistanceMatrix: a square matrix of distances between every pair of nodes.&#10;[StartNodeNumber]: which node to start at.&#10;[ReturnToStart]: 1 for a closed tour that comes home, 0 for an open one.</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Yes</Data></Cell>
+   </Row>
+   <Row ss:Height="97.5">
+    <Cell><Data ss:Type="String">UnPivot_byHadynWiseman</Data></Cell>
+    <Cell><Data ss:Type="String">Hadyn Wiseman</Data></Cell>
+    <Cell><Data ss:Type="String">Converts a wide block into a long one, repeating the key columns once per value</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">KeepColumns: the columns that stay as they are and get REPEATED down the output.&#10;UnpivotColumns: the block that gets turned from wide into long.&#10;[HasHeaders]: 1 if the first row is a header row.&#10;[RemoveBlanks]: 1 drops rows whose value is empty.</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Yes</Data></Cell>
+   </Row>
+   <Row ss:Height="58.5">
+    <Cell><Data ss:Type="String">UnSplivot_byJJ</Data></Cell>
+    <Cell><Data ss:Type="String">JJ</Data></Cell>
+    <Cell><Data ss:Type="String">Splits a delimited column and unpivots it in one step, repeating the other columns for each token</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">table: the whole block. Column 1 is the one that gets SPLIT; columns 2 onwards are repeated once per token.&#10;delim: the delimiter inside column 1.</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Yes</Data></Cell>
+   </Row>
+   <Row ss:Height="78">
+    <Cell><Data ss:Type="String">uSet_byJaqKennedy</Data></Cell>
+    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
+    <Cell><Data ss:Type="String">Returns every value found in either array (their union), each once</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">array1: the first list or block; its values come first.&#10;array2: the second list or block; its new values follow.&#10;[skip_blanks_zeros]: TRUE (the default) leaves out blanks, empty text and 0. FALSE keeps them.</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Yes: any shape, returned as one column</Data></Cell>
+   </Row>
+   <Row ss:Height="78">
+    <Cell><Data ss:Type="String">VStacks_byHadynWiseman</Data></Cell>
+    <Cell><Data ss:Type="String">Hadyn Wiseman</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Repeats a block n times, stacked or side by side</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Array: the block to repeat.&#10;NoTimes: how many copies.&#10;[Hstk]: 1 stacks them side by side instead of on top of each other.</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Yes</Data></Cell>
+   </Row>
+   <Row ss:Height="97.5">
+    <Cell><Data ss:Type="String">WhileIterations_byHarryGross</Data></Cell>
+    <Cell><Data ss:Type="String">Harry Gross</Data></Cell>
+    <Cell><Data ss:Type="String">Repeats a step until a condition holds and returns how many steps it took</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">initialValue: the starting state.&#10;iterativeStep: a LAMBDA that produces the next state.&#10;stopCondition: a LAMBDA returning TRUE when to stop.&#10;[currentIterationCount]: bookkeeping, the count so far. Leave it alone; the recursion passes it to itself.</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Yes</Data></Cell>
+   </Row>
+   <Row ss:Height="78">
+    <Cell><Data ss:Type="String">WhileLoop_byHarryGross</Data></Cell>
+    <Cell><Data ss:Type="String">Harry Gross</Data></Cell>
+    <Cell><Data ss:Type="String">Repeats a step until a condition holds and returns the final state</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">initialValue: the starting state.&#10;iterativeStep: a LAMBDA that turns the state into the next state.&#10;stopCondition: a LAMBDA that returns TRUE when you want to stop. Returns THE STATE at that point.</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Yes</Data></Cell>
+   </Row>
+   <Row ss:Height="195">
+    <Cell><Data ss:Type="String">XLOOKUP2D_byBendeLeon</Data></Cell>
+    <Cell><Data ss:Type="String">Ben de Leon</Data></Cell>
+    <Cell><Data ss:Type="String">Looks up a value by row key and column key together</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">DataSource: the whole table INCLUDING its row labels and header row.&#10;RLU: the row key to look up.&#10;CLU: the column key to look up.&#10;[RowArray]: supply the row labels separately, when they are not the table's first column.&#10;[ColumnArray]: supply the column labels separately.&#10;[MatchMode]: as XLOOKUP: 0 exact, -1 or 1 nearest, 2 wildcard.&#10;[SearchMode]: as XLOOKUP: 1 first-to-last, -1 last-to-first.&#10;[IfNotFound]: what to return instead of an error.</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Yes</Data></Cell>
+   </Row>
+   <Row ss:Height="58.5">
+    <Cell><Data ss:Type="String">YouAreHere_byLiannaGerrish</Data></Cell>
+    <Cell><Data ss:Type="String">Lianna Gerrish</Data></Cell>
+    <Cell><Data ss:Type="String">Converts a cell to its A1 address as text, optionally sheet-qualified</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">cell: the cell whose address you want as text.&#10;[sheetname]: include a sheet name in the address, for a reference that has to survive being used on another sheet.</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">No</Data></Cell>
    </Row>
   </Table>
  </Worksheet>

@@ -17,7 +17,8 @@ Option Explicit
 ' An unreadable or missing choice reads as the default: every step Yes, CompBot wins.
 ' Setup (modCaseSetup) and the lambda imports (modLambdas) read the sheet through
 ' SetupStepOn / CompBotLambdasWin. The lambda library's location stays in the registry
-' (modLambdas): it is a path on this machine, not a preference.
+' (modLambdas): it is a path on this machine, not a preference. So does the Solve folder
+' (Set Solve Folder, SSF; GitHub #4, 2026-10-08), for the same reason.
 '==============================================================================
 
 ' --- MODULE CONSTANTS ---
@@ -26,6 +27,12 @@ Private Const m_SHEET_CODENAME      As String = "shtSetupSettings"   ' tab: Setu
 Private Const m_FIRST_ROW           As Long = 11     ' first step row on the sheet
 Private Const m_CHOICE_COL          As Long = 3      ' column C: the yellow choices
 Private Const m_LIBRARY_ROW         As Long = 22     ' library file name; its full path is the row below
+Private Const m_SOLVE_ROW           As Long = 24     ' Solve folder name (SSF); its full path is the row below
+' The Solve folder is a path on this machine, so like the lambda library it lives in the registry
+' (HKCU\...\VB and VBA Program Settings\CompBot\Setup), not on the sheet: it survives every CompBot update.
+Private Const m_REG_APP             As String = "CompBot"
+Private Const m_REG_SECTION         As String = "Setup"
+Private Const m_REG_SOLVE_KEY       As String = "SolveFolder"
 Private Const m_YES                 As String = "Yes"
 Private Const m_NO                  As String = "No"
 Private Const m_WINNER_KEY          As String = "LambdaWinner"
@@ -57,6 +64,113 @@ End Function
 '          library wins. The winner's import replaces a same-named lambda; the other never does.
 Public Function CompBotLambdasWin() As Boolean
     CompBotLambdasWin = (StrComp(ReadSetting(m_WINNER_KEY), m_WINNER_LIBRARY, vbTextCompare) <> 0)
+End Function
+
+
+' Purpose: the folder Full Setup Case saves the _Solve copy into, or "" if none is set (the copy then
+'          goes next to the case). A local path. Never raises.
+Public Function SolveFolder() As String
+    On Error Resume Next                          ' narrow: a missing registry key is simply "not set"
+    SolveFolder = GetSetting(m_REG_APP, m_REG_SECTION, m_REG_SOLVE_KEY, vbNullString)
+    On Error GoTo 0
+End Function
+
+
+'--------------------------------------------< OA Robot >--------------------------------------------
+' Command Name:           Set Solve Folder
+' Macro Expression:       modSetupSettings.SetSolveFolder()
+'----------------------------------------------------------------------------------------------------
+' Purpose: ask once for the folder Full Setup Case saves the _Solve copy into, and remember it
+'          (GitHub #4, Gabe Sotero: Downloads is not backed up, OneDrive is). A setup-time command:
+'          the folder picker is its only dialog, and the user asked for it.
+Public Sub SetSolveFolder()
+
+    ' --- CONSTANTS (local to function) ---
+    Const PROC_NAME         As String = "SetSolveFolder"
+    Const FOLDER_PICKER     As Long = 4       ' msoFileDialogFolderPicker; late-bound, no Office reference
+
+    Dim objPicker   As Object
+    Dim strPath     As String
+    Dim strStatus   As String
+
+    On Error GoTo ErrHandler
+
+    Set objPicker = Application.FileDialog(FOLDER_PICKER)
+    objPicker.Title = "Choose the folder Full Setup Case saves your _Solve copies into"
+    objPicker.AllowMultiSelect = False
+    If objPicker.Show <> -1 Then
+        strStatus = "Set Solve Folder: cancelled, nothing changed. " & SolveFolderStatus()
+        GoTo Cleanup
+    End If
+
+    ' The picker returns a local path; an https:// one (typed by hand) is resolved to its synced folder.
+    strPath = ResolveLocalPath(CStr(objPicker.SelectedItems(1)))
+    If Len(strPath) = 0 Then
+        strStatus = "Set Solve Folder: that folder has no local path (not synced?). Choose a local or synced folder."
+        GoTo Cleanup
+    End If
+
+    SaveSetting m_REG_APP, m_REG_SECTION, m_REG_SOLVE_KEY, strPath
+    RefreshSetupSettings
+    strStatus = "Set Solve Folder: " & strPath & ". Full Setup Case now saves the _Solve copy there."
+
+Cleanup:
+    Application.StatusBar = Left$(strStatus, m_MAX_STATUS)
+    Exit Sub
+
+ErrHandler:
+    If m_DEBUG_MODE Then Stop: Resume
+    LogError PROC_NAME, Err.Number, Err.Description
+    strStatus = "Set Solve Folder failed: " & Err.Description & " (see " & LogLocation() & ")."
+    Resume Cleanup
+End Sub
+
+
+'--------------------------------------------< OA Robot >--------------------------------------------
+' Command Name:           Clear Solve Folder
+' Macro Expression:       modSetupSettings.ClearSolveFolder()
+'----------------------------------------------------------------------------------------------------
+' Purpose: forget the Solve folder, so Full Setup Case saves the _Solve copy next to the case again.
+'          Touches only the setting: no folder or file is changed.
+Public Sub ClearSolveFolder()
+
+    ' --- CONSTANTS (local to function) ---
+    Const PROC_NAME As String = "ClearSolveFolder"
+
+    Dim strWas      As String
+    Dim strStatus   As String
+
+    On Error GoTo ErrHandler
+
+    strWas = SolveFolder()
+    If Len(strWas) = 0 Then
+        strStatus = "Clear Solve Folder: no Solve folder was set, nothing to clear."
+        GoTo Cleanup
+    End If
+
+    DeleteSetting m_REG_APP, m_REG_SECTION, m_REG_SOLVE_KEY
+    RefreshSetupSettings
+    strStatus = "Clear Solve Folder: forgot " & strWas & ". Full Setup Case now saves the _Solve copy next to the case."
+
+Cleanup:
+    Application.StatusBar = Left$(strStatus, m_MAX_STATUS)
+    Exit Sub
+
+ErrHandler:
+    If m_DEBUG_MODE Then Stop: Resume
+    LogError PROC_NAME, Err.Number, Err.Description
+    strStatus = "Clear Solve Folder failed: " & Err.Description & " (see " & LogLocation() & ")."
+    Resume Cleanup
+End Sub
+
+
+' Purpose: one phrase saying where the _Solve copy currently goes.
+Private Function SolveFolderStatus() As String
+    If Len(SolveFolder()) = 0 Then
+        SolveFolderStatus = "The _Solve copy goes next to the case."
+    Else
+        SolveFolderStatus = "Solve folder is still " & SolveFolder() & "."
+    End If
 End Function
 
 
@@ -124,6 +238,7 @@ Public Sub RefreshSetupSettings()
     Dim varKeys     As Variant
     Dim varOut      As Variant
     Dim strLibrary  As String
+    Dim strSolve    As String
     Dim lngI        As Long
     Dim blnEvents   As Boolean
     Dim blnWasSaved As Boolean
@@ -144,6 +259,7 @@ Public Sub RefreshSetupSettings()
     Next lngI
 
     strLibrary = modLambdas.CurrentLambdaLibrary()
+    strSolve = SolveFolder()
 
     m_blnLoading = True
     Application.EnableEvents = False
@@ -154,6 +270,13 @@ Public Sub RefreshSetupSettings()
     Else
         wsSettings.Cells(m_LIBRARY_ROW, m_CHOICE_COL).Value2 = Mid$(strLibrary, InStrRev(strLibrary, "\") + 1)
         wsSettings.Cells(m_LIBRARY_ROW + 1, m_CHOICE_COL).Value2 = strLibrary
+    End If
+    If Len(strSolve) = 0 Then
+        wsSettings.Cells(m_SOLVE_ROW, m_CHOICE_COL).Value2 = "none set"
+        wsSettings.Cells(m_SOLVE_ROW + 1, m_CHOICE_COL).Value2 = "Run Set Solve Folder (SSF) to choose one"
+    Else
+        wsSettings.Cells(m_SOLVE_ROW, m_CHOICE_COL).Value2 = Mid$(strSolve, InStrRev(strSolve, "\") + 1)
+        wsSettings.Cells(m_SOLVE_ROW + 1, m_CHOICE_COL).Value2 = strSolve
     End If
 
 Cleanup:
@@ -326,6 +449,7 @@ Private Function SettingsSheet() As Worksheet
         End If
     Next wsItem
 End Function
+
 
 
 

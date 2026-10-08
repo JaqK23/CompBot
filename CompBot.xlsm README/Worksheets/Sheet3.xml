@@ -58,11 +58,11 @@
   <Style ss:ID="s29" ss:Parent="s18">
    <Alignment ss:Horizontal="CenterAcrossSelection" ss:Vertical="Bottom"/>
   </Style>
-  <Style ss:ID="s38" ss:Parent="s16">
+  <Style ss:ID="s34" ss:Parent="s16">
    <Alignment ss:Horizontal="CenterAcrossSelection" ss:Vertical="Bottom"/>
    <Borders/>
   </Style>
-  <Style ss:ID="s39" ss:Parent="s18">
+  <Style ss:ID="s35" ss:Parent="s18">
    <Alignment ss:Horizontal="CenterAcrossSelection" ss:Vertical="Bottom"/>
    <Borders>
     <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"/>
@@ -71,7 +71,7 @@
     <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1"/>
    </Borders>
   </Style>
-  <Style ss:ID="s40" ss:Parent="s18">
+  <Style ss:ID="s36" ss:Parent="s18">
    <Alignment ss:Horizontal="CenterAcrossSelection" ss:Vertical="Bottom"
     ss:WrapText="1"/>
    <Borders>
@@ -81,7 +81,7 @@
     <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1"/>
    </Borders>
   </Style>
-  <Style ss:ID="s41" ss:Parent="s18">
+  <Style ss:ID="s37" ss:Parent="s18">
    <Borders>
     <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"/>
     <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1"/>
@@ -89,7 +89,7 @@
     <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1"/>
    </Borders>
   </Style>
-  <Style ss:ID="s42">
+  <Style ss:ID="s38">
    <Borders>
     <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"/>
     <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1"/>
@@ -97,10 +97,10 @@
     <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1"/>
    </Borders>
   </Style>
-  <Style ss:ID="s43">
+  <Style ss:ID="s39">
    <Alignment ss:Horizontal="Right" ss:Vertical="Bottom"/>
   </Style>
-  <Style ss:ID="s44" ss:Parent="s22">
+  <Style ss:ID="s40" ss:Parent="s22">
    <Borders>
     <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"/>
     <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1"/>
@@ -109,7 +109,7 @@
    </Borders>
    <Font ss:FontName="Verdana" x:Family="Swiss" ss:Size="14" ss:Color="#FFFFFF"/>
   </Style>
-  <Style ss:ID="s45" ss:Parent="s23">
+  <Style ss:ID="s41" ss:Parent="s23">
    <Borders>
     <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"/>
     <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1"/>
@@ -1185,7 +1185,7 @@
    ss:RefersTo="=LAMBDA(address,IF(ISNUMBER(address),MOD(address,10^6), LET(chars,UPPER(REGEXEXTRACT(address,&quot;[A-Za-z]+&quot;)), L,LEN(chars),       val_1,CODE(RIGHT(chars,1))-64,       val_2,IF(L&gt;1,(CODE(LEFT(RIGHT(chars,2),1))-64)*26,0),       val_3,IF(L=3,(CODE(LEFT(chars,1))-64)*676, 0), val_1+val_2+val_3)))"/>
   <NamedRange ss:Name="CountOcc_byHadynWiseman"
    ss:RefersTo="=LAMBDA(OccOf,Text,[Case],IF(ISOMITTED(Case),(LEN(Text)-LEN(SUBSTITUTE(LOWER(Text),LOWER(OccOf),&quot;&quot;)))/LEN(OccOf),(LEN(Text)-LEN(SUBSTITUTE(Text,OccOf,&quot;&quot;)))/LEN(OccOf)))"/>
-  <NamedRange ss:Name="Decimal_Separator" ss:RefersTo="='Default Settings'!R8C2"/>
+  <NamedRange ss:Name="Decimal_Separator" ss:RefersTo="='Regional Settings'!R8C2"/>
   <NamedRange ss:Name="DiffByRow_byJaqKennedy"
    ss:RefersTo="=LAMBDA(Input,LET(\\LambdaName, &quot;DiffByRow&quot;, \\CommandName, &quot;Difference of array columns by row&quot;, \\Description, &quot;Returns first column - last column in array&quot;, \\Source, &quot;Jaq Kennedy&quot;, TAKE(Input, , 1) - TAKE(Input, , -1)))"/>
   <NamedRange ss:Name="DistFrom_byDiarmuidEarly"
@@ -1212,20 +1212,20 @@
    ss:RefersTo="=LAMBDA(array,list,MAP(array,LAMBDA(x,OR(list=x))))"/>
   <NamedRange ss:Name="KnapSackInteger_byHadynWiseman"
    ss:RefersTo="=LAMBDA(Capacity,Weights,Values,[items],LET(c,Capacity, rs,REDUCE(IFNA(HSTACK(EXPAND(0,c+1,,0),&quot;&quot;),&quot;&quot;),SEQUENCE(ROWS(Weights)),LAMBDA(a,v,LET( w,@INDEX(Weights,v),p,@INDEX(Values,v),pv,TAKE(a,,1),pl,DROP(a,,1), nv,IF(w&gt;c,pv,IF(w=0,pv+p,VSTACK(EXPAND(0,w,,0),DROP(pv,-w)+p))), nl,IF(w&gt;c,pl,IF(w=0,pl,VSTACK(EXPAND(&quot;&quot;,w,,&quot;&quot;),DROP(pl,-w)))), k,nv&gt;pv,HSTACK(IF(k,nv,pv),IF(k,nl&amp;1,pl&amp;0))))), IF(ISOMITTED(items),@TAKE(rs,-1,1),LET(b,@TAKE(rs,-1,-1),FILTER(HSTACK(items,Weights,Values),--MID(b,SEQUENCE(LEN(b)),1))))))"/>
-  <NamedRange ss:Name="LanguageList" ss:RefersTo="='Default Settings'!R6C14"/>
+  <NamedRange ss:Name="LanguageList" ss:RefersTo="='Regional Settings'!R6C14"/>
   <NamedRange ss:Name="LineOfSight_byHadynWiseman"
    ss:RefersTo="=LAMBDA(mp,Projections,blockers,[No_Diag],[Distance],[Custom_RC_Directions],[Fill], LET(M,10^6,R,ROWS(mp),C,COLUMNS(mp),rcn,SEQUENCE(R)*M+SEQUENCE(,C),fm,TOCOL(mp),fr,TOCOL(rcn),pm,ISNUMBER(XMATCH(fm,Projections)),st,FILTER(fr,pm,0),em,IF(mp=&quot;&quot;,&quot;&quot;,mp), IF(@st=0,em,LET(nm,FILTER(fm,pm),bk,FILTER(fr,ISNUMBER(XMATCH(fm,blockers)),-1), dr,IF(ISOMITTED(Custom_RC_Directions),TAKE(VSTACK(M,-M,1,-1,M+1,-M-1,M-1,1-M),8-4*No_Diag),TOCOL(Custom_RC_Directions,3)),td,TOROW(dr), sa,TOCOL(st+td*0),na,TOCOL(IF(td=td,nm)),da,TOCOL(st*0+td),dis,IF(ISOMITTED(Distance),MAX(R,C),Distance)+1,sq,SEQUENCE(,dis,0),pt,sa+da*sq, pr,INT(pt/M),pc,MOD(pt,M),sp,(pr&lt;1)+(pr&gt;R)+(pc&lt;1)+(pc&gt;C)+ISNUMBER(XMATCH(pt,bk)),si,BYROW(IF(sp,sq,dis),LAMBDA(x,MIN(x))), vp,FILTER(HSTACK(TOCOL(pt),TOCOL(IF(sq=sq,na))),TOCOL(sq&lt;si)),up,UNIQUE(vp),uc,TAKE(up,,1), lut,IF(ISOMITTED(Fill),GROUPBY(uc,DROP(up,,1),LAMBDA(x,TEXTJOIN(&quot;/&quot;,1,x)),0,0),HSTACK(UNIQUE(uc),Fill)), IFNA(VLOOKUP(rcn,lut,2,0),em)))))"/>
-  <NamedRange ss:Name="List_Separator" ss:RefersTo="='Default Settings'!R10C2"/>
+  <NamedRange ss:Name="List_Separator" ss:RefersTo="='Regional Settings'!R10C2"/>
   <NamedRange ss:Name="Loaded_Decimal_Separator"
-   ss:RefersTo="='Default Settings'!R8C4"/>
-  <NamedRange ss:Name="Loaded_Language" ss:RefersTo="='Default Settings'!R11C4"/>
-  <NamedRange ss:Name="Loaded_Language_ID" ss:RefersTo="='Default Settings'!R12C4"/>
+   ss:RefersTo="='Regional Settings'!R8C4"/>
+  <NamedRange ss:Name="Loaded_Language" ss:RefersTo="='Regional Settings'!R11C4"/>
+  <NamedRange ss:Name="Loaded_Language_ID" ss:RefersTo="='Regional Settings'!R12C4"/>
   <NamedRange ss:Name="Loaded_List_Separator"
-   ss:RefersTo="='Default Settings'!R10C4"/>
+   ss:RefersTo="='Regional Settings'!R10C4"/>
   <NamedRange ss:Name="Loaded_Thousands_Separator"
-   ss:RefersTo="='Default Settings'!R9C4"/>
+   ss:RefersTo="='Regional Settings'!R9C4"/>
   <NamedRange ss:Name="Loaded_Use_System_Separators"
-   ss:RefersTo="='Default Settings'!R7C4"/>
+   ss:RefersTo="='Regional Settings'!R7C4"/>
   <NamedRange ss:Name="MassSubstitute_byHadynWiseman"
    ss:RefersTo="=LAMBDA(Text,OldText,[NewText],[CaseSensitive],[InstanceNumber],[Regexmode],MAP(Text,LAMBDA(x, LET(ot,IF(Regexmode,&quot;&quot;,&quot;\Q&quot;)&amp;TOCOL(OldText)&amp;IF(Regexmode,&quot;&quot;,&quot;\E&quot;),nt,&quot;\Q&quot;&amp;IF(ISOMITTED(NewText),EXPAND(&quot;&quot;,ROWS(ot),,&quot;&quot;),NewText)&amp;&quot;\E&quot;,in,EXPAND(InstanceNumber,ROWS(ot),,@InstanceNumber), ms,REDUCE(x,SEQUENCE(ROWS(ot)),LAMBDA(a,v,REGEXREPLACE(a,INDEX(ot,v),INDEX(nt,v),IF(ISOMITTED(InstanceNumber),0,INDEX(in,v)),1-CaseSensitive))), ms))))"/>
   <NamedRange ss:Name="MM_byHaDang"
@@ -1254,13 +1254,13 @@
    ss:RefersTo="=LAMBDA(values,[ResetFlags],[ResetTo],[StopAt],[Cap],[IncFlaggedVal],LET(v,TOCOL(values),n,ROWS(v),f,IF(ISOMITTED(ResetFlags),SEQUENCE(n)*0,IFERROR(--TOCOL(ResetFlags),0)),r,IF(ISOMITTED(ResetTo),0,IF(ResetTo=&quot;&quot;,0,ResetTo)),h,IF(ISOMITTED(StopAt),FALSE,StopAt&lt;&gt;&quot;&quot;),s,IF(h,StopAt,0),cp,IF(ISOMITTED(Cap),1,IF(Cap=&quot;&quot;,1,Cap)),inc,IF(ISOMITTED(IncFlaggedVal),1,IF(IncFlaggedVal=&quot;&quot;,1,IncFlaggedVal)),SCAN(0,SEQUENCE(n),LAMBDA(acc,i,LET(x,INDEX(v,i),fl,IFERROR(INDEX(f,i),0)=1,t,IF(fl,r+IF(inc,x,0),IF(AND(h,acc&gt;=s),acc,acc+x)),IF(AND(h,t&gt;=s),IF(cp,s,t),t))))))"/>
   <NamedRange ss:Name="SplitText_byHadynWiseman"
    ss:RefersTo="=LAMBDA(Text,[Groups],[Overlap],LET(t,CONCAT(Text),_groups,MAX(Groups,1),IF(Overlap,MID(t,SEQUENCE(LEN(t)-_groups+1),_groups),IF(ISOMITTED(Groups),TOCOL(REGEXEXTRACT(t,&quot;\X&quot;,1)),MID(t,SEQUENCE(ROUNDUP(LEN(t)/_groups,0),,,_groups),_groups)))))"/>
-  <NamedRange ss:Name="Thousands_Separator" ss:RefersTo="='Default Settings'!R9C2"/>
+  <NamedRange ss:Name="Thousands_Separator" ss:RefersTo="='Regional Settings'!R9C2"/>
   <NamedRange ss:Name="TSPGreedy_byHadynWiseman"
    ss:RefersTo="=LAMBDA(DistanceMatrix,[StartNodeNumber],[ReturnToStart],     LET(         TotalNodes,ROWS(DistanceMatrix),         FirstNode,IF(ISOMITTED(StartNodeNumber),1,StartNodeNumber),         NodeSeq,SEQUENCE(,TotalNodes),         InitialState,HSTACK(FirstNode,0,FirstNode,--(NodeSeq=FirstNode)),         GreedyRun,REDUCE(InitialState,SEQUENCE(TotalNodes-1),LAMBDA(State,Step,             LET(                 Path,INDEX(State,1),                 TotalDistance,INDEX(State,2),                 LastNode,INDEX(State,3),                 VisitedArray,DROP(State,,3),                 AdjustedRow,CHOOSEROWS(DistanceMatrix,LastNode)+(VisitedArray*1E+99),                 NextDist,MIN(AdjustedRow),                 NextNode,XMATCH(NextDist,AdjustedRow),                 HSTACK(Path&amp;&quot;|&quot;&amp;NextNode,TotalDistance+NextDist,NextNode,VisitedArray+(NodeSeq=NextNode))))),         FinalPath,INDEX(GreedyRun,1),         FinalDist,INDEX(GreedyRun,2),         FinalNode,INDEX(GreedyRun,3),         BBInitialFloor,FinalDist+IF(ReturnToStart,INDEX(DistanceMatrix,FinalNode,FirstNode),0),         BBInitialpath,FinalPath&amp;IF(ReturnToStart,&quot;|&quot;&amp;FirstNode,&quot;&quot;),         HSTACK(BBInitialFloor,BBInitialpath)))"/>
   <NamedRange ss:Name="UnSplivot_byJJ"
    ss:RefersTo="=LAMBDA(table,delim,LET(v,TAKE(table,,1),keep,DROP(table,,1),n,ROWS(v),k,MAX((LEN(v)-LEN(SUBSTITUTE(v,delim,&quot;&quot;)))/LEN(delim))+1,tok,MAKEARRAY(n,k,LAMBDA(r,c,IFERROR(TRIM(TEXTBEFORE(TEXTAFTER(delim&amp;INDEX(v,r)&amp;delim,delim,c),delim)),&quot;&quot;))),idx,TOCOL(SEQUENCE(n)+SEQUENCE(,k)*0),body,HSTACK(TOCOL(tok),CHOOSEROWS(keep,idx)),FILTER(body,TAKE(body,,1)&lt;&gt;&quot;&quot;)))"/>
   <NamedRange ss:Name="Use_System_Separators"
-   ss:RefersTo="='Default Settings'!R7C2"/>
+   ss:RefersTo="='Regional Settings'!R7C2"/>
   <NamedRange ss:Name="uSet_byJaqKennedy"
    ss:RefersTo="=LAMBDA(array1,array2,[skip_blanks_zeros],LET(skip,IF(ISOMITTED(skip_blanks_zeros),TRUE,skip_blanks_zeros),u,UNIQUE(VSTACK(TOCOL(array1),TOCOL(array2))),IF(skip,FILTER(u,(u&lt;&gt;&quot;&quot;)*(u&lt;&gt;0),&quot;&quot;),u)))"/>
   <NamedRange ss:Name="VStacks_byHadynWiseman"
@@ -1270,7 +1270,7 @@
   <NamedRange ss:Name="YouAreHere_byLiannaGerrish"
    ss:RefersTo="=LAMBDA(cell,[sheetname],LET(_a,ADDRESS(ROW(cell),COLUMN(cell),4,TRUE),IF(ISOMITTED(sheetname),_a,&quot;'&quot;&amp;sheetname&amp;&quot;'!&quot;&amp;_a)))"/>
  </Names>
- <Worksheet ss:Name="Default Settings">
+ <Worksheet ss:Name="Regional Settings">
   <Table ss:ExpandedColumnCount="14" ss:ExpandedRowCount="212"
    ss:DefaultColumnWidth="90" ss:DefaultRowHeight="19.5">
    <Column ss:Width="195"/>
@@ -1287,50 +1287,50 @@
    <Column ss:Hidden="1" ss:AutoFitWidth="0"/>
    <Column ss:Hidden="1" ss:AutoFitWidth="0" ss:Width="87"/>
    <Row ss:Height="21">
-    <Cell ss:StyleID="s38"><Data ss:Type="String">Default Settings Header</Data></Cell>
-    <Cell ss:StyleID="s38"/>
-    <Cell ss:StyleID="s38"/>
-    <Cell ss:StyleID="s38"/>
-    <Cell ss:StyleID="s38"/>
-    <Cell ss:StyleID="s38"/>
-    <Cell ss:StyleID="s38"/>
-    <Cell ss:StyleID="s38"/>
-    <Cell ss:StyleID="s38"/>
-    <Cell ss:StyleID="s38"/>
+    <Cell ss:StyleID="s34"><Data ss:Type="String">Regional Settings</Data></Cell>
+    <Cell ss:StyleID="s34"/>
+    <Cell ss:StyleID="s34"/>
+    <Cell ss:StyleID="s34"/>
+    <Cell ss:StyleID="s34"/>
+    <Cell ss:StyleID="s34"/>
+    <Cell ss:StyleID="s34"/>
+    <Cell ss:StyleID="s34"/>
+    <Cell ss:StyleID="s34"/>
+    <Cell ss:StyleID="s34"/>
     <Cell ss:StyleID="s27"/>
     <Cell ss:StyleID="s27"/>
    </Row>
    <Row ss:Height="20.25">
-    <Cell ss:StyleID="s39"><Data ss:Type="String">To find the settings on the computer (before overwriting) run &quot;Get Current Settings&quot; to populate the Loaded column below</Data></Cell>
-    <Cell ss:StyleID="s39"/>
-    <Cell ss:StyleID="s39"/>
-    <Cell ss:StyleID="s39"/>
-    <Cell ss:StyleID="s39"/>
-    <Cell ss:StyleID="s39"/>
-    <Cell ss:StyleID="s39"/>
-    <Cell ss:StyleID="s39"/>
-    <Cell ss:StyleID="s39"/>
-    <Cell ss:StyleID="s39"/>
+    <Cell ss:StyleID="s35"><Data ss:Type="String">To find the settings on the computer (before overwriting) run &quot;Get Current Settings&quot; to populate the Loaded column below</Data></Cell>
+    <Cell ss:StyleID="s35"/>
+    <Cell ss:StyleID="s35"/>
+    <Cell ss:StyleID="s35"/>
+    <Cell ss:StyleID="s35"/>
+    <Cell ss:StyleID="s35"/>
+    <Cell ss:StyleID="s35"/>
+    <Cell ss:StyleID="s35"/>
+    <Cell ss:StyleID="s35"/>
+    <Cell ss:StyleID="s35"/>
     <Cell ss:StyleID="s29"/>
     <Cell ss:StyleID="s29"/>
    </Row>
    <Row ss:Height="39">
-    <Cell ss:StyleID="s40"><Data ss:Type="String">To update settings run command &quot;Update Settings&quot;. Note this will not change Windows level settings, only Excel, to the settings in yellow.&#10;If Use System Separators = &quot;TRUE&quot;, settings will not be updated. Use &quot;FALSE&quot; to load in your preferred settings.</Data></Cell>
-    <Cell ss:StyleID="s39"/>
-    <Cell ss:StyleID="s39"/>
-    <Cell ss:StyleID="s39"/>
-    <Cell ss:StyleID="s39"/>
-    <Cell ss:StyleID="s39"/>
-    <Cell ss:StyleID="s39"/>
-    <Cell ss:StyleID="s39"/>
-    <Cell ss:StyleID="s39"/>
-    <Cell ss:StyleID="s39"/>
+    <Cell ss:StyleID="s36"><Data ss:Type="String">To update settings run command &quot;Update Settings&quot;. Note this will not change Windows level settings, only Excel, to the settings in yellow.&#10;If Use System Separators = &quot;TRUE&quot;, settings will not be updated. Use &quot;FALSE&quot; to load in your preferred settings.</Data></Cell>
+    <Cell ss:StyleID="s35"/>
+    <Cell ss:StyleID="s35"/>
+    <Cell ss:StyleID="s35"/>
+    <Cell ss:StyleID="s35"/>
+    <Cell ss:StyleID="s35"/>
+    <Cell ss:StyleID="s35"/>
+    <Cell ss:StyleID="s35"/>
+    <Cell ss:StyleID="s35"/>
+    <Cell ss:StyleID="s35"/>
     <Cell ss:StyleID="s29"/>
     <Cell ss:StyleID="s29"/>
    </Row>
    <Row ss:Index="5">
-    <Cell ss:Index="5" ss:StyleID="s41"><Data ss:Type="String">Add your favourites here</Data></Cell>
-    <Cell ss:StyleID="s42"/>
+    <Cell ss:Index="5" ss:StyleID="s37"><Data ss:Type="String">Add your favourites here</Data></Cell>
+    <Cell ss:StyleID="s38"/>
    </Row>
    <Row>
     <Cell ss:Index="2"><Data ss:Type="String">Inputted Settings</Data></Cell>
@@ -1344,25 +1344,25 @@
       ss:Type="String">Amharic</Data><NamedCell ss:Name="LanguageList"/></Cell>
    </Row>
    <Row>
-    <Cell ss:StyleID="s43"><Data ss:Type="String">Use System Separators</Data></Cell>
+    <Cell ss:StyleID="s39"><Data ss:Type="String">Use System Separators</Data></Cell>
     <Cell ss:StyleID="s24"><Data ss:Type="Boolean">0</Data><NamedCell
       ss:Name="Use_System_Separators"/></Cell>
-    <Cell ss:Index="4" ss:StyleID="s44"><Data ss:Type="Boolean">1</Data><NamedCell
+    <Cell ss:Index="4" ss:StyleID="s40"><Data ss:Type="Boolean">1</Data><NamedCell
       ss:Name="Loaded_Use_System_Separators"/></Cell>
-    <Cell ss:StyleID="s42"><Data ss:Type="Boolean">1</Data></Cell>
-    <Cell ss:StyleID="s42"><Data ss:Type="Boolean">0</Data></Cell>
+    <Cell ss:StyleID="s38"><Data ss:Type="Boolean">1</Data></Cell>
+    <Cell ss:StyleID="s38"><Data ss:Type="Boolean">0</Data></Cell>
     <Cell ss:Index="11"><Data ss:Type="Number">1118</Data></Cell>
     <Cell><Data ss:Type="String">Amharic</Data></Cell>
     <Cell ss:Index="14"><Data ss:Type="String">Afrikaans</Data></Cell>
    </Row>
    <Row>
-    <Cell ss:StyleID="s43"><Data ss:Type="String">Decimal Separator</Data></Cell>
+    <Cell ss:StyleID="s39"><Data ss:Type="String">Decimal Separator</Data></Cell>
     <Cell ss:StyleID="s24"><Data ss:Type="String">.</Data><NamedCell
       ss:Name="Decimal_Separator"/></Cell>
-    <Cell ss:Index="4" ss:StyleID="s44"><Data ss:Type="String">.</Data><NamedCell
+    <Cell ss:Index="4" ss:StyleID="s40"><Data ss:Type="String">.</Data><NamedCell
       ss:Name="Loaded_Decimal_Separator"/></Cell>
-    <Cell ss:StyleID="s42"><Data ss:Type="String">.</Data></Cell>
-    <Cell ss:StyleID="s42"><Data ss:Type="String">,</Data></Cell>
+    <Cell ss:StyleID="s38"><Data ss:Type="String">.</Data></Cell>
+    <Cell ss:StyleID="s38"><Data ss:Type="String">,</Data></Cell>
     <Cell ss:Index="8" ss:StyleID="s25" ss:Formula="=SUM(1000,0.23)"><Data
       ss:Type="Number">1000.23</Data></Cell>
     <Cell ss:Formula="=FORMULATEXT(RC[-1])"><Data ss:Type="String">=SUM(1000,0.23)</Data></Cell>
@@ -1371,28 +1371,28 @@
     <Cell ss:Index="14"><Data ss:Type="String">Albanian</Data></Cell>
    </Row>
    <Row>
-    <Cell ss:StyleID="s43"><Data ss:Type="String">Thousands Separator</Data></Cell>
+    <Cell ss:StyleID="s39"><Data ss:Type="String">Thousands Separator</Data></Cell>
     <Cell ss:StyleID="s24"><Data ss:Type="String">,</Data><NamedCell
       ss:Name="Thousands_Separator"/></Cell>
-    <Cell ss:Index="4" ss:StyleID="s44"><Data ss:Type="String">,</Data><NamedCell
+    <Cell ss:Index="4" ss:StyleID="s40"><Data ss:Type="String">,</Data><NamedCell
       ss:Name="Loaded_Thousands_Separator"/></Cell>
-    <Cell ss:StyleID="s42"><Data ss:Type="String">,</Data></Cell>
-    <Cell ss:StyleID="s42"><Data ss:Type="String"> </Data></Cell>
+    <Cell ss:StyleID="s38"><Data ss:Type="String">,</Data></Cell>
+    <Cell ss:StyleID="s38"><Data ss:Type="String"> </Data></Cell>
     <Cell ss:Index="8" ss:StyleID="s25"><Data ss:Type="Number">1000.23</Data></Cell>
     <Cell ss:Index="11"><Data ss:Type="Number">1052</Data></Cell>
     <Cell><Data ss:Type="String">Albanian</Data></Cell>
     <Cell ss:Index="14"><Data ss:Type="String">Alsatian</Data></Cell>
    </Row>
    <Row>
-    <Cell ss:StyleID="s43"><Data ss:Type="String">List Separator</Data></Cell>
-    <Cell ss:StyleID="s45" ss:Formula="=IF(Decimal_Separator=&quot;,&quot;,&quot;;&quot;,&quot;,&quot;)"><Data
+    <Cell ss:StyleID="s39"><Data ss:Type="String">List Separator</Data></Cell>
+    <Cell ss:StyleID="s41" ss:Formula="=IF(Decimal_Separator=&quot;,&quot;,&quot;;&quot;,&quot;,&quot;)"><Data
       ss:Type="String">,</Data><NamedCell ss:Name="List_Separator"/></Cell>
-    <Cell ss:Index="4" ss:StyleID="s45"
+    <Cell ss:Index="4" ss:StyleID="s41"
      ss:Formula="=IF(Loaded_Decimal_Separator=&quot;,&quot;,&quot;;&quot;,&quot;,&quot;)"><Data
       ss:Type="String">,</Data><NamedCell ss:Name="Loaded_List_Separator"/></Cell>
-    <Cell ss:StyleID="s45" ss:Formula="=IF(R[-2]C=&quot;,&quot;,&quot;;&quot;,&quot;,&quot;)"><Data
+    <Cell ss:StyleID="s41" ss:Formula="=IF(R[-2]C=&quot;,&quot;,&quot;;&quot;,&quot;,&quot;)"><Data
       ss:Type="String">,</Data></Cell>
-    <Cell ss:StyleID="s45" ss:Formula="=IF(R[-2]C=&quot;,&quot;,&quot;;&quot;,&quot;,&quot;)"><Data
+    <Cell ss:StyleID="s41" ss:Formula="=IF(R[-2]C=&quot;,&quot;,&quot;;&quot;,&quot;,&quot;)"><Data
       ss:Type="String">;</Data></Cell>
     <Cell ss:Index="8"
      ss:Formula="=CONCAT(R[-2]C[-4],R[-1]C[-4],RC[-4],R[-3]C[-4])"><Data
@@ -1403,8 +1403,8 @@
     <Cell ss:Index="14"><Data ss:Type="String">Arabic (Algeria)</Data></Cell>
    </Row>
    <Row>
-    <Cell ss:StyleID="s43"><Data ss:Type="String">Language</Data></Cell>
-    <Cell ss:Index="4" ss:StyleID="s45"
+    <Cell ss:StyleID="s39"><Data ss:Type="String">Language</Data></Cell>
+    <Cell ss:Index="4" ss:StyleID="s41"
      ss:Formula="=XLOOKUP(Loaded_Language_ID,#REF!,#REF!,&quot;Unknown&quot;,0)"><Data
       ss:Type="String">English (United States)</Data><NamedCell
       ss:Name="Loaded_Language"/></Cell>
@@ -1414,8 +1414,8 @@
     <Cell ss:Index="14"><Data ss:Type="String">Arabic (Bahrain)</Data></Cell>
    </Row>
    <Row>
-    <Cell ss:StyleID="s43"><Data ss:Type="String">Language ID</Data></Cell>
-    <Cell ss:Index="4" ss:StyleID="s44"><Data ss:Type="Number">1033</Data><NamedCell
+    <Cell ss:StyleID="s39"><Data ss:Type="String">Language ID</Data></Cell>
+    <Cell ss:Index="4" ss:StyleID="s40"><Data ss:Type="Number">1033</Data><NamedCell
       ss:Name="Loaded_Language_ID"/></Cell>
     <Cell ss:Index="8" ss:StyleID="s18"><Data ss:Type="String">Does not update anything - for info only</Data></Cell>
     <Cell ss:Index="11"><Data ss:Type="Number">15361</Data></Cell>

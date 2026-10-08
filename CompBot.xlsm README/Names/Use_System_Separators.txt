@@ -1,1 +1,1 @@
-Use_System_Separators ='Default Settings'!$C$11
+Use_System_Separators ='Regional Settings'!$C$11

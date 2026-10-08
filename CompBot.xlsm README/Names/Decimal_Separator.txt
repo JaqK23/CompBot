@@ -1,1 +1,1 @@
-Decimal_Separator ='Default Settings'!$C$12
+Decimal_Separator ='Regional Settings'!$C$12

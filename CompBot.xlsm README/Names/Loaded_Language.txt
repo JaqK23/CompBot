@@ -1,1 +1,1 @@
-Loaded_Language ='Default Settings'!$E$15
+Loaded_Language ='Regional Settings'!$E$15
