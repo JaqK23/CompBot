@@ -204,6 +204,21 @@
       ]
     },
     {
+      "Name": "Create Data Table Here",
+      "Description": "Builds the level's data table block at the selected cell, else beside the inputs",
+      "Type": "VBAMacroCommand",
+      "Note": "Create Data Table (CDT) with the block's input cell at the ACTIVE cell. Stand on an empty cell in the level, right of the inputs, and run it: the block is built there (header row above, Expected / Check / ANSWER below, games down) and you land on its last input. The cell is not used, and the block goes where CDT would put it, when it is the Example# label, on row 1, not empty, or its footprint holds anything; the status bar says which. If the level already has a block it takes you there, like CDT. Asked for by Laza (GitHub #6, 2026-10-09); added 2026-10-11 (Jaq's naming: CDTH).",
+      "LaunchCodes": [
+        "CDTH",
+        "DT"
+      ],
+      "MacroExpression": "modDataTable.CreateDataTableHere()",
+      "Tags": [
+        "Prep",
+        "DataTable"
+      ]
+    },
+    {
       "Name": "Create Level Sheets",
       "Description": "Creates a sheet for each level in the Case sheet",
       "Type": "VBAMacroCommand",
@@ -594,7 +609,8 @@
       "Type": "VBAMacroCommand",
       "Note": "The step between Create Data Table (CDT) and Run Data Table (RDT). Stand on the cell holding the example calculation's OUTPUT and run it: the ANSWER cell of this level's block (3 rows below the block's input cell, 1 column right) becomes =that cell, absolute. The level is found exactly as CDT finds it, so on a Case sheet with several blocks the right one is used. Refuses when the level has no block yet, or when you are standing on the block itself. Copies nothing, moves nothing. Added 2026-09-24 (Jaq) as CompBot's own take on A-ZTraining's ANS, which searched for the first green ANSWER cell of an Excel What-If table.",
       "LaunchCodes": [
-        "ANS"
+        "ANS",
+        "DT"
       ],
       "MacroExpression": "modDataTable.LinkAnswerCell()",
       "Tags": [
@@ -603,12 +619,18 @@
     },
     {
       "Name": "Link Side Cell",
-      "Description": "Adds a SIDE column to the level's data table, pointed at the active cell, so RDT also records a second value per game for a bonus",
+      "Description": "Data table: adds a bonus SIDE column pointed at the active cell; RDT fills it",
       "Type": "VBAMacroCommand",
       "Note": "For bonuses that need a DIFFERENT per-game number from the level's calculation (a count, a per-player score), then SUM / MAX / COUNTIF over the games. Stand on the cell holding that number and run it: the next SIDE column of this level's block goes in the first free column right of the block. Check row: SIDE k; ANSWER row: =that cell, light blue; game rows: #N/A until RDT, which recalculates each game once and fills the answer and every SIDE column from the same pass. Up to 5 SIDE columns. If the column is not empty from the Check row down, nothing is written and an orange note above it says which cell is in the way; the next successful LSC clears it. Refuses on the block itself. Then write the bonus formula over the SIDE results and save it with Save Answer To Bonus N (B1 to B5). Added 2026-09-24 (Jaq); spec commandtools\\SPEC-side-bonus-column-260924.md.",
+      "LaunchCodes": [
+        "LSC",
+        "BDT",
+        "DT"
+      ],
       "MacroExpression": "modDataTable.LinkSideCell()",
       "Tags": [
-        "DataTable"
+        "DataTable",
+        "Bonus"
       ]
     },
     {
@@ -658,7 +680,8 @@
       "Note": "For edge-case testing and troubleshooting. Select a game row in a Create Data Table block (game number or result) and run it: that game goes into the input cell and the calc block shows it. Select the input cell and run again to restore Example#. Run Data Table also restores it.",
       "LaunchCodes": [
         "LDT",
-        "LG"
+        "LG",
+        "DT"
       ],
       "MacroExpression": "modDataTable.LoadGameIntoCalculation()",
       "Tags": [
@@ -1009,7 +1032,8 @@
       "Type": "VBAMacroCommand",
       "Note": "Replacement for Excel What-If data tables. Point the ANSWER cell at the example's output, then run from any cell on the sheet. Last-run time and any volatile-function warning go to the StatusBar.",
       "LaunchCodes": [
-        "RDT"
+        "RDT",
+        "DT"
       ],
       "MacroExpression": "modDataTable.RunDataTable()",
       "Tags": [

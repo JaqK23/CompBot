@@ -97,7 +97,10 @@
   <Style ss:ID="s45">
    <Alignment ss:Horizontal="Center" ss:Vertical="Bottom"/>
   </Style>
-  <Style ss:ID="s54" ss:Parent="s22">
+  <Style ss:ID="s53">
+   <Font ss:FontName="Verdana" x:Family="Swiss" ss:Size="16" ss:Color="#ED7D31"/>
+  </Style>
+  <Style ss:ID="s55" ss:Parent="s22">
    <Borders>
     <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"/>
     <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1"/>
@@ -106,9 +109,6 @@
    </Borders>
    <Font ss:FontName="Verdana" x:Family="Swiss" ss:Size="14" ss:Color="#FFFFFF"/>
    <Interior ss:Color="#156082" ss:Pattern="Solid"/>
-  </Style>
-  <Style ss:ID="s98">
-   <Font ss:FontName="Verdana" x:Family="Swiss" ss:Size="16" ss:Color="#ED7D31"/>
   </Style>
  </Styles>
  <Names>
@@ -1370,7 +1370,7 @@
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:StyleID="s39"><Data ss:Type="String">Full path</Data></Cell>
-    <Cell ss:MergeAcross="6" ss:StyleID="s54"><Data ss:Type="String">Run Set Lambda Library (SLL) to choose one</Data></Cell>
+    <Cell ss:MergeAcross="6" ss:StyleID="s55"><Data ss:Type="String">Run Set Lambda Library (SLL) to choose one</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:StyleID="s39"><Data ss:Type="String">Solve folder</Data></Cell>
@@ -1379,12 +1379,12 @@
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:StyleID="s39"><Data ss:Type="String">Full path</Data></Cell>
-    <Cell ss:MergeAcross="6" ss:StyleID="s54"><Data ss:Type="String">Run Set Solve Folder (SSF) to choose one</Data></Cell>
+    <Cell ss:MergeAcross="6" ss:StyleID="s55"><Data ss:Type="String">Run Set Solve Folder (SSF) to choose one</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0"/>
    <Row>
     <Cell><Data ss:Type="String">Your checklist: on a new or shared machine (the arena)</Data></Cell>
-    <Cell ss:Index="4" ss:StyleID="s98"><Data ss:Type="String">For you to tick as you go. Ticking a box does NOT run anything: run each command yourself.</Data></Cell>
+    <Cell ss:Index="4" ss:StyleID="s53"><Data ss:Type="String">For you to tick as you go. Ticking a box does NOT run anything: run each command yourself.</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:StyleID="s39"><Data ss:Type="String">Excel's separators</Data></Cell>

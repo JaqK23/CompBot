@@ -474,10 +474,35 @@ End Sub
 '          code and end state. Recorded A-ZTraining replays (sheet B, Levels 6-7) start from the last
 '          input cell, which is why the end state is that cell and not ANSWER.
 Public Sub CreateDataTable()
+    BuildLevelBlock False
+End Sub
+
+'--------------------------------------------< OA Robot >--------------------------------------------
+' Command Name:           Create Data Table Here
+' Description:            Builds the level's data table block at the selected cell, else beside the inputs
+' Macro Expression:       modDataTable.CreateDataTableHere()
+' Generated:              2026-10-11 (GitHub #6, Laza; Jaq's naming: CDTH)
+'----------------------------------------------------------------------------------------------------
+' Purpose: Create Data Table, except that the block's input cell is the ACTIVE cell when that cell is
+'          suitable: empty, not the Example# label, on row 2 or lower, with its whole footprint free.
+'          When it is not, the block goes where Create Data Table would have put it, and the status
+'          bar says why the selected cell was not used. Everything else (finding the level, an
+'          existing block, the linked-sheet refusal, the end state on the last input) is shared.
+Public Sub CreateDataTableHere()
+    BuildLevelBlock True
+End Sub
+
+' Purpose: The work of Create Data Table and Create Data Table Here. blnHere: try the active cell as the
+'          block's input cell before the automatic placement (HereRefusal says when it cannot be).
+'          strCmd heads every status-bar message so the user sees the command they ran.
+Private Sub BuildLevelBlock(ByVal blnHere As Boolean)
 
     ' --- CONSTANTS (local to function) ---
-    Const PROC_NAME As String = "CreateDataTable"
+    Const PROC_NAME As String = "BuildLevelBlock"
 
+    Dim strCmd As String
+    Dim strHere As String
+    Dim strBuilt As String
     Dim wbCase As Workbook
     Dim wsWork As Worksheet
     Dim wsLinked As Worksheet
@@ -508,8 +533,9 @@ Public Sub CreateDataTable()
 
     On Error GoTo ErrHandler
 
+    If blnHere Then strCmd = "Create Data Table Here" Else strCmd = "Create Data Table"
     If TypeName(ActiveSheet) <> "Worksheet" Then
-        strMsg = "Create Data Table: select a cell in a level first."
+        strMsg = strCmd & ": select a cell in a level first."
         GoTo Cleanup
     End If
     Set wsWork = ActiveSheet
@@ -518,7 +544,7 @@ Public Sub CreateDataTable()
     blnOnLabel = IsExampleLabel(ActiveCell.Value2)
 
     ' 1. Which level, and which rows belong to it? (the rule Go To Example shares)
-    If Not LocateLevel(wsWork, "Create Data Table", lngGameCol, lngExRow, lngTop, lngBottom, strWhere, strMsg) Then
+    If Not LocateLevel(wsWork, strCmd, lngGameCol, lngExRow, lngTop, lngBottom, strWhere, strMsg) Then
         GoTo Cleanup
     End If
 
@@ -534,7 +560,7 @@ Public Sub CreateDataTable()
     Else
         Set rngZone = wsWork.Range(wsWork.Cells(lngTop, 1), wsWork.Cells(lngBottom, wsWork.Columns.Count))
     End If
-    Set rngInput = FindInputCell(wsWork, ActiveCell, "Create Data Table", strFound, rngZone, blnFailed)
+    Set rngInput = FindInputCell(wsWork, ActiveCell, strCmd, strFound, rngZone, blnFailed)
     If blnFailed Then
         ' The search itself failed - do not build blind next to a block that may already exist.
         strMsg = strFound
@@ -545,7 +571,7 @@ Public Sub CreateDataTable()
         ' Putting the user on the block is the purpose of the command, so Select is deliberate.
         rngLand.Select
         ShowBlock rngInput, rngLand
-        strMsg = "Create Data Table (" & strWhere & "): block already at " & rngInput.Address(False, False) & _
+        strMsg = strCmd & " (" & strWhere & "): block already at " & rngInput.Address(False, False) & _
                  ", ANSWER is " & rngInput.Offset(m_FORMULA_OFFSET_ROWS, 1).Address(False, False)
         If SideColumnCount(rngInput) > 0 Then strMsg = strMsg & ", " & SideColumnCount(rngInput) & " SIDE column(s)"
         strMsg = strMsg & "; run RDT after changing the solve." & ExampleCheckText(rngInput)
@@ -570,9 +596,9 @@ Public Sub CreateDataTable()
                 Set wsLinked = wbCase.Worksheets(strLinked)
                 On Error GoTo ErrHandler
                 If Not wsLinked Is Nothing Then
-                    Set rngInput = FindInputCell(wsLinked, wsLinked.Cells(1, 1), "Create Data Table", strFound, wsLinked.Cells, blnFailed)
+                    Set rngInput = FindInputCell(wsLinked, wsLinked.Cells(1, 1), strCmd, strFound, wsLinked.Cells, blnFailed)
                     If Not rngInput Is Nothing Then
-                        strMsg = "Create Data Table: " & strWhere & " is being solved on " & wsLinked.Name & _
+                        strMsg = strCmd & ": " & strWhere & " is being solved on " & wsLinked.Name & _
                                  " (data table at " & rngInput.Address(False, False) & ") - solve it there, " & _
                                  "or clear that block to solve on " & wsWork.Name & "."
                         GoTo Cleanup
@@ -582,10 +608,14 @@ Public Sub CreateDataTable()
         End If
     End If
 
-    ' 4. Place the block beside the level's inputs (the same input rule BuildDataTable copies from).
+    ' 4. Place the block. Create Data Table Here (GitHub #6, Laza, 2026-10-11) tries the active cell as
+    '    the block's input cell first: empty, not the Example# label, on row 2 or lower, and its footprint
+    '    (the header row above it down to the last game, lngWidth columns) free. Otherwise, and always
+    '    for Create Data Table, the block goes beside the level's inputs (the same input rule
+    '    BuildDataTable copies from), and the status bar says why the selected cell was not used.
     Set colIn = LevelInputColumns(wsWork, lngGameCol, lngExRow, lngAnsCol)
     If colIn Is Nothing Then
-        strMsg = "Create Data Table: could not read the inputs on the example row - see " & LogLocation()
+        strMsg = strCmd & ": could not read the inputs on the example row - see " & LogLocation()
         GoTo Cleanup
     End If
     If colIn.Count > 0 Then
@@ -595,9 +625,15 @@ Public Sub CreateDataTable()
     End If
     lngWidth = colIn.Count + 1
     If lngWidth < 2 Then lngWidth = 2
-    Set rngTarget = BlockTarget(wsWork, lngExRow, lngFirstCol, lngWidth, colGames.Count)
+    If blnHere Then
+        strHere = HereRefusal(ActiveCell, blnOnLabel, lngWidth, colGames.Count)
+        If Len(strHere) = 0 Then Set rngTarget = ActiveCell
+    End If
     If rngTarget Is Nothing Then
-        strMsg = "Create Data Table: found no free space for the block to the right of the inputs on " & wsWork.Name & "."
+        Set rngTarget = BlockTarget(wsWork, lngExRow, lngFirstCol, lngWidth, colGames.Count)
+    End If
+    If rngTarget Is Nothing Then
+        strMsg = strCmd & ": found no free space for the block to the right of the inputs on " & wsWork.Name & "."
         GoTo Cleanup
     End If
 
@@ -607,15 +643,17 @@ Public Sub CreateDataTable()
     Set rngLand = LastInputCell(rngInput)
     rngLand.Select
     ShowBlock rngInput, rngLand
-    strMsg = "Create Data Table (" & strWhere & "): block built at " & rngInput.Address(False, False) & _
-             "; build the example calc beside " & rngLand.Address(False, False) & _
-             ", point ANSWER (" & rngInput.Offset(m_FORMULA_OFFSET_ROWS, 1).Address(False, False) & _
-             ") at your output, then run RDT."
+    strBuilt = "block built at " & rngInput.Address(False, False) & _
+               "; build the example calc beside " & rngLand.Address(False, False) & _
+               ", point ANSWER (" & rngInput.Offset(m_FORMULA_OFFSET_ROWS, 1).Address(False, False) & _
+               ") at your output, then run RDT."
+    If Len(strHere) > 0 Then strBuilt = strHere & ", so " & strBuilt
+    strMsg = strCmd & " (" & strWhere & "): " & strBuilt
 
 Cleanup:
     On Error Resume Next
     If Len(strErr) > 0 Then
-        Application.StatusBar = Left$("Create Data Table failed - " & strErr, m_MAX_STATUS)
+        Application.StatusBar = Left$(strCmd & " failed - " & strErr, m_MAX_STATUS)
     ElseIf Len(strMsg) > 0 Then
         Application.StatusBar = Left$(strMsg, m_MAX_STATUS)
     End If
@@ -627,6 +665,85 @@ ErrHandler:
     If LogError(PROC_NAME, Err.Number, strErr) Then strErr = strErr & " - see " & LogLocation()
     Resume Cleanup
 End Sub
+
+
+' Purpose: Why the active cell cannot be the block's input cell for Create Data Table Here, or "" when
+'          it can: not the Example# label, on row 2 or lower (the header row goes above it), empty, and
+'          its footprint - the header row above it down to the last game row, lngWidth columns - holding
+'          nothing. On error a reason is returned, so the cell is not used. Never raises.
+Private Function HereRefusal(ByVal rngCell As Range, ByVal blnOnLabel As Boolean, ByVal lngWidth As Long, _
+                             ByVal lngGames As Long) As String
+
+    Dim strBlocker As String
+
+    On Error GoTo ErrHandler
+
+    If blnOnLabel Then
+        HereRefusal = "the selected cell is the Example# label"
+    ElseIf rngCell.Row < 2 Then
+        HereRefusal = "row 1 leaves no room for the header row above the block"
+    ElseIf Len(CStr(rngCell.Formula)) > 0 Then
+        HereRefusal = rngCell.Address(False, False) & " is not empty"
+    Else
+        strBlocker = FootprintBlocker(rngCell.Worksheet, rngCell.Row - 1, rngCell.Column, _
+                                      m_BODY_OFFSET_ROWS + lngGames + 1, lngWidth)
+        If Len(strBlocker) > 0 Then HereRefusal = strBlocker & " is in the way"
+    End If
+
+Cleanup:
+    Exit Function
+
+ErrHandler:
+    If m_DEBUG_MODE Then Stop: Resume
+    LogError "HereRefusal", Err.Number, Err.Description
+    HereRefusal = "the selected cell could not be checked"
+    Resume Cleanup
+End Function
+
+' Purpose: The address of the first cell holding a value or a formula in the lngRows x lngCols block
+'          whose top-left cell is (lngTopRow, lngLeftCol), or "" when the block is empty. One read. A
+'          block that runs off the sheet, or an error, returns the top-left address (treated as blocked).
+'          Never raises.
+Private Function FootprintBlocker(ByVal ws As Worksheet, ByVal lngTopRow As Long, ByVal lngLeftCol As Long, _
+                                  ByVal lngRows As Long, ByVal lngCols As Long) As String
+
+    Dim rngBlock As Range
+    Dim varVals  As Variant
+    Dim varForm  As Variant
+    Dim lngR     As Long
+    Dim lngC     As Long
+
+    On Error GoTo ErrHandler
+
+    If lngTopRow < 1 Or lngTopRow + lngRows - 1 > ws.Rows.Count Or lngLeftCol + lngCols - 1 > ws.Columns.Count Then
+        FootprintBlocker = ws.Cells(lngTopRow, lngLeftCol).Address(False, False)
+        GoTo Cleanup
+    End If
+    Set rngBlock = ws.Range(ws.Cells(lngTopRow, lngLeftCol), ws.Cells(lngTopRow + lngRows - 1, lngLeftCol + lngCols - 1))
+    varVals = rngBlock.Value2
+    varForm = rngBlock.Formula
+    If Not IsArray(varVals) Then
+        If Not IsEmpty(varVals) Or Len(CStr(varForm)) > 0 Then FootprintBlocker = rngBlock.Address(False, False)
+        GoTo Cleanup
+    End If
+    For lngR = 1 To UBound(varVals, 1)
+        For lngC = 1 To UBound(varVals, 2)
+            If Not IsEmpty(varVals(lngR, lngC)) Or Len(CStr(varForm(lngR, lngC))) > 0 Then
+                FootprintBlocker = rngBlock.Cells(lngR, lngC).Address(False, False)
+                GoTo Cleanup
+            End If
+        Next lngC
+    Next lngR
+
+Cleanup:
+    Exit Function
+
+ErrHandler:
+    If m_DEBUG_MODE Then Stop: Resume
+    LogError "FootprintBlocker", Err.Number, Err.Description
+    FootprintBlocker = ws.Cells(lngTopRow, lngLeftCol).Address(False, False)
+    Resume Cleanup
+End Function
 
 ' Purpose: Which level the active cell is in, the shared rule of Create Data Table and Go To Example
 '          (first match wins):
@@ -2632,6 +2749,7 @@ ErrHandler:
     If m_DEBUG_MODE Then Stop: Resume
     SlowdownsIn = vbNullString
 End Function
+
 
 
 

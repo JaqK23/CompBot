@@ -58,11 +58,11 @@
   <Style ss:ID="s33">
    <Alignment ss:Vertical="Top" ss:WrapText="1"/>
   </Style>
-  <Style ss:ID="s99">
+  <Style ss:ID="s116">
    <Alignment ss:Vertical="Top" ss:WrapText="1"/>
    <Font ss:FontName="Verdana" x:Family="Swiss" ss:Size="16" ss:Color="#000000"/>
   </Style>
-  <Style ss:ID="s100">
+  <Style ss:ID="s117">
    <Alignment ss:Vertical="Top"/>
    <Font ss:FontName="Verdana" x:Family="Swiss" ss:Size="16" ss:Color="#000000"/>
   </Style>
@@ -1203,7 +1203,7 @@
    ss:RefersTo="=LAMBDA(cell,[sheetname],LET(_a,ADDRESS(ROW(cell),COLUMN(cell),4,TRUE),IF(ISOMITTED(sheetname),_a,&quot;'&quot;&amp;sheetname&amp;&quot;'!&quot;&amp;_a)))"/>
  </Names>
  <Worksheet ss:Name="Info_Commands">
-  <Table ss:ExpandedColumnCount="9" ss:ExpandedRowCount="111"
+  <Table ss:ExpandedColumnCount="9" ss:ExpandedRowCount="112"
    ss:DefaultColumnWidth="90" ss:DefaultRowHeight="19.5">
    <Column ss:StyleID="s32" ss:Width="297.75"/>
    <Column ss:StyleID="s32" ss:AutoFitWidth="0" ss:Width="173.25"/>
@@ -1256,7 +1256,7 @@
     <Cell ss:StyleID="s29"/>
    </Row>
    <Row>
-    <Cell ss:Formula="=ROWS(#REF!)"><Data ss:Type="Number">104</Data></Cell>
+    <Cell ss:Formula="=ROWS(#REF!)"><Data ss:Type="Number">105</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">Name</Data></Cell>
@@ -1307,11 +1307,11 @@
     <Cell ss:StyleID="s33"/>
    </Row>
    <Row ss:Height="39">
-    <Cell ss:StyleID="s99"><Data ss:Type="String">Clear Solve Folder</Data></Cell>
-    <Cell ss:StyleID="s100"><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s99"><Data ss:Type="String">Forgets your Solve folder, so Full Setup Case saves the _Solve copy next to the case again</Data></Cell>
-    <Cell ss:StyleID="s99"/>
-    <Cell ss:StyleID="s100"><Data ss:Type="String">CSF</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Clear Solve Folder</Data></Cell>
+    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Forgets your Solve folder, so Full Setup Case saves the _Solve copy next to the case again</Data></Cell>
+    <Cell ss:StyleID="s33"/>
+    <Cell><Data ss:Type="String">CSF</Data></Cell>
    </Row>
    <Row>
     <Cell ss:StyleID="s33"><Data ss:Type="String">Clear Status Bar</Data></Cell>
@@ -1320,7 +1320,7 @@
     <Cell ss:StyleID="s33"/>
     <Cell><Data ss:Type="String">CSB</Data></Cell>
    </Row>
-   <Row ss:Height="58.5">
+   <Row ss:Height="39">
     <Cell ss:StyleID="s33"><Data ss:Type="String">Clear Unused Lambdas</Data></Cell>
     <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
     <Cell ss:StyleID="s33"><Data ss:Type="String">Deletes lambdas from the active workbook that nothing refers to, so the case file you submit does not carry every lambda you own</Data></Cell>
@@ -1366,6 +1366,13 @@
     <Cell ss:StyleID="s33"><Data ss:Type="String">Builds (or finds) the data table block for the level you are in, beside its inputs, and lands on the last input; fill it with Run Data Table (RDT)</Data></Cell>
     <Cell ss:StyleID="s33"/>
     <Cell><Data ss:Type="String">CDT, DT</Data></Cell>
+   </Row>
+   <Row ss:Height="39">
+    <Cell ss:StyleID="s116"><Data ss:Type="String">Create Data Table Here</Data></Cell>
+    <Cell ss:StyleID="s117"><Data ss:Type="String">Jaq Kennedy</Data></Cell>
+    <Cell ss:StyleID="s116"><Data ss:Type="String">Builds the level's data table block at the selected cell, else beside the inputs</Data></Cell>
+    <Cell ss:StyleID="s116"/>
+    <Cell ss:StyleID="s117"><Data ss:Type="String">CDTH, DT</Data></Cell>
    </Row>
    <Row>
     <Cell ss:StyleID="s33"><Data ss:Type="String">Create Level Sheets</Data></Cell>
@@ -1533,25 +1540,25 @@
     <Cell><Data ss:Type="String">LCR8</Data></Cell>
    </Row>
    <Row ss:Height="58.5">
-    <Cell ss:StyleID="s99"><Data ss:Type="String">Level Inputs</Data></Cell>
-    <Cell ss:StyleID="s100"><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s99"><Data ss:Type="String">Type a level, or levels like 4-5 or 3,5-6: their inputs land as an array to work on, with headers and game/level beside them (blank = this sheet's level)</Data></Cell>
-    <Cell ss:StyleID="s99"><Data ss:Type="String">Levels: Levels, e.g. 4 or 4-5 or 3,5-6 (blank = this sheet's level)</Data></Cell>
-    <Cell ss:StyleID="s100"><Data ss:Type="String">LI, LLI</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Level Inputs</Data></Cell>
+    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Type a level, or levels like 4-5 or 3,5-6: their inputs land as an array to work on, with headers and game/level beside them (blank = this sheet's level)</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Levels: Levels, e.g. 4 or 4-5 or 3,5-6 (blank = this sheet's level)</Data></Cell>
+    <Cell><Data ss:Type="String">LI, LLI</Data></Cell>
    </Row>
    <Row ss:Height="39">
     <Cell ss:StyleID="s33"><Data ss:Type="String">Link Answer Cell</Data></Cell>
     <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
     <Cell ss:StyleID="s33"><Data ss:Type="String">Points the level's data table ANSWER cell at the active cell (your calculation's output); then run RDT</Data></Cell>
     <Cell ss:StyleID="s33"/>
-    <Cell><Data ss:Type="String">ANS</Data></Cell>
+    <Cell><Data ss:Type="String">ANS, DT</Data></Cell>
    </Row>
-   <Row ss:Height="58.5">
+   <Row ss:Height="39">
     <Cell ss:StyleID="s33"><Data ss:Type="String">Link Side Cell</Data></Cell>
     <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Adds a SIDE column to the level's data table, pointed at the active cell, so RDT also records a second value per game for a bonus</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Data table: adds a bonus SIDE column pointed at the active cell; RDT fills it</Data></Cell>
     <Cell ss:StyleID="s33"/>
-    <Cell><Data ss:Type="String">LSC</Data></Cell>
+    <Cell><Data ss:Type="String">LSC, BDT, DT</Data></Cell>
    </Row>
    <Row ss:Height="39">
     <Cell ss:StyleID="s33"><Data ss:Type="String">List Combinations Of Array</Data></Cell>
@@ -1578,7 +1585,7 @@
     <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
     <Cell ss:StyleID="s33"><Data ss:Type="String">Loads the selected data table game into the example calculation, or restores the example</Data></Cell>
     <Cell ss:StyleID="s33"/>
-    <Cell><Data ss:Type="String">LDT, LG</Data></Cell>
+    <Cell><Data ss:Type="String">LDT, LG, DT</Data></Cell>
    </Row>
    <Row ss:Height="58.5">
     <Cell ss:StyleID="s33"><Data ss:Type="String">Lookup Array from Column N</Data></Cell>
@@ -1732,7 +1739,7 @@
     <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
     <Cell ss:StyleID="s33"><Data ss:Type="String">Fills a Create Data Table block with static results game by game, recalculating only when run</Data></Cell>
     <Cell ss:StyleID="s33"/>
-    <Cell><Data ss:Type="String">RDT</Data></Cell>
+    <Cell><Data ss:Type="String">RDT, DT</Data></Cell>
    </Row>
    <Row ss:Height="39">
     <Cell ss:StyleID="s33"><Data ss:Type="String">Running Total</Data></Cell>
@@ -1826,11 +1833,11 @@
     <Cell><Data ss:Type="String">SLL</Data></Cell>
    </Row>
    <Row ss:Height="39">
-    <Cell ss:StyleID="s99"><Data ss:Type="String">Set Solve Folder</Data></Cell>
-    <Cell ss:StyleID="s100"><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s99"><Data ss:Type="String">Choose the folder Full Setup Case saves your _Solve copy into, once (e.g. OneDrive)</Data></Cell>
-    <Cell ss:StyleID="s99"/>
-    <Cell ss:StyleID="s100"><Data ss:Type="String">SSF</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Set Solve Folder</Data></Cell>
+    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Choose the folder Full Setup Case saves your _Solve copy into, once (e.g. OneDrive)</Data></Cell>
+    <Cell ss:StyleID="s33"/>
+    <Cell><Data ss:Type="String">SSF</Data></Cell>
    </Row>
    <Row ss:Height="39">
     <Cell ss:StyleID="s33"><Data ss:Type="String">Setup Case Settings</Data></Cell>

@@ -16,6 +16,10 @@ Private Const m_CONTENTS_MAX_GAP    As Long = 4
 ' Save From Example: empty columns allowed between helpers in the working. A wider gap ends it, so
 ' a case table further right on the example row is never copied down (Jaq, 2026-10-08).
 Private Const m_SFE_MAX_GAP         As Long = 2
+' The fill MarkAsInputCells (modUtilities) gives an input cell, RGB(255, 255, 204): Create Level Sheets
+' puts it on every input of a level sheet, and Save From Example reads it back to find where the
+' inputs end (GitHub #9, 2026-10-11).
+Private Const m_INPUT_FILL          As Long = 13434879
 ' The words a case may use to label a worked-example row, matched at the LEFT of the cell.
 ' English, French, Brazilian Portuguese. ADD A LANGUAGE HERE AND NOWHERE ELSE - every example-row
 ' test in CompBot goes through ExamplePrefixLen, which reads this list.
@@ -567,6 +571,81 @@ ErrHandler:
     If LogError(PROC_NAME, Err.Number, Err.Description) Then m_blnLogWritten = True
 End Sub
 
+' Purpose: Copy every shape on wsCase that lies wholly within rows lngBegRow..lngEndRow (an explanatory
+'          picture, a drawing, a grouped diagram, a text box) to wsLevel, anchored to the same cell
+'          relative to the level's first row (Worksheet.Paste with a destination puts the shape's top-left
+'          corner on that cell; the offset inside the cell is not kept, because Shape.Top and .Left read
+'          back differently at different zoom levels, so re-placing by points lands a row out - seen on
+'          the Table Soccer test, 2026-10-11). A shape that straddles the level's edge, or sits outside
+'          every level, stays where it is. Cell comments are not shapes here. Through the clipboard, the
+'          only route Excel gives a picture; released at the end. Only ever run during setup, never
+'          mid-solve. A shape that will not copy is logged and skipped; the level is still built.
+'          Returns the number copied. Never raises.
+Private Function CopyLevelShapes(ByVal wsCase As Worksheet, ByVal wsLevel As Worksheet, _
+                                 ByVal lngBegRow As Long, ByVal lngEndRow As Long) As Long
+
+    ' --- CONSTANTS (local to function) ---
+    Const PROC_NAME As String = "CopyLevelShapes"
+
+    Dim shp       As Shape
+    Dim rngAnchor As Range
+    Dim lngCount  As Long
+    Dim lngBefore As Long
+
+    On Error GoTo ErrHandler
+
+    For Each shp In wsCase.Shapes
+        If IsLevelShape(shp, lngBegRow, lngEndRow) Then
+            Set rngAnchor = wsLevel.Cells(shp.TopLeftCell.Row - lngBegRow + 1, shp.TopLeftCell.Column)
+            lngBefore = wsLevel.Shapes.Count
+            ' A shape that will not copy (linked to a file, protected) must not stop the level.
+            On Error Resume Next
+            shp.Copy
+            wsLevel.Paste rngAnchor
+            If Err.Number = 0 And wsLevel.Shapes.Count = lngBefore + 1 Then
+                lngCount = lngCount + 1
+            Else
+                If LogError(PROC_NAME, Err.Number, shp.Name & " not copied: " & Err.Description) Then m_blnLogWritten = True
+                Err.Clear
+            End If
+            On Error GoTo ErrHandler
+        End If
+    Next shp
+
+Cleanup:
+    On Error Resume Next
+    Application.CutCopyMode = False
+    CopyLevelShapes = lngCount
+    Exit Function
+
+ErrHandler:
+    If m_DEBUG_MODE Then Stop: Resume
+    If LogError(PROC_NAME, Err.Number, Err.Description) Then m_blnLogWritten = True
+    Resume Cleanup
+End Function
+
+' Purpose: True for a shape whose whole extent lies within rows lngBegRow..lngEndRow: its top-left cell
+'          at or below lngBegRow and its bottom-right cell at or above lngEndRow. A cell comment's box
+'          (msoComment) is never copied. A shape that cannot say where it sits counts as outside. Never raises.
+Private Function IsLevelShape(ByVal shp As Shape, ByVal lngBegRow As Long, ByVal lngEndRow As Long) As Boolean
+
+    ' --- CONSTANTS (local to function) ---
+    Const MSO_COMMENT As Long = 4
+
+    On Error GoTo ErrHandler
+
+    If shp.Type = MSO_COMMENT Then GoTo Cleanup
+    IsLevelShape = (shp.TopLeftCell.Row >= lngBegRow And shp.BottomRightCell.Row <= lngEndRow)
+
+Cleanup:
+    Exit Function
+
+ErrHandler:
+    If m_DEBUG_MODE Then Stop: Resume
+    IsLevelShape = False
+    Resume Cleanup
+End Function
+
 '--------------------------------------------< OA Robot >--------------------------------------------
 ' Command Name:           Create level sheets
 ' Description:            Creates a sheet for each level in the Case sheet
@@ -607,7 +686,8 @@ Public Sub CreateLevelSheets()
     Dim strHeader As String
     Dim varCol As Variant
     Dim strCurrVal As String
-    Dim shp As Shape
+    Dim lngShape As Long
+    Dim lngShapes As Long
     Dim blnInit As Boolean
     Dim strErr As String
 
@@ -758,10 +838,17 @@ Public Sub CreateLevelSheets()
             wsNew.Cells(1, 1).Formula = "='" & ws.Name & "'!" & rngScore.Address
         End If
 
-        'clear shapes
-        For Each shp In wsNew.Shapes
-            shp.Delete
-        Next shp
+        ' Shapes (GitHub #10, Jaq, 2026-10-11: every level's explanatory picture was left behind on
+        ' the case sheet). The row copy brings no shapes across and anything it did bring is dropped
+        ' - counting backwards, because deleting inside For Each skips every other shape - then every
+        ' shape lying WHOLLY inside the level's rows is copied over at the same place.
+        For lngShape = wsNew.Shapes.Count To 1 Step -1
+            wsNew.Shapes(lngShape).Delete
+        Next lngShape
+        lngShapes = CopyLevelShapes(ws, wsNew, lngBegRow, lngEndRow)
+        If lngShapes > 0 Then
+            m_strSetupInfo = Trim$(m_strSetupInfo & " " & wsNew.Name & ": " & lngShapes & " image(s).")
+        End If
 
     Next lngCurr
 
@@ -2105,16 +2192,27 @@ End Sub
 
 ' Purpose: The first column of the worked example's working on row lngRow: the first non-empty
 '          column after the LAST INPUT, and never right of the answer cell lngFromCol.
-'          The last input follows A-Z's Select Last Input (Jaq, 2026-10-08): the first input sits two
-'          columns right of the Answer column (the one between is Score), and the inputs run on until
-'          the first blank cell on the example row. A column after that run whose question rows
+'          WHERE THE INPUTS END (Jaq, 2026-10-11, GitHub #9). Everything right of the inputs is the
+'          working, and a solve that starts in the very next column, with no gap, must still be copied
+'          whole. The old rule took the unbroken run of non-empty cells after Answer as the inputs, so
+'          with no gap the first helper column was taken as an input and only the answer column was
+'          copied down - hit in competition on 10 Oct. Three rules; the first that applies wins:
+'            1. a level sheet: the last cell on the example row carrying the input fill that Create
+'               Level Sheets puts on every input (m_INPUT_FILL, from MarkAsInputCells);
+'            2. the case sheet, when Full Setup Case's backup sheet BU_<sheet> exists: the last cell
+'               the backup holds on this row - anything not in the backup is the solver's;
+'            3. otherwise the run of non-empty cells after Answer, ending at the first FORMULA cell
+'               whose question rows hold no typed content of their own (an input is typed, or has
+'               its own values below; a helper is a formula with nothing of its own below).
+'          Then, in every case, a later column (left of the answer cell) whose question rows
 '          (lngFirstRow..lngLastRow) already hold their OWN content - anything other than the example's
 '          formula - is an input too (one with a blank example cell), so the boundary moves past it.
 '          A column holding the SAME formula (R1C1) is working from an earlier run of this command.
-'          Typed values in the working are allowed. Returns lngFromCol on error. Never raises.
-Private Function ExampleWorkingStart(ByVal ws As Worksheet, ByVal lngRow As Long, ByVal lngFromCol As Long, _
-                                     ByVal lngAnsCol As Long, ByVal lngFirstRow As Long, _
-                                     ByVal lngLastRow As Long) As Long
+'          Typed values in the working are allowed. Public so CompBot Insider's Alves commands share
+'          the one rule. Returns lngFromCol on error. Never raises.
+Public Function ExampleWorkingStart(ByVal ws As Worksheet, ByVal lngRow As Long, ByVal lngFromCol As Long, _
+                                    ByVal lngAnsCol As Long, ByVal lngFirstRow As Long, _
+                                    ByVal lngLastRow As Long) As Long
 
     Dim lngCol       As Long
     Dim lngLastInput As Long
@@ -2123,12 +2221,22 @@ Private Function ExampleWorkingStart(ByVal ws As Worksheet, ByVal lngRow As Long
 
     ExampleWorkingStart = lngFromCol
 
-    ' The unbroken run of inputs from two columns right of Answer.
-    lngLastInput = lngAnsCol + 1
-    For lngCol = lngAnsCol + 2 To lngFromCol - 1
-        If Len(CStr(ws.Cells(lngRow, lngCol).Formula)) = 0 Then Exit For
-        lngLastInput = lngCol
-    Next lngCol
+    ' Rules 1 and 2: the marked inputs of a level sheet, else the backup of the case sheet.
+    lngLastInput = MarkedInputsEnd(ws, lngRow, lngAnsCol + 2, lngFromCol - 1)
+    If lngLastInput = 0 Then lngLastInput = BackupInputsEnd(ws, lngRow, lngAnsCol + 2, lngFromCol - 1)
+
+    ' Rule 3: the unbroken run of inputs from two columns right of Answer, ending at a helper.
+    If lngLastInput = 0 Then
+        lngLastInput = lngAnsCol + 1
+        For lngCol = lngAnsCol + 2 To lngFromCol - 1
+            If Len(CStr(ws.Cells(lngRow, lngCol).Formula)) = 0 Then Exit For
+            If ws.Cells(lngRow, lngCol).HasFormula Then
+                If Not HasOwnContentBelow(ws, lngRow, lngCol, lngFirstRow, lngLastRow) Then Exit For
+            End If
+            lngLastInput = lngCol
+        Next lngCol
+    End If
+    If lngLastInput < lngAnsCol + 1 Then lngLastInput = lngAnsCol + 1
 
     ' Any later column (left of the answer cell) with its own content on the question rows is an input.
     For lngCol = lngLastInput + 1 To lngFromCol - 1
@@ -2149,6 +2257,75 @@ Cleanup:
 ErrHandler:
     If m_DEBUG_MODE Then Stop: Resume
     ExampleWorkingStart = lngFromCol
+    Resume Cleanup
+End Function
+
+' Purpose: Rule 1 of ExampleWorkingStart. On a level sheet, the last column in lngStart..lngEnd of row
+'          lngRow that carries the input fill MarkAsInputCells gives (m_INPUT_FILL). 0 when the sheet is
+'          not a level sheet, or no cell in the span carries the fill, so the caller moves on to the next
+'          rule. Never raises.
+Private Function MarkedInputsEnd(ByVal ws As Worksheet, ByVal lngRow As Long, ByVal lngStart As Long, _
+                                 ByVal lngEnd As Long) As Long
+
+    Dim lngCol As Long
+
+    On Error GoTo ErrHandler
+
+    If Not IsLevelSheetName(ws.Name) Then GoTo Cleanup
+    For lngCol = lngEnd To lngStart Step -1
+        If ws.Cells(lngRow, lngCol).Interior.Pattern <> xlNone Then
+            If ws.Cells(lngRow, lngCol).Interior.Color = m_INPUT_FILL Then
+                MarkedInputsEnd = lngCol
+                Exit For
+            End If
+        End If
+    Next lngCol
+
+Cleanup:
+    Exit Function
+
+ErrHandler:
+    If m_DEBUG_MODE Then Stop: Resume
+    MarkedInputsEnd = 0
+    Resume Cleanup
+End Function
+
+' Purpose: Rule 2 of ExampleWorkingStart. When Full Setup Case's backup of this sheet exists
+'          (m_BACKUP_PREFIX & the sheet name: the FIRST copy, never a ~2 re-run), the last column in
+'          lngStart..lngEnd that the backup holds on row lngRow, or lngStart - 1 when the backup holds
+'          nothing there. 0 when there is no backup (a level sheet, a case set up by hand, the backup
+'          sheet itself), so the caller moves on to the next rule. Never raises.
+Private Function BackupInputsEnd(ByVal ws As Worksheet, ByVal lngRow As Long, ByVal lngStart As Long, _
+                                 ByVal lngEnd As Long) As Long
+
+    Dim wsBackup As Worksheet
+    Dim strName  As String
+    Dim lngCol   As Long
+
+    On Error GoTo ErrHandler
+
+    strName = m_BACKUP_PREFIX & Left$(ws.Name, m_MAX_SHEET_NAME - Len(m_BACKUP_PREFIX))
+    ' Probe: there may be no backup sheet of that name.
+    On Error Resume Next
+    Set wsBackup = ws.Parent.Worksheets(strName)
+    On Error GoTo ErrHandler
+    If wsBackup Is Nothing Then GoTo Cleanup
+    If wsBackup Is ws Then GoTo Cleanup
+
+    BackupInputsEnd = lngStart - 1
+    For lngCol = lngEnd To lngStart Step -1
+        If Len(CStr(wsBackup.Cells(lngRow, lngCol).Formula)) > 0 Then
+            BackupInputsEnd = lngCol
+            Exit For
+        End If
+    Next lngCol
+
+Cleanup:
+    Exit Function
+
+ErrHandler:
+    If m_DEBUG_MODE Then Stop: Resume
+    BackupInputsEnd = 0
     Resume Cleanup
 End Function
 
@@ -3126,6 +3303,7 @@ ErrHandler:
     If m_DEBUG_MODE Then Stop: Resume
     SafeText = vbNullString
 End Function
+
 
 
 

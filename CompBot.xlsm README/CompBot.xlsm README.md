@@ -2,7 +2,7 @@
 
 \*\*CompBot.xlsm\*\* contains definitions for:
 
-[104 Robot Commands](#command-definitions)<BR>[33 Robot Texts](#text-definitions)<BR>
+[105 Robot Commands](#command-definitions)<BR>[33 Robot Texts](#text-definitions)<BR>
 
 <BR>
 
@@ -37,6 +37,7 @@
 | --- | --- |
 | [Clear Bonus From Dock](#clear-bonus-from-dock) | Hides one bonus from the dock by hand (type 2, B4, B or Bonus 2) |
 | [Clear Status Bar](#clear-status-bar) | Clears the status bar |
+| [Link Side Cell](#link-side-cell) | Data table: adds a bonus SIDE column pointed at the active cell; RDT fills it |
 | [Next Bonus In Status Bar](#next-bonus-in-status-bar) | Shows the next open bonus question on the status bar (no\-dock fallback) |
 | [Previous Bonus In Status Bar](#previous-bonus-in-status-bar) | Shows the previous open bonus question on the status bar |
 | [Record Walk Route](#record-walk-route) | Start recording a route: every orthogonal move adds the cells you pass over. Diagonal click finishes |
@@ -66,8 +67,9 @@
 
 | Name | Description |
 | --- | --- |
+| [Create Data Table Here](#create-data-table-here) | Builds the level's data table block at the selected cell, else beside the inputs |
 | [Link Answer Cell](#link-answer-cell) | Points the level's data table ANSWER cell at the active cell (your calculation's output); then run RDT |
-| [Link Side Cell](#link-side-cell) | Adds a SIDE column to the level's data table, pointed at the active cell, so RDT also records a second value per game for a bonus |
+| [Link Side Cell](#link-side-cell) | Data table: adds a bonus SIDE column pointed at the active cell; RDT fills it |
 
 ### Fill
 
@@ -157,6 +159,7 @@
 | [Create Bonus Sheet](#create-bonus-sheet) | Creates bonus sheet "B" with bonus questions |
 | [Create Case Inputs Sheet](#create-case-inputs-sheet) | Creates a case inputs sheet: one row per game with its Game and Level, then every input; names each level L01\_Inputs, L02\_Inputs, ... |
 | [Create Data Table](#create-data-table) | Builds (or finds) the data table block for the level you are in, beside its inputs, and lands on the last input; fill it with Run Data Table (RDT) |
+| [Create Data Table Here](#create-data-table-here) | Builds the level's data table block at the selected cell, else beside the inputs |
 | [Create Level Sheets](#create-level-sheets) | Creates a sheet for each level in the Case sheet |
 | [Full Setup Case](#full-setup-case) | Sets up the case: saves a \_Solve copy, backs up the sheets, creates the level, bonus and Case inputs sheets, then imports lambdas. Choose the steps with SCS |
 | [Import Case Lambdas](#import-case-lambdas) | Your library (if set) and CompBot's lambdas, the winner first, into the active workbook. Chained after Full Setup Case |
@@ -313,7 +316,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modCaseSetup.Backup](./VBA/modCaseSetup.bas#L418)()</code> |
+| Macro Expression | <code>[modCaseSetup.Backup](./VBA/modCaseSetup.bas#L422)()</code> |
 | Macro Workbook Connection | ThisWorkbook |
 | Launch Codes | <code>BU</code> |
 
@@ -491,7 +494,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modCaseSetup.CreateBonusSheet](./VBA/modCaseSetup.bas#L859)()</code> |
+| Macro Expression | <code>[modCaseSetup.CreateBonusSheet](./VBA/modCaseSetup.bas#L946)()</code> |
 | Launch Codes | <ol><li><code>BQC</code></li><li><code>CB</code></li></ol> |
 
 [^Top](#oa-robot-definitions)
@@ -508,7 +511,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modCaseSetup.CreateCaseInputsSheet](./VBA/modCaseSetup.bas#L1329)([[ActiveCell]])</code> |
+| Macro Expression | <code>[modCaseSetup.CreateCaseInputsSheet](./VBA/modCaseSetup.bas#L1416)([[ActiveCell]])</code> |
 | Launch Codes | <ol><li><code>CIS</code></li><li><code>IS</code></li></ol> |
 
 [^Top](#oa-robot-definitions)
@@ -532,6 +535,23 @@
 
 <BR>
 
+### Create Data Table Here
+
+*Builds the level's data table block at the selected cell, else beside the inputs*
+
+<sup>`@CompBot.xlsm` `!VBA Macro Command` `#Prep` `#DataTable`</sup>
+
+> \*\*Note:\*\* Create Data Table (CDT) with the block's input cell at the ACTIVE cell. Stand on an empty cell in the level, right of the inputs, and run it: the block is built there (header row above, Expected \/ Check \/ ANSWER below, games down) and you land on its last input. The cell is not used, and the block goes where CDT would put it, when it is the Example\# label, on row 1, not empty, or its footprint holds anything; the status bar says which. If the level already has a block it takes you there, like CDT. Asked for by Laza (GitHub \#6, 2026\-10\-09); added 2026\-10\-11 (Jaq's naming: CDTH).
+
+| Property | Value |
+| --- | --- |
+| Macro Expression | <code>[modDataTable.CreateDataTableHere](./VBA/modDataTable.bas#L491)()</code> |
+| Launch Codes | <ol><li><code>CDTH</code></li><li><code>DT</code></li></ol> |
+
+[^Top](#oa-robot-definitions)
+
+<BR>
+
 ### Create Level Sheets
 
 *Creates a sheet for each level in the Case sheet*
@@ -540,7 +560,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modCaseSetup.CreateLevelSheets](./VBA/modCaseSetup.bas#L576)()</code> |
+| Macro Expression | <code>[modCaseSetup.CreateLevelSheets](./VBA/modCaseSetup.bas#L655)()</code> |
 | Launch Codes | <ol><li><code>CL</code></li><li><code>CLS</code></li></ol> |
 
 [^Top](#oa-robot-definitions)
@@ -805,7 +825,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modCaseSetup.Setup](./VBA/modCaseSetup.bas#L62)()</code> |
+| Macro Expression | <code>[modCaseSetup.Setup](./VBA/modCaseSetup.bas#L66)()</code> |
 | Keyboard Shortcut | <code>^+g</code> |
 | Command After | [Import Case Lambdas](#import-case-lambdas) |
 | Launch Codes | <code>SC</code> |
@@ -839,7 +859,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modDataTable.GoToExample](./VBA/modDataTable.bas#L736)()</code> |
+| Macro Expression | <code>[modDataTable.GoToExample](./VBA/modDataTable.bas#L853)()</code> |
 | Launch Codes | <code>GE</code> |
 
 [^Top](#oa-robot-definitions)
@@ -1006,8 +1026,8 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modDataTable.LinkAnswerCell](./VBA/modDataTable.bas#L810)()</code> |
-| Launch Codes | <code>ANS</code> |
+| Macro Expression | <code>[modDataTable.LinkAnswerCell](./VBA/modDataTable.bas#L927)()</code> |
+| Launch Codes | <ol><li><code>ANS</code></li><li><code>DT</code></li></ol> |
 
 [^Top](#oa-robot-definitions)
 
@@ -1015,15 +1035,16 @@
 
 ### Link Side Cell
 
-*Adds a SIDE column to the level's data table, pointed at the active cell, so RDT also records a second value per game for a bonus*
+*Data table: adds a bonus SIDE column pointed at the active cell; RDT fills it*
 
-<sup>`@CompBot.xlsm` `!VBA Macro Command` `#DataTable`</sup>
+<sup>`@CompBot.xlsm` `!VBA Macro Command` `#DataTable` `#Bonus`</sup>
 
 > \*\*Note:\*\* For bonuses that need a DIFFERENT per\-game number from the level's calculation (a count, a per\-player score), then SUM \/ MAX \/ COUNTIF over the games. Stand on the cell holding that number and run it: the next SIDE column of this level's block goes in the first free column right of the block. Check row: SIDE k; ANSWER row: \=that cell, light blue; game rows: \#N\/A until RDT, which recalculates each game once and fills the answer and every SIDE column from the same pass. Up to 5 SIDE columns. If the column is not empty from the Check row down, nothing is written and an orange note above it says which cell is in the way; the next successful LSC clears it. Refuses on the block itself. Then write the bonus formula over the SIDE results and save it with Save Answer To Bonus N (B1 to B5). Added 2026\-09\-24 (Jaq); spec commandtools\\SPEC\-side\-bonus\-column\-260924.md.
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modDataTable.LinkSideCell](./VBA/modDataTable.bas#L902)()</code> |
+| Macro Expression | <code>[modDataTable.LinkSideCell](./VBA/modDataTable.bas#L1019)()</code> |
+| Launch Codes | <ol><li><code>LSC</code></li><li><code>BDT</code></li><li><code>DT</code></li></ol> |
 
 [^Top](#oa-robot-definitions)
 
@@ -1094,7 +1115,7 @@
 | Property | Value |
 | --- | --- |
 | Macro Expression | <code>[modDataTable.LoadGameIntoCalculation](./VBA/modDataTable.bas#L369)()</code> |
-| Launch Codes | <ol><li><code>LDT</code></li><li><code>LG</code></li></ol> |
+| Launch Codes | <ol><li><code>LDT</code></li><li><code>LG</code></li><li><code>DT</code></li></ol> |
 
 [^Top](#oa-robot-definitions)
 
@@ -1429,7 +1450,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modCaseSetup.RenameSht](./VBA/modCaseSetup.bas#L292)()</code> |
+| Macro Expression | <code>[modCaseSetup.RenameSht](./VBA/modCaseSetup.bas#L296)()</code> |
 | Launch Codes | <code>rs</code> |
 
 [^Top](#oa-robot-definitions)
@@ -1514,7 +1535,7 @@
 | Property | Value |
 | --- | --- |
 | Macro Expression | <code>[modDataTable.RunDataTable](./VBA/modDataTable.bas#L55)()</code> |
-| Launch Codes | <code>RDT</code> |
+| Launch Codes | <ol><li><code>RDT</code></li><li><code>DT</code></li></ol> |
 
 [^Top](#oa-robot-definitions)
 
@@ -1682,7 +1703,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modCaseSetup.SaveAnswersToLeft](./VBA/modCaseSetup.bas#L1693)()</code> |
+| Macro Expression | <code>[modCaseSetup.SaveAnswersToLeft](./VBA/modCaseSetup.bas#L1780)()</code> |
 | Launch Codes | <code>SAL</code> |
 
 [^Top](#oa-robot-definitions)
@@ -1697,7 +1718,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modCaseSetup.SaveCopy](./VBA/modCaseSetup.bas#L2307)([[ActiveCell]])</code> |
+| Macro Expression | <code>[modCaseSetup.SaveCopy](./VBA/modCaseSetup.bas#L2484)([[ActiveCell]])</code> |
 | Launch Codes | <code>SA</code> |
 
 [^Top](#oa-robot-definitions)
@@ -1714,7 +1735,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modCaseSetup.SaveFromExample](./VBA/modCaseSetup.bas#L1926)()</code> |
+| Macro Expression | <code>[modCaseSetup.SaveFromExample](./VBA/modCaseSetup.bas#L2013)()</code> |
 | User Context Filter | ExcelActiveCellIsNotEmpty AND ExcelSelectionIsSingleCell |
 | Launch Codes | <code>SFE</code> |
 
