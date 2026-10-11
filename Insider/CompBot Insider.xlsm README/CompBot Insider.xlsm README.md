@@ -321,11 +321,11 @@
 
 <sup>`@CompBot Insider.xlsm` `!VBA Macro Command` `#Alves` `#Insider`</sup>
 
-> \*\*Note:\*\* Step 1 of the Alves Method (after Fredson Alves). Stand on the answer formula: every spilling formula it depends on (right of the inputs, this sheet) becomes \={formula}, and every reference to one of them, in the solve and in its dependents, loses its trailing \#. Sets Workbook.CompatibilityVersion to 3 when lower (in\-cell arrays on) and says so. Needs Excel Build 20520+. Nothing moves; run Alves Pack next.
+> \*\*Note:\*\* Step 1 of the Alves Method (by Fredson Alves). Stand on the answer formula: every spilling formula it depends on (right of the inputs, this sheet) becomes \={formula}, and every reference to one of them, in the solve and in its dependents, loses its trailing \#. Sets Workbook.CompatibilityVersion to 3 when lower (in\-cell arrays on) and says so. Needs Excel Build 20520+. Nothing moves; run Alves Pack next.
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modAlves.Nest](./VBA/modAlves.bas#L47)()</code> |
+| Macro Expression | <code>[modAlves.Nest](./VBA/modAlves.bas#L51)()</code> |
 | User Context Filter | ExcelSelectionIsSingleCell |
 | Launch Codes | <ol><li><code>NST</code></li><li><code>ALV</code></li></ol> |
 
@@ -339,11 +339,11 @@
 
 <sup>`@CompBot Insider.xlsm` `!VBA Macro Command` `#Alves` `#Insider` `#Prep`</sup>
 
-> \*\*Note:\*\* The Alves Method, after Fredson Alves's workflow (CompBot Insider, 2026\-10). Build your solve wide on the example row with spilling steps, stand on the final answer formula and run this: every spilling step is nested into its own cell (\={...}), references lose their \#, and the single cells are moved onto the example row from the working start (right of the inputs) in dependency order, answer last. Then run Save From Example from the answer. Needs Excel's in\-cell arrays (Microsoft 365 Insider Beta, Build 20520+); sets the workbook's compatibility version to 3. No selection needed: the region is everything the answer depends on, right of the inputs, on this sheet. Status bar reports both steps.
+> \*\*Note:\*\* The Alves Method, by Fredson Alves (CompBot Insider, 2026\-10). Build your solve wide on the example row with spilling steps, stand on the final answer formula and run this: every spilling step is nested into its own cell (\={...}), references lose their \#, and the single cells are moved onto the example row from the working start (right of the inputs) in dependency order, answer last. Then run Save From Example from the answer. Needs Excel's in\-cell arrays (Microsoft 365 Insider Beta, Build 20520+); sets the workbook's compatibility version to 3. No selection needed: the region is everything the answer depends on, right of the inputs, on this sheet. Status bar reports both steps.
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modAlves.NestAndPack](./VBA/modAlves.bas#L160)()</code> |
+| Macro Expression | <code>[modAlves.NestAndPack](./VBA/modAlves.bas#L164)()</code> |
 | User Context Filter | ExcelSelectionIsSingleCell |
 | Launch Codes | <ol><li><code>NP</code></li><li><code>FA</code></li><li><code>ALV</code></li></ol> |
 
@@ -357,11 +357,11 @@
 
 <sup>`@CompBot Insider.xlsm` `!VBA Macro Command` `#Alves` `#Insider`</sup>
 
-> \*\*Note:\*\* Step 2 of the Alves Method (after Fredson Alves). After Alves Nest every step is one cell; this moves them (Cut, so references follow) onto the answer's row from the working start (right of the inputs, the rule Save From Example uses), in dependency order, answer last. A step on another step's target is moved aside first; anything else in the way stops the command before anything moves. Refuses while a step still spills (nest first). You land on the packed answer, ready for Save From Example.
+> \*\*Note:\*\* Step 2 of the Alves Method (by Fredson Alves). After Alves Nest every step is one cell; this moves them (Cut, so references follow) onto the answer's row from the working start (right of the inputs, the rule Save From Example uses), in dependency order, answer last. A step on another step's target is moved aside first; anything else in the way stops the command before anything moves. Refuses while a step still spills (nest first). You land on the packed answer, ready for Save From Example.
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modAlves.Pack](./VBA/modAlves.bas#L101)()</code> |
+| Macro Expression | <code>[modAlves.Pack](./VBA/modAlves.bas#L105)()</code> |
 | User Context Filter | ExcelSelectionIsSingleCell |
 | Launch Codes | <ol><li><code>PCK</code></li><li><code>ALV</code></li></ol> |
 
@@ -379,7 +379,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modAlves.Unnest](./VBA/modAlves.bas#L74)()</code> |
+| Macro Expression | <code>[modAlves.Unnest](./VBA/modAlves.bas#L78)()</code> |
 | User Context Filter | ExcelSelectionIsSingleCell |
 | Launch Codes | <ol><li><code>UNN</code></li><li><code>ALV</code></li></ol> |
 
@@ -393,11 +393,11 @@
 
 <sup>`@CompBot Insider.xlsm` `!VBA Macro Command` `#Alves` `#Insider`</sup>
 
-> \*\*Note:\*\* Step 1 of debugging a packed row (the Alves Method, after Fredson Alves). Stand on the answer cell of ONE packed row: its steps are copied, in dependency order, to a scratch area right of the sheet's used range on the same row, each given the width its array needs (measured) plus a gap; references between steps point at the copies, references to the inputs are unchanged; the copies stay nested. The packed row is untouched. You land on the answer's copy: run Alves Unnest there.
+> \*\*Note:\*\* Step 1 of debugging a packed row (the Alves Method, by Fredson Alves). Stand on the answer cell of ONE packed row: its steps are copied, in dependency order, to a scratch area right of the sheet's used range on the same row, each given the width its array needs (measured) plus a gap; references between steps point at the copies, references to the inputs are unchanged; the copies stay nested. The packed row is untouched. You land on the answer's copy: run Alves Unnest there.
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modAlves.Unpack](./VBA/modAlves.bas#L132)()</code> |
+| Macro Expression | <code>[modAlves.Unpack](./VBA/modAlves.bas#L136)()</code> |
 | User Context Filter | ExcelSelectionIsSingleCell |
 | Launch Codes | <ol><li><code>UPK</code></li><li><code>ALV</code></li></ol> |
 
@@ -411,11 +411,11 @@
 
 <sup>`@CompBot Insider.xlsm` `!VBA Macro Command` `#Alves` `#Insider`</sup>
 
-> \*\*Note:\*\* For debugging a packed row (the Alves Method, after Fredson Alves). Stand on the answer cell of ONE packed row (an errored game, say) and run this: its steps are copied to a scratch area right of the sheet's used range, on the same row, each with the width its array needs, references between steps rewritten to the copies and references to the inputs unchanged; then every copy is unnested so the spills show. The packed row is untouched. You land on the answer's copy.
+> \*\*Note:\*\* For debugging a packed row (the Alves Method, by Fredson Alves). Stand on the answer cell of ONE packed row (an errored game, say) and run this: its steps are copied to a scratch area right of the sheet's used range, on the same row, each with the width its array needs, references between steps rewritten to the copies and references to the inputs unchanged; then every copy is unnested so the spills show. The packed row is untouched. You land on the answer's copy.
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modAlves.UnpackAndUnnest](./VBA/modAlves.bas#L191)()</code> |
+| Macro Expression | <code>[modAlves.UnpackAndUnnest](./VBA/modAlves.bas#L195)()</code> |
 | User Context Filter | ExcelSelectionIsSingleCell |
 | Launch Codes | <ol><li><code>UU</code></li><li><code>UNP</code></li><li><code>UFA</code></li><li><code>ALV</code></li></ol> |
 

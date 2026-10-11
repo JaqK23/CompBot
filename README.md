@@ -13,7 +13,7 @@ Updating replaces CompBot.xlsm. Your own lambdas live in your own library file (
 
 - **CompBot** (this folder): for everyone, including competition machines. Sync from `CompBot.xlsm` here.
 - **[CompBot Insider](Insider/README.md)**: everything in CompBot plus commands that need Excel features
-  most machines do not have yet, starting with in-cell arrays (the Alves Method, after Fredson Alves). Needs
+  most machines do not have yet, starting with in-cell arrays (the Alves Method, by Fredson Alves). Needs
   the Microsoft 365 Insider Beta Channel. Register one edition at a time.
 
 CompBot is free. Tea is not: https://github.com/sponsors/JaqK23

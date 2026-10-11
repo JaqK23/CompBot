@@ -2,7 +2,7 @@ Attribute VB_Name = "modAlves"
 Option Explicit
 
 '==============================================================================
-' modAlves - CompBot Insider: the Alves Method, after Fredson Alves's workflow.
+' modAlves - CompBot Insider: the Alves Method, by Fredson Alves.
 '
 ' Build a spill-based solve wide, on the example row, with room for each array;
 ' then NEST every spilling step into its anchor cell (in-cell arrays), PACK the
@@ -21,8 +21,12 @@ Option Explicit
 '
 ' No selection needed (Jaq, 2026-10-11): every command runs from the ANSWER
 ' cell. The solve region is the answer plus everything it depends on, on the
-' same sheet, at or right of the level's working start - the one rule Save From
-' Example uses (modCaseSetup.ExampleWorkingStart), so the three agree.
+' same sheet: on the example row, at or right of the level's working start -
+' the one rule Save From Example uses (modCaseSetup.ExampleWorkingStart), so
+' the three agree; on any OTHER row, right of the Answer column and only when
+' the cell itself depends on the example row (Jaq, 2026-10-11: a helper that
+' varies with the example's inputs is a step and comes along; a block worked
+' out once and shared by every game is not, and is named on the status bar).
 ' Status bar only, never a dialog. The CompBot modules this calls: modCaseSetup
 ' (HeaderRowFor, AnswerColumn, LevelGameRows, ExampleWorkingStart), modUtilities
 ' (VBAInit, VBAFin), modLog (LogError).
@@ -42,7 +46,7 @@ Private Const m_ERR_SPILL       As Long = 2045      ' xlErrSpill, the #SPILL! er
 ' Command Name:           Alves Nest
 ' Description:            Nests every spilling step of the solve behind the active answer cell into one cell each
 ' Macro Expression:       modAlves.Nest()
-' Generated:              2026-10-11 (CompBot Insider; after Fredson Alves's workflow, the Alves Method)
+' Generated:              2026-10-11 (CompBot Insider; the Alves Method, by Fredson Alves)
 '----------------------------------------------------------------------------------------------------
 Public Sub Nest()
 
@@ -244,6 +248,7 @@ Private Function NestCore(ByVal rngAnswer As Range, ByRef strStatus As String) A
     Dim lngCells    As Long
     Dim strWhy      As String
     Dim strCompat   As String
+    Dim strNote     As String
 
     On Error GoTo ErrHandler
 
@@ -252,7 +257,7 @@ Private Function NestCore(ByVal rngAnswer As Range, ByRef strStatus As String) A
         strStatus = CMD & " FAILED: " & strWhy
         GoTo Cleanup
     End If
-    Set rngRegion = SolveRegion(rngAnswer, lngStart, strWhy)
+    Set rngRegion = SolveRegion(rngAnswer, lngStart, strWhy, strNote)
     If rngRegion Is Nothing Then
         strStatus = CMD & " FAILED: " & strWhy
         GoTo Cleanup
@@ -270,7 +275,7 @@ Private Function NestCore(ByVal rngAnswer As Range, ByRef strStatus As String) A
     Next rngCell
     If dicAnchors.Count = 0 Then
         strStatus = "Alves Nest: nothing to nest - no spilling formula feeds " & rngAnswer.Address(False, False) & _
-                    " (region " & rngRegion.Address(False, False) & ")."
+                    " (region " & rngRegion.Address(False, False) & ")." & strNote
         NestCore = True
         GoTo Cleanup
     End If
@@ -312,7 +317,7 @@ Private Function NestCore(ByVal rngAnswer As Range, ByRef strStatus As String) A
     ws.Calculate
 
     strStatus = "Alves Nest: " & lngNested & " step(s) nested in " & rngRegion.Address(False, False) & _
-                ", " & lngRefs & " reference(s) updated in " & lngCells & " cell(s)." & strCompat
+                ", " & lngRefs & " reference(s) updated in " & lngCells & " cell(s)." & strCompat & strNote
     NestCore = True
 
 Cleanup:
@@ -444,10 +449,11 @@ Private Function PackCore(ByVal rngAnswer As Range, ByRef strStatus As String, B
     Dim strOrig     As String
     Dim strTgt      As String
     Dim strAnswer   As String
+    Dim strNote     As String
 
     On Error GoTo ErrHandler
 
-    Set rngRegion = SolveRegion(rngAnswer, lngStart, strWhy)
+    Set rngRegion = SolveRegion(rngAnswer, lngStart, strWhy, strNote)
     If rngRegion Is Nothing Then
         strStatus = CMD & " FAILED: " & strWhy
         GoTo Cleanup
@@ -509,7 +515,7 @@ Private Function PackCore(ByVal rngAnswer As Range, ByRef strStatus As String, B
     Set rngNewAnswer = ws.Range(dicWhere(strAnswer))
     strStatus = "Alves Pack: " & (UBound(varOrder) - LBound(varOrder) + 1) & " step(s) on row " & lngRow & " from " & _
                 ws.Cells(lngRow, lngStart).Address(False, False) & " to " & rngNewAnswer.Address(False, False) & _
-                " (" & lngMoved & " moved); answer in " & rngNewAnswer.Address(False, False) & " - run Save From Example there."
+                " (" & lngMoved & " moved); answer in " & rngNewAnswer.Address(False, False) & " - run Save From Example there." & strNote
     PackCore = True
 
 Cleanup:
@@ -689,12 +695,15 @@ Private Function EnableNestedArrays(ByVal wb As Workbook, ByRef strNote As Strin
 End Function
 
 ' Purpose: The solve region for the answer cell: the answer itself plus every formula cell it depends
-'          on, directly or through other steps, on the same sheet, at or right of the level's working
-'          start (modCaseSetup.ExampleWorkingStart: right of the inputs, the rule Save From Example
-'          uses). A spilled child among the precedents counts as its anchor. Nothing, with strWhy,
-'          when the answer is not on a level's example row (no Answer header above it) or the region
-'          is absurdly large. lngStartCol returns the working start. Never raises.
-Private Function SolveRegion(ByVal rngAnswer As Range, ByRef lngStartCol As Long, ByRef strWhy As String) As Range
+'          on, directly or through other steps, on the same sheet. On the answer's row: at or right of
+'          the level's working start (modCaseSetup.ExampleWorkingStart: right of the inputs, the rule
+'          Save From Example uses). On any other row: right of the Answer column, and only when the cell
+'          depends on the answer's row (DependsOnRow); one that does not is a shared block, left alone
+'          and listed in strNote. A spilled child among the precedents counts as its anchor. Nothing,
+'          with strWhy, when the answer is not on a level's example row (no Answer header above it) or
+'          the region is absurdly large. lngStartCol returns the working start. Never raises.
+Private Function SolveRegion(ByVal rngAnswer As Range, ByRef lngStartCol As Long, ByRef strWhy As String, _
+                             Optional ByRef strNote As String) As Range
 
     Dim ws          As Worksheet
     Dim rngPrec     As Range
@@ -707,8 +716,12 @@ Private Function SolveRegion(ByVal rngAnswer As Range, ByRef lngStartCol As Long
     Dim lngStopRow  As Long
     Dim lngFirstRow As Long
     Dim lngLastRow  As Long
+    Dim blnTake     As Boolean
+    Dim strLeft     As String
 
     On Error GoTo ErrHandler
+
+    strNote = vbNullString
 
     Set ws = rngAnswer.Worksheet
     If Not rngAnswer.HasFormula Then
@@ -752,21 +765,41 @@ Private Function SolveRegion(ByVal rngAnswer As Range, ByRef lngStartCol As Long
             GoTo Cleanup
         End If
         For Each rngCell In rngPrec.Cells
-            If rngCell.Column >= lngStartCol Then
-                Set rngAnchor = Nothing
-                If rngCell.HasFormula Then
-                    Set rngAnchor = rngCell
-                Else
-                    ' Probe: a spilled child answers with its anchor; a plain value raises.
-                    On Error Resume Next
-                    Set rngAnchor = rngCell.SpillParent
-                    On Error GoTo ErrHandler
-                End If
-                If Not rngAnchor Is Nothing Then
-                    If Intersect(rngOut, rngAnchor) Is Nothing Then Set rngOut = Union(rngOut, rngAnchor)
+            Set rngAnchor = Nothing
+            If rngCell.HasFormula Then
+                Set rngAnchor = rngCell
+            Else
+                ' Probe: a spilled child answers with its anchor; a plain value raises.
+                On Error Resume Next
+                Set rngAnchor = rngCell.SpillParent
+                On Error GoTo ErrHandler
+            End If
+            If Not rngAnchor Is Nothing Then
+                If Intersect(rngOut, rngAnchor) Is Nothing Then
+                    If rngAnchor.Row = rngAnswer.Row Then
+                        ' The example row: the working, by Save From Example's rule. Left of it are the inputs.
+                        blnTake = (rngAnchor.Column >= lngStartCol)
+                    ElseIf rngAnchor.Column > lngAnsCol Then
+                        ' Another row (a helper spilled below the level, say): a step when it varies with the
+                        ' example row; a block shared by every game when it does not - left alone, and named.
+                        blnTake = DependsOnRow(rngAnchor, rngAnswer.Row)
+                        If Not blnTake Then
+                            ' Once per anchor: every spilled child of it answers with the same anchor.
+                            If InStr(1, "," & strLeft & ",", "," & rngAnchor.Address(False, False) & ",") = 0 Then
+                                If Len(strLeft) > 0 Then strLeft = strLeft & ","
+                                strLeft = strLeft & rngAnchor.Address(False, False)
+                            End If
+                        End If
+                    Else
+                        blnTake = False
+                    End If
+                    If blnTake Then Set rngOut = Union(rngOut, rngAnchor)
                 End If
             End If
         Next rngCell
+    End If
+    If Len(strLeft) > 0 Then
+        strNote = " Left where it is (does not depend on row " & rngAnswer.Row & "): " & strLeft & "."
     End If
     Set SolveRegion = rngOut
 
@@ -778,6 +811,30 @@ ErrHandler:
     strWhy = "could not read the solve region: " & Err.Description
     LogError "SolveRegion", Err.Number, Err.Description
     Set SolveRegion = Nothing
+    Resume Cleanup
+End Function
+
+' Purpose: True when rngCell depends, directly or through its own precedents on the sheet, on any cell of
+'          row lngRow (Range.Precedents is every level, same sheet). Probe: Precedents raises when there are
+'          none. Never raises; False on error.
+Private Function DependsOnRow(ByVal rngCell As Range, ByVal lngRow As Long) As Boolean
+
+    Dim rngPrec As Range
+
+    On Error Resume Next
+    Set rngPrec = rngCell.Precedents
+    On Error GoTo 0
+    If rngPrec Is Nothing Then Exit Function
+
+    On Error GoTo ErrHandler
+    DependsOnRow = Not Intersect(rngPrec, rngCell.Worksheet.Rows(lngRow)) Is Nothing
+
+Cleanup:
+    Exit Function
+
+ErrHandler:
+    If m_DEBUG_MODE Then Stop: Resume
+    DependsOnRow = False
     Resume Cleanup
 End Function
 

@@ -1279,7 +1279,7 @@
    </Row>
    <Row ss:AutoFitHeight="0" ss:Height="30">
     <Cell ss:StyleID="s49"/>
-    <Cell ss:StyleID="s50"><Data ss:Type="String">VERSION 2026.10.1 INSIDER</Data></Cell>
+    <Cell ss:StyleID="s50"><Data ss:Type="String">VERSION 2026.10.2 INSIDER</Data></Cell>
     <Cell ss:StyleID="s49"/>
     <Cell ss:StyleID="s49"/>
     <Cell ss:StyleID="s49"/>
@@ -1320,7 +1320,7 @@
    <Row ss:AutoFitHeight="0" ss:Height="12"/>
    <Row ss:AutoFitHeight="0" ss:Height="30">
     <Cell ss:StyleID="s51"/>
-    <Cell ss:StyleID="s52"><Data ss:Type="String">111 COMMANDS   •   75 LAMBDAS   •   CTRL+SHIFT+O OPENS THE PALETTE   •   BY JAQ KENNEDY   •   THE ALVES METHOD AFTER FREDSON ALVES</Data></Cell>
+    <Cell ss:StyleID="s52"><Data ss:Type="String">111 COMMANDS   •   75 LAMBDAS   •   CTRL+SHIFT+O OPENS THE PALETTE   •   BY JAQ KENNEDY   •   THE ALVES METHOD BY FREDSON ALVES</Data></Cell>
     <Cell ss:StyleID="s51"/>
     <Cell ss:StyleID="s51"/>
     <Cell ss:StyleID="s51"/>

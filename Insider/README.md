@@ -15,7 +15,7 @@ codes, and the palette would show each twice.
 
 ## The Alves Method
 
-Named after **Fredson Alves**, whose workflow it follows. Build a spill-based solve wide on the example row,
+By **Fredson Alves**: this is his workflow, as commands. Build a spill-based solve wide on the example row,
 with room for every array, the way you normally would. Then, standing on the final answer cell:
 
 | Command | Launch codes | What it does |
@@ -28,14 +28,17 @@ with room for every array, the way you normally would. Then, standing on the fin
 | Alves Unnest | `UNN`, `ALV` | The reverse of Nest: every nested step spills again; references get their `#` back. |
 
 No selection is needed: the solve region is everything the answer depends on, on that sheet, right of the
-level's inputs (the same rule Save From Example uses). Every command reports on the status bar, never in a
+level's inputs (the same rule Save From Example uses). A helper spilled on another row (below the level, say)
+comes along too when it depends on the example row; a block that does not (worked out once, shared by every
+game) is left where it is and named on the status bar. Every command reports on the status bar, never in a
 dialog, and a refusal starts `ALVES ... FAILED:` with the reason and the cell.
 
 Why it matters: spilled helpers cannot be filled down, because the spills collide. Nested, each step is one
 cell, so a whole solve chain copies down like an ordinary row, and you still get to build and debug with
 visible spills.
 
-Version: 2026.10.1 Insider, built from CompBot 2026.10.2. Definitions: [CompBot Insider Readme](CompBot%20Insider.xlsm%20README/CompBot%20Insider.xlsm%20README.md).
+Version: 2026.10.2 Insider, built from CompBot 2026.10.2. Definitions: [CompBot Insider Readme](CompBot%20Insider.xlsm%20README/CompBot%20Insider.xlsm%20README.md).
 
-What changed: 2026.10.1 (11 Oct) Alves Unpack and Alves Unnest work on any game row, not only the first few
-below the level's header. 2026.10 (11 Oct) first release.
+What changed: 2026.10.2 (11 Oct) a helper on another row that depends on the example row is nested and packed
+wherever it sits; one that does not is left alone and named. 2026.10.1 (11 Oct) Alves Unpack and Alves Unnest
+work on any game row, not only the first few below the level's header. 2026.10 (11 Oct) first release.
