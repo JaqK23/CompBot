@@ -8,3 +8,5 @@ Competition Bot Command Collection for [OA Robot](https://oarobot.com), built fo
 Found a ~~bug~~ feature or have an idea? [Report it here](https://github.com/JaqK23/CompBot/issues/new/choose).
 
 Updating replaces CompBot.xlsm. Your own lambdas live in your own library file (Set Lambda Library), so an update never overwrites them.
+
+CompBot is free. Tea is not: https://github.com/sponsors/JaqK23
