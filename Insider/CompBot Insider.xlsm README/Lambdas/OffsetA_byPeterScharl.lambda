@@ -1,0 +1,1 @@
+OffsetA_byPeterScharl =LAMBDA(arr,rows,[cols],[h],[w],[pad_with],LET(r,ROWS(arr),c,COLUMNS(arr),y,IF(ISOMITTED(h),r,ABS(h)),x,IF(ISOMITTED(w),c,ABS(w)),i,SEQUENCE(y,,rows+1-(h<0)*(y-1)),j,SEQUENCE(,x,cols+1-(w<0)*(x-1)),IF((i>0)*(i<=r)*(j>0)*(j<=c),INDEX(arr,i,j),pad_with)));

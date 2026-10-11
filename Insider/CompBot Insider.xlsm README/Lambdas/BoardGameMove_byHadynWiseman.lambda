@@ -1,0 +1,1 @@
+BoardGameMove_byHadynWiseman =LAMBDA(MoveValue,EndSpace,MOD(MoveValue - 1, EndSpace) + 1);

@@ -1,0 +1,1 @@
+RCRefConvert_byHadynWiseman =LAMBDA(St,IFERROR(IF(ISNUMBER(St),ADDRESS(INT(St/10^6),MOD(St,10^6),4),RowNum_byHadynWiseman(St)*10^6+ColNum_byHadynWiseman(St)),XLOOKUP(St,{"↓";"↑";"→";"←";"↘";"↖";"↙";"↗"},{1000000;-1000000;1;-1;1000001;-1000001;999999;-999999})));

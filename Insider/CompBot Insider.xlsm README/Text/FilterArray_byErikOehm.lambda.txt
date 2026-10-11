@@ -1,0 +1,1 @@
+FilterArray_byErikOehm = LAMBDA(data,column_indexes,filter_values,LET(\\LambdaName, "FilterArray", FILTER(data, BYROW(IsInList_byErikOehm(CHOOSECOLS(data, column_indexes), filter_values), LAMBDA(x, AND(x))))));

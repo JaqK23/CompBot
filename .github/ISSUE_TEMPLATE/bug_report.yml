@@ -3,6 +3,15 @@ description: Something in CompBot isn't working as expected
 title: "[Bug] "
 labels: ["bug"]
 body:
+  - type: dropdown
+    id: edition
+    attributes:
+      label: Edition
+      options:
+        - CompBot
+        - CompBot Insider
+    validations:
+      required: true
   - type: input
     id: command
     attributes:

@@ -1,0 +1,4 @@
+/*
+Intersection: distinct values in both arrays, in array1's order, as a column. Case-insensitive; "" if none. skip_blanks_zeros (default TRUE) drops blanks, "" and 0.
+*/
+nSet_byJaqKennedy =LAMBDA(array1,array2,[skip_blanks_zeros],LET(skip,IF(ISOMITTED(skip_blanks_zeros),TRUE,skip_blanks_zeros),a,UNIQUE(TOCOL(array1)),keep,ISNUMBER(XMATCH(a,TOCOL(array2)))*IF(skip,(a<>"")*(a<>0),1),FILTER(a,keep,"")));

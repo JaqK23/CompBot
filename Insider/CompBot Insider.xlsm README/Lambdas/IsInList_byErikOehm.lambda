@@ -1,0 +1,1 @@
+IsInList_byErikOehm =LAMBDA(array,list,MAP(array,LAMBDA(x,OR(list=x))));

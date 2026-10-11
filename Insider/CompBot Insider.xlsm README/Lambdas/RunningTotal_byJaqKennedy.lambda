@@ -1,0 +1,4 @@
+/*
+Running total that can RESTART at flagged rows and CAP or STOP at a limit. Only values is required; with nothing else it is a plain running total. ResetFlags: 1 where the total restarts at ResetTo (default 0); the flagged row's own value is included unles
+*/
+RunningTotal_byJaqKennedy =LAMBDA(values,[ResetFlags],[ResetTo],[StopAt],[Cap],[IncFlaggedVal],LET(v,TOCOL(values),n,ROWS(v),f,IF(ISOMITTED(ResetFlags),SEQUENCE(n)*0,IFERROR(--TOCOL(ResetFlags),0)),r,IF(ISOMITTED(ResetTo),0,IF(ResetTo="",0,ResetTo)),h,IF(ISOMITTED(StopAt),FALSE,StopAt<>""),s,IF(h,StopAt,0),cp,IF(ISOMITTED(Cap),1,IF(Cap="",1,Cap)),inc,IF(ISOMITTED(IncFlaggedVal),1,IF(IncFlaggedVal="",1,IncFlaggedVal)),SCAN(0,SEQUENCE(n),LAMBDA(acc,i,LET(x,INDEX(v,i),fl,IFERROR(INDEX(f,i),0)=1,t,IF(fl,r+IF(inc,x,0),IF(AND(h,acc>=s),acc,acc+x)),IF(AND(h,t>=s),IF(cp,s,t),t))))));

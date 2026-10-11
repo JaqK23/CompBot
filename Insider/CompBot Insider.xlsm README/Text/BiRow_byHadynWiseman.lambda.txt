@@ -1,0 +1,1 @@
+BiRow_byHadynWiseman = LAMBDA(array,function,IF(ROWS(array)=1,IF(COLUMNS(array)=1,function(@array),function(array)),VSTACK(BiRow_byHadynWiseman(TAKE(array,ROWS(array)/2),function),BiRow_byHadynWiseman(DROP(array,ROWS(array)/2),function))));

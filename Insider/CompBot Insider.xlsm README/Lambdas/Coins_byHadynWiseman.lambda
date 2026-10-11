@@ -1,0 +1,1 @@
+Coins_byHadynWiseman =LAMBDA(Target,Coins,LET(sc,TOCOL(SORTBY(Coins,-Coins)), remainder,SCAN(Target,sc,LAMBDA(a,v,ROUND(a-INT(a/v)*v,12))), alignrem,DROP(VSTACK(Target,remainder),-1), INT(alignrem/sc)));

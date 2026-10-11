@@ -1,0 +1,2 @@
+/*Returns the cell address of a range*/
+Addresses_byDiarmuidEarly = LAMBDA(array,ADDRESS(ROW(array),COLUMN(array),4));

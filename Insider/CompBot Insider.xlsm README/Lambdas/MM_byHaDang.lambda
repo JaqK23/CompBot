@@ -1,0 +1,9 @@
+/*
+Applies -- to values, with option to sum output.  
+*/
+MM_byHaDang =LAMBDA(value,[add_up], LET(
+   \\LambdaName, "MM_byHaDang",
+   \\Description, "Applies -- to values, with option to sum output",
+   result, IFERROR(--(value), value & ""),
+   IF(add_up, SUM(result), result)
+));

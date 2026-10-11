@@ -1,0 +1,1 @@
+ExtractLowerLetters_byJaqKennedy =LAMBDA(text,[AsRuns],LET(rs,IFNA(REGEXEXTRACT(text,"[a-z]+",1,0),""),IF(ISOMITTED(AsRuns),CONCAT(rs),rs)));

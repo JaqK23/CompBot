@@ -1,0 +1,1 @@
+CountOcc_byHadynWiseman =LAMBDA(OccOf,Text,[Case],IF(ISOMITTED(Case),(LEN(Text)-LEN(SUBSTITUTE(LOWER(Text),LOWER(OccOf),"")))/LEN(OccOf),(LEN(Text)-LEN(SUBSTITUTE(Text,OccOf,"")))/LEN(OccOf)));

@@ -1,0 +1,1 @@
+YouAreHere_byLiannaGerrish =LAMBDA(cell,[sheetname],LET(_a,ADDRESS(ROW(cell),COLUMN(cell),4,TRUE),IF(ISOMITTED(sheetname),_a,"'"&sheetname&"'!"&_a)));

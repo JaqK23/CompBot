@@ -1,0 +1,1 @@
+Combinations_byHadynWiseman =LAMBDA(Array,c,[RemoveOrder],[AllowRepeatItems],[Cumulative],IFERROR(XLOOKUP(PerCom_byBoRydobon(COUNTA(Array), c, IF(RemoveOrder = 1, 1), IF(AllowRepeatItems = 1, 1), IF(Cumulative = 1, 1)), TAKE(HSTACK(SEQUENCE(COUNTA(Array)), TOCOL(Array)), , 1), TAKE(HSTACK(SEQUENCE(COUNTA(Array)), TOCOL(Array)), , -1)), ""));

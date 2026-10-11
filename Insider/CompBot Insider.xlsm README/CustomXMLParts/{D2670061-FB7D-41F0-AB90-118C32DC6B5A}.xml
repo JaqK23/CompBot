@@ -1,0 +1,15 @@
+<Text><![CDATA[
+BiRow = LAMBDA(array,function, LET(
+   \\LambdaName, "BiRow",
+   \\Description, "Perform array function by row",
+   \\Source, "https://techcommunity.microsoft.com/discussions/excelgeneral/recursive-lambda-implementation-of-excels-reduce-function-/3949754/replies/3952653#M207809",
+   IF(
+      ROWS(array) = 1,
+      function(array),
+      VSTACK(
+         BiRow(TAKE(array, ROWS(array) / 2), function),
+         BiRow(DROP(array, ROWS(array) / 2), function)
+      )
+   )
+));
+]]></Text>

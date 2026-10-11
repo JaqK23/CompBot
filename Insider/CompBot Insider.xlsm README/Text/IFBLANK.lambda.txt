@@ -1,0 +1,1 @@
+IFBLANK = LAMBDA(value,value_if_blank, IF(ISBLANK(value), value_if_blank, value));

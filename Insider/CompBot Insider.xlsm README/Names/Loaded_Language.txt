@@ -1,0 +1,1 @@
+Loaded_Language ='Regional Settings'!$E$15

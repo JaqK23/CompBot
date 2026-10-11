@@ -1,0 +1,1 @@
+ExtractNumbers_byHadynWiseman =LAMBDA(text,[With_Decimals],LET(rs, REGEXEXTRACT(text, IF(ISOMITTED(With_Decimals), "[-+]?\d+", "[-+]?\d*\.\d+|[-+]?\d+"), 1) * 1, IF(COUNTA(rs) = 1, @rs * 1, rs)));

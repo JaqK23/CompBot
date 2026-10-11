@@ -1,0 +1,1 @@
+ByRectangle_byBoRydobon =LAMBDA(Range,Function,Rows,[Columns],[No_Overlap],LET( cls,IF(ISOMITTED(Columns),Rows,Columns), rs,MAP(DROP(Range,1-Rows,1-cls),DROP(Range,Rows-1,cls-1),LAMBDA(a,b,Function(a:b))), cr,IF(No_Overlap,CHOOSEROWS(rs,SEQUENCE(ROWS(Range)/Rows,,1,Rows)),rs), cc,IF(No_Overlap,CHOOSECOLS(cr,SEQUENCE(COLUMNS(Range)/cls,,1,cls)),cr), cc ));

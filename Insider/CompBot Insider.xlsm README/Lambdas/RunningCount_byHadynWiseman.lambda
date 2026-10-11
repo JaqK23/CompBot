@@ -1,0 +1,1 @@
+RunningCount_byHadynWiseman =LAMBDA(Array,SCAN(0,SEQUENCE(ROWS(TOCOL(Array))),LAMBDA(a,v,SUM(--(TAKE(Array,v)=INDEX(Array,v,1))))));

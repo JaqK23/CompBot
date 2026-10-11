@@ -1,0 +1,4 @@
+/*
+Hadyn Wiseman. [Letter_Mode] restored 2026-09-22: 1 counts the letters of the text, 0 counts each cell whole, so MostOf(A1,0) on "BANANA" returns BANANA, 1. Omitted, a single cell is split into letters.
+*/
+MostOf_byHadynWiseman =LAMBDA(Array,[Letter_Mode],[Overlay_Array],LET(split, IF(ISOMITTED(Letter_Mode), COUNTA(Array) = 1, Letter_Mode), vals, TOCOL(IF(split, SplitText_byHadynWiseman(CONCAT(Array)), Array), 3), table, GROUPBY(vals, vals, ROWS, 0, 0, -2), IF(ISOMITTED(Overlay_Array), table, IFERROR(VLOOKUP(Overlay_Array, table, 2, 0), 0))));

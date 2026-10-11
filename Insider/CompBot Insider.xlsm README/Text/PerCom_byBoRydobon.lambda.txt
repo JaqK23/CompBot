@@ -1,0 +1,1 @@
+PerCom_byBoRydobon = LAMBDA(n,c,[P0C1],[rep],[cum],LET(s,UNICHAR(SEQUENCE(,n,20001)), t,SEQUENCE(,c), re,REDUCE("",t,LAMBDA(x,w,LET(b,IF(cum,FILTER(x,LEN(x)=w-1),x), d,TOCOL(IFS(IF(P0C1,IF(rep,RIGHT(b)<=s,RIGHT(b)<s),IF(rep,1,ISERR(FIND(s,b)))),b&s),3),IF(cum,VSTACK(x,d),d)))), IFERROR(UNICODE(MID(re,t,1))-20000,"")));

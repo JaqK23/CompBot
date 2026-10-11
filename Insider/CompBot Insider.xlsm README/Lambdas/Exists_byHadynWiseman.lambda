@@ -1,0 +1,1 @@
+Exists_byHadynWiseman =LAMBDA(Item,List,[SearchMode],LET(_Mode,IF(ISOMITTED(SearchMode)+ISBLANK(SearchMode),0,SearchMode),ISNUMBER(IF(_Mode,SEARCH(Item,List),XMATCH(Item,List)))));

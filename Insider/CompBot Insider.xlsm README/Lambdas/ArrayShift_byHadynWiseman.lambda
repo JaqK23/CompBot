@@ -1,0 +1,4 @@
+/*
+Hadyn Wiseman. SIGNATURE FIXED 2026-09-22: the optionals were unbracketed, so all five parameters were required and a four-argument call returned #VALUE!. Fold_byHadynWiseman calls it with four, which is why the unsuffixed ArrayShift twin had to survive. 
+*/
+ArrayShift_byHadynWiseman =LAMBDA(Array,[RowShift],[ColumnShift],[Fill],[WrapAround],LET(fl,IF(ISOMITTED(Fill),"X",Fill),rs,RowShift,cs,ColumnShift,wa,WrapAround,a,Array,r,ROWS(a),c,COLUMNS(a), rf,IF(wa,TAKE(a,-(MOD(rs-1,r)+1)),EXPAND(fl,MIN(ABS(rs),r),c,fl)), ra,IF(rs=0,a,IF(wa,IFERROR(VSTACK(rf,TAKE(a,r-ROWS(rf))),rf),IF(ABS(rs)>r-1,rf,VSTACK(IF(rs>0,rf,TAKE(a,-r-rs)),IF(rs>0,TAKE(a,r-rs),rf))))), cf,IF(wa,TAKE(ra,,-(MOD(cs-1,c)+1)),EXPAND(fl,r,MIN(ABS(cs),c),fl)), ca,IF(cs=0,ra,IF(wa,IFERROR(HSTACK(cf,TAKE(ra,,c-COLUMNS(cf))),cf),IF(ABS(cs)>c-1,cf,HSTACK(IF(cs>0,cf,TAKE(ra,,-c-cs)),IF(cs>0,TAKE(ra,,c-cs),cf))))), ca));

@@ -1,0 +1,1 @@
+Prev =LAMBDA(arr,n,[fill],LET(_n,MAX(1,n),_fill,IF(ISOMITTED(fill),"X",fill),IF(ROWS(arr)=1,HSTACK(IF(SEQUENCE(,_n),_fill),DROP(arr,,-_n)),VSTACK(IF(SEQUENCE(_n,COLUMNS(arr)),_fill),DROP(arr,-_n)))));

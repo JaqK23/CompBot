@@ -1,0 +1,1 @@
+ExtractUpperLetters_byJaqKennedy =LAMBDA(text,[AsRuns],LET(rs,IFNA(REGEXEXTRACT(text,"[A-Z]+",1,0),""),IF(ISOMITTED(AsRuns),CONCAT(rs),rs)));

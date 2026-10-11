@@ -1,0 +1,1 @@
+UnSplivot_byJJ =LAMBDA(table,delim,LET(v,TAKE(table,,1),keep,DROP(table,,1),n,ROWS(v),k,MAX((LEN(v)-LEN(SUBSTITUTE(v,delim,"")))/LEN(delim))+1,tok,MAKEARRAY(n,k,LAMBDA(r,c,IFERROR(TRIM(TEXTBEFORE(TEXTAFTER(delim&INDEX(v,r)&delim,delim,c),delim)),""))),idx,TOCOL(SEQUENCE(n)+SEQUENCE(,k)*0),body,HSTACK(TOCOL(tok),CHOOSEROWS(keep,idx)),FILTER(body,TAKE(body,,1)<>"")));
