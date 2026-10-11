@@ -1278,7 +1278,7 @@
     <Cell ss:StyleID="s33"/>
     <Cell><Data ss:Type="String">BU</Data></Cell>
    </Row>
-   <Row ss:Height="58.5">
+   <Row ss:Height="39">
     <Cell ss:StyleID="s33"><Data ss:Type="String">Clear Bonus From Dock</Data></Cell>
     <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
     <Cell ss:StyleID="s33"><Data ss:Type="String">Hides one bonus from the dock by hand (type 2, B4, B or Bonus 2)</Data></Cell>
@@ -1312,7 +1312,7 @@
     <Cell ss:StyleID="s33"/>
     <Cell><Data ss:Type="String">CSB</Data></Cell>
    </Row>
-   <Row ss:Height="58.5">
+   <Row ss:Height="39">
     <Cell ss:StyleID="s33"><Data ss:Type="String">Clear Unused Lambdas</Data></Cell>
     <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
     <Cell ss:StyleID="s33"><Data ss:Type="String">Deletes lambdas from the active workbook that nothing refers to, so the case file you submit does not carry every lambda you own</Data></Cell>
@@ -1565,7 +1565,7 @@
     <Cell ss:StyleID="s33"><Data ss:Type="String">Lists every lambda the active workbook's formulas actually call; worth running before clearing anything</Data></Cell>
     <Cell ss:StyleID="s33"/>
    </Row>
-   <Row ss:Height="58.5">
+   <Row ss:Height="39">
     <Cell ss:StyleID="s33"><Data ss:Type="String">List Pairings Of Two Lists</Data></Cell>
     <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
     <Cell ss:StyleID="s33"><Data ss:Type="String">Every pairing of the COPIED list with the active spill (each item of one with each item of the other), written to the right of the spill</Data></Cell>

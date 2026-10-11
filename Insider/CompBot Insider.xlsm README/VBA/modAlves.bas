@@ -704,6 +704,7 @@ Private Function SolveRegion(ByVal rngAnswer As Range, ByRef lngStartCol As Long
     Dim colGames    As Collection
     Dim lngAnsCol   As Long
     Dim lngHdRow    As Long
+    Dim lngStopRow  As Long
     Dim lngFirstRow As Long
     Dim lngLastRow  As Long
 
@@ -715,9 +716,17 @@ Private Function SolveRegion(ByVal rngAnswer As Range, ByRef lngStartCol As Long
         GoTo Cleanup
     End If
 
-    ' Where the working starts: the inputs end by the rule Save From Example uses.
-    lngHdRow = HeaderRowFor(ws, rngAnswer.Row)
-    lngAnsCol = AnswerColumn(ws, lngHdRow)
+    ' Where the working starts: the inputs end by the rule Save From Example uses. The level's Answer
+    ' header is the nearest row above holding one, up to m_SCAN_ROWS up: HeaderRowFor looks only four
+    ' rows up, which serves the example row, but Unpack and Unnest run on a GAME row further down
+    ' (found on the video take, 2026-10-11: row 9 failed with "no Answer header").
+    lngAnsCol = 0
+    lngStopRow = rngAnswer.Row - m_SCAN_ROWS
+    If lngStopRow < 1 Then lngStopRow = 1
+    For lngHdRow = rngAnswer.Row - 1 To lngStopRow Step -1
+        lngAnsCol = AnswerColumn(ws, lngHdRow)
+        If lngAnsCol > 0 Then Exit For
+    Next lngHdRow
     If lngAnsCol = 0 Then
         strWhy = "no Answer header found above row " & rngAnswer.Row & " - stand on the answer formula of a level's example row."
         GoTo Cleanup
@@ -1118,4 +1127,3 @@ Private Function RewriteRefs(ByVal strF As String, ByVal dicMap As Object, ByVal
     Loop
     RewriteRefs = strF
 End Function
-

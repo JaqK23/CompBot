@@ -35,4 +35,7 @@ Why it matters: spilled helpers cannot be filled down, because the spills collid
 cell, so a whole solve chain copies down like an ordinary row, and you still get to build and debug with
 visible spills.
 
-Version: built from CompBot 2026.10.2. Definitions: [CompBot Insider Readme](CompBot%20Insider.xlsm%20README/CompBot%20Insider.xlsm%20README.md).
+Version: 2026.10.1 Insider, built from CompBot 2026.10.2. Definitions: [CompBot Insider Readme](CompBot%20Insider.xlsm%20README/CompBot%20Insider.xlsm%20README.md).
+
+What changed: 2026.10.1 (11 Oct) Alves Unpack and Alves Unnest work on any game row, not only the first few
+below the level's header. 2026.10 (11 Oct) first release.
