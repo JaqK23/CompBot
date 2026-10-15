@@ -58,14 +58,6 @@
   <Style ss:ID="s33">
    <Alignment ss:Vertical="Top" ss:WrapText="1"/>
   </Style>
-  <Style ss:ID="s116">
-   <Alignment ss:Vertical="Top" ss:WrapText="1"/>
-   <Font ss:FontName="Verdana" x:Family="Swiss" ss:Size="16" ss:Color="#000000"/>
-  </Style>
-  <Style ss:ID="s117">
-   <Alignment ss:Vertical="Top"/>
-   <Font ss:FontName="Verdana" x:Family="Swiss" ss:Size="16" ss:Color="#000000"/>
-  </Style>
  </Styles>
  <Names>
   <NamedRange ss:Name="_xleta.ADDRESS" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
@@ -1286,7 +1278,7 @@
     <Cell ss:StyleID="s33"/>
     <Cell><Data ss:Type="String">BU</Data></Cell>
    </Row>
-   <Row ss:Height="39">
+   <Row ss:Height="58.5">
     <Cell ss:StyleID="s33"><Data ss:Type="String">Clear Bonus From Dock</Data></Cell>
     <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
     <Cell ss:StyleID="s33"><Data ss:Type="String">Hides one bonus from the dock by hand (type 2, B4, B or Bonus 2)</Data></Cell>
@@ -1320,7 +1312,7 @@
     <Cell ss:StyleID="s33"/>
     <Cell><Data ss:Type="String">CSB</Data></Cell>
    </Row>
-   <Row ss:Height="39">
+   <Row ss:Height="58.5">
     <Cell ss:StyleID="s33"><Data ss:Type="String">Clear Unused Lambdas</Data></Cell>
     <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
     <Cell ss:StyleID="s33"><Data ss:Type="String">Deletes lambdas from the active workbook that nothing refers to, so the case file you submit does not carry every lambda you own</Data></Cell>
@@ -1368,11 +1360,11 @@
     <Cell><Data ss:Type="String">CDT, DT</Data></Cell>
    </Row>
    <Row ss:Height="39">
-    <Cell ss:StyleID="s116"><Data ss:Type="String">Create Data Table Here</Data></Cell>
-    <Cell ss:StyleID="s117"><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s116"><Data ss:Type="String">Builds the level's data table block at the selected cell, else beside the inputs</Data></Cell>
-    <Cell ss:StyleID="s116"/>
-    <Cell ss:StyleID="s117"><Data ss:Type="String">CDTH, DT</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Create Data Table Here</Data></Cell>
+    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Builds the level's data table block at the selected cell, else beside the inputs</Data></Cell>
+    <Cell ss:StyleID="s33"/>
+    <Cell><Data ss:Type="String">CDTH, DT</Data></Cell>
    </Row>
    <Row>
     <Cell ss:StyleID="s33"><Data ss:Type="String">Create Level Sheets</Data></Cell>

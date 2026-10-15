@@ -91,6 +91,7 @@ Public Sub RunDataTable()
     Dim blnWritten As Boolean
     Dim blnSheetOnly As Boolean
     Dim blnTouched As Boolean
+    Dim lngRechecked As Long         ' games whose sheet-only result was an error, redone in full
     Dim dblCheckStart As Double
     Dim dblCheckSecs As Double
     Dim strScope As String
@@ -239,12 +240,18 @@ Public Sub RunDataTable()
         ' workbook (correct across sheets).
         ' CalculationState is only meaningful after a full calculation - after a sheet-only one it can
         ' read "pending" because of other workbooks. Interrupt keys are off, so both run to the end.
+        ' One calculation can stop short straight after a formula is entered (a spill growing past
+        ' anything calculated before), leaving an error such as #NUM! (#12). A full one is repeated
+        ' until Excel says it is done; a sheet-only one cannot tell, so an error in it is redone in full.
         If blnSheetOnly Then
             wsCalc.Calculate
             blnDone = True
+            If OutputHasError(rngFormula.Value2, blnLive) Then
+                lngRechecked = lngRechecked + 1
+                blnDone = CalculateToDone()
+            End If
         Else
-            Application.Calculate
-            blnDone = (Application.CalculationState = xlDone)
+            blnDone = CalculateToDone()
         End If
         If blnDone Then
             ' One read of the whole output row: every column from the same recalculation.
@@ -307,6 +314,9 @@ Public Sub RunDataTable()
     End If
     If Len(strSkipped) > 0 Then
         strMsg = strMsg & " Not filled, not a formula: " & strSkipped & "."
+    End If
+    If lngRechecked > 0 Then
+        strMsg = strMsg & " " & lngRechecked & " game(s) rechecked with a full recalc."
     End If
     strSlow = SlowdownsIn(wsCalc.Parent)
     If Len(strSlow) > 0 Then
@@ -1759,6 +1769,7 @@ Private Function ChooseRecalcScope(ByVal wsCalc As Worksheet, ByVal rngInput As 
     Dim dblSheetSecs As Double
     Dim dblFullSecs As Double
     Dim dblBudget As Double
+    Dim blnFullDone As Boolean
 
     On Error GoTo ErrHandler
 
@@ -1775,14 +1786,14 @@ Private Function ChooseRecalcScope(ByVal wsCalc As Worksheet, ByVal rngInput As 
         ' The true answer, from a full recalculation.
         rngInput.Value2 = varGames(lngI, 1)
         dblT0 = HighResSeconds()
-        Application.Calculate
+        blnFullDone = CalculateToDone()
         dblT1 = HighResSeconds()
         If dblT0 < 0 Or dblT1 < 0 Then
             strWhy = "full - no high-resolution timer to size the check"
             GoTo Cleanup
         End If
         If lngPick = 1 Then dblFullSecs = dblT1 - dblT0
-        If Application.CalculationState <> xlDone Then
+        If Not blnFullDone Then
             strWhy = "full - calculation did not finish"
             GoTo Cleanup
         End If
@@ -1854,8 +1865,7 @@ Private Function ParkOnSentinel(ByVal rngInput As Range, ByVal dblSentinel As Do
     On Error GoTo ErrHandler
 
     rngInput.Value2 = dblSentinel
-    Application.Calculate
-    ParkOnSentinel = (Application.CalculationState = xlDone)
+    ParkOnSentinel = CalculateToDone()
 
 Cleanup:
     Exit Function
@@ -1864,6 +1874,68 @@ ErrHandler:
     If m_DEBUG_MODE Then Stop: Resume
     If Err.Number = 18 Then Err.Raise 18
     ParkOnSentinel = False
+    Resume Cleanup
+End Function
+
+' Purpose: Recalculate every open workbook until Excel reports the calculation finished. Straight after a
+'          formula is entered, one pass can stop short when a spill grows past anything calculated before,
+'          leaving CalculationState pending and a dependent cell on an error (#12); the next pass finishes
+'          it. Returns False if it is still not done after MAX_PASSES. Esc (error 18) is passed up.
+Private Function CalculateToDone() As Boolean
+
+    ' --- CONSTANTS (local to function) ---
+    Const MAX_PASSES As Long = 4
+
+    Dim lngPass As Long
+
+    On Error GoTo ErrHandler
+
+    For lngPass = 1 To MAX_PASSES
+        Application.Calculate
+        If Application.CalculationState = xlDone Then
+            CalculateToDone = True
+            Exit For
+        End If
+    Next lngPass
+
+Cleanup:
+    Exit Function
+
+ErrHandler:
+    If m_DEBUG_MODE Then Stop: Resume
+    If Err.Number = 18 Then Err.Raise 18
+    CalculateToDone = False
+    Resume Cleanup
+End Function
+
+' Purpose: True if any filled column of Run Data Table's output row holds an error. varRow is the row's
+'          Value2: a scalar when the row is one cell, else a 1-row array. Unsure (an error here) = True,
+'          so the caller recalculates in full rather than keeping a doubtful value.
+Private Function OutputHasError(ByVal varRow As Variant, ByRef blnLive() As Boolean) As Boolean
+
+    Dim lngJ As Long
+
+    On Error GoTo ErrHandler
+
+    If IsArray(varRow) Then
+        For lngJ = LBound(blnLive) To UBound(blnLive)
+            If blnLive(lngJ) Then
+                If IsError(varRow(1, lngJ)) Then
+                    OutputHasError = True
+                    Exit For
+                End If
+            End If
+        Next lngJ
+    Else
+        OutputHasError = IsError(varRow)
+    End If
+
+Cleanup:
+    Exit Function
+
+ErrHandler:
+    If m_DEBUG_MODE Then Stop: Resume
+    OutputHasError = True
     Resume Cleanup
 End Function
 
@@ -2749,6 +2821,7 @@ ErrHandler:
     If m_DEBUG_MODE Then Stop: Resume
     SlowdownsIn = vbNullString
 End Function
+
 
 
 

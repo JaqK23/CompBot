@@ -528,7 +528,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modDataTable.CreateDataTable](./VBA/modDataTable.bas#L476)()</code> |
+| Macro Expression | <code>[modDataTable.CreateDataTable](./VBA/modDataTable.bas#L486)()</code> |
 | Launch Codes | <ol><li><code>CDT</code></li><li><code>DT</code></li></ol> |
 
 [^Top](#oa-robot-definitions)
@@ -545,7 +545,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modDataTable.CreateDataTableHere](./VBA/modDataTable.bas#L491)()</code> |
+| Macro Expression | <code>[modDataTable.CreateDataTableHere](./VBA/modDataTable.bas#L501)()</code> |
 | Launch Codes | <ol><li><code>CDTH</code></li><li><code>DT</code></li></ol> |
 
 [^Top](#oa-robot-definitions)
@@ -859,7 +859,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modDataTable.GoToExample](./VBA/modDataTable.bas#L853)()</code> |
+| Macro Expression | <code>[modDataTable.GoToExample](./VBA/modDataTable.bas#L863)()</code> |
 | Launch Codes | <code>GE</code> |
 
 [^Top](#oa-robot-definitions)
@@ -1026,7 +1026,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modDataTable.LinkAnswerCell](./VBA/modDataTable.bas#L927)()</code> |
+| Macro Expression | <code>[modDataTable.LinkAnswerCell](./VBA/modDataTable.bas#L937)()</code> |
 | Launch Codes | <ol><li><code>ANS</code></li><li><code>DT</code></li></ol> |
 
 [^Top](#oa-robot-definitions)
@@ -1043,7 +1043,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modDataTable.LinkSideCell](./VBA/modDataTable.bas#L1019)()</code> |
+| Macro Expression | <code>[modDataTable.LinkSideCell](./VBA/modDataTable.bas#L1029)()</code> |
 | Launch Codes | <ol><li><code>LSC</code></li><li><code>BDT</code></li><li><code>DT</code></li></ol> |
 
 [^Top](#oa-robot-definitions)
@@ -1114,7 +1114,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modDataTable.LoadGameIntoCalculation](./VBA/modDataTable.bas#L369)()</code> |
+| Macro Expression | <code>[modDataTable.LoadGameIntoCalculation](./VBA/modDataTable.bas#L379)()</code> |
 | Launch Codes | <ol><li><code>LDT</code></li><li><code>LG</code></li><li><code>DT</code></li></ol> |
 
 [^Top](#oa-robot-definitions)

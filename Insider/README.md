@@ -37,8 +37,10 @@ Why it matters: spilled helpers cannot be filled down, because the spills collid
 cell, so a whole solve chain copies down like an ordinary row, and you still get to build and debug with
 visible spills.
 
-Version: 2026.10.2 Insider, built from CompBot 2026.10.2. Definitions: [CompBot Insider Readme](CompBot%20Insider.xlsm%20README/CompBot%20Insider.xlsm%20README.md).
+Version: 2026.10.3 Insider, built from CompBot 2026.10.3. Definitions: [CompBot Insider Readme](CompBot%20Insider.xlsm%20README/CompBot%20Insider.xlsm%20README.md).
 
-What changed: 2026.10.2 (11 Oct) a helper on another row that depends on the example row is nested and packed
+What changed: 2026.10.3 (15 Oct) Run Data Table recalculates until Excel has finished, so a game
+run straight after a new SIDE or ANSWER formula no longer comes out #NUM! or #N/A (issue #12).
+2026.10.2 (11 Oct) a helper on another row that depends on the example row is nested and packed
 wherever it sits; one that does not is left alone and named. 2026.10.1 (11 Oct) Alves Unpack and Alves Unnest
 work on any game row, not only the first few below the level's header. 2026.10 (11 Oct) first release.
