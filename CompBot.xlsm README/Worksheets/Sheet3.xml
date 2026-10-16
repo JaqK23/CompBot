@@ -1228,6 +1228,10 @@
    ss:RefersTo="='Regional Settings'!R7C4"/>
   <NamedRange ss:Name="MassSubstitute_byHadynWiseman"
    ss:RefersTo="=LAMBDA(Text,OldText,[NewText],[CaseSensitive],[InstanceNumber],[Regexmode],MAP(Text,LAMBDA(x, LET(ot,IF(Regexmode,&quot;&quot;,&quot;\Q&quot;)&amp;TOCOL(OldText)&amp;IF(Regexmode,&quot;&quot;,&quot;\E&quot;),nt,&quot;\Q&quot;&amp;IF(ISOMITTED(NewText),EXPAND(&quot;&quot;,ROWS(ot),,&quot;&quot;),NewText)&amp;&quot;\E&quot;,in,EXPAND(InstanceNumber,ROWS(ot),,@InstanceNumber), ms,REDUCE(x,SEQUENCE(ROWS(ot)),LAMBDA(a,v,REGEXREPLACE(a,INDEX(ot,v),INDEX(nt,v),IF(ISOMITTED(InstanceNumber),0,INDEX(in,v)),1-CaseSensitive))), ms))))"/>
+  <NamedRange ss:Name="MAXLOOKUP_byJaqKennedy"
+   ss:RefersTo="=LAMBDA(lookup_array,return_array,LET(\\LambdaName, &quot;MAXLOOKUP&quot;, \\CommandName, &quot;Lookup the MAX of a range&quot;, \\Description, &quot;Returns the item lined up with the MAX of a range&quot;, \\Source, &quot;Jaq Kennedy&quot;, XLOOKUP(MAX(lookup_array),lookup_array,return_array)))"/>
+  <NamedRange ss:Name="MINLOOKUP_byJaqKennedy"
+   ss:RefersTo="=LAMBDA(lookup_array,return_array,LET(\\LambdaName, &quot;MINLOOKUP&quot;, \\CommandName, &quot;Lookup the MIN of a range&quot;, \\Description, &quot;Returns the item lined up with the MIN of a range&quot;, \\Source, &quot;Jaq Kennedy&quot;, XLOOKUP(MIN(lookup_array),lookup_array,return_array)))"/>
   <NamedRange ss:Name="MM_byHaDang"
    ss:RefersTo="=LAMBDA(value,[add_up], LET(&#10;   \\LambdaName, &quot;MM_byHaDang&quot;,&#10;   \\Description, &quot;Applies -- to values, with option to sum output&quot;,&#10;   result, IFERROR(--(value), value &amp; &quot;&quot;),&#10;   IF(add_up, SUM(result), result)&#10;))"/>
   <NamedRange ss:Name="ModeSuper_byLiannaGerrish"

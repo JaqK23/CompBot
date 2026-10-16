@@ -1,0 +1,1 @@
+MAXLOOKUP_byJaqKennedy =LAMBDA(lookup_array,return_array,LET(\\LambdaName, "MAXLOOKUP", \\CommandName, "Lookup the MAX of a range", \\Description, "Returns the item lined up with the MAX of a range", \\Source, "Jaq Kennedy", XLOOKUP(MAX(lookup_array),lookup_array,return_array)));

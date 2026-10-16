@@ -1205,6 +1205,9 @@
       "Type": "VBAMacroCommand",
       "UserContextFilter": "ExcelSelectionIsSingleCell",
       "Note": "Target: sheet B if it has the bonus (Case links to it), else the sheet with 'Bonus Questions'; the MEWC green cell on the 'Bonus 1' row. Writes a live link, selects the answer cell, copies it, reports on the StatusBar. Writes nothing if the row or green cell is missing. Promoted from A-ZTraining 2026-09-24 (A-ZTraining keeps its own copy).",
+      "LaunchCodes": [
+        "B1"
+      ],
       "MacroExpression": "modCaseNav.SaveAnswerToBonus(1)",
       "Tags": [
         "Bonus"
@@ -1216,6 +1219,9 @@
       "Type": "VBAMacroCommand",
       "UserContextFilter": "ExcelSelectionIsSingleCell",
       "Note": "See Save Answer To Bonus 1.",
+      "LaunchCodes": [
+        "B2"
+      ],
       "MacroExpression": "modCaseNav.SaveAnswerToBonus(2)",
       "Tags": [
         "Bonus"
@@ -1227,6 +1233,9 @@
       "Type": "VBAMacroCommand",
       "UserContextFilter": "ExcelSelectionIsSingleCell",
       "Note": "See Save Answer To Bonus 1.",
+      "LaunchCodes": [
+        "B3"
+      ],
       "MacroExpression": "modCaseNav.SaveAnswerToBonus(3)",
       "Tags": [
         "Bonus"
@@ -1238,6 +1247,9 @@
       "Type": "VBAMacroCommand",
       "UserContextFilter": "ExcelSelectionIsSingleCell",
       "Note": "See Save Answer To Bonus 1.",
+      "LaunchCodes": [
+        "B4"
+      ],
       "MacroExpression": "modCaseNav.SaveAnswerToBonus(4)",
       "Tags": [
         "Bonus"
@@ -1249,6 +1261,9 @@
       "Type": "VBAMacroCommand",
       "UserContextFilter": "ExcelSelectionIsSingleCell",
       "Note": "See Save Answer To Bonus 1.",
+      "LaunchCodes": [
+        "B5"
+      ],
       "MacroExpression": "modCaseNav.SaveAnswerToBonus(5)",
       "Tags": [
         "Bonus"

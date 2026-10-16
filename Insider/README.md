@@ -6,8 +6,9 @@ most machines do not have yet. Commands graduate into CompBot when their feature
 **You need** Excel for Windows on the Microsoft 365 **Insider Beta Channel** with in-cell arrays live
 (Version 2610, Build 20520 or later, and `=FLATTEN(1)` must give 1 rather than #NAME?; the rollout is
 gradual per machine, so File > Account > Update Now if it is missing). Without the feature the Insider
-commands refuse with a plain status-bar message and change nothing. **Competition machines will not have
-these features**: practise with Insider, compete with CompBot.
+commands refuse with a plain status-bar message and change nothing. **The competition machines in
+Las Vegas do not have these features**, so if you plan to compete there, practise with CompBot.
+Insider is for using in-cell array commands, like the Alves Method, now.
 
 **Get it**: register `CompBot Insider.xlsm` from this folder in OA Robot (local file, or sync this folder's
 address). Register ONE edition at a time, or disable the other: both carry the same commands and launch
@@ -37,9 +38,12 @@ Why it matters: spilled helpers cannot be filled down, because the spills collid
 cell, so a whole solve chain copies down like an ordinary row, and you still get to build and debug with
 visible spills.
 
-Version: 2026.10.3 Insider, built from CompBot 2026.10.3. Definitions: [CompBot Insider Readme](CompBot%20Insider.xlsm%20README/CompBot%20Insider.xlsm%20README.md).
+Version: 2026.10.4 Insider, built from CompBot 2026.10.4. Definitions: [CompBot Insider Readme](CompBot%20Insider.xlsm%20README/CompBot%20Insider.xlsm%20README.md).
 
-What changed: 2026.10.3 (15 Oct) Run Data Table recalculates until Excel has finished, so a game
+What changed: 2026.10.4 (16 Oct) the MAXLOOKUP and MINLOOKUP lambdas (issue #13); a Credits column
+on the Info sheets (issue #11); Full Setup Case copes with cases full of images (issue #14); the six
+Alves commands listed on Info_Commands; the tutorial gains an Insider section with a lesson for
+each. 2026.10.3 (15 Oct) Run Data Table recalculates until Excel has finished, so a game
 run straight after a new SIDE or ANSWER formula no longer comes out #NUM! or #N/A (issue #12).
 2026.10.2 (11 Oct) a helper on another row that depends on the example row is nested and packed
 wherever it sits; one that does not is left alone and named. 2026.10.1 (11 Oct) Alves Unpack and Alves Unnest

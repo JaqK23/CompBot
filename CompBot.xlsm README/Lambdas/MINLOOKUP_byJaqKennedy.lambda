@@ -1,0 +1,1 @@
+MINLOOKUP_byJaqKennedy =LAMBDA(lookup_array,return_array,LET(\\LambdaName, "MINLOOKUP", \\CommandName, "Lookup the MIN of a range", \\Description, "Returns the item lined up with the MIN of a range", \\Source, "Jaq Kennedy", XLOOKUP(MIN(lookup_array),lookup_array,return_array)));

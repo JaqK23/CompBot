@@ -30,6 +30,12 @@ Private Const m_INPUT_FILL          As Long = 13434879
 ' (2021 Lumberjack, 2021 Excelopolis, 2022 Square of Fortune). Jaq, 2026-09-22: those are
 ' unlikely to recur in competition but are worth having for training on past cases.
 Private Const m_EXAMPLE_WORDS       As String = "Example|Exemple|Exemplo|Sample"
+' Images (GitHub #14, Jaq, 2026-10-16: the 2022 MEWC Euchre case has ~1,700 card images over its inputs
+' and Full Setup Case ran out of memory copying them). A level or bonus block with more than
+' m_MAX_LEVEL_SHAPES images gets none of them; a sheet with more than m_MAX_BACKUP_SHAPES is backed up
+' as cells only.
+Private Const m_MAX_LEVEL_SHAPES    As Long = 5
+Private Const m_MAX_BACKUP_SHAPES   As Long = 50
 Private Const m_ERR_CASE_SHEET      As Long = vbObjectError + 513
 Private Const m_ERR_NOT_FOUND       As Long = vbObjectError + 514
 
@@ -418,7 +424,8 @@ End Function
 ' Purpose: Copy every worksheet to BU_<name>. The prefix goes at the front so that cropping a
 '          long name at Excel's 31-character limit still leaves a distinct, recognisable name.
 '          Sheets already starting BU_ are skipped (a second run does not back up backups);
-'          very hidden sheets cannot be copied and are skipped.
+'          very hidden sheets cannot be copied and are skipped. A sheet with more than
+'          m_MAX_BACKUP_SHAPES images is backed up as cells only (BackupCellsOnly, GitHub #14).
 Public Sub Backup()
 
     ' --- CONSTANTS (local to function) ---
@@ -457,21 +464,30 @@ Public Sub Backup()
 
         ' Identify the copy as the one sheet that was not there before, rather than
         ' trusting it to land last (a hidden last sheet can change where it goes).
-        Set dicBefore = CreateObject("Scripting.Dictionary")
-        dicBefore.CompareMode = vbTextCompare
-        For Each wsAny In wb.Worksheets
-            dicBefore(wsAny.Name) = True
-        Next wsAny
-
-        ws.Copy After:=wb.Worksheets(wb.Worksheets.Count)
-
         Set wsNew = Nothing
-        For Each wsAny In wb.Worksheets
-            If Not dicBefore.Exists(wsAny.Name) Then
-                Set wsNew = wsAny
-                Exit For
+        If ws.Shapes.Count > m_MAX_BACKUP_SHAPES Then
+            ' Hundreds of images: a whole-sheet copy runs Excel out of memory (GitHub #14).
+            Set wsNew = BackupCellsOnly(wb, ws)
+            If Not wsNew Is Nothing Then
+                m_strSetupInfo = Trim$(m_strSetupInfo & " " & ws.Name & " backed up without its " _
+                                 & ws.Shapes.Count & " images.")
             End If
-        Next wsAny
+        Else
+            Set dicBefore = CreateObject("Scripting.Dictionary")
+            dicBefore.CompareMode = vbTextCompare
+            For Each wsAny In wb.Worksheets
+                dicBefore(wsAny.Name) = True
+            Next wsAny
+
+            ws.Copy After:=wb.Worksheets(wb.Worksheets.Count)
+
+            For Each wsAny In wb.Worksheets
+                If Not dicBefore.Exists(wsAny.Name) Then
+                    Set wsNew = wsAny
+                    Exit For
+                End If
+            Next wsAny
+        End If
         If wsNew Is Nothing Then Err.Raise m_ERR_NOT_FOUND, PROC_NAME, "Copy of " & ws.Name & " not found"
 
         wsNew.Name = BackupSheetName(wb, ws.Name)
@@ -492,6 +508,52 @@ ErrHandler:
     If LogError(PROC_NAME, Err.Number, Err.Description) Then m_blnLogWritten = True
     Resume Cleanup
 End Sub
+
+' Purpose: Back up WS as cells only, for a sheet with so many images that a whole-sheet copy runs
+'          Excel out of memory (GitHub #14: 2022 MEWC Euchre, ~1,700 card images). A new sheet at the end
+'          gets every row down to the last used one (values, formulas, formats, row heights) and the
+'          column widths, with Excel's "copy objects with cells" off for the copy, so no image comes
+'          across. Sheet-level names, page setup and the tab colour are not copied: the backup is only
+'          read for its cells (Save From Example). Keeps the sheet's visibility. Returns the new sheet,
+'          or Nothing on failure (logged). Never raises.
+Private Function BackupCellsOnly(ByVal wb As Workbook, ByVal ws As Worksheet) As Worksheet
+
+    ' --- CONSTANTS (local to function) ---
+    Const PROC_NAME As String = "BackupCellsOnly"
+
+    Dim wsNew       As Worksheet
+    Dim lngLastRow  As Long
+    Dim blnObjects  As Boolean
+    Dim blnObjSaved As Boolean
+
+    On Error GoTo ErrHandler
+
+    Set wsNew = wb.Worksheets.Add(After:=wb.Worksheets(wb.Worksheets.Count))
+    With ws.UsedRange
+        lngLastRow = .Row + .Rows.Count - 1
+    End With
+
+    blnObjects = Application.CopyObjectsWithCells
+    blnObjSaved = True
+    Application.CopyObjectsWithCells = False
+    ws.Rows("1:" & lngLastRow).Copy Destination:=wsNew.Rows(1)
+    Application.CopyObjectsWithCells = blnObjects
+    CopyColumnWidths ws, wsNew
+    If ws.Visible <> xlSheetVisible Then wsNew.Visible = ws.Visible
+
+    Set BackupCellsOnly = wsNew
+
+Cleanup:
+    On Error Resume Next
+    If blnObjSaved Then Application.CopyObjectsWithCells = blnObjects
+    Exit Function
+
+ErrHandler:
+    If m_DEBUG_MODE Then Stop: Resume
+    If LogError(PROC_NAME, Err.Number, ws.Name & ": " & Err.Description) Then m_blnLogWritten = True
+    Set BackupCellsOnly = Nothing
+    Resume Cleanup
+End Function
 
 ' Purpose: BU_ + the name, cropped to 31 characters. If that is already taken (two long names
 '          sharing their first 28 characters), shorten further and add ~2, ~3 ...
@@ -580,9 +642,12 @@ End Sub
 '          every level, stays where it is. Cell comments are not shapes here. Through the clipboard, the
 '          only route Excel gives a picture; released at the end. Only ever run during setup, never
 '          mid-solve. A shape that will not copy is logged and skipped; the level is still built.
-'          Returns the number copied. Never raises.
+'          GitHub #14: a level with more than m_MAX_LEVEL_SHAPES images gets none of them, and a shape
+'          lying over the level's input cells (MarkAsInputCells' fill, already set) is never copied.
+'          Returns the number copied; lngSkipped gets the number left behind. Never raises.
 Private Function CopyLevelShapes(ByVal wsCase As Worksheet, ByVal wsLevel As Worksheet, _
-                                 ByVal lngBegRow As Long, ByVal lngEndRow As Long) As Long
+                                 ByVal lngBegRow As Long, ByVal lngEndRow As Long, _
+                                 ByRef lngSkipped As Long) As Long
 
     ' --- CONSTANTS (local to function) ---
     Const PROC_NAME As String = "CopyLevelShapes"
@@ -591,11 +656,26 @@ Private Function CopyLevelShapes(ByVal wsCase As Worksheet, ByVal wsLevel As Wor
     Dim rngAnchor As Range
     Dim lngCount  As Long
     Dim lngBefore As Long
+    Dim lngFound  As Long
 
     On Error GoTo ErrHandler
 
+    lngSkipped = 0
+
+    ' Over the cap, none are copied: they are a game board, not an explanatory picture (GitHub #14).
+    lngFound = CountLevelShapes(wsCase, lngBegRow, lngEndRow)
+    If lngFound > m_MAX_LEVEL_SHAPES Then
+        lngSkipped = lngFound
+        GoTo Cleanup
+    End If
+
     For Each shp In wsCase.Shapes
-        If IsLevelShape(shp, lngBegRow, lngEndRow) Then
+        If Not IsLevelShape(shp, lngBegRow, lngEndRow) Then
+            ' Not this level's.
+        ElseIf OverInputCells(shp, wsLevel, lngBegRow) Then
+            ' Covers the level's inputs: it would hide what the solver types (GitHub #14).
+            lngSkipped = lngSkipped + 1
+        Else
             Set rngAnchor = wsLevel.Cells(shp.TopLeftCell.Row - lngBegRow + 1, shp.TopLeftCell.Column)
             lngBefore = wsLevel.Shapes.Count
             ' A shape that will not copy (linked to a file, protected) must not stop the level.
@@ -621,6 +701,57 @@ Cleanup:
 ErrHandler:
     If m_DEBUG_MODE Then Stop: Resume
     If LogError(PROC_NAME, Err.Number, Err.Description) Then m_blnLogWritten = True
+    Resume Cleanup
+End Function
+
+' Purpose: The number of shapes on WS lying wholly within rows lngBegRow..lngEndRow (IsLevelShape),
+'          counted without touching the clipboard. Never raises; 0 on failure.
+Private Function CountLevelShapes(ByVal ws As Worksheet, ByVal lngBegRow As Long, ByVal lngEndRow As Long) As Long
+
+    Dim shp      As Shape
+    Dim lngFound As Long
+
+    On Error GoTo ErrHandler
+
+    For Each shp In ws.Shapes
+        If IsLevelShape(shp, lngBegRow, lngEndRow) Then lngFound = lngFound + 1
+    Next shp
+    CountLevelShapes = lngFound
+
+Cleanup:
+    Exit Function
+
+ErrHandler:
+    If m_DEBUG_MODE Then Stop: Resume
+    CountLevelShapes = 0
+    Resume Cleanup
+End Function
+
+' Purpose: True when any cell under the shape, at its place on the level sheet (case row - lngBegRow + 1),
+'          carries the input fill (m_INPUT_FILL) that Create Level Sheets has already put on the level's
+'          inputs. A shape that cannot say where it sits counts as not over them. Never raises.
+Private Function OverInputCells(ByVal shp As Shape, ByVal wsLevel As Worksheet, ByVal lngBegRow As Long) As Boolean
+
+    Dim rngUnder As Range
+    Dim rngCell  As Range
+
+    On Error GoTo ErrHandler
+
+    Set rngUnder = wsLevel.Range(wsLevel.Cells(shp.TopLeftCell.Row - lngBegRow + 1, shp.TopLeftCell.Column), _
+                                 wsLevel.Cells(shp.BottomRightCell.Row - lngBegRow + 1, shp.BottomRightCell.Column))
+    For Each rngCell In rngUnder.Cells
+        If rngCell.Interior.Color = m_INPUT_FILL Then
+            OverInputCells = True
+            Exit For
+        End If
+    Next rngCell
+
+Cleanup:
+    Exit Function
+
+ErrHandler:
+    If m_DEBUG_MODE Then Stop: Resume
+    OverInputCells = False
     Resume Cleanup
 End Function
 
@@ -688,6 +819,10 @@ Public Sub CreateLevelSheets()
     Dim strCurrVal As String
     Dim lngShape As Long
     Dim lngShapes As Long
+    Dim lngSkipped As Long
+    Dim strSkipped As String
+    Dim blnObjects As Boolean
+    Dim blnObjSaved As Boolean
     Dim blnInit As Boolean
     Dim strErr As String
 
@@ -745,8 +880,13 @@ Public Sub CreateLevelSheets()
         End If
 
         '____________________COPY DATA________________________________________________
-        'copy rows to new worksheet
+        'copy rows to new worksheet - cells only: the level's images are CopyLevelShapes' job below, and
+        'a row copy of a case with hundreds of them ran Excel out of memory (GitHub #14)
+        blnObjects = Application.CopyObjectsWithCells
+        blnObjSaved = True
+        Application.CopyObjectsWithCells = False
         ws.Rows(lngBegRow & ":" & lngEndRow).Copy Destination:=wsNew.Rows(1)
+        Application.CopyObjectsWithCells = blnObjects
         CopyColumnWidths ws, wsNew
         wsNew.Calculate
         RelinkShiftedFormulas ws, wsNew, lngBegRow
@@ -845,15 +985,21 @@ Public Sub CreateLevelSheets()
         For lngShape = wsNew.Shapes.Count To 1 Step -1
             wsNew.Shapes(lngShape).Delete
         Next lngShape
-        lngShapes = CopyLevelShapes(ws, wsNew, lngBegRow, lngEndRow)
+        lngShapes = CopyLevelShapes(ws, wsNew, lngBegRow, lngEndRow, lngSkipped)
         If lngShapes > 0 Then
             m_strSetupInfo = Trim$(m_strSetupInfo & " " & wsNew.Name & ": " & lngShapes & " image(s).")
         End If
+        If lngSkipped > 0 Then strSkipped = strSkipped & ", " & wsNew.Name & " " & lngSkipped
 
     Next lngCurr
 
+    If Len(strSkipped) > 0 Then
+        m_strSetupInfo = Trim$(m_strSetupInfo & " Images left on the case sheet: " & Mid$(strSkipped, 3) & ".")
+    End If
+
 Cleanup:
     On Error Resume Next
+    If blnObjSaved Then Application.CopyObjectsWithCells = blnObjects
     If blnInit Then VBAFin
     If Len(strErr) > 0 Then
         m_strStepError = strErr
@@ -970,6 +1116,9 @@ Public Sub CreateBonusSheet()
     Dim strHeader As String
     Dim strCurrVal As String
     Dim strBonusKey As String
+    Dim lngShapes As Long
+    Dim blnObjects As Boolean
+    Dim blnObjSaved As Boolean
     Dim blnInit As Boolean
     Dim strErr As String
 
@@ -1043,8 +1192,16 @@ Public Sub CreateBonusSheet()
     wsNew.Name = "B"
 
     '____________________COPY DATA________________________________________________
-    'copy rows to new worksheet
+    'copy rows to new worksheet - with their images, unless there are more than the cap (GitHub #14)
+    lngShapes = CountLevelShapes(ws, lngBegRow, lngEndRow)
+    blnObjects = Application.CopyObjectsWithCells
+    blnObjSaved = True
+    If lngShapes > m_MAX_LEVEL_SHAPES Then Application.CopyObjectsWithCells = False
     ws.Rows(lngBegRow & ":" & lngEndRow).Copy Destination:=wsNew.Rows(1)
+    Application.CopyObjectsWithCells = blnObjects
+    If lngShapes > m_MAX_LEVEL_SHAPES Then
+        m_strSetupInfo = Trim$(m_strSetupInfo & " " & wsNew.Name & ": " & lngShapes & " image(s) left on the case sheet.")
+    End If
     CopyColumnWidths ws, wsNew
     wsNew.Calculate
 
@@ -1118,6 +1275,7 @@ Public Sub CreateBonusSheet()
 
 Cleanup:
     On Error Resume Next
+    If blnObjSaved Then Application.CopyObjectsWithCells = blnObjects
     If blnInit Then VBAFin
     If Len(strErr) > 0 Then
         m_strStepError = strErr
@@ -3303,6 +3461,7 @@ ErrHandler:
     If m_DEBUG_MODE Then Stop: Resume
     SafeText = vbNullString
 End Function
+
 
 
 

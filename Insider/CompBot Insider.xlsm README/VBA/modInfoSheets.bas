@@ -25,14 +25,18 @@ Private Const m_CMD_TABLE  As String = "CompBotCommands"
 '------------------------------------------------------------------------------
 ' Reload the CompBotCommands table from a TSV of
 '   Name <tab> Creator <tab> Description <tab> Parameters <tab> Launch Code
+' Columns after those five (Credits, GitHub #11) are not in the collection, so
+' the TSV cannot carry them: each command's Credits is read off the table first
+' and put back against the same name, so a reload never wipes a credit.
 ' Returns a short status string rather than raising, so it can be run from the
 ' MCP and read as a result.
 '------------------------------------------------------------------------------
 Public Function RefreshCommandsInfo(ByVal strTsvPath As String) As String
 
     ' --- CONSTANTS (local to function) ---
-    Const PROC_NAME As String = "RefreshCommandsInfo"
-    Const COLS      As Long = 5
+    Const PROC_NAME   As String = "RefreshCommandsInfo"
+    Const COLS        As Long = 5
+    Const CREDITS_HDR As String = "Credits"
 
     Dim lo          As ListObject
     Dim varRows     As Variant
@@ -46,6 +50,13 @@ Public Function RefreshCommandsInfo(ByVal strTsvPath As String) As String
     Dim lngCount    As Long
     Dim lngErrNum   As Long
     Dim strErrDesc  As String
+    Dim objCredits  As Object
+    Dim varOld      As Variant
+    Dim arrCredits() As Variant
+    Dim strKey      As String
+    Dim lngTableCols As Long
+    Dim lngCreditCol As Long
+    Dim lngNoCredit As Long
 
     On Error GoTo ErrHandler
 
@@ -96,13 +107,48 @@ Public Function RefreshCommandsInfo(ByVal strTsvPath As String) As String
         GoTo Cleanup
     End If
 
+    ' Keep the table's own width: columns past the TSV's five survive the resize.
+    lngTableCols = lo.ListColumns.Count
+    If lngTableCols < COLS Then lngTableCols = COLS
+
+    ' Remember each command's credit before the body goes. Probe for the column.
+    Set objCredits = CreateObject("Scripting.Dictionary")
+    objCredits.CompareMode = vbTextCompare
+    On Error Resume Next
+    lngCreditCol = lo.ListColumns(CREDITS_HDR).Index
+    On Error GoTo ErrHandler
+    If lngCreditCol > 0 And Not lo.DataBodyRange Is Nothing Then
+        varOld = lo.DataBodyRange.Value2
+        If IsArray(varOld) Then
+            For lngRow = 1 To UBound(varOld, 1)
+                strKey = CStr(varOld(lngRow, 1))
+                If Len(strKey) > 0 Then objCredits(strKey) = varOld(lngRow, lngCreditCol)
+            Next lngRow
+        End If
+    End If
+
     ' Resize the table to the new row count, then write the body in ONE hit.
     ' Deleting and re-adding rows would break anything pointing at the table.
     If Not lo.DataBodyRange Is Nothing Then lo.DataBodyRange.Delete
-    lo.Resize lo.Range.Resize(lngCount + 1, COLS)
-    lo.DataBodyRange.value = arrOut
+    lo.Resize lo.Range.Resize(lngCount + 1, lngTableCols)
+    lo.DataBodyRange.Resize(, COLS).value = arrOut
+
+    If lngCreditCol > 0 Then
+        ReDim arrCredits(1 To lngCount, 1 To 1)
+        For lngRow = 1 To lngCount
+            strKey = CStr(arrOut(lngRow, 1))
+            If objCredits.Exists(strKey) Then
+                arrCredits(lngRow, 1) = objCredits(strKey)
+            Else
+                arrCredits(lngRow, 1) = vbNullString
+                lngNoCredit = lngNoCredit + 1
+            End If
+        Next lngRow
+        lo.ListColumns(lngCreditCol).DataBodyRange.value = arrCredits
+    End If
 
     RefreshCommandsInfo = "CompBotCommands reloaded: " & lngCount & " commands"
+    If lngNoCredit > 0 Then RefreshCommandsInfo = RefreshCommandsInfo & ", " & lngNoCredit & " with no credit yet"
 
 Cleanup:
     Exit Function
@@ -200,4 +246,5 @@ Private Function FindTable(ByVal strName As String) As ListObject
     Next ws
 
 End Function
+
 

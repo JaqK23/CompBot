@@ -316,7 +316,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modCaseSetup.Backup](./VBA/modCaseSetup.bas#L422)()</code> |
+| Macro Expression | <code>[modCaseSetup.Backup](./VBA/modCaseSetup.bas#L429)()</code> |
 | Macro Workbook Connection | ThisWorkbook |
 | Launch Codes | <code>BU</code> |
 
@@ -494,7 +494,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modCaseSetup.CreateBonusSheet](./VBA/modCaseSetup.bas#L946)()</code> |
+| Macro Expression | <code>[modCaseSetup.CreateBonusSheet](./VBA/modCaseSetup.bas#L1092)()</code> |
 | Launch Codes | <ol><li><code>BQC</code></li><li><code>CB</code></li></ol> |
 
 [^Top](#oa-robot-definitions)
@@ -511,7 +511,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modCaseSetup.CreateCaseInputsSheet](./VBA/modCaseSetup.bas#L1416)([[ActiveCell]])</code> |
+| Macro Expression | <code>[modCaseSetup.CreateCaseInputsSheet](./VBA/modCaseSetup.bas#L1574)([[ActiveCell]])</code> |
 | Launch Codes | <ol><li><code>CIS</code></li><li><code>IS</code></li></ol> |
 
 [^Top](#oa-robot-definitions)
@@ -560,7 +560,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modCaseSetup.CreateLevelSheets](./VBA/modCaseSetup.bas#L655)()</code> |
+| Macro Expression | <code>[modCaseSetup.CreateLevelSheets](./VBA/modCaseSetup.bas#L786)()</code> |
 | Launch Codes | <ol><li><code>CL</code></li><li><code>CLS</code></li></ol> |
 
 [^Top](#oa-robot-definitions)
@@ -825,7 +825,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modCaseSetup.Setup](./VBA/modCaseSetup.bas#L66)()</code> |
+| Macro Expression | <code>[modCaseSetup.Setup](./VBA/modCaseSetup.bas#L72)()</code> |
 | Keyboard Shortcut | <code>^+g</code> |
 | Command After | [Import Case Lambdas](#import-case-lambdas) |
 | Launch Codes | <code>SC</code> |
@@ -1450,7 +1450,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modCaseSetup.RenameSht](./VBA/modCaseSetup.bas#L296)()</code> |
+| Macro Expression | <code>[modCaseSetup.RenameSht](./VBA/modCaseSetup.bas#L302)()</code> |
 | Launch Codes | <code>rs</code> |
 
 [^Top](#oa-robot-definitions)
@@ -1622,6 +1622,7 @@
 | --- | --- |
 | Macro Expression | <code>[modCaseNav.SaveAnswerToBonus](./VBA/modCaseNav.bas#L246)(1)</code> |
 | User Context Filter | ExcelSelectionIsSingleCell |
+| Launch Codes | <code>B1</code> |
 
 [^Top](#oa-robot-definitions)
 
@@ -1639,6 +1640,7 @@
 | --- | --- |
 | Macro Expression | <code>[modCaseNav.SaveAnswerToBonus](./VBA/modCaseNav.bas#L246)(2)</code> |
 | User Context Filter | ExcelSelectionIsSingleCell |
+| Launch Codes | <code>B2</code> |
 
 [^Top](#oa-robot-definitions)
 
@@ -1656,6 +1658,7 @@
 | --- | --- |
 | Macro Expression | <code>[modCaseNav.SaveAnswerToBonus](./VBA/modCaseNav.bas#L246)(3)</code> |
 | User Context Filter | ExcelSelectionIsSingleCell |
+| Launch Codes | <code>B3</code> |
 
 [^Top](#oa-robot-definitions)
 
@@ -1673,6 +1676,7 @@
 | --- | --- |
 | Macro Expression | <code>[modCaseNav.SaveAnswerToBonus](./VBA/modCaseNav.bas#L246)(4)</code> |
 | User Context Filter | ExcelSelectionIsSingleCell |
+| Launch Codes | <code>B4</code> |
 
 [^Top](#oa-robot-definitions)
 
@@ -1690,6 +1694,7 @@
 | --- | --- |
 | Macro Expression | <code>[modCaseNav.SaveAnswerToBonus](./VBA/modCaseNav.bas#L246)(5)</code> |
 | User Context Filter | ExcelSelectionIsSingleCell |
+| Launch Codes | <code>B5</code> |
 
 [^Top](#oa-robot-definitions)
 
@@ -1703,7 +1708,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modCaseSetup.SaveAnswersToLeft](./VBA/modCaseSetup.bas#L1780)()</code> |
+| Macro Expression | <code>[modCaseSetup.SaveAnswersToLeft](./VBA/modCaseSetup.bas#L1938)()</code> |
 | Launch Codes | <code>SAL</code> |
 
 [^Top](#oa-robot-definitions)
@@ -1718,7 +1723,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modCaseSetup.SaveCopy](./VBA/modCaseSetup.bas#L2484)([[ActiveCell]])</code> |
+| Macro Expression | <code>[modCaseSetup.SaveCopy](./VBA/modCaseSetup.bas#L2642)([[ActiveCell]])</code> |
 | Launch Codes | <code>SA</code> |
 
 [^Top](#oa-robot-definitions)
@@ -1735,7 +1740,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modCaseSetup.SaveFromExample](./VBA/modCaseSetup.bas#L2013)()</code> |
+| Macro Expression | <code>[modCaseSetup.SaveFromExample](./VBA/modCaseSetup.bas#L2171)()</code> |
 | User Context Filter | ExcelActiveCellIsNotEmpty AND ExcelSelectionIsSingleCell |
 | Launch Codes | <code>SFE</code> |
 
