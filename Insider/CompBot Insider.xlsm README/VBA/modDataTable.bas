@@ -98,6 +98,12 @@ Public Sub RunDataTable()
     Dim strSlow As String
     Dim strMsg As String
     Dim strErr As String
+    Dim varPrev As Variant           ' the previous game's output row, as read (#17)
+    Dim varFirst As Variant          ' the first game's output row, for the every-game-the-same warning
+    Dim blnDirty As Boolean          ' stale cells found: mark the sheet's formulas dirty before every recalc
+    Dim blnRestart As Boolean
+    Dim blnAllSame As Boolean
+    Dim strStale As String           ' where stale cells were found, for the StatusBar
 
     On Error GoTo ErrHandler
 
@@ -230,51 +236,78 @@ Public Sub RunDataTable()
     blnTouched = True     ' from here the input cell and other sheets hold probe states
     dblCheckStart = Timer
     blnSheetOnly = (ChooseRecalcScope(wsCalc, rngInput, rngFormula, varGames, strScope) = m_SCOPE_SHEET)
+    ' Stale cells (#17): a formula fed by INDIRECT inside a named LAMBDA can stay on an old value through any
+    ' number of recalculations while Excel reports the calculation done. Only marking it dirty brings it back.
+    blnDirty = StaleOnRecalc(wsCalc, rngInput, rngFormula, varGames, blnLive, blnSheetOnly, strStale)
     dblCheckSecs = Timer - dblCheckStart
     If dblCheckSecs < 0 Then dblCheckSecs = dblCheckSecs + 86400#
 
     dblStart = Timer
-    For lngI = 1 To lngGames
+    blnAllSame = True
+    lngI = 1
+    Do While lngI <= lngGames
         rngInput.Value2 = varGames(lngI, 1)
-        ' Calculation is manual: recalculate this sheet only when verified safe, else every open
-        ' workbook (correct across sheets).
-        ' CalculationState is only meaningful after a full calculation - after a sheet-only one it can
-        ' read "pending" because of other workbooks. Interrupt keys are off, so both run to the end.
-        ' One calculation can stop short straight after a formula is entered (a spill growing past
-        ' anything calculated before), leaving an error such as #NUM! (#12). A full one is repeated
-        ' until Excel says it is done; a sheet-only one cannot tell, so an error in it is redone in full.
-        If blnSheetOnly Then
-            wsCalc.Calculate
-            blnDone = True
-            If OutputHasError(rngFormula.Value2, blnLive) Then
-                lngRechecked = lngRechecked + 1
-                blnDone = CalculateToDone()
+        blnDone = RecalcGame(wsCalc, rngFormula, blnLive, blnSheetOnly, blnDirty, lngRechecked)
+        ' One read of the whole output row: every column from the same recalculation.
+        varRow = rngFormula.Value2
+
+        ' The same answer as the game before is the sign of a stale cell the check above missed. Recalculate
+        ' with the sheet marked dirty; if the answer moves, earlier games may be stale too, so start again
+        ' from the first game with every recalc marked dirty. Happens at most once per run.
+        blnRestart = False
+        If blnDone And lngI > 1 And Not blnDirty Then
+            If SameValues(varRow, varPrev) Then
+                blnDone = RecalcGame(wsCalc, rngFormula, blnLive, blnSheetOnly, True, lngRechecked)
+                If Not SameValues(rngFormula.Value2, varRow) Then
+                    blnDirty = True
+                    blnRestart = True
+                    strStale = "game " & SafeText(varGames(lngI, 1)) & " repeated an old answer"
+                End If
+                varRow = rngFormula.Value2
             End If
-        Else
-            blnDone = CalculateToDone()
         End If
-        If blnDone Then
-            ' One read of the whole output row: every column from the same recalculation.
-            varRow = rngFormula.Value2
+
+        If blnRestart Then
+            For lngJ = 1 To lngCols
+                For lngI = 1 To lngGames
+                    varOut(lngI, lngJ) = CVErr(xlErrNA)
+                Next lngI
+                lngErrors(lngJ) = 0
+                lngFirstError(lngJ) = 0
+            Next lngJ
+            blnAllSame = True
+            lngI = 1
+        Else
+            If blnDone Then
+                For lngJ = 1 To lngCols
+                    If blnLive(lngJ) Then
+                        If lngCols = 1 Then
+                            varOut(lngI, 1) = AsStored(varRow)
+                        Else
+                            varOut(lngI, lngJ) = AsStored(varRow(1, lngJ))
+                        End If
+                    End If
+                Next lngJ
+                If lngI = 1 Then
+                    varFirst = varRow
+                ElseIf blnAllSame Then
+                    If Not SameValues(varRow, varFirst) Then blnAllSame = False
+                End If
+            Else
+                blnAllSame = False
+            End If
             For lngJ = 1 To lngCols
                 If blnLive(lngJ) Then
-                    If lngCols = 1 Then
-                        varOut(lngI, 1) = varRow
-                    Else
-                        varOut(lngI, lngJ) = varRow(1, lngJ)
+                    If IsError(varOut(lngI, lngJ)) Then
+                        lngErrors(lngJ) = lngErrors(lngJ) + 1
+                        If lngFirstError(lngJ) = 0 Then lngFirstError(lngJ) = CLng(varGames(lngI, 1))
                     End If
                 End If
             Next lngJ
+            varPrev = varRow
+            lngI = lngI + 1
         End If
-        For lngJ = 1 To lngCols
-            If blnLive(lngJ) Then
-                If IsError(varOut(lngI, lngJ)) Then
-                    lngErrors(lngJ) = lngErrors(lngJ) + 1
-                    If lngFirstError(lngJ) = 0 Then lngFirstError(lngJ) = CLng(varGames(lngI, 1))
-                End If
-            End If
-        Next lngJ
-    Next lngI
+    Loop
 
     rngInput.Formula = varOriginal
     blnRestore = False
@@ -292,6 +325,7 @@ Public Sub RunDataTable()
         Next lngJ
     End If
     blnWritten = True
+    If blnDirty Then wsCalc.UsedRange.Dirty
     Application.Calculate
 
     dblSecs = Timer - dblStart
@@ -318,6 +352,11 @@ Public Sub RunDataTable()
     If lngRechecked > 0 Then
         strMsg = strMsg & " " & lngRechecked & " game(s) rechecked with a full recalc."
     End If
+    ' Every game giving one answer almost always means the working did not recalculate (#17).
+    If blnAllSame And lngGames >= 3 Then
+        strMsg = strMsg & " WARNING: EVERY GAME GAVE THE SAME ANSWER - check the working changes when a game is loaded (LDT)."
+    End If
+    If blnDirty Then strScope = strScope & ", sheet marked dirty every game (" & strStale & ")"
     strSlow = SlowdownsIn(wsCalc.Parent)
     If Len(strSlow) > 0 Then
         strMsg = strMsg & " WARNING slow: " & strSlow
@@ -1877,6 +1916,107 @@ ErrHandler:
     Resume Cleanup
 End Function
 
+' Purpose: Recalculate after a game is written to the input cell. blnSheetOnly: this sheet only (an error in
+'          the output is redone in full, #12, and counted in lngRechecked), else every open workbook until Excel
+'          says it is done. blnDirty: mark every formula on the sheet dirty first, for stale cells that no
+'          calculation reaches otherwise (#17). Only this sheet is marked: a stale cell on another sheet is not
+'          reached. Returns False if a full calculation did not finish. Esc (error 18) is passed up.
+Private Function RecalcGame(ByVal wsCalc As Worksheet, ByVal rngFormula As Range, ByRef blnLive() As Boolean, _
+                            ByVal blnSheetOnly As Boolean, ByVal blnDirty As Boolean, _
+                            ByRef lngRechecked As Long) As Boolean
+
+    On Error GoTo ErrHandler
+
+    If blnDirty Then wsCalc.UsedRange.Dirty
+    If blnSheetOnly Then
+        ' CalculationState means nothing after a sheet-only calculation (other workbooks keep it pending).
+        wsCalc.Calculate
+        RecalcGame = True
+        If OutputHasError(rngFormula.Value2, blnLive) Then
+            lngRechecked = lngRechecked + 1
+            RecalcGame = CalculateToDone()
+        End If
+    Else
+        RecalcGame = CalculateToDone()
+    End If
+
+Cleanup:
+    Exit Function
+
+ErrHandler:
+    If m_DEBUG_MODE Then Stop: Resume
+    If Err.Number = 18 Then Err.Raise 18
+    RecalcGame = False
+    Resume Cleanup
+End Function
+
+' Purpose: True if a recalculation leaves the solve stale (#17): for the first and the last game, the output after
+'          the run's normal recalculation is compared with the output after marking the sheet dirty. strWhy says
+'          which game showed it. Leaves the input cell holding the last game probed - the loop overwrites it.
+'          Esc (error 18) is passed up; any other error is logged and gives False (the loop's own check remains).
+Private Function StaleOnRecalc(ByVal wsCalc As Worksheet, ByVal rngInput As Range, ByVal rngFormula As Range, _
+                               ByVal varGames As Variant, ByRef blnLive() As Boolean, _
+                               ByVal blnSheetOnly As Boolean, ByRef strWhy As String) As Boolean
+
+    Dim lngPick As Long
+    Dim lngI As Long
+    Dim lngCount As Long
+    Dim lngUnused As Long
+    Dim varNormal As Variant
+
+    On Error GoTo ErrHandler
+
+    lngCount = UBound(varGames, 1)
+    For lngPick = 1 To 2
+        If lngPick = 1 Then lngI = 1 Else lngI = lngCount
+        If lngPick = 2 And lngCount = 1 Then Exit For
+        rngInput.Value2 = varGames(lngI, 1)
+        If Not RecalcGame(wsCalc, rngFormula, blnLive, blnSheetOnly, False, lngUnused) Then GoTo Cleanup
+        varNormal = rngFormula.Value2
+        If Not RecalcGame(wsCalc, rngFormula, blnLive, blnSheetOnly, True, lngUnused) Then GoTo Cleanup
+        If Not SameValues(rngFormula.Value2, varNormal) Then
+            strWhy = "stale on game " & SafeText(varGames(lngI, 1))
+            StaleOnRecalc = True
+            GoTo Cleanup
+        End If
+    Next lngPick
+
+Cleanup:
+    Exit Function
+
+ErrHandler:
+    If m_DEBUG_MODE Then Stop: Resume
+    If Err.Number = 18 Then Err.Raise 18
+    LogError "StaleOnRecalc", Err.Number, Err.Description
+    StaleOnRecalc = False
+    Resume Cleanup
+End Function
+
+' Purpose: A result as Run Data Table writes it. Text gets a leading apostrophe so Excel stores it exactly as it
+'          is instead of reading it as if typed (#16: "2-5-00" became a date). Text that already starts with an
+'          apostrophe (the ="'"&... workaround) is written as it is, so Excel still takes that apostrophe as the
+'          prefix and the stored answer is unchanged from before. Empty text stays empty; numbers, booleans and
+'          errors are unchanged.
+Private Function AsStored(ByVal varValue As Variant) As Variant
+
+    On Error GoTo ErrHandler
+
+    AsStored = varValue
+    If VarType(varValue) = vbString Then
+        If Len(varValue) > 0 Then
+            If Left$(varValue, 1) <> "'" Then AsStored = "'" & varValue
+        End If
+    End If
+
+Cleanup:
+    Exit Function
+
+ErrHandler:
+    If m_DEBUG_MODE Then Stop: Resume
+    AsStored = varValue
+    Resume Cleanup
+End Function
+
 ' Purpose: Recalculate every open workbook until Excel reports the calculation finished. Straight after a
 '          formula is entered, one pass can stop short when a spill grows past anything calculated before,
 '          leaving CalculationState pending and a dependent cell on an error (#12); the next pass finishes
@@ -2821,6 +2961,7 @@ ErrHandler:
     If m_DEBUG_MODE Then Stop: Resume
     SlowdownsIn = vbNullString
 End Function
+
 
 
 

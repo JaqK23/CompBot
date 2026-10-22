@@ -38,9 +38,13 @@ Why it matters: spilled helpers cannot be filled down, because the spills collid
 cell, so a whole solve chain copies down like an ordinary row, and you still get to build and debug with
 visible spills.
 
-Version: 2026.10.4 Insider, built from CompBot 2026.10.4. Definitions: [CompBot Insider Readme](CompBot%20Insider.xlsm%20README/CompBot%20Insider.xlsm%20README.md).
+Version: 2026.10.5 Insider, built from CompBot 2026.10.5. Definitions: [CompBot Insider Readme](CompBot%20Insider.xlsm%20README/CompBot%20Insider.xlsm%20README.md).
 
-What changed: 2026.10.4 (16 Oct) the MAXLOOKUP and MINLOOKUP lambdas (issue #13); a Credits column
+What changed: 2026.10.5 (22 Oct) Create Data Table finds every input column, including one the
+example leaves blank but the games fill in (issue #15); Run Data Table keeps text answers such as
+2-5-00 as text (issue #16), recalculates the whole sheet for every game when a cell stays on an old
+value, and warns when every game gives the same answer (issue #17); Clear Unused Lambdas keeps a
+lambda passed by name, as in MAP (issue #18). 2026.10.4 (16 Oct) the MAXLOOKUP and MINLOOKUP lambdas (issue #13); a Credits column
 on the Info sheets (issue #11); Full Setup Case copes with cases full of images (issue #14); the six
 Alves commands listed on Info_Commands; the tutorial gains an Insider section with a lesson for
 each. 2026.10.3 (15 Oct) Run Data Table recalculates until Excel has finished, so a game

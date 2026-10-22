@@ -3112,22 +3112,37 @@ ErrHandler:
     Resume Cleanup
 End Function
 
-' Purpose: The columns of a level's inputs on its example row, left to right: every column right of
-'          the game column with a value on the example row, except Level / Points / Answer / Game #
-'          headers (on the level's header row, HeaderRowFor) and the Score column straight after Answer (a check mark in answer
-'          files, never an input - Jaq, 2026-09-14). Five blank columns in a row end the run: anything
-'          further right is calculation, not input. lngACol returns the Answer column, or 2 when there
+' Purpose: The columns of a level's inputs, left to right: every column right of the game column with a
+'          value on the example row OR a hard-coded value on any of the level's game rows (#15: an example can
+'          leave an input blank - a bowling frame's second roll after a strike - while games use it; formulas
+'          and spills on game rows are the user's working, never inputs), except Level / Points /
+'          Answer / Game # headers (on the level's header row, HeaderRowFor) and the Score column straight
+'          after Answer (a check mark in answer files, never an input - Jaq, 2026-09-14). Five columns in a
+'          row empty on the example and every game end the run: anything further right is calculation, not
+'          input. An Example# label on the example row also ends it: that is a data table block's input cell.
+'          lngACol returns the Answer column, or 2 when there
 '          is none within the run. The ONE input rule: BuildDataTable copies these columns into the
 '          block, and Create Data Table places the block two columns right of the last of them.
 '          Returns Nothing when the read fails (logged).
 Public Function LevelInputColumns(ByVal ws As Worksheet, ByVal lngGameCol As Long, ByVal lngExRow As Long, _
                                   ByRef lngACol As Long) As Collection
 
+    ' --- CONSTANTS (local to function) ---
+    Const MAX_SCAN_ROWS As Long = 1000
+
     Dim colCols As Collection
+    Dim colGames As Collection
+    Dim dicGameRows As Object
+    Dim varGameRow As Variant
+    Dim rngConst As Range
+    Dim rngArea As Range
+    Dim rngCell As Range
+    Dim blnGameCol() As Boolean      ' per column: a game row holds a hard-coded value there
     Dim lngHdRow As Long
     Dim lngEndCol As Long
     Dim lngCol As Long
     Dim lngBlnk As Long
+    Dim lngStop As Long
     Dim strHdr As String
     Dim strVal As String
 
@@ -3138,14 +3153,47 @@ Public Function LevelInputColumns(ByVal ws As Worksheet, ByVal lngGameCol As Lon
     lngHdRow = HeaderRowFor(ws, lngExRow)
     If lngHdRow >= 1 Then
         lngEndCol = ws.Cells(lngExRow, ws.Columns.Count).End(xlToLeft).Column
+        ' The games, and the furthest column any of them uses: a game can reach past the example (#15).
+        lngStop = ws.Cells(ws.Rows.Count, lngGameCol).End(xlUp).Row
+        If lngStop > lngExRow + MAX_SCAN_ROWS Then lngStop = lngExRow + MAX_SCAN_ROWS
+        Set colGames = LevelGameRows(ws, lngGameCol, lngExRow, lngStop)
+        Set dicGameRows = CreateObject("Scripting.Dictionary")
+        For Each varGameRow In colGames
+            dicGameRows(CLng(varGameRow)) = True
+            lngCol = ws.Cells(varGameRow, ws.Columns.Count).End(xlToLeft).Column
+            If lngCol > lngEndCol Then lngEndCol = lngCol
+        Next varGameRow
+        ReDim blnGameCol(1 To lngEndCol)
+        ' Hard-coded values only: SpecialCells(constants) leaves out formulas AND spilled cells, which are the
+        ' user's working. The range is always 2+ columns wide (a single cell would search the whole sheet).
+        If colGames.Count > 0 And lngEndCol > lngGameCol Then
+            Set rngConst = Nothing
+            ' Probe: SpecialCells raises when the rows hold no constants at all.
+            On Error Resume Next
+            Set rngConst = ws.Range(ws.Cells(colGames(1), lngGameCol + 1), _
+                                    ws.Cells(colGames(colGames.Count), lngEndCol)).SpecialCells(xlCellTypeConstants)
+            On Error GoTo ErrHandler
+            If Not rngConst Is Nothing Then
+                For Each rngArea In rngConst.Areas
+                    For Each rngCell In rngArea.Cells
+                        ' An error value is never an input (the example row reads errors as blank, SafeText).
+                        If dicGameRows.Exists(rngCell.Row) Then
+                            If Not IsError(rngCell.Value2) Then blnGameCol(rngCell.Column) = True
+                        End If
+                    Next rngCell
+                Next rngArea
+            End If
+        End If
         For lngCol = lngGameCol + 1 To lngEndCol
             strHdr = SafeText(ws.Cells(lngHdRow, lngCol).Value2)
             strVal = SafeText(ws.Cells(lngExRow, lngCol).Value2)
+            ' A data table block's input cell holds the Example# label: the block is never an input.
+            If IsExampleLabel(strVal) Then Exit For
             If strHdr = "Answer" Then lngACol = lngCol
             If lngACol > 2 And lngCol = lngACol + 1 Then
                 ' the Score column
             ElseIf strHdr <> "Level" And strHdr <> "Points" And strHdr <> "Answer" And strHdr <> "Game #" Then
-                If strVal <> "" Then
+                If strVal <> "" Or blnGameCol(lngCol) Then
                     lngBlnk = 0
                     colCols.Add lngCol
                 Else
@@ -3461,6 +3509,7 @@ ErrHandler:
     If m_DEBUG_MODE Then Stop: Resume
     SafeText = vbNullString
 End Function
+
 
 
 

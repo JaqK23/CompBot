@@ -1216,11 +1216,13 @@ ErrHandler:
 End Sub
 
 
-' Purpose: Return a dictionary of FunctionName -> call count found in one formula.
+' Purpose: Return a dictionary of Name -> use count for every name in one formula, called or not. A lambda can be
+'          used without brackets - passed to MAP, BYROW, REDUCE and the like, or held in a LET step - and must still
+'          count as used (#18). Callers keep only the tokens that are defined lambdas.
 Private Function GetFunctionTokens(ByVal strFormula As String) As Object
 
     ' --- CONSTANTS (local to function) ---
-    Const TOKEN_PATTERN As String = "([A-Za-z_\\][A-Za-z0-9_.\\]*)\s*\("
+    Const TOKEN_PATTERN As String = "([A-Za-z_\\][A-Za-z0-9_.\\]*)"
 
     Dim dicOut      As Object
     Dim objRegEx    As Object
@@ -1824,6 +1826,7 @@ Private Sub NoteError(ByVal strProc As String, ByVal lngNumber As Long, ByVal st
     Debug.Print Format$(Now, "yyyy-mm-dd hh:nn:ss") & " | " & strProc & " | " & _
                 lngNumber & " | " & strDescription
 End Sub
+
 
 
 

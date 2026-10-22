@@ -431,7 +431,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modLambdas.ClearUnusedLambdas](./VBA/modLambdas.bas#L1575)()</code> |
+| Macro Expression | <code>[modLambdas.ClearUnusedLambdas](./VBA/modLambdas.bas#L1577)()</code> |
 
 [^Top](#oa-robot-definitions)
 
@@ -447,7 +447,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modLambdas.ClearUnusedLambdas](./VBA/modLambdas.bas#L1575)(1)</code> |
+| Macro Expression | <code>[modLambdas.ClearUnusedLambdas](./VBA/modLambdas.bas#L1577)(1)</code> |
 
 [^Top](#oa-robot-definitions)
 
@@ -528,7 +528,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modDataTable.CreateDataTable](./VBA/modDataTable.bas#L486)()</code> |
+| Macro Expression | <code>[modDataTable.CreateDataTable](./VBA/modDataTable.bas#L525)()</code> |
 | Launch Codes | <ol><li><code>CDT</code></li><li><code>DT</code></li></ol> |
 
 [^Top](#oa-robot-definitions)
@@ -545,7 +545,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modDataTable.CreateDataTableHere](./VBA/modDataTable.bas#L501)()</code> |
+| Macro Expression | <code>[modDataTable.CreateDataTableHere](./VBA/modDataTable.bas#L540)()</code> |
 | Launch Codes | <ol><li><code>CDTH</code></li><li><code>DT</code></li></ol> |
 
 [^Top](#oa-robot-definitions)
@@ -859,7 +859,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modDataTable.GoToExample](./VBA/modDataTable.bas#L863)()</code> |
+| Macro Expression | <code>[modDataTable.GoToExample](./VBA/modDataTable.bas#L902)()</code> |
 | Launch Codes | <code>GE</code> |
 
 [^Top](#oa-robot-definitions)
@@ -1026,7 +1026,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modDataTable.LinkAnswerCell](./VBA/modDataTable.bas#L937)()</code> |
+| Macro Expression | <code>[modDataTable.LinkAnswerCell](./VBA/modDataTable.bas#L976)()</code> |
 | Launch Codes | <ol><li><code>ANS</code></li><li><code>DT</code></li></ol> |
 
 [^Top](#oa-robot-definitions)
@@ -1043,7 +1043,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modDataTable.LinkSideCell](./VBA/modDataTable.bas#L1029)()</code> |
+| Macro Expression | <code>[modDataTable.LinkSideCell](./VBA/modDataTable.bas#L1068)()</code> |
 | Launch Codes | <ol><li><code>LSC</code></li><li><code>BDT</code></li><li><code>DT</code></li></ol> |
 
 [^Top](#oa-robot-definitions)
@@ -1114,7 +1114,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modDataTable.LoadGameIntoCalculation](./VBA/modDataTable.bas#L379)()</code> |
+| Macro Expression | <code>[modDataTable.LoadGameIntoCalculation](./VBA/modDataTable.bas#L418)()</code> |
 | Launch Codes | <ol><li><code>LDT</code></li><li><code>LG</code></li><li><code>DT</code></li></ol> |
 
 [^Top](#oa-robot-definitions)
