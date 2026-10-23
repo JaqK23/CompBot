@@ -24,10 +24,15 @@ Option Explicit
 ' --- MODULE CONSTANTS ---
 Private Const m_DEBUG_MODE          As Boolean = False
 Private Const m_SHEET_CODENAME      As String = "shtSetupSettings"   ' tab: Setup Settings
-Private Const m_FIRST_ROW           As Long = 11     ' first step row on the sheet
-Private Const m_CHOICE_COL          As Long = 3      ' column C: the yellow choices
-Private Const m_LIBRARY_ROW         As Long = 24     ' library file name; its full path is the row below
-Private Const m_SOLVE_ROW           As Long = 26     ' Solve folder name (SSF); its full path is the row below
+' Every cell this module reads or writes has a workbook-level name, m_NAME_PREFIX & its key: SCS_SaveCopy ...
+' SCS_LambdaWinner for the choices, SCS_LibraryFile / SCS_LibraryPath / SCS_SolveFolder / SCS_SolvePath for the
+' paths. Rows can be inserted or moved on the sheet without touching the code (Jaq, 2026-10-23; until 2026.10.6
+' the cells were found by row number, and every new step meant moving constants).
+Private Const m_NAME_PREFIX         As String = "SCS_"
+Private Const m_LIBRARY_FILE        As String = "LibraryFile"
+Private Const m_LIBRARY_PATH        As String = "LibraryPath"
+Private Const m_SOLVE_FOLDER        As String = "SolveFolder"
+Private Const m_SOLVE_PATH          As String = "SolvePath"
 ' The Solve folder is a path on this machine, so like the lambda library it lives in the registry
 ' (HKCU\...\VB and VBA Program Settings\CompBot\Setup), not on the sheet: it survives every CompBot update.
 Private Const m_REG_APP             As String = "CompBot"
@@ -44,10 +49,10 @@ Private Const m_MAX_STATUS          As Long = 250    ' Application.StatusBar rej
 Private m_blnLoading                As Boolean       ' the sheet is being filled from the store: ignore its Change events
 
 
-' Purpose: the settings, in sheet order from m_FIRST_ROW. The step keys are Setup's own step names
-'          (modCaseSetup.RunSetupStep), so a step and its setting cannot drift apart; the last is the
-'          lambda winner. LevelSummary and OpenBonusDock added for GitHub #19 (2026-10-23): rows 17 and 18,
-'          which moved the library and Solve folder rows down two.
+' Purpose: the settings. The step keys are Setup's own step names (modCaseSetup.RunSetupStep), so a step and
+'          its setting cannot drift apart; the last is the lambda winner. Each one's cell is the name
+'          m_NAME_PREFIX & key, so the order here is not the sheet's order. A new setting = a new key here + a
+'          new named cell on the sheet.
 Private Function SettingKeys() As Variant
     SettingKeys = Array("SaveCopy", "Backup", "NameAllUsedRanges", "CreateLevelSheets", "CreateBonusSheet", _
                         "CreateCaseInputsSheet", "LevelSummary", "OpenBonusDock", "ImportLibrary", "ImportCompBot", _
@@ -190,6 +195,7 @@ Public Sub ShowSetupSettings()
     Const PROC_NAME As String = "ShowSetupSettings"
 
     Dim wsSettings  As Worksheet
+    Dim rngFirst    As Range
     Dim blnWasHidden As Boolean
     Dim blnWasSaved As Boolean
     Dim strStatus   As String
@@ -210,7 +216,8 @@ Public Sub ShowSetupSettings()
     If blnWasSaved Then ThisWorkbook.Saved = True
     ThisWorkbook.Activate
     wsSettings.Activate
-    wsSettings.Cells(m_FIRST_ROW, m_CHOICE_COL).Select
+    Set rngFirst = ChoiceCell(CStr(SettingKeys()(0)))
+    If Not rngFirst Is Nothing Then rngFirst.Select
 
     If ThisWorkbook.ReadOnly Then
         strStatus = "Setup Case Settings: CompBot is read-only, so a change lasts this session only; open " & _
@@ -242,6 +249,7 @@ Public Sub RefreshSetupSettings()
     Dim strLibrary  As String
     Dim strSolve    As String
     Dim lngI        As Long
+    Dim rngCell     As Range
     Dim blnEvents   As Boolean
     Dim blnWasSaved As Boolean
 
@@ -254,10 +262,11 @@ Public Sub RefreshSetupSettings()
     Set wsSettings = SettingsSheet()
     If wsSettings Is Nothing Then GoTo Cleanup
 
+    ' Every value is read before any is written: DisplayValue reads the cells being refreshed.
     varKeys = SettingKeys()
-    ReDim varOut(1 To UBound(varKeys) - LBound(varKeys) + 1, 1 To 1)
+    ReDim varOut(LBound(varKeys) To UBound(varKeys))
     For lngI = LBound(varKeys) To UBound(varKeys)
-        varOut(lngI - LBound(varKeys) + 1, 1) = DisplayValue(CStr(varKeys(lngI)))
+        varOut(lngI) = DisplayValue(CStr(varKeys(lngI)))
     Next lngI
 
     strLibrary = modLambdas.CurrentLambdaLibrary()
@@ -265,20 +274,23 @@ Public Sub RefreshSetupSettings()
 
     m_blnLoading = True
     Application.EnableEvents = False
-    wsSettings.Cells(m_FIRST_ROW, m_CHOICE_COL).Resize(UBound(varOut, 1), 1).Value2 = varOut
+    For lngI = LBound(varKeys) To UBound(varKeys)
+        Set rngCell = ChoiceCell(CStr(varKeys(lngI)))
+        If Not rngCell Is Nothing Then rngCell.Value2 = varOut(lngI)
+    Next lngI
     If Len(strLibrary) = 0 Then
-        wsSettings.Cells(m_LIBRARY_ROW, m_CHOICE_COL).Value2 = "none set"
-        wsSettings.Cells(m_LIBRARY_ROW + 1, m_CHOICE_COL).Value2 = "Run Set Lambda Library (SLL) to choose one"
+        WriteNamedCell m_LIBRARY_FILE, "none set"
+        WriteNamedCell m_LIBRARY_PATH, "Run Set Lambda Library (SLL) to choose one"
     Else
-        wsSettings.Cells(m_LIBRARY_ROW, m_CHOICE_COL).Value2 = Mid$(strLibrary, InStrRev(strLibrary, "\") + 1)
-        wsSettings.Cells(m_LIBRARY_ROW + 1, m_CHOICE_COL).Value2 = strLibrary
+        WriteNamedCell m_LIBRARY_FILE, Mid$(strLibrary, InStrRev(strLibrary, "\") + 1)
+        WriteNamedCell m_LIBRARY_PATH, strLibrary
     End If
     If Len(strSolve) = 0 Then
-        wsSettings.Cells(m_SOLVE_ROW, m_CHOICE_COL).Value2 = "none set"
-        wsSettings.Cells(m_SOLVE_ROW + 1, m_CHOICE_COL).Value2 = "Run Set Solve Folder (SSF) to choose one"
+        WriteNamedCell m_SOLVE_FOLDER, "none set"
+        WriteNamedCell m_SOLVE_PATH, "Run Set Solve Folder (SSF) to choose one"
     Else
-        wsSettings.Cells(m_SOLVE_ROW, m_CHOICE_COL).Value2 = Mid$(strSolve, InStrRev(strSolve, "\") + 1)
-        wsSettings.Cells(m_SOLVE_ROW + 1, m_CHOICE_COL).Value2 = strSolve
+        WriteNamedCell m_SOLVE_FOLDER, Mid$(strSolve, InStrRev(strSolve, "\") + 1)
+        WriteNamedCell m_SOLVE_PATH, strSolve
     End If
 
 Cleanup:
@@ -302,32 +314,38 @@ Public Sub SetupSettingsChanged(ByVal rngTarget As Range)
     ' --- CONSTANTS (local to function) ---
     Const PROC_NAME As String = "SetupSettingsChanged"
 
-    Dim rngChoices  As Range
-    Dim rngHit      As Range
     Dim rngCell     As Range
     Dim varKeys     As Variant
+    Dim varKey      As Variant
     Dim strKey      As String
     Dim strValue    As String
     Dim strStatus   As String
+    Dim blnHit      As Boolean
     Dim blnSave     As Boolean
 
     On Error GoTo ErrHandler
     If m_blnLoading Then Exit Sub
 
+    ' Each choice is checked by its own name, so the cells can sit anywhere on the sheet.
     varKeys = SettingKeys()
-    Set rngChoices = rngTarget.Worksheet.Cells(m_FIRST_ROW, m_CHOICE_COL).Resize(UBound(varKeys) - LBound(varKeys) + 1, 1)
-    Set rngHit = Application.Intersect(rngTarget, rngChoices)
-    If rngHit Is Nothing Then Exit Sub
-
-    For Each rngCell In rngHit.Cells
-        strKey = CStr(varKeys(LBound(varKeys) + rngCell.Row - m_FIRST_ROW))
-        strValue = CellChoice(strKey, rngCell.Value2)
-        If Len(strValue) = 0 Then
-            strStatus = strStatus & " not a choice for " & rngCell.Offset(0, -1).Value2 & ", set to the default."
-        Else
-            strStatus = strStatus & " " & rngCell.Offset(0, -1).Value2 & ": " & strValue & "."
+    For Each varKey In varKeys
+        strKey = CStr(varKey)
+        Set rngCell = ChoiceCell(strKey)
+        If Not rngCell Is Nothing Then
+            If rngCell.Worksheet Is rngTarget.Worksheet Then
+                If Not Application.Intersect(rngTarget, rngCell) Is Nothing Then
+                    blnHit = True
+                    strValue = CellChoice(strKey, rngCell.Value2)
+                    If Len(strValue) = 0 Then
+                        strStatus = strStatus & " not a choice for " & rngCell.Offset(0, -1).Value2 & ", set to the default."
+                    Else
+                        strStatus = strStatus & " " & rngCell.Offset(0, -1).Value2 & ": " & strValue & "."
+                    End If
+                End If
+            End If
         End If
-    Next rngCell
+    Next varKey
+    If Not blnHit Then Exit Sub
 
     ' The sheet IS the store, so keeping a choice means saving CompBot.
     If ThisWorkbook.ReadOnly Then
@@ -399,23 +417,13 @@ End Function
 '          default applies. Never raises.
 Private Function ReadSetting(ByVal strKey As String) As String
 
-    Dim wsSettings  As Worksheet
-    Dim varKeys     As Variant
-    Dim lngI        As Long
+    Dim rngCell     As Range
 
     On Error GoTo ErrHandler
 
-    Set wsSettings = SettingsSheet()
-    If wsSettings Is Nothing Then GoTo Cleanup
-
-    varKeys = SettingKeys()
-    For lngI = LBound(varKeys) To UBound(varKeys)
-        If StrComp(CStr(varKeys(lngI)), strKey, vbTextCompare) = 0 Then
-            ReadSetting = CellChoice(strKey, _
-                wsSettings.Cells(m_FIRST_ROW + lngI - LBound(varKeys), m_CHOICE_COL).Value2)
-            Exit For
-        End If
-    Next lngI
+    Set rngCell = ChoiceCell(strKey)
+    If rngCell Is Nothing Then GoTo Cleanup
+    ReadSetting = CellChoice(strKey, rngCell.Value2)
 
 Cleanup:
     Exit Function
@@ -439,6 +447,30 @@ Private Function CellChoice(ByVal strKey As String, ByVal varCell As Variant) As
 End Function
 
 
+' Purpose: the cell named m_NAME_PREFIX & strKey in this CompBot, or Nothing when the name is missing or
+'          does not point at a cell (an older CompBot, a deleted name). Never raises.
+Private Function ChoiceCell(ByVal strKey As String) As Range
+
+    Dim nmItem As Name
+
+    ' Probe: the name may simply not exist.
+    On Error Resume Next
+    Set nmItem = ThisWorkbook.Names(m_NAME_PREFIX & strKey)
+    If Not nmItem Is Nothing Then Set ChoiceCell = nmItem.RefersToRange
+    On Error GoTo 0
+End Function
+
+
+' Purpose: write a value to the cell named m_NAME_PREFIX & strKey; a missing name is skipped.
+Private Sub WriteNamedCell(ByVal strKey As String, ByVal varValue As Variant)
+
+    Dim rngCell As Range
+
+    Set rngCell = ChoiceCell(strKey)
+    If Not rngCell Is Nothing Then rngCell.Value2 = varValue
+End Sub
+
+
 ' Purpose: CompBot's Setup Settings sheet, found by CodeName (the tab name can be edited), or Nothing.
 Private Function SettingsSheet() As Worksheet
 
@@ -451,6 +483,7 @@ Private Function SettingsSheet() As Worksheet
         End If
     Next wsItem
 End Function
+
 
 
 

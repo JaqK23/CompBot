@@ -121,7 +121,7 @@
 | Name | Description |
 | --- | --- |
 | [Clear Lambda Library](#clear-lambda-library) | Forgets your saved lambda library, so ILL and Full Setup Case stop loading it |
-| [Import Case Lambdas](#import-case-lambdas) | Your library (if set) and CompBot's lambdas, the winner first, into the active workbook. Chained after Full Setup Case |
+| [Import Case Lambdas](#import-case-lambdas) | Your library (if set) and CompBot's lambdas, the winner first, into the active workbook: Full Setup Case's lambda step on its own |
 | [Import Lambda Library](#import-lambda-library) | Loads YOUR own lambda library (set once with SLL) into the active workbook: its lambdas and its stored values (named constants) |
 | [Import Lambdas From CompBot](#import-lambdas-from-compbot) | Loads CompBot's own lambdas into the active workbook, replacing older copies unless SCS says your library wins |
 | [Set Lambda Library](#set-lambda-library) | Points CompBot at YOUR lambda library workbook, once; ILL and Full Setup Case then load it |
@@ -187,9 +187,9 @@
 | [Create Data Table](#create-data-table) | Builds (or finds) the data table block for the level you are in, beside its inputs, and lands on the last input; fill it with Run Data Table (RDT) |
 | [Create Data Table Here](#create-data-table-here) | Builds the level's data table block at the selected cell, else beside the inputs |
 | [Create Level Sheets](#create-level-sheets) | Creates a sheet for each level in the Case sheet |
-| [Full Setup Case](#full-setup-case) | Sets up the case: saves a \_Solve copy, backs up the sheets, creates the level, bonus and Case inputs sheets, adds the Dr. Kazza level table, opens the bonus dock on L01, then imports lambdas. Choose the steps with SCS |
+| [Full Setup Case](#full-setup-case) | Sets up the case: saves a \_Solve copy, backs up the sheets, creates the level, bonus and Case inputs sheets, imports lambdas, adds the Dr. Kazza level table and opens the bonus dock on L01. Choose the steps with SCS |
 | [Hardcode Data Table](#hardcode-data-table) | Replaces a What\-If data table's results with their values, so the workbook stops recalculating it |
-| [Import Case Lambdas](#import-case-lambdas) | Your library (if set) and CompBot's lambdas, the winner first, into the active workbook. Chained after Full Setup Case |
+| [Import Case Lambdas](#import-case-lambdas) | Your library (if set) and CompBot's lambdas, the winner first, into the active workbook: Full Setup Case's lambda step on its own |
 | [Import Lambda Library](#import-lambda-library) | Loads YOUR own lambda library (set once with SLL) into the active workbook: its lambdas and its stored values (named constants) |
 | [Import Lambdas From CompBot](#import-lambdas-from-compbot) | Loads CompBot's own lambdas into the active workbook, replacing older copies unless SCS says your library wins |
 | [Level Inputs](#level-inputs) | Type a level, or levels like 4\-5 or 3,5\-6: their inputs land as an array to work on, with headers and game\/level beside them (blank \= this sheet's level) |
@@ -451,7 +451,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modCaseSetup.Backup](./VBA/modCaseSetup.bas#L558)()</code> |
+| Macro Expression | <code>[modCaseSetup.Backup](./VBA/modCaseSetup.bas#L565)()</code> |
 | Macro Workbook Connection | ThisWorkbook |
 | Launch Codes | <code>BU</code> |
 
@@ -515,7 +515,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modLambdas.ClearLambdas](./VBA/modLambdas.bas#L656)()</code> |
+| Macro Expression | <code>[modLambdas.ClearLambdas](./VBA/modLambdas.bas#L675)()</code> |
 | Enabled | ☐Yes ☑No |
 
 [^Top](#oa-robot-definitions)
@@ -532,7 +532,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modSetupSettings.ClearSolveFolder](./VBA/modSetupSettings.bas#L137)()</code> |
+| Macro Expression | <code>[modSetupSettings.ClearSolveFolder](./VBA/modSetupSettings.bas#L142)()</code> |
 | Launch Codes | <code>CSF</code> |
 
 [^Top](#oa-robot-definitions)
@@ -566,7 +566,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modLambdas.ClearUnusedLambdas](./VBA/modLambdas.bas#L1577)()</code> |
+| Macro Expression | <code>[modLambdas.ClearUnusedLambdas](./VBA/modLambdas.bas#L1596)()</code> |
 
 [^Top](#oa-robot-definitions)
 
@@ -582,7 +582,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modLambdas.ClearUnusedLambdas](./VBA/modLambdas.bas#L1577)(1)</code> |
+| Macro Expression | <code>[modLambdas.ClearUnusedLambdas](./VBA/modLambdas.bas#L1596)(1)</code> |
 
 [^Top](#oa-robot-definitions)
 
@@ -646,7 +646,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modCaseSetup.CreateBonusSheet](./VBA/modCaseSetup.bas#L1221)()</code> |
+| Macro Expression | <code>[modCaseSetup.CreateBonusSheet](./VBA/modCaseSetup.bas#L1228)()</code> |
 | Launch Codes | <ol><li><code>BQC</code></li><li><code>CB</code></li></ol> |
 
 [^Top](#oa-robot-definitions)
@@ -663,7 +663,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modCaseSetup.CreateCaseInputsSheet](./VBA/modCaseSetup.bas#L1707)([[ActiveCell]])</code> |
+| Macro Expression | <code>[modCaseSetup.CreateCaseInputsSheet](./VBA/modCaseSetup.bas#L1714)([[ActiveCell]])</code> |
 | Launch Codes | <ol><li><code>CIS</code></li><li><code>IS</code></li></ol> |
 
 [^Top](#oa-robot-definitions)
@@ -712,7 +712,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modCaseSetup.CreateLevelSheets](./VBA/modCaseSetup.bas#L915)()</code> |
+| Macro Expression | <code>[modCaseSetup.CreateLevelSheets](./VBA/modCaseSetup.bas#L922)()</code> |
 | Launch Codes | <ol><li><code>CL</code></li><li><code>CLS</code></li></ol> |
 
 [^Top](#oa-robot-definitions)
@@ -969,17 +969,16 @@
 
 ### Full Setup Case
 
-*Sets up the case: saves a \_Solve copy, backs up the sheets, creates the level, bonus and Case inputs sheets, adds the Dr. Kazza level table, opens the bonus dock on L01, then imports lambdas. Choose the steps with SCS*
+*Sets up the case: saves a \_Solve copy, backs up the sheets, creates the level, bonus and Case inputs sheets, imports lambdas, adds the Dr. Kazza level table and opens the bonus dock on L01. Choose the steps with SCS*
 
 <sup>`@CompBot Insider.xlsm` `!VBA Macro Command` `#Prep`</sup>
 
-> \*\*Note:\*\* Steps, in order: save a working copy as \<name\>\_Solve (skipped if the file has never been saved or is already a \_Solve \/ \_Working copy), back up every sheet, name the used ranges, create the level sheets, the bonus sheet B and the Case inputs sheet, add the Dr. Kazza level table (each level's difficulty, points and bonus points, beside the case intro and below the bonuses on sheet B; only the Difficulty cell is coloured, a soft pastel per step; a level easier than an earlier one is bold with a down arrow), land on L01 (else the case sheet), open the bonus dock (Show Bonus Dock); then Import Case Lambdas runs (your library and CompBot's, the winner first). Any step can be switched off per user with Setup Case Settings (SCS); a switched\-off step is reported as skipped. A failed step is reported on the status bar and the rest still run. Does NOT unmerge or rename sheets: run Unmerge Multi\-Row Merges, M2C or Rename Sheets (rs) yourself first if the case needs them. Save copy step added 2026\-09\-24 (Jaq); step switches added 2026\-09\-24; Dr. Kazza level table, bonus dock and landing on L01 added 2026\-10\-23 (GitHub \#19, requested by Dr. Kazza).
+> \*\*Note:\*\* Steps, in order: save a working copy as \<name\>\_Solve (skipped if the file has never been saved or is already a \_Solve \/ \_Working copy), back up every sheet, name the used ranges, create the level sheets, the bonus sheet B and the Case inputs sheet, import lambdas (your library and CompBot's, the winner first), add the Dr. Kazza level table (each level's difficulty, points and bonus points, beside the case intro and below the bonuses on sheet B; only the Difficulty cell is coloured, a soft pastel per step; a level easier than an earlier one is bold with a down arrow), land on L01 (else the case sheet), open the bonus dock (Show Bonus Dock). Any step can be switched off per user with Setup Case Settings (SCS); a switched\-off step is reported as skipped. A failed step is reported on the status bar and the rest still run. Does NOT unmerge or rename sheets: run Unmerge Multi\-Row Merges, M2C or Rename Sheets (rs) yourself first if the case needs them. Save copy step added 2026\-09\-24 (Jaq); step switches added 2026\-09\-24; Dr. Kazza level table, bonus dock and landing on L01 added 2026\-10\-23 (GitHub \#19, requested by Dr. Kazza); lambdas imported by Setup itself, before the level table and dock, instead of by a chained command, 2026\-10\-23 (reported by Guy Diamant).
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modCaseSetup.Setup](./VBA/modCaseSetup.bas#L77)()</code> |
+| Macro Expression | <code>[modCaseSetup.Setup](./VBA/modCaseSetup.bas#L78)()</code> |
 | Keyboard Shortcut | <code>^+g</code> |
-| Command After | [Import Case Lambdas](#import-case-lambdas) |
 | Launch Codes | <code>SC</code> |
 
 [^Top](#oa-robot-definitions)
@@ -1052,15 +1051,15 @@
 
 ### Import Case Lambdas
 
-*Your library (if set) and CompBot's lambdas, the winner first, into the active workbook. Chained after Full Setup Case*
+*Your library (if set) and CompBot's lambdas, the winner first, into the active workbook: Full Setup Case's lambda step on its own*
 
 <sup>`@CompBot Insider.xlsm` `!VBA Macro Command` `#LAMBDA` `#Prep`</sup>
 
-> \*\*Note:\*\* Hidden: it exists to be Full Setup Case's CommandAfter. Loads the user's own lambda library (if Set Lambda Library has been run) and CompBot's lambdas, each only if switched on in Setup Case Settings (SCS). The winner (SCS; CompBot by default) goes first and replaces same\-named lambdas; the other goes second and never overwrites, so where names clash the winner's version is the one left. Its report is appended to Full Setup Case's own status\-bar line rather than replacing it. Added 2026\-09\-24; winner and switches 2026\-09\-24.
+> \*\*Note:\*\* Hidden. Loads the user's own lambda library (if Set Lambda Library has been run) and CompBot's lambdas, each only if switched on in Setup Case Settings (SCS). The winner (SCS; CompBot by default) goes first and replaces same\-named lambdas; the other goes second and never overwrites, so where names clash the winner's version is the one left. Run after a Full Setup Case, its report is appended to that status\-bar line rather than replacing it. Added 2026\-09\-24; winner and switches 2026\-09\-24. Until 2026\-10\-23 it was chained after Full Setup Case (CommandAfter); Full Setup Case now runs the same step itself (modLambdas.CaseLambdasReport).
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modLambdas.ImportCaseLambdas](./VBA/modLambdas.bas#L252)()</code> |
+| Macro Expression | <code>[modLambdas.ImportCaseLambdas](./VBA/modLambdas.bas#L248)()</code> |
 | Visibility | Hidden |
 
 [^Top](#oa-robot-definitions)
@@ -1248,7 +1247,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modLambdas.ListLambdasUsed](./VBA/modLambdas.bas#L943)()</code> |
+| Macro Expression | <code>[modLambdas.ListLambdasUsed](./VBA/modLambdas.bas#L962)()</code> |
 
 [^Top](#oa-robot-definitions)
 
@@ -1619,7 +1618,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modCaseSetup.RenameSht](./VBA/modCaseSetup.bas#L431)()</code> |
+| Macro Expression | <code>[modCaseSetup.RenameSht](./VBA/modCaseSetup.bas#L438)()</code> |
 | Launch Codes | <code>rs</code> |
 
 [^Top](#oa-robot-definitions)
@@ -1877,7 +1876,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modCaseSetup.SaveAnswersToLeft](./VBA/modCaseSetup.bas#L2071)()</code> |
+| Macro Expression | <code>[modCaseSetup.SaveAnswersToLeft](./VBA/modCaseSetup.bas#L2078)()</code> |
 | Launch Codes | <code>SAL</code> |
 
 [^Top](#oa-robot-definitions)
@@ -1892,7 +1891,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modCaseSetup.SaveCopy](./VBA/modCaseSetup.bas#L2775)([[ActiveCell]])</code> |
+| Macro Expression | <code>[modCaseSetup.SaveCopy](./VBA/modCaseSetup.bas#L2782)([[ActiveCell]])</code> |
 | Launch Codes | <code>SA</code> |
 
 [^Top](#oa-robot-definitions)
@@ -1909,7 +1908,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modCaseSetup.SaveFromExample](./VBA/modCaseSetup.bas#L2304)()</code> |
+| Macro Expression | <code>[modCaseSetup.SaveFromExample](./VBA/modCaseSetup.bas#L2311)()</code> |
 | User Context Filter | ExcelActiveCellIsNotEmpty AND ExcelSelectionIsSingleCell |
 | Launch Codes | <code>SFE</code> |
 
@@ -1959,7 +1958,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modSetupSettings.SetSolveFolder](./VBA/modSetupSettings.bas#L88)()</code> |
+| Macro Expression | <code>[modSetupSettings.SetSolveFolder](./VBA/modSetupSettings.bas#L93)()</code> |
 | Launch Codes | <code>SSF</code> |
 
 [^Top](#oa-robot-definitions)
@@ -1976,7 +1975,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modSetupSettings.ShowSetupSettings](./VBA/modSetupSettings.bas#L187)()</code> |
+| Macro Expression | <code>[modSetupSettings.ShowSetupSettings](./VBA/modSetupSettings.bas#L192)()</code> |
 | Launch Codes | <code>SCS</code> |
 
 [^Top](#oa-robot-definitions)

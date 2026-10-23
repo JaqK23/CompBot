@@ -239,30 +239,20 @@ End Sub
 
 
 '--------------------------------------------< OA Robot >--------------------------------------------
-' Command Name:           Import Case Lambdas   (hidden; chained after Full Setup Case)
+' Command Name:           Import Case Lambdas   (hidden; no longer chained after Full Setup Case)
 ' Macro Expression:       modLambdas.ImportCaseLambdas()
 '----------------------------------------------------------------------------------------------------
-' Purpose: load the user's library (if one is set) and CompBot's lambdas, each only if it is
-'          switched on in Setup Case Settings (SCS). The WINNER goes first and replaces older
-'          copies; the other goes second and never overwrites, so where a name clashes the
-'          winner's version is the one left. CompBot wins unless SCS says otherwise
-'          (Jaq, 2026-09-24).
-'          Its report is APPENDED to Full Setup Case's own status-bar line, which would
-'          otherwise be lost the moment this ran.
+' Purpose: CaseLambdasReport on the active workbook, as a command. Until 2026.10.7 it was chained after
+'          Full Setup Case (CommandAfter); Setup now calls CaseLambdasReport itself (Jaq, 2026-10-23).
+'          A report that follows a Full Setup Case line is appended to it rather than replacing it.
 Public Sub ImportCaseLambdas()
 
     ' --- CONSTANTS (local to function) ---
     Const SETUP_PREFIX As String = "Full Setup Case"
 
-    Dim wbTarget    As Workbook
     Dim varPrior    As Variant
     Dim strPrior    As String
     Dim strStatus   As String
-    Dim strMine     As String
-    Dim strCompBot  As String
-    Dim blnMine     As Boolean
-    Dim blnCompBot  As Boolean
-    Dim blnCBWins   As Boolean
 
     On Error GoTo ErrHandler
 
@@ -272,11 +262,41 @@ Public Sub ImportCaseLambdas()
     End If
     VBAInit
 
+    strStatus = CaseLambdasReport(ActiveWorkbook)
+
+Cleanup:
+    VBAFin
+    Application.StatusBar = Left$(strPrior & strStatus, m_MAX_STATUS)
+    Exit Sub
+
+ErrHandler:
+    If m_DEBUG_MODE Then Stop: Resume
+    NoteError "ImportCaseLambdas", Err.Number, Err.Description
+    strStatus = strStatus & " FAILED: " & Err.Description
+    Resume Cleanup
+End Sub
+
+
+' Purpose: load the user's library (if one is set) and CompBot's lambdas into wbTarget, each only if it is
+'          switched on in Setup Case Settings (SCS), and return the one-line "Lambdas: ..." report. The
+'          WINNER goes first and replaces older copies; the other goes second and never overwrites, so where
+'          a name clashes the winner's version is the one left. CompBot wins unless SCS says otherwise
+'          (Jaq, 2026-09-24). Full Setup Case calls it as one of its steps (2026.10.7). Never raises.
+Public Function CaseLambdasReport(ByVal wbTarget As Workbook) As String
+
+    Dim strStatus   As String
+    Dim strMine     As String
+    Dim strCompBot  As String
+    Dim blnMine     As Boolean
+    Dim blnCompBot  As Boolean
+    Dim blnCBWins   As Boolean
+
+    On Error GoTo ErrHandler
+
     blnMine = (Len(LibraryPath()) > 0) And modSetupSettings.SetupStepOn("ImportLibrary")
     blnCompBot = modSetupSettings.SetupStepOn("ImportCompBot")
     blnCBWins = modSetupSettings.CompBotLambdasWin()
 
-    Set wbTarget = ActiveWorkbook
     If wbTarget Is Nothing Then
         strStatus = "Lambdas: no workbook is active."
     ElseIf IsProtectedWorkbook(wbTarget, False) Then
@@ -303,16 +323,15 @@ Public Sub ImportCaseLambdas()
     End If
 
 Cleanup:
-    VBAFin
-    Application.StatusBar = Left$(strPrior & strStatus, m_MAX_STATUS)
-    Exit Sub
+    CaseLambdasReport = strStatus
+    Exit Function
 
 ErrHandler:
     If m_DEBUG_MODE Then Stop: Resume
-    NoteError "ImportCaseLambdas", Err.Number, Err.Description
-    strStatus = strStatus & " FAILED: " & Err.Description
+    NoteError "CaseLambdasReport", Err.Number, Err.Description
+    strStatus = Trim$(strStatus & " Lambdas FAILED: " & Err.Description)
     Resume Cleanup
-End Sub
+End Function
 
 
 ' Purpose: open the user's library (read-only, its own macros kept quiet), copy its lambdas
@@ -1826,6 +1845,7 @@ Private Sub NoteError(ByVal strProc As String, ByVal lngNumber As Long, ByVal st
     Debug.Print Format$(Now, "yyyy-mm-dd hh:nn:ss") & " | " & strProc & " | " & _
                 lngNumber & " | " & strDescription
 End Sub
+
 
 
 

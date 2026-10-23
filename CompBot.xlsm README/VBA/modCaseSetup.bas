@@ -64,16 +64,17 @@ Private m_strSetupInfo              As String   ' something a step did that the 
 ' Generated:              01/03/2025 08:10 PM
 '----------------------------------------------------------------------------------------------------
 ' Purpose: Run every setup step in turn. A step that fails is logged and reported on the
-'          StatusBar, and the remaining steps still run. Setup itself never raises, so the
-'          command chained after it (Import Case Lambdas) always runs.
+'          StatusBar, and the remaining steps still run. Setup itself never raises.
 '          The first step saves a _Solve working copy (Jaq, 2026-09-24), so the backups, level
 '          sheets and the solve all happen in the copy and the original file is never touched.
 '          Sheet renaming and unmerging are deliberately NOT part of setup (Jaq, 2026-09-14,
 '          2026-09-24). Each step can be switched off per user in Setup Case Settings (SCS);
 '          the step names below are the setting keys (modSetupSettings.SettingKeys).
-'          Since GitHub #19 (Jaq, 2026-10-23) the last steps add the level summary and open the bonus
-'          dock, and Setup finishes on L01 (else the case sheet) with the dock open beside it. Both run
-'          before Import Case Lambdas, which is chained after this command.
+'          The lambdas are imported HERE, in VBA (modLambdas.CaseLambdasReport), then the Dr. Kazza level
+'          table is added and the bonus dock opened (GitHub #19), and Setup finishes on L01 (else the case
+'          sheet) with the dock beside it. Until 2026.10.7 the lambdas came from Import Case Lambdas, chained
+'          after this command (CommandAfter), and the two #19 steps ran ahead of them; a user's own library
+'          stopped arriving (Guy Diamant, reported 2026-10-23). Jaq: no chained commands.
 Public Sub Setup()
 
     Dim wbCase As Workbook
@@ -85,6 +86,7 @@ Public Sub Setup()
     Dim blnAlerts As Boolean
     Dim blnEvents As Boolean
     Dim blnLanded As Boolean
+    Dim strLambdas As String
 
     On Error GoTo ErrHandler
 
@@ -107,6 +109,10 @@ Public Sub Setup()
     RunSetupStep "CreateLevelSheets", strFailed, strNotes
     RunSetupStep "CreateBonusSheet", strFailed, strNotes
     RunSetupStep "CreateCaseInputsSheet", strFailed, strNotes
+    ' The lambdas, each import only if it is on in SCS. Never raises; the report goes on the status bar.
+    strLambdas = modLambdas.CaseLambdasReport(wbCase)
+    ' The library import opens and closes another workbook: put the case back in front before going on.
+    LandAfterSetup wbCase
     RunSetupStep "LevelSummary", strFailed, strNotes
     ' Land first, then open the dock: the dock reads the active workbook, and the user starts on this sheet.
     LandAfterSetup wbCase
@@ -132,6 +138,7 @@ Cleanup:
         strMsg = "Full Setup Case: FAILED -" & strFailed & " Other steps ran."
     End If
     If Len(m_strSetupInfo) > 0 Then strMsg = strMsg & " " & m_strSetupInfo
+    If Len(strLambdas) > 0 Then strMsg = strMsg & "  |  " & strLambdas & "  |"
     If Len(strNotes) > 0 Then strMsg = strMsg & " Skipped -" & strNotes
     Application.StatusBar = Left$(strMsg, m_MAX_STATUS)
     m_strSetupInfo = vbNullString
@@ -3642,6 +3649,7 @@ ErrHandler:
     If m_DEBUG_MODE Then Stop: Resume
     SafeText = vbNullString
 End Function
+
 
 
 

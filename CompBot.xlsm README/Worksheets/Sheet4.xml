@@ -1282,7 +1282,7 @@
    </Row>
    <Row ss:AutoFitHeight="0" ss:Height="30">
     <Cell ss:StyleID="s49"/>
-    <Cell ss:StyleID="s50"><Data ss:Type="String">VERSION 2026.10.6</Data></Cell>
+    <Cell ss:StyleID="s50"><Data ss:Type="String">VERSION 2026.10.7</Data></Cell>
     <Cell ss:StyleID="s49"/>
     <Cell ss:StyleID="s49"/>
     <Cell ss:StyleID="s49"/>

@@ -38,9 +38,11 @@ Why it matters: spilled helpers cannot be filled down, because the spills collid
 cell, so a whole solve chain copies down like an ordinary row, and you still get to build and debug with
 visible spills.
 
-Version: 2026.10.6 Insider, built from CompBot 2026.10.6. Definitions: [CompBot Insider Readme](CompBot%20Insider.xlsm%20README/CompBot%20Insider.xlsm%20README.md).
+Version: 2026.10.7 Insider, built from CompBot 2026.10.7. Definitions: [CompBot Insider Readme](CompBot%20Insider.xlsm%20README/CompBot%20Insider.xlsm%20README.md).
 
-What changed: 2026.10.6 (23 Oct) Full Setup Case adds the Dr. Kazza level table (each level's
+What changed: 2026.10.7 (24 Oct) Full Setup Case loads your own lambda library again: it imports the
+lambdas itself, then adds the Dr. Kazza level table and opens the bonus dock (issue #21, thanks to
+Guy Diamant for reporting it). 2026.10.6 (23 Oct) Full Setup Case adds the Dr. Kazza level table (each level's
 difficulty, points and bonus points), lands on L01 with the bonus dock open, and sheet B has no
 gridlines (issue #19, thanks to Dr. Kazza); Run Data Table no longer writes #N/A for every game when
 Excel never reports a calculation as finished (issue #20, thanks to Chien Chi-He); new Convert to

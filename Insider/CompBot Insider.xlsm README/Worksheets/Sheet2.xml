@@ -1557,7 +1557,7 @@
    <Row ss:Height="78">
     <Cell ss:StyleID="s33"><Data ss:Type="String">Full Setup Case</Data></Cell>
     <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Sets up the case: saves a _Solve copy, backs up the sheets, creates the level, bonus and Case inputs sheets, adds the Dr. Kazza level table, opens the bonus dock on L01, then imports lambdas. Choose the steps with SCS</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Sets up the case: saves a _Solve copy, backs up the sheets, creates the level, bonus and Case inputs sheets, imports lambdas, adds the Dr. Kazza level table and opens the bonus dock on L01. Choose the steps with SCS</Data></Cell>
     <Cell ss:StyleID="s33"/>
     <Cell><Data ss:Type="String">SC, Ctrl+Shift+G</Data></Cell>
     <Cell ss:StyleID="s33"><Data ss:Type="String">Jaq Kennedy; level table requested by Dr. Kazza</Data></Cell>
@@ -1597,7 +1597,7 @@
    <Row ss:Height="58.5">
     <Cell ss:StyleID="s33"><Data ss:Type="String">Import Case Lambdas</Data></Cell>
     <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s33"><Data ss:Type="String">Your library (if set) and CompBot's lambdas, the winner first, into the active workbook. Chained after Full Setup Case</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Your library (if set) and CompBot's lambdas, the winner first, into the active workbook: Full Setup Case's lambda step on its own</Data></Cell>
     <Cell ss:StyleID="s33"/>
     <Cell ss:Index="6" ss:StyleID="s33"><Data ss:Type="String">Erik Oehm (Lambda Robot: ImportAllLambdas)</Data></Cell>
    </Row>

@@ -454,11 +454,10 @@
     },
     {
       "Name": "Full Setup Case",
-      "Description": "Sets up the case: saves a _Solve copy, backs up the sheets, creates the level, bonus and Case inputs sheets, adds the Dr. Kazza level table, opens the bonus dock on L01, then imports lambdas. Choose the steps with SCS",
+      "Description": "Sets up the case: saves a _Solve copy, backs up the sheets, creates the level, bonus and Case inputs sheets, imports lambdas, adds the Dr. Kazza level table and opens the bonus dock on L01. Choose the steps with SCS",
       "Type": "VBAMacroCommand",
       "ShortCutSendKeyString": "^+g",
-      "Note": "Steps, in order: save a working copy as <name>_Solve (skipped if the file has never been saved or is already a _Solve / _Working copy), back up every sheet, name the used ranges, create the level sheets, the bonus sheet B and the Case inputs sheet, add the Dr. Kazza level table (each level's difficulty, points and bonus points, beside the case intro and below the bonuses on sheet B; only the Difficulty cell is coloured, a soft pastel per step; a level easier than an earlier one is bold with a down arrow), land on L01 (else the case sheet), open the bonus dock (Show Bonus Dock); then Import Case Lambdas runs (your library and CompBot's, the winner first). Any step can be switched off per user with Setup Case Settings (SCS); a switched-off step is reported as skipped. A failed step is reported on the status bar and the rest still run. Does NOT unmerge or rename sheets: run Unmerge Multi-Row Merges, M2C or Rename Sheets (rs) yourself first if the case needs them. Save copy step added 2026-09-24 (Jaq); step switches added 2026-09-24; Dr. Kazza level table, bonus dock and landing on L01 added 2026-10-23 (GitHub #19, requested by Dr. Kazza).",
-      "CommandAfter": "Import Case Lambdas",
+      "Note": "Steps, in order: save a working copy as <name>_Solve (skipped if the file has never been saved or is already a _Solve / _Working copy), back up every sheet, name the used ranges, create the level sheets, the bonus sheet B and the Case inputs sheet, import lambdas (your library and CompBot's, the winner first), add the Dr. Kazza level table (each level's difficulty, points and bonus points, beside the case intro and below the bonuses on sheet B; only the Difficulty cell is coloured, a soft pastel per step; a level easier than an earlier one is bold with a down arrow), land on L01 (else the case sheet), open the bonus dock (Show Bonus Dock). Any step can be switched off per user with Setup Case Settings (SCS); a switched-off step is reported as skipped. A failed step is reported on the status bar and the rest still run. Does NOT unmerge or rename sheets: run Unmerge Multi-Row Merges, M2C or Rename Sheets (rs) yourself first if the case needs them. Save copy step added 2026-09-24 (Jaq); step switches added 2026-09-24; Dr. Kazza level table, bonus dock and landing on L01 added 2026-10-23 (GitHub #19, requested by Dr. Kazza); lambdas imported by Setup itself, before the level table and dock, instead of by a chained command, 2026-10-23 (reported by Guy Diamant).",
       "LaunchCodes": [
         "SC"
       ],
@@ -521,9 +520,9 @@
     },
     {
       "Name": "Import Case Lambdas",
-      "Description": "Your library (if set) and CompBot's lambdas, the winner first, into the active workbook. Chained after Full Setup Case",
+      "Description": "Your library (if set) and CompBot's lambdas, the winner first, into the active workbook: Full Setup Case's lambda step on its own",
       "Type": "VBAMacroCommand",
-      "Note": "Hidden: it exists to be Full Setup Case's CommandAfter. Loads the user's own lambda library (if Set Lambda Library has been run) and CompBot's lambdas, each only if switched on in Setup Case Settings (SCS). The winner (SCS; CompBot by default) goes first and replaces same-named lambdas; the other goes second and never overwrites, so where names clash the winner's version is the one left. Its report is appended to Full Setup Case's own status-bar line rather than replacing it. Added 2026-09-24; winner and switches 2026-09-24.",
+      "Note": "Hidden. Loads the user's own lambda library (if Set Lambda Library has been run) and CompBot's lambdas, each only if switched on in Setup Case Settings (SCS). The winner (SCS; CompBot by default) goes first and replaces same-named lambdas; the other goes second and never overwrites, so where names clash the winner's version is the one left. Run after a Full Setup Case, its report is appended to that status-bar line rather than replacing it. Added 2026-09-24; winner and switches 2026-09-24. Until 2026-10-23 it was chained after Full Setup Case (CommandAfter); Full Setup Case now runs the same step itself (modLambdas.CaseLambdasReport).",
       "Visibility": "Hidden",
       "MacroExpression": "modLambdas.ImportCaseLambdas()",
       "Tags": [

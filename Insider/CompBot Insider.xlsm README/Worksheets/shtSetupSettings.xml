@@ -1235,6 +1235,22 @@
    ss:RefersTo="=LAMBDA(Array,SCAN(0,SEQUENCE(ROWS(TOCOL(Array))),LAMBDA(a,v,SUM(--(TAKE(Array,v)=INDEX(Array,v,1))))))"/>
   <NamedRange ss:Name="RunningTotal_byJaqKennedy"
    ss:RefersTo="=LAMBDA(values,[ResetFlags],[ResetTo],[StopAt],[Cap],[IncFlaggedVal],LET(v,TOCOL(values),n,ROWS(v),f,IF(ISOMITTED(ResetFlags),SEQUENCE(n)*0,IFERROR(--TOCOL(ResetFlags),0)),r,IF(ISOMITTED(ResetTo),0,IF(ResetTo=&quot;&quot;,0,ResetTo)),h,IF(ISOMITTED(StopAt),FALSE,StopAt&lt;&gt;&quot;&quot;),s,IF(h,StopAt,0),cp,IF(ISOMITTED(Cap),1,IF(Cap=&quot;&quot;,1,Cap)),inc,IF(ISOMITTED(IncFlaggedVal),1,IF(IncFlaggedVal=&quot;&quot;,1,IncFlaggedVal)),SCAN(0,SEQUENCE(n),LAMBDA(acc,i,LET(x,INDEX(v,i),fl,IFERROR(INDEX(f,i),0)=1,t,IF(fl,r+IF(inc,x,0),IF(AND(h,acc&gt;=s),acc,acc+x)),IF(AND(h,t&gt;=s),IF(cp,s,t),t))))))"/>
+  <NamedRange ss:Name="SCS_Backup" ss:RefersTo="='Setup Settings'!R12C2"/>
+  <NamedRange ss:Name="SCS_CreateBonusSheet" ss:RefersTo="='Setup Settings'!R15C2"/>
+  <NamedRange ss:Name="SCS_CreateCaseInputsSheet"
+   ss:RefersTo="='Setup Settings'!R16C2"/>
+  <NamedRange ss:Name="SCS_CreateLevelSheets" ss:RefersTo="='Setup Settings'!R14C2"/>
+  <NamedRange ss:Name="SCS_ImportCompBot" ss:RefersTo="='Setup Settings'!R20C2"/>
+  <NamedRange ss:Name="SCS_ImportLibrary" ss:RefersTo="='Setup Settings'!R19C2"/>
+  <NamedRange ss:Name="SCS_LambdaWinner" ss:RefersTo="='Setup Settings'!R21C2"/>
+  <NamedRange ss:Name="SCS_LevelSummary" ss:RefersTo="='Setup Settings'!R17C2"/>
+  <NamedRange ss:Name="SCS_LibraryFile" ss:RefersTo="='Setup Settings'!R24C2"/>
+  <NamedRange ss:Name="SCS_LibraryPath" ss:RefersTo="='Setup Settings'!R25C2"/>
+  <NamedRange ss:Name="SCS_NameAllUsedRanges" ss:RefersTo="='Setup Settings'!R13C2"/>
+  <NamedRange ss:Name="SCS_OpenBonusDock" ss:RefersTo="='Setup Settings'!R18C2"/>
+  <NamedRange ss:Name="SCS_SaveCopy" ss:RefersTo="='Setup Settings'!R11C2"/>
+  <NamedRange ss:Name="SCS_SolveFolder" ss:RefersTo="='Setup Settings'!R26C2"/>
+  <NamedRange ss:Name="SCS_SolvePath" ss:RefersTo="='Setup Settings'!R27C2"/>
   <NamedRange ss:Name="SplitText_byHadynWiseman"
    ss:RefersTo="=LAMBDA(Text,[Groups],[Overlap],LET(t,CONCAT(Text),_groups,MAX(Groups,1),IF(Overlap,MID(t,SEQUENCE(LEN(t)-_groups+1),_groups),IF(ISOMITTED(Groups),TOCOL(REGEXEXTRACT(t,&quot;\X&quot;,1)),MID(t,SEQUENCE(ROUNDUP(LEN(t)/_groups,0),,,_groups),_groups)))))"/>
   <NamedRange ss:Name="TSPGreedy_byHadynWiseman"
@@ -1320,57 +1336,68 @@
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:StyleID="s39"><Data ss:Type="String">Save a _Solve copy</Data></Cell>
-    <Cell ss:StyleID="s44"><Data ss:Type="Boolean">1</Data></Cell>
+    <Cell ss:StyleID="s44"><Data ss:Type="Boolean">1</Data><NamedCell
+      ss:Name="SCS_SaveCopy"/></Cell>
     <Cell ss:Index="4" ss:StyleID="s18"><Data ss:Type="String">Saves the case as name_Solve first, so the original file is never touched.</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:StyleID="s39"><Data ss:Type="String">Back up every sheet</Data></Cell>
-    <Cell ss:StyleID="s44"><Data ss:Type="Boolean">1</Data></Cell>
+    <Cell ss:StyleID="s44"><Data ss:Type="Boolean">1</Data><NamedCell
+      ss:Name="SCS_Backup"/></Cell>
     <Cell ss:Index="4" ss:StyleID="s18"><Data ss:Type="String">A BU_ copy of every sheet (BU).</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:StyleID="s39"><Data ss:Type="String">Name the used ranges</Data></Cell>
-    <Cell ss:StyleID="s44"><Data ss:Type="Boolean">1</Data></Cell>
+    <Cell ss:StyleID="s44"><Data ss:Type="Boolean">1</Data><NamedCell
+      ss:Name="SCS_NameAllUsedRanges"/></Cell>
     <Cell ss:Index="4" ss:StyleID="s18"><Data ss:Type="String">A Sht_ name for each sheet's data (NA).</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:StyleID="s39"><Data ss:Type="String">Create the level sheets</Data></Cell>
-    <Cell ss:StyleID="s44"><Data ss:Type="Boolean">1</Data></Cell>
+    <Cell ss:StyleID="s44"><Data ss:Type="Boolean">1</Data><NamedCell
+      ss:Name="SCS_CreateLevelSheets"/></Cell>
     <Cell ss:Index="4" ss:StyleID="s18"><Data ss:Type="String">One sheet per level: L01, L02... Untick to solve on the Case sheet.</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:StyleID="s39"><Data ss:Type="String">Create the bonus sheet</Data></Cell>
-    <Cell ss:StyleID="s44"><Data ss:Type="Boolean">1</Data></Cell>
+    <Cell ss:StyleID="s44"><Data ss:Type="Boolean">1</Data><NamedCell
+      ss:Name="SCS_CreateBonusSheet"/></Cell>
     <Cell ss:Index="4" ss:StyleID="s18"><Data ss:Type="String">Sheet B, for the bonus questions.</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:StyleID="s39"><Data ss:Type="String">Create the Case inputs sheet</Data></Cell>
-    <Cell ss:StyleID="s44"><Data ss:Type="Boolean">1</Data></Cell>
+    <Cell ss:StyleID="s44"><Data ss:Type="Boolean">1</Data><NamedCell
+      ss:Name="SCS_CreateCaseInputsSheet"/></Cell>
     <Cell ss:Index="4" ss:StyleID="s18"><Data ss:Type="String">The inputs on a sheet of their own (CIS).</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:StyleID="s39"><Data ss:Type="String">Add the Dr. Kazza level table</Data></Cell>
-    <Cell ss:StyleID="s44"><Data ss:Type="Boolean">1</Data></Cell>
+    <Cell ss:StyleID="s44"><Data ss:Type="Boolean">1</Data><NamedCell
+      ss:Name="SCS_LevelSummary"/></Cell>
     <Cell ss:Index="4" ss:StyleID="s18"><Data ss:Type="String">Each level's difficulty, points and bonus points: beside the case intro, and below the bonuses on sheet B. Easier than an earlier level = bold.</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:StyleID="s39"><Data ss:Type="String">Open the bonus dock</Data></Cell>
-    <Cell ss:StyleID="s44"><Data ss:Type="Boolean">1</Data></Cell>
+    <Cell ss:StyleID="s44"><Data ss:Type="Boolean">1</Data><NamedCell
+      ss:Name="SCS_OpenBonusDock"/></Cell>
     <Cell ss:Index="4" ss:StyleID="s18"><Data ss:Type="String">Opens Show Bonus Dock (BQ) at the end, so the bonuses and the Dr. Kazza level table are in view.</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:StyleID="s39"><Data ss:Type="String">Import your lambda library</Data></Cell>
-    <Cell ss:StyleID="s44"><Data ss:Type="Boolean">1</Data></Cell>
+    <Cell ss:StyleID="s44"><Data ss:Type="Boolean">1</Data><NamedCell
+      ss:Name="SCS_ImportLibrary"/></Cell>
     <Cell ss:Index="4" ss:StyleID="s18"><Data ss:Type="String">Your own lambdas, if a library is set with SLL.</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:StyleID="s39"><Data ss:Type="String">Import CompBot's lambdas</Data></Cell>
-    <Cell ss:StyleID="s44"><Data ss:Type="Boolean">1</Data></Cell>
+    <Cell ss:StyleID="s44"><Data ss:Type="Boolean">1</Data><NamedCell
+      ss:Name="SCS_ImportCompBot"/></Cell>
     <Cell ss:Index="4" ss:StyleID="s18"><Data ss:Type="String">CompBot's own lambdas (ILC).</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:StyleID="s39"><Data ss:Type="String">Whose lambdas win a clash</Data></Cell>
-    <Cell ss:StyleID="s43"><Data ss:Type="String">CompBot</Data></Cell>
+    <Cell ss:StyleID="s43"><Data ss:Type="String">CompBot</Data><NamedCell
+      ss:Name="SCS_LambdaWinner"/></Cell>
     <Cell ss:Index="4" ss:StyleID="s18"><Data ss:Type="String">CompBot or Your library. The winner replaces a lambda of the same name; the other never does. ILL and ILC follow it too.</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0"/>
@@ -1379,21 +1406,25 @@
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:StyleID="s39"><Data ss:Type="String">Library file</Data></Cell>
-    <Cell ss:StyleID="s40"><Data ss:Type="String">none set</Data></Cell>
+    <Cell ss:StyleID="s40"><Data ss:Type="String">none set</Data><NamedCell
+      ss:Name="SCS_LibraryFile"/></Cell>
     <Cell ss:Index="4" ss:StyleID="s18"><Data ss:Type="String">Set with Set Lambda Library (SLL); forgotten with Clear Lambda Library (CLL). Shown here, not changed here.</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:StyleID="s39"><Data ss:Type="String">Full path</Data></Cell>
-    <Cell ss:MergeAcross="6" ss:StyleID="s55"><Data ss:Type="String">Run Set Lambda Library (SLL) to choose one</Data></Cell>
+    <Cell ss:MergeAcross="6" ss:StyleID="s55"><Data ss:Type="String">Run Set Lambda Library (SLL) to choose one</Data><NamedCell
+      ss:Name="SCS_LibraryPath"/></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:StyleID="s39"><Data ss:Type="String">Solve folder</Data></Cell>
-    <Cell ss:StyleID="s40"><Data ss:Type="String">none set</Data></Cell>
+    <Cell ss:StyleID="s40"><Data ss:Type="String">none set</Data><NamedCell
+      ss:Name="SCS_SolveFolder"/></Cell>
     <Cell ss:Index="4" ss:StyleID="s18"><Data ss:Type="String">Set with Set Solve Folder (SSF); forgotten with Clear Solve Folder (CSF). Full Setup Case saves the _Solve copy here, or next to the case if none is set or it is missing. Shown here, not changed here.</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:StyleID="s39"><Data ss:Type="String">Full path</Data></Cell>
-    <Cell ss:MergeAcross="6" ss:StyleID="s55"><Data ss:Type="String">Run Set Solve Folder (SSF) to choose one</Data></Cell>
+    <Cell ss:MergeAcross="6" ss:StyleID="s55"><Data ss:Type="String">Run Set Solve Folder (SSF) to choose one</Data><NamedCell
+      ss:Name="SCS_SolvePath"/></Cell>
    </Row>
    <Row ss:AutoFitHeight="0"/>
    <Row>
