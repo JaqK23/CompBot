@@ -132,6 +132,21 @@
       "MacroExpression": "modLambdas.ClearUnusedLambdas(1)"
     },
     {
+      "Name": "Convert to What-If Data Table",
+      "Description": "Backup for RDT: turns the level's data table block into an Excel What-If data table (=TABLE), so Excel fills every game itself",
+      "Type": "VBAMacroCommand",
+      "Note": "For when Run Data Table (RDT) misbehaves on a machine. Run from any cell in a Create Data Table block: the range from the ANSWER row down to the last game becomes a real What-If data table, =TABLE(,input cell), with the Example# cell as the column input. SIDE columns are included. Every head (ANSWER, SIDE) must be a formula. A game loaded with Load Game (LDT) is put back to its Example# label first. A What-If table recalculates with the workbook and can be slow, so once the answers are in, run Hardcode Data Table (HDT) to fix them as values. Under 'Automatic except for data tables' press F9 to refresh it. Added 2026-10-23 (GitHub #20, Jaq).",
+      "LaunchCodes": [
+        "WDT",
+        "DT"
+      ],
+      "MacroExpression": "modDataTable.ConvertToWhatIfTable()",
+      "Tags": [
+        "Prep",
+        "DataTable"
+      ]
+    },
+    {
       "Name": "Copy Map And Fill From Legend",
       "Description": "Copy a color-coded map sheet: stand on a colored legend cell; copies the sheet and fills every map cell on the copy with its color's legend value (white is never a key); each named range on the sheet gets a clr_ twin on the copy",
       "Type": "VBAMacroCommand",
@@ -439,10 +454,10 @@
     },
     {
       "Name": "Full Setup Case",
-      "Description": "Sets up the case: saves a _Solve copy, backs up the sheets, creates the level, bonus and Case inputs sheets, then imports lambdas. Choose the steps with SCS",
+      "Description": "Sets up the case: saves a _Solve copy, backs up the sheets, creates the level, bonus and Case inputs sheets, adds the Dr. Kazza level table, opens the bonus dock on L01, then imports lambdas. Choose the steps with SCS",
       "Type": "VBAMacroCommand",
       "ShortCutSendKeyString": "^+g",
-      "Note": "Steps, in order: save a working copy as <name>_Solve (skipped if the file has never been saved or is already a _Solve / _Working copy), back up every sheet, name the used ranges, create the level sheets, the bonus sheet B and the Case inputs sheet; then Import Case Lambdas runs (your library and CompBot's, the winner first). Any step can be switched off per user with Setup Case Settings (SCS); a switched-off step is reported as skipped. A failed step is reported on the status bar and the rest still run. Does NOT unmerge or rename sheets: run Unmerge Multi-Row Merges, M2C or Rename Sheets (rs) yourself first if the case needs them. Save copy step added 2026-09-24 (Jaq); step switches added 2026-09-24.",
+      "Note": "Steps, in order: save a working copy as <name>_Solve (skipped if the file has never been saved or is already a _Solve / _Working copy), back up every sheet, name the used ranges, create the level sheets, the bonus sheet B and the Case inputs sheet, add the Dr. Kazza level table (each level's difficulty, points and bonus points, beside the case intro and below the bonuses on sheet B; only the Difficulty cell is coloured, a soft pastel per step; a level easier than an earlier one is bold with a down arrow), land on L01 (else the case sheet), open the bonus dock (Show Bonus Dock); then Import Case Lambdas runs (your library and CompBot's, the winner first). Any step can be switched off per user with Setup Case Settings (SCS); a switched-off step is reported as skipped. A failed step is reported on the status bar and the rest still run. Does NOT unmerge or rename sheets: run Unmerge Multi-Row Merges, M2C or Rename Sheets (rs) yourself first if the case needs them. Save copy step added 2026-09-24 (Jaq); step switches added 2026-09-24; Dr. Kazza level table, bonus dock and landing on L01 added 2026-10-23 (GitHub #19, requested by Dr. Kazza).",
       "CommandAfter": "Import Case Lambdas",
       "LaunchCodes": [
         "SC"
@@ -487,6 +502,21 @@
       "MacroExpression": "modGoToSpecial.GotoSimilarBackgroundColor()",
       "Tags": [
         "GoTo"
+      ]
+    },
+    {
+      "Name": "Hardcode Data Table",
+      "Description": "Replaces a What-If data table's results with their values, so the workbook stops recalculating it",
+      "Type": "VBAMacroCommand",
+      "Note": "Run from a result cell of any Excel What-If data table, or from any cell of a Create Data Table block after Convert to What-If Data Table (WDT). The workbook is calculated first, then the results (the table body only: the ANSWER / formula row and the game column are left alone) are written back as plain values, errors included. Linked answer cells keep working. Refuses, changing nothing, when there is no What-If table there. Added 2026-10-23 (GitHub #20, Jaq).",
+      "LaunchCodes": [
+        "HDT",
+        "DT"
+      ],
+      "MacroExpression": "modDataTable.HardcodeDataTable()",
+      "Tags": [
+        "Prep",
+        "DataTable"
       ]
     },
     {
@@ -1262,7 +1292,7 @@
     },
     {
       "Name": "Show Bonus Dock",
-      "Description": "Shows the open bonus questions in a dock on the right; answered ones drop off",
+      "Description": "Shows the open bonus questions in a dock on the right; answered ones drop off. Ends with the Dr. Kazza level table",
       "Type": "VBAMacroCommand",
       "Outputs": [
         {
@@ -1272,7 +1302,7 @@
           "Scope": "Application"
         }
       ],
-      "Note": "Reads the active case workbook: 'Bonus 1' / 'Bonus A' labels in column B, header row above with Answer / Points / Question. Sheet B (Create Bonus Sheet) wins, else Case, else the active sheet. Answer sheets are never read. A bonus is answered when its answer cell holds a value or a real formula; a bare link to an empty cell (Case → B) counts as open. Answered on either B or Case counts. Hand-cleared bonuses (Clear Bonus From Dock) go to the footer. Output: OA Robot's task pane, title 'Bonus Questions', Text content, wrapped at 55 characters by the VBA (HTML renders in a tiny fixed box, Markdown rendered blank; tested 2026-09-16). Re-run to refresh; chain it with CommandAfter behind commands that save bonus answers. Moved into CompBot from the BonusDock collection 2026-09-22.",
+      "Note": "Reads the active case workbook: 'Bonus 1' / 'Bonus A' labels in column B, header row above with Answer / Points / Question. Sheet B (Create Bonus Sheet) wins, else Case, else the active sheet. Answer sheets are never read. A bonus is answered when its answer cell holds a value or a real formula; a bare link to an empty cell (Case → B) counts as open. Answered on either B or Case counts. Hand-cleared bonuses (Clear Bonus From Dock) go to the footer. Ends with the Dr. Kazza level table (2026-10-23, GitHub #19): each level's difficulty marker (circle easy, square medium, diamond hard, ? for a tag CompBot does not know), points and bonus points; a level easier than an earlier one in bold with a down arrow. Output: OA Robot's task pane, title 'Bonus Questions', Text content, wrapped at 55 characters by the VBA (HTML renders in a tiny fixed box, Markdown rendered blank; tested 2026-09-16 and again 2026-10-23). Re-run to refresh; chain it with CommandAfter behind commands that save bonus answers. Full Setup Case opens it as its last step. Moved into CompBot from the BonusDock collection 2026-09-22.",
       "LaunchCodes": [
         "BQ"
       ],

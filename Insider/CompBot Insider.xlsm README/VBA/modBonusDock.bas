@@ -24,6 +24,9 @@ Option Explicit
 '
 ' State kept in the case workbook: one hidden workbook-level name, BonusDock_Cleared, holding the keys
 ' cleared by hand ("|2|B|"). Nothing else is written to the case file.
+'
+' Level summary (GitHub #19, 2026-10-23): the dock ends with each level's difficulty, points and bonus points
+' (modLevelSummary.LevelSummaryText). Full Setup Case reads the bonus points per level through BonusPointsByLevel.
 
 ' --- MODULE CONSTANTS ---
 Private Const m_DEBUG_MODE          As Boolean = False
@@ -56,6 +59,7 @@ Private Type tBonus
     strQuestion As String
     varPoints   As Variant
     strRelates  As String
+    varRelates  As Variant      ' the relates-to cell as the case holds it: a level number, "B", "N/A"...
     rngAnswer   As Range
     lngState    As Long
     blnCleared  As Boolean
@@ -90,6 +94,9 @@ Public Function BonusDockText() As String
     Dim strCleared   As String
     Dim strRule      As String
     Dim strOut       As String
+    Dim strLevels    As String
+    Dim dicBonus     As Object
+    Dim dblOther     As Double
     Dim lngErrNumber As Long
     Dim strErrText   As String
 
@@ -103,15 +110,26 @@ Public Function BonusDockText() As String
     End If
 
     lngCount = CollectBonuses(wbCase, udtBonuses, strSheet)
+
+    ' The level summary, at the bottom whatever the bonuses hold (GitHub #19).
+    Set dicBonus = CreateObject("Scripting.Dictionary")
+    ' A failed add leaves the bonus column short; the dock still lists the levels (the failure is logged).
+    If lngCount > 0 Then
+        If Not AddBonusPoints(udtBonuses, lngCount, dicBonus, dblOther) Then dicBonus.RemoveAll
+    End If
+    strLevels = modLevelSummary.LevelSummaryText(wbCase, dicBonus, dblOther)
+    ' Not wrapped: its lines are short, and WrapText would count each bold letter (two UTF-16 units) twice.
+    If Len(strLevels) > 0 Then strLevels = vbLf & vbLf & strRule & vbLf & strLevels
+
     If lngCount = m_RESULT_FAILED Then
         strOut = "BONUS QUESTIONS" & vbLf & WrapText(wbCase.Name) & vbLf & strRule & vbLf & _
-                 WrapText("Could not read the bonus questions - see " & LogLocation() & ".")
+                 WrapText("Could not read the bonus questions - see " & LogLocation() & ".") & strLevels
         GoTo Cleanup
     End If
     If lngCount = 0 Then
         strOut = "BONUS QUESTIONS" & vbLf & WrapText(wbCase.Name) & vbLf & strRule & vbLf & _
                  WrapText("No bonus questions found. The dock looks for 'Bonus 1' / 'Bonus A' labels in " & _
-                          "column B of every sheet except answer sheets.")
+                          "column B of every sheet except answer sheets.") & strLevels
         GoTo Cleanup
     End If
 
@@ -150,7 +168,7 @@ Public Function BonusDockText() As String
              WrapText(ChrW$(&H2714) & " Answered: " & KeyListText(strAnswered)) & vbLf & _
              WrapText(ChrW$(&H2716) & " Cleared: " & KeyListText(strCleared))
     If Len(strCleared) > 0 Then strOut = strOut & vbLf & "  (Restore Cleared Bonuses brings them back)"
-    strOut = strOut & vbLf & "Refresh: re-run " & m_DOCK_COMMAND & " (BQ)"
+    strOut = strOut & strLevels & vbLf & vbLf & "Refresh: re-run " & m_DOCK_COMMAND & " (BQ)"
 
 Cleanup:
     BonusDockText = strOut
@@ -377,7 +395,103 @@ ErrHandler:
 End Sub
 
 
+' Purpose: The case's bonus points per level, for the level summary (GitHub #19): dicPts(level) = points of
+'          the bonuses whose relates-to column names that level; dblOther = the rest ("B", "N/A", blank).
+'          Every bonus counts, answered or cleared. Returns False on failure (logged); True with nothing added
+'          when the case has no bonuses.
+Public Function BonusPointsByLevel(ByVal wbCase As Workbook, ByRef dicPts As Object, ByRef dblOther As Double) As Boolean
+
+    ' --- CONSTANTS (local to function) ---
+    Const PROC_NAME As String = "BonusPointsByLevel"
+
+    Dim udtBonuses() As tBonus
+    Dim strSheet     As String
+    Dim lngCount     As Long
+
+    On Error GoTo ErrHandler
+
+    dblOther = 0
+    lngCount = CollectBonuses(wbCase, udtBonuses, strSheet)
+    If lngCount = m_RESULT_FAILED Then GoTo Cleanup
+    If lngCount > 0 Then
+        If Not AddBonusPoints(udtBonuses, lngCount, dicPts, dblOther) Then GoTo Cleanup
+    End If
+    BonusPointsByLevel = True
+
+Cleanup:
+    Exit Function
+
+ErrHandler:
+    If m_DEBUG_MODE Then Stop: Resume
+    LogError PROC_NAME, Err.Number, Err.Description
+    BonusPointsByLevel = False
+    Resume Cleanup
+End Function
+
+
 ' ================================== helpers ==================================
+
+' Purpose: Add each bonus's points to dicPts under its level (a Long key), or to dblOther when it names none.
+'          False on failure (logged), so a half-filled total is never taken for a whole one.
+Private Function AddBonusPoints(ByRef udtBonuses() As tBonus, ByVal lngCount As Long, _
+                                ByVal dicPts As Object, ByRef dblOther As Double) As Boolean
+
+    ' --- CONSTANTS (local to function) ---
+    Const PROC_NAME As String = "AddBonusPoints"
+
+    Dim lngIdx   As Long
+    Dim lngLevel As Long
+    Dim dblPts   As Double
+
+    On Error GoTo ErrHandler
+
+    For lngIdx = 1 To lngCount
+        dblPts = 0
+        If IsNumeric(udtBonuses(lngIdx).varPoints) And Not IsEmpty(udtBonuses(lngIdx).varPoints) Then
+            dblPts = CDbl(udtBonuses(lngIdx).varPoints)
+        End If
+        lngLevel = RelatesLevel(udtBonuses(lngIdx).varRelates)
+        If lngLevel > 0 Then
+            dicPts(lngLevel) = dicPts(lngLevel) + dblPts
+        Else
+            dblOther = dblOther + dblPts
+        End If
+    Next lngIdx
+    AddBonusPoints = True
+
+Cleanup:
+    Exit Function
+
+ErrHandler:
+    If m_DEBUG_MODE Then Stop: Resume
+    LogError PROC_NAME, Err.Number, Err.Description
+    AddBonusPoints = False
+    Resume Cleanup
+End Function
+
+
+' Purpose: The level a relates-to cell names: 3, "3", "L3", "L03", "Level 3", "Section 3" -> 3. Anything else
+'          ("B", "N/A", "All levels", 2.5) -> 0.
+Private Function RelatesLevel(ByVal varValue As Variant) As Long
+
+    Dim strKey As String
+
+    If IsError(varValue) Or IsEmpty(varValue) Then Exit Function
+    If VarType(varValue) = vbDouble Then
+        If varValue = Int(varValue) And varValue > 0 And varValue < 100 Then RelatesLevel = CLng(varValue)
+        Exit Function
+    End If
+    strKey = UCase$(Replace(Replace(SafeText(varValue), Chr$(160), ""), " ", ""))
+    If Left$(strKey, 5) = "LEVEL" Then
+        strKey = Mid$(strKey, 6)
+    ElseIf Left$(strKey, 7) = "SECTION" Then
+        strKey = Mid$(strKey, 8)
+    ElseIf Left$(strKey, 1) = "L" Then
+        strKey = Mid$(strKey, 2)
+    End If
+    If strKey Like "#" Or strKey Like "##" Then RelatesLevel = CLng(strKey)
+End Function
+
 
 ' Purpose: Every bonus of the case, in sheet order, with its answered / cleared state.
 '          Returns the count, 0 when there is no bonus block, m_RESULT_FAILED on error.
@@ -548,6 +662,7 @@ Private Function ReadBonusBlock(ByVal wsBonus As Worksheet, ByVal colRows As Col
                     .strKey = strKey
                     .strQuestion = strQuestion
                     .varPoints = varRow(1, lngPtsCol)
+                    .varRelates = varRow(1, m_RELATES_COL)
                     If lngHdrRow > 0 Then
                         .strRelates = RelatesText(varHeader(lngHdrRow, m_RELATES_COL), varRow(1, m_RELATES_COL))
                     Else
@@ -881,7 +996,8 @@ End Function
 '          key must never mark a bonus as answered. Names seen in the library: Answers, Answer, HiddenAnswers,
 '          AnswersBU, Antworten (DACH); the other languages are the competitions' own (ES / PT / FR / IT).
 '          Backups: CompBot's Backup makes BU_<name>; the library also has CaseBU / AnswersBU.
-Private Function IsAnswerKeySheet(ByVal strName As String) As Boolean
+'          Public for the level summary, which skips the same sheets (modLevelSummary.LevelSourceSheet).
+Public Function IsAnswerKeySheet(ByVal strName As String) As Boolean
 
     ' --- CONSTANTS (local to function) ---
     Const KEY_WORDS As String = "ANSWER|ANTWORT|RESPUESTA|RESPOSTA|REPONSE|RISPOST|GABARITO|SOLUTION|SOLUCI|SOLUZION|LOESUNG|LOSUNG"
@@ -1120,5 +1236,6 @@ Private Function SafeText(ByVal varValue As Variant) As String
         SafeText = CStr(varValue)
     End If
 End Function
+
 
 

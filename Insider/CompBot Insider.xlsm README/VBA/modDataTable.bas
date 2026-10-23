@@ -28,6 +28,16 @@ Private Const m_MAX_SIDES         As Long = 5
 Private Const m_NOTE_PREFIX       As String = "No room for SIDE "   ' Link Side Cell's refusal note
 Private Const m_SIDE_FILL         As Long = 15652797            ' RGB(189, 215, 238): light blue, never ANSWER's green
 Private Const m_NOTE_COLOUR       As Long = 1667760             ' RGB(176, 114, 25): burnt orange B07219
+' The clear value an input is parked on: the recalc-scope probes, and the settled check (#20).
+Private Const m_CLEAR_VALUE       As Double = -987654321#
+' TEST ONLY (#20): True makes CalculateToDone report "not finished" every time, as on the reporter's machine.
+' Always False in a release.
+Private Const m_SIM_NEVER_DONE    As Boolean = False
+
+' Run Data Table, per run (#20): once Excel has failed to report a calculation finished, every later game goes
+' straight to the settled check instead of waiting through CalculateToDone's passes again.
+Private m_blnNeverDone   As Boolean
+Private m_strNeverState  As String     ' Excel's calculation state when that first happened
 
 '--------------------------------------------< OA Robot >--------------------------------------------
 ' Command Name:           Run Data Table
@@ -104,6 +114,10 @@ Public Sub RunDataTable()
     Dim blnRestart As Boolean
     Dim blnAllSame As Boolean
     Dim strStale As String           ' where stale cells were found, for the StatusBar
+    Dim blnSettledGame As Boolean    ' this game was kept on the settled check (#20)
+    Dim lngSettled As Long           ' games kept on the settled check: Excel never said the calculation finished
+    Dim lngUnsettled As Long         ' games the settled check refused (written #N/A)
+    Dim strUserMode As String        ' the user's calculation mode, for the CALC NEVER DONE note
 
     On Error GoTo ErrHandler
 
@@ -161,11 +175,12 @@ Public Sub RunDataTable()
                 strMsg = "Run Data Table: the " & OutputTitle(lngJ) & " results column has merged cells."
                 GoTo Cleanup
             End If
-            ' An old What-If table cannot be cleared one column at a time; with SIDE columns, refuse.
-            If lngSides > 0 Then
+            ' A What-If table over SIDE columns (Convert to What-If Data Table builds one) is cleared whole below,
+            ' which is only safe when RDT refills every column. With a column it does not fill, refuse.
+            If lngSides > 0 And lngLive < lngCols Then
                 If HasTableFormulas(rngResults.Columns(lngJ)) Then
-                    strMsg = "Run Data Table: an old What-If data table is in the " & OutputTitle(lngJ) & _
-                             " column - clear it before running with SIDE columns."
+                    strMsg = "Run Data Table: the What-If data table covers " & strSkipped & _
+                             ", which RDT does not fill - run HDT on it first."
                     GoTo Cleanup
                 End If
             End If
@@ -196,6 +211,7 @@ Public Sub RunDataTable()
     Next lngI
     lngI = 0
 
+    strUserMode = CalcModeText()      ' the user's own mode, before VBAInit changes it
     VBAInit
     blnInit = True
     blnEvents = Application.EnableEvents
@@ -208,10 +224,21 @@ Public Sub RunDataTable()
     blnKeysSet = True
 
     ' What-If TABLE() formulas recalculate on every pass and slow the loop badly - remove them
-    ' first. The results range is the whole table body, so Excel allows the clear.
+    ' first. The results range is the whole table body, so Excel allows the clear. With SIDE columns
+    ' the table spans them all and Excel refuses a one-column clear, so the body goes in one hit
+    ' (every column is refilled: the refusal above made sure of that).
     For lngJ = 1 To lngCols
         If blnLive(lngJ) Then
             If HasTableFormulas(rngResults.Columns(lngJ)) Then
+                If lngSides > 0 Then
+                    rngResults.ClearContents
+                    For lngI = 1 To lngCols
+                        blnClearedCol(lngI) = True
+                    Next lngI
+                    lngI = 0
+                    blnCleared = True
+                    Exit For
+                End If
                 rngResults.Columns(lngJ).ClearContents
                 blnClearedCol(lngJ) = True
                 blnCleared = True
@@ -234,6 +261,8 @@ Public Sub RunDataTable()
     ' ChooseRecalcScope proves it (structural scan + sentinel probes) or picks the full recalc.
     ' Timed separately, so the games figure is comparable between the two scopes.
     blnTouched = True     ' from here the input cell and other sheets hold probe states
+    m_blnNeverDone = False
+    m_strNeverState = vbNullString
     dblCheckStart = Timer
     blnSheetOnly = (ChooseRecalcScope(wsCalc, rngInput, rngFormula, varGames, strScope) = m_SCOPE_SHEET)
     ' Stale cells (#17): a formula fed by INDIRECT inside a named LAMBDA can stay on an old value through any
@@ -247,7 +276,8 @@ Public Sub RunDataTable()
     lngI = 1
     Do While lngI <= lngGames
         rngInput.Value2 = varGames(lngI, 1)
-        blnDone = RecalcGame(wsCalc, rngFormula, blnLive, blnSheetOnly, blnDirty, lngRechecked)
+        blnSettledGame = False
+        blnDone = RecalcGame(wsCalc, rngInput, rngFormula, blnLive, blnSheetOnly, blnDirty, lngRechecked, blnSettledGame)
         ' One read of the whole output row: every column from the same recalculation.
         varRow = rngFormula.Value2
 
@@ -257,7 +287,8 @@ Public Sub RunDataTable()
         blnRestart = False
         If blnDone And lngI > 1 And Not blnDirty Then
             If SameValues(varRow, varPrev) Then
-                blnDone = RecalcGame(wsCalc, rngFormula, blnLive, blnSheetOnly, True, lngRechecked)
+                blnSettledGame = False
+                blnDone = RecalcGame(wsCalc, rngInput, rngFormula, blnLive, blnSheetOnly, True, lngRechecked, blnSettledGame)
                 If Not SameValues(rngFormula.Value2, varRow) Then
                     blnDirty = True
                     blnRestart = True
@@ -276,8 +307,12 @@ Public Sub RunDataTable()
                 lngFirstError(lngJ) = 0
             Next lngJ
             blnAllSame = True
+            lngSettled = 0
+            lngUnsettled = 0
             lngI = 1
         Else
+            If blnDone And blnSettledGame Then lngSettled = lngSettled + 1
+            If Not blnDone And m_blnNeverDone Then lngUnsettled = lngUnsettled + 1
             If blnDone Then
                 For lngJ = 1 To lngCols
                     If blnLive(lngJ) Then
@@ -361,6 +396,14 @@ Public Sub RunDataTable()
     If Len(strSlow) > 0 Then
         strMsg = strMsg & " WARNING slow: " & strSlow
         If Right$(strMsg, 1) <> "." Then strMsg = strMsg & "."
+    End If
+    ' #20: Excel never said the calculation finished; these games were kept because their output settled. After the
+    ' warnings, so it never pushes them off the StatusBar.
+    ' Everything a screenshot needs to diagnose it: Excel's state when it first failed, the calculation mode,
+    ' the build, and how many games the settled check kept or refused (refused = #N/A).
+    If m_blnNeverDone Then
+        strMsg = strMsg & " CALC NEVER DONE (" & m_strNeverState & ", " & strUserMode & ", build " & _
+                 Application.Build & "): " & lngSettled & " kept settled, " & lngUnsettled & " unsettled = #N/A."
     End If
     ' Scope last, so it is what gets cut if the StatusBar text is too long - never the warnings.
     strMsg = strMsg & " Recalc: " & strScope & " (check " & Format$(dblCheckSecs, "0.00") & "s)."
@@ -495,6 +538,316 @@ ErrHandler:
     If LogError(PROC_NAME, Err.Number, strErr) Then strErr = strErr & " - see " & LogLocation()
     Resume Cleanup
 End Sub
+
+'--------------------------------------------< OA Robot >--------------------------------------------
+' Command Name:           Convert to What-If Data Table
+' Description:            Backup for RDT: turns the level's data table block into an Excel What-If data table
+' Macro Expression:       modDataTable.ConvertToWhatIfTable()
+' Generated:              2026-10-23 (GitHub #20, Jaq: WDT)
+'----------------------------------------------------------------------------------------------------
+' Purpose: A fallback for when Run Data Table misbehaves on a machine. The block Create Data Table builds already
+'          has an Excel column data table's layout: the ANSWER formula (and any SIDE heads) sits directly above the
+'          results, the game numbers run down the left, and the Example# cell is the block's input. This makes
+'          the range from the ANSWER row down to the last game a real What-If data table, =TABLE(,input cell), so
+'          Excel calculates every game itself. Every head must be a formula (a constant head would fill its whole
+'          column with that constant). A game loaded with Load Game Into Calculation is put back to its Example#
+'          label first. Run Hardcode Data Table (HDT) afterwards to fix the results as values.
+Public Sub ConvertToWhatIfTable()
+
+    ' --- CONSTANTS (local to function) ---
+    Const PROC_NAME As String = "ConvertToWhatIfTable"
+    Const CMD_TITLE As String = "Convert to What-If Data Table"
+
+    Dim wsCalc     As Worksheet
+    Dim rngInput   As Range
+    Dim rngFormula As Range
+    Dim rngResults As Range
+    Dim rngTable   As Range
+    Dim varVals    As Variant
+    Dim lngSides   As Long
+    Dim lngCols    As Long
+    Dim lngGames   As Long
+    Dim lngJ       As Long
+    Dim lngR       As Long
+    Dim lngErrors  As Long
+    Dim lngInterruptKey As Long
+    Dim blnKeysSet As Boolean
+    Dim strLabel   As String
+    Dim strMsg     As String
+    Dim strErr     As String
+
+    On Error GoTo ErrHandler
+
+    If TypeName(ActiveSheet) <> "Worksheet" Then
+        strMsg = CMD_TITLE & ": select a cell in a data table block first."
+        GoTo Cleanup
+    End If
+    Set wsCalc = ActiveSheet
+    Set rngInput = FindInputCell(wsCalc, ActiveCell, CMD_TITLE, strMsg)
+    If rngInput Is Nothing Then GoTo Cleanup
+
+    lngSides = SideColumnCount(rngInput)
+    lngCols = 1 + lngSides
+    Set rngFormula = rngInput.Offset(m_FORMULA_OFFSET_ROWS, 1).Resize(1, lngCols)
+    For lngJ = 1 To lngCols
+        If Not rngFormula.Cells(1, lngJ).HasFormula Then
+            strMsg = CMD_TITLE & ": " & OutputTitle(lngJ) & " (" & rngFormula.Cells(1, lngJ).Address(False, False) & _
+                     ") is not a formula - point it at your output first."
+            GoTo Cleanup
+        End If
+    Next lngJ
+
+    lngGames = CountGames(rngInput.Offset(m_BODY_OFFSET_ROWS, 0))
+    If lngGames = 0 Then
+        strMsg = CMD_TITLE & ": no game numbers below " & rngInput.Address(False, False) & "."
+        GoTo Cleanup
+    End If
+    Set rngResults = rngInput.Offset(m_BODY_OFFSET_ROWS, 1).Resize(lngGames, lngCols)
+    Set rngTable = rngInput.Offset(m_FORMULA_OFFSET_ROWS, 0).Resize(lngGames + 1, lngCols + 1)
+
+    If wsCalc.ProtectContents Then
+        strMsg = CMD_TITLE & ": " & wsCalc.Name & " is protected - unprotect it first."
+        GoTo Cleanup
+    End If
+    If IsNull(rngTable.MergeCells) Then
+        strMsg = CMD_TITLE & ": " & rngTable.Address(False, False) & " has merged cells."
+        GoTo Cleanup
+    ElseIf rngTable.MergeCells Then
+        strMsg = CMD_TITLE & ": " & rngTable.Address(False, False) & " has merged cells."
+        GoTo Cleanup
+    End If
+    For lngJ = 1 To lngCols
+        If HasTableFormulas(rngResults.Columns(lngJ)) Then
+            strMsg = CMD_TITLE & ": " & rngResults.Address(False, False) & " is already a What-If data table. " & _
+                     "Run HDT to fix it as values."
+            GoTo Cleanup
+        End If
+        ' An old What-If table running on below the last game would make Excel refuse the new one.
+        If HasTableFormulas(rngResults.Columns(lngJ).Offset(lngGames, 0).Resize(1, 1)) Then
+            strMsg = CMD_TITLE & ": a What-If data table carries on below the last game at " & _
+                     rngResults.Columns(lngJ).Offset(lngGames, 0).Resize(1, 1).Address(False, False) & " - run HDT on it first."
+            GoTo Cleanup
+        End If
+    Next lngJ
+    ' A What-If table substitutes each game into its input cell; a formula there is not a safe input.
+    If rngInput.HasFormula Then
+        strMsg = CMD_TITLE & ": the input cell " & rngInput.Address(False, False) & " holds a formula - type the " & _
+                 "Example# label back into it first."
+        GoTo Cleanup
+    End If
+
+    ' A loaded game goes back to its Example# label, so the example check shows the example again.
+    If VarType(rngInput.Value2) <> vbString Then
+        strLabel = ExampleLabel(rngInput)
+        If Len(strLabel) > 0 Then
+            rngInput.Value2 = strLabel
+            ForgetLabel rngInput
+        End If
+    End If
+
+    ' No key may cut the calculation short; Esc raises error 18 into the handler instead.
+    lngInterruptKey = Application.CalculationInterruptKey
+    Application.CalculationInterruptKey = xlNoKey
+    Application.EnableCancelKey = xlErrorHandler
+    blnKeysSet = True
+
+    rngTable.Table ColumnInput:=rngInput
+    Application.Calculate
+
+    varVals = rngResults.Value2
+    If IsArray(varVals) Then
+        For lngR = 1 To UBound(varVals, 1)
+            For lngJ = 1 To UBound(varVals, 2)
+                If IsError(varVals(lngR, lngJ)) Then lngErrors = lngErrors + 1
+            Next lngJ
+        Next lngR
+    ElseIf IsError(varVals) Then
+        lngErrors = 1
+    End If
+
+    strMsg = CMD_TITLE & " (" & wsCalc.Name & "): " & rngResults.Address(False, False) & " is now =TABLE(," & _
+             rngInput.Address(False, False) & "), " & lngGames & " games."
+    If lngErrors > 0 Then strMsg = strMsg & " " & lngErrors & " result(s) are errors."
+    If Application.Calculation <> xlCalculationAutomatic Then
+        strMsg = strMsg & " Calculation is not Automatic: press F9 after changes."
+    End If
+    strMsg = strMsg & " Run HDT to fix the results as values." & ExampleCheckText(rngInput)
+
+Cleanup:
+    On Error Resume Next
+    If blnKeysSet Then
+        Application.CalculationInterruptKey = lngInterruptKey
+        Application.EnableCancelKey = xlInterrupt
+    End If
+    If Len(strErr) > 0 Then
+        Application.StatusBar = Left$(CMD_TITLE & " failed - " & strErr, m_MAX_STATUS)
+    ElseIf Len(strMsg) > 0 Then
+        Application.StatusBar = Left$(strMsg, m_MAX_STATUS)
+    End If
+    Exit Sub
+
+ErrHandler:
+    If m_DEBUG_MODE Then Stop: Resume
+    strErr = Err.Number & ": " & Err.Description
+    If LogError(PROC_NAME, Err.Number, strErr) Then strErr = strErr & " - see " & LogLocation()
+    Resume Cleanup
+End Sub
+
+'--------------------------------------------< OA Robot >--------------------------------------------
+' Command Name:           Hardcode Data Table
+' Description:            Replaces a What-If data table's results with their values, so the workbook stops recalculating it
+' Macro Expression:       modDataTable.HardcodeDataTable()
+' Generated:              2026-10-23 (GitHub #20, Jaq: HDT)
+'----------------------------------------------------------------------------------------------------
+' Purpose: Fix a What-If data table's results as static values once the answers are in, so the workbook no longer
+'          recalculates it. Works on the What-If table holding the active cell (any Excel data table), else on the
+'          results of the data table block the active cell is in (after Convert to What-If Data Table). The workbook
+'          is calculated first, the results read in one hit, the TABLE() body cleared as a whole (Excel refuses to
+'          change part of one) and the values written back in one hit. Text is stored exactly as read (#16).
+Public Sub HardcodeDataTable()
+
+    ' --- CONSTANTS (local to function) ---
+    Const PROC_NAME As String = "HardcodeDataTable"
+    Const CMD_TITLE As String = "Hardcode Data Table"
+
+    Dim wsCalc    As Worksheet
+    Dim rngInput  As Range
+    Dim rngBody   As Range
+    Dim varVals   As Variant
+    Dim varOne    As Variant
+    Dim blnTable  As Boolean
+    Dim blnArray  As Boolean
+    Dim blnKeysSet As Boolean
+    Dim blnCleared As Boolean
+    Dim blnWritten As Boolean
+    Dim lngInterruptKey As Long
+    Dim lngJ      As Long
+    Dim lngR      As Long
+    Dim lngGames  As Long
+    Dim lngErrors As Long
+    Dim strMsg    As String
+    Dim strErr    As String
+
+    On Error GoTo ErrHandler
+
+    If TypeName(ActiveSheet) <> "Worksheet" Then
+        strMsg = CMD_TITLE & ": select a cell in a data table first."
+        GoTo Cleanup
+    End If
+    Set wsCalc = ActiveSheet
+
+    ' 1. The active cell is in a What-If table body: that table.
+    If HasTableFormulas(ActiveCell) Then
+        ' Probe: CurrentArray raises when the cell is not part of an array.
+        On Error Resume Next
+        blnArray = ActiveCell.HasArray
+        If blnArray Then Set rngBody = TableBody(ActiveCell.CurrentArray)
+        On Error GoTo ErrHandler
+    End If
+    ' 2. Otherwise the results of the block the active cell is in.
+    If rngBody Is Nothing Then
+        Set rngInput = FindInputCell(wsCalc, ActiveCell, CMD_TITLE, strMsg)
+        If rngInput Is Nothing Then GoTo Cleanup
+        lngGames = CountGames(rngInput.Offset(m_BODY_OFFSET_ROWS, 0))
+        If lngGames = 0 Then
+            strMsg = CMD_TITLE & ": no game numbers below " & rngInput.Address(False, False) & "."
+            GoTo Cleanup
+        End If
+        Set rngBody = rngInput.Offset(m_BODY_OFFSET_ROWS, 1).Resize(lngGames, 1 + SideColumnCount(rngInput))
+        ' A What-If table built over the block covers the whole body; take its full extent.
+        If HasTableFormulas(rngBody.Cells(1, 1)) Then
+            On Error Resume Next
+            Set rngBody = TableBody(rngBody.Cells(1, 1).CurrentArray)
+            On Error GoTo ErrHandler
+        End If
+    End If
+    If rngBody Is Nothing Then
+        strMsg = CMD_TITLE & ": could not find the data table's results - select a result cell inside it."
+        GoTo Cleanup
+    End If
+
+    For lngJ = 1 To rngBody.Columns.Count
+        If HasTableFormulas(rngBody.Columns(lngJ)) Then blnTable = True
+    Next lngJ
+    If Not blnTable Then
+        strMsg = CMD_TITLE & ": " & rngBody.Address(False, False) & " holds no What-If data table - nothing to do."
+        GoTo Cleanup
+    End If
+    If wsCalc.ProtectContents Then
+        strMsg = CMD_TITLE & ": " & wsCalc.Name & " is protected - unprotect it first."
+        GoTo Cleanup
+    End If
+
+    ' A key press must not cut the calculation short (an interrupted calculation raises nothing and would be
+    ' fixed as values); Esc raises error 18 into the handler instead, so Cleanup always runs.
+    lngInterruptKey = Application.CalculationInterruptKey
+    Application.CalculationInterruptKey = xlNoKey
+    Application.EnableCancelKey = xlErrorHandler
+    blnKeysSet = True
+
+    ' Calculate first: under "Automatic except for data tables" the table may be out of date.
+    Application.Calculate
+    If rngBody.Cells.Count = 1 Then
+        ReDim varVals(1 To 1, 1 To 1)
+        varVals(1, 1) = rngBody.Value2
+    Else
+        varVals = rngBody.Value2
+    End If
+    For lngR = 1 To UBound(varVals, 1)
+        For lngJ = 1 To UBound(varVals, 2)
+            varOne = varVals(lngR, lngJ)
+            If IsError(varOne) Then lngErrors = lngErrors + 1
+            varVals(lngR, lngJ) = AsStored(varOne)
+        Next lngJ
+    Next lngR
+
+    rngBody.ClearContents
+    blnCleared = True
+    rngBody.Value2 = varVals
+    blnWritten = True
+    Application.Calculate
+
+    strMsg = CMD_TITLE & " (" & wsCalc.Name & "): " & rngBody.Address(False, False) & " is now values (" & _
+             rngBody.Cells.Count & " cells)."
+    If lngErrors > 0 Then strMsg = strMsg & " " & lngErrors & " of them are errors."
+    If Not rngInput Is Nothing Then strMsg = strMsg & ExampleCheckText(rngInput)
+
+Cleanup:
+    On Error Resume Next
+    ' Cleared but not written: put the values back, so linked answers never read an empty body as 0.
+    If blnCleared And Not blnWritten Then rngBody.Value2 = varVals
+    If blnKeysSet Then
+        Application.CalculationInterruptKey = lngInterruptKey
+        Application.EnableCancelKey = xlInterrupt
+    End If
+    If Len(strErr) > 0 Then
+        Application.StatusBar = Left$(CMD_TITLE & " failed - " & strErr, m_MAX_STATUS)
+    ElseIf Len(strMsg) > 0 Then
+        Application.StatusBar = Left$(strMsg, m_MAX_STATUS)
+    End If
+    Exit Sub
+
+ErrHandler:
+    If m_DEBUG_MODE Then Stop: Resume
+    strErr = Err.Number & ": " & Err.Description
+    If LogError(PROC_NAME, Err.Number, strErr) Then strErr = strErr & " - see " & LogLocation()
+    Resume Cleanup
+End Sub
+
+' Purpose: The results body of a What-If data table. CurrentArray on a TABLE() cell returns the WHOLE table: the
+'          formula row and the input-value column as well as the results. The body is everything below the first
+'          row and right of the first column. Nothing when the range is too small to have a body. Never raises.
+Private Function TableBody(ByVal rngWhole As Range) As Range
+    On Error GoTo ErrHandler
+    If rngWhole.Rows.Count > 1 And rngWhole.Columns.Count > 1 Then
+        Set TableBody = rngWhole.Offset(1, 1).Resize(rngWhole.Rows.Count - 1, rngWhole.Columns.Count - 1)
+    End If
+    Exit Function
+
+ErrHandler:
+    If m_DEBUG_MODE Then Stop: Resume
+    Set TableBody = Nothing
+End Function
 
 '--------------------------------------------< OA Robot >--------------------------------------------
 ' Command Name:           Create Data Table
@@ -1793,7 +2146,6 @@ Private Function ChooseRecalcScope(ByVal wsCalc As Worksheet, ByVal rngInput As 
                                    ByRef strWhy As String) As Long
 
     ' --- CONSTANTS (local to function) ---
-    Const PROBE_SENTINEL As Double = -987654321#
     Const MIN_GAMES As Long = 4             ' below this the check can never pay for itself
     Const SCAN_ALLOWANCE As Double = 0.25   ' seconds the structural scan may need on a large sheet
 
@@ -1839,7 +2191,7 @@ Private Function ChooseRecalcScope(ByVal wsCalc As Worksheet, ByVal rngInput As 
         varFull = rngFormula.Value2
 
         ' Park everything on the sentinel, then read the same game with a sheet-only recalculation.
-        If Not ParkOnSentinel(rngInput, PROBE_SENTINEL) Then
+        If Not ParkOnSentinel(rngInput, m_CLEAR_VALUE) Then
             strWhy = "full - calculation did not finish"
             GoTo Cleanup
         End If
@@ -1920,10 +2272,12 @@ End Function
 '          the output is redone in full, #12, and counted in lngRechecked), else every open workbook until Excel
 '          says it is done. blnDirty: mark every formula on the sheet dirty first, for stale cells that no
 '          calculation reaches otherwise (#17). Only this sheet is marked: a stale cell on another sheet is not
-'          reached. Returns False if a full calculation did not finish. Esc (error 18) is passed up.
-Private Function RecalcGame(ByVal wsCalc As Worksheet, ByVal rngFormula As Range, ByRef blnLive() As Boolean, _
-                            ByVal blnSheetOnly As Boolean, ByVal blnDirty As Boolean, _
-                            ByRef lngRechecked As Long) As Boolean
+'          reached. When a full calculation never reports finished, the game is redone from the clear value
+'          and kept only if its output settles (SettledRecalc, #20); blnSettled is then set True.
+'          Returns False if the output could not be trusted. Esc (error 18) is passed up.
+Private Function RecalcGame(ByVal wsCalc As Worksheet, ByVal rngInput As Range, ByVal rngFormula As Range, _
+                            ByRef blnLive() As Boolean, ByVal blnSheetOnly As Boolean, ByVal blnDirty As Boolean, _
+                            ByRef lngRechecked As Long, ByRef blnSettled As Boolean) As Boolean
 
     On Error GoTo ErrHandler
 
@@ -1936,8 +2290,16 @@ Private Function RecalcGame(ByVal wsCalc As Worksheet, ByVal rngFormula As Range
             lngRechecked = lngRechecked + 1
             RecalcGame = CalculateToDone()
         End If
-    Else
+    ElseIf Not m_blnNeverDone Then
         RecalcGame = CalculateToDone()
+    End If
+    If Not RecalcGame Then
+        If Not m_blnNeverDone Then
+            m_blnNeverDone = True
+            m_strNeverState = CalcStateText()
+        End If
+        RecalcGame = SettledRecalc(wsCalc, rngInput, rngFormula, blnLive)
+        If RecalcGame Then blnSettled = True
     End If
 
 Cleanup:
@@ -1948,6 +2310,132 @@ ErrHandler:
     If Err.Number = 18 Then Err.Raise 18
     RecalcGame = False
     Resume Cleanup
+End Function
+
+' Purpose: The game in rngInput, recalculated without relying on Excel saying the calculation finished. On some
+'          machines Application.CalculationState never reaches xlDone although nothing is left to calculate (#20:
+'          every game came back #N/A while the example matched). The game starts from the clear value, so the
+'          output is seen to move; if any filled column has not moved, the sheet is marked dirty and calculated
+'          again. It is kept (True) only if one more calculation leaves it unchanged. Leaves the game in rngInput,
+'          on the error path too. Esc (error 18) is passed up.
+Private Function SettledRecalc(ByVal wsCalc As Worksheet, ByVal rngInput As Range, ByVal rngFormula As Range, _
+                               ByRef blnLive() As Boolean) As Boolean
+
+    Dim varGame  As Variant
+    Dim varClear As Variant
+    Dim varFirst As Variant
+    Dim blnParked As Boolean
+    Dim lngErr   As Long
+    Dim strDesc  As String
+
+    On Error GoTo ErrHandler
+
+    varGame = rngInput.Value2
+    rngInput.Value2 = m_CLEAR_VALUE
+    blnParked = True
+    Application.Calculate
+    varClear = rngFormula.Value2
+
+    rngInput.Value2 = varGame
+    blnParked = False
+    Application.Calculate
+    varFirst = rngFormula.Value2
+    If AnyLiveUnmoved(varFirst, varClear, blnLive) Then
+        wsCalc.UsedRange.Dirty
+        Application.Calculate
+        varFirst = rngFormula.Value2
+    End If
+
+    Application.Calculate
+    SettledRecalc = SameValues(rngFormula.Value2, varFirst)
+
+Cleanup:
+    Exit Function
+
+ErrHandler:
+    If m_DEBUG_MODE Then Stop: Resume
+    ' Kept first: the call below returns with Err cleared.
+    lngErr = Err.Number
+    strDesc = Err.Description
+    ' Put the game back, so no caller reads the clear value's output as this game's.
+    If blnParked Then PutValueBack rngInput, varGame
+    If lngErr = 18 Then Err.Raise 18
+    LogError "SettledRecalc", lngErr, strDesc
+    SettledRecalc = False
+    Resume Cleanup
+End Function
+
+' Purpose: Write varValue into rngCell from an error handler. Never raises.
+Private Sub PutValueBack(ByVal rngCell As Range, ByVal varValue As Variant)
+    On Error GoTo ErrHandler
+    rngCell.Value2 = varValue
+    Exit Sub
+
+ErrHandler:
+    If m_DEBUG_MODE Then Stop: Resume
+End Sub
+
+' Purpose: True if any filled column of the output row reads the same in varA and varB (a scalar for a one-cell
+'          row, else a 1 x n array). Unsure (an error here) = True, so the caller does the extra dirty recalc.
+Private Function AnyLiveUnmoved(ByVal varA As Variant, ByVal varB As Variant, ByRef blnLive() As Boolean) As Boolean
+
+    Dim lngJ As Long
+
+    On Error GoTo ErrHandler
+
+    If IsArray(varA) And IsArray(varB) Then
+        For lngJ = LBound(blnLive) To UBound(blnLive)
+            If blnLive(lngJ) Then
+                If SameResult(varA(1, lngJ), varB(1, lngJ)) Then
+                    AnyLiveUnmoved = True
+                    Exit For
+                End If
+            End If
+        Next lngJ
+    Else
+        AnyLiveUnmoved = SameValues(varA, varB)
+    End If
+
+Cleanup:
+    Exit Function
+
+ErrHandler:
+    If m_DEBUG_MODE Then Stop: Resume
+    If Err.Number = 18 Then Err.Raise 18
+    AnyLiveUnmoved = True
+    Resume Cleanup
+End Function
+
+' Purpose: Excel's calculation mode in a few words, for the StatusBar.
+Private Function CalcModeText() As String
+    On Error GoTo ErrHandler
+    Select Case Application.Calculation
+        Case xlCalculationAutomatic:     CalcModeText = "auto"
+        Case xlCalculationSemiautomatic: CalcModeText = "auto except tables"
+        Case xlCalculationManual:        CalcModeText = "manual"
+        Case Else:                       CalcModeText = CStr(Application.Calculation)
+    End Select
+    Exit Function
+
+ErrHandler:
+    If m_DEBUG_MODE Then Stop: Resume
+    CalcModeText = "unknown"
+End Function
+
+' Purpose: Excel's calculation state as a word, for the StatusBar.
+Private Function CalcStateText() As String
+    On Error GoTo ErrHandler
+    Select Case Application.CalculationState
+        Case xlDone:        CalcStateText = "done"
+        Case xlCalculating: CalcStateText = "calculating"
+        Case xlPending:     CalcStateText = "pending"
+        Case Else:          CalcStateText = CStr(Application.CalculationState)
+    End Select
+    Exit Function
+
+ErrHandler:
+    If m_DEBUG_MODE Then Stop: Resume
+    CalcStateText = "unknown"
 End Function
 
 ' Purpose: True if a recalculation leaves the solve stale (#17): for the first and the last game, the output after
@@ -1962,6 +2450,7 @@ Private Function StaleOnRecalc(ByVal wsCalc As Worksheet, ByVal rngInput As Rang
     Dim lngI As Long
     Dim lngCount As Long
     Dim lngUnused As Long
+    Dim blnUnused As Boolean
     Dim varNormal As Variant
 
     On Error GoTo ErrHandler
@@ -1971,9 +2460,9 @@ Private Function StaleOnRecalc(ByVal wsCalc As Worksheet, ByVal rngInput As Rang
         If lngPick = 1 Then lngI = 1 Else lngI = lngCount
         If lngPick = 2 And lngCount = 1 Then Exit For
         rngInput.Value2 = varGames(lngI, 1)
-        If Not RecalcGame(wsCalc, rngFormula, blnLive, blnSheetOnly, False, lngUnused) Then GoTo Cleanup
+        If Not RecalcGame(wsCalc, rngInput, rngFormula, blnLive, blnSheetOnly, False, lngUnused, blnUnused) Then GoTo Cleanup
         varNormal = rngFormula.Value2
-        If Not RecalcGame(wsCalc, rngFormula, blnLive, blnSheetOnly, True, lngUnused) Then GoTo Cleanup
+        If Not RecalcGame(wsCalc, rngInput, rngFormula, blnLive, blnSheetOnly, True, lngUnused, blnUnused) Then GoTo Cleanup
         If Not SameValues(rngFormula.Value2, varNormal) Then
             strWhy = "stale on game " & SafeText(varGames(lngI, 1))
             StaleOnRecalc = True
@@ -2037,6 +2526,7 @@ Private Function CalculateToDone() As Boolean
             Exit For
         End If
     Next lngPass
+    If m_SIM_NEVER_DONE Then CalculateToDone = False
 
 Cleanup:
     Exit Function
@@ -2961,6 +3451,7 @@ ErrHandler:
     If m_DEBUG_MODE Then Stop: Resume
     SlowdownsIn = vbNullString
 End Function
+
 
 
 

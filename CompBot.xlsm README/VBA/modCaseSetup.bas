@@ -38,6 +38,8 @@ Private Const m_MAX_LEVEL_SHAPES    As Long = 5
 Private Const m_MAX_BACKUP_SHAPES   As Long = 50
 Private Const m_ERR_CASE_SHEET      As Long = vbObjectError + 513
 Private Const m_ERR_NOT_FOUND       As Long = vbObjectError + 514
+Private Const m_DOCK_COMMAND        As String = "Show Bonus Dock"       ' opened by the OpenBonusDock step
+Private Const m_ROBOT_PROGID        As String = "OARobot.ExcelAddin"    ' OA Robot's own object: RunCommandByName
 
 ' --- MODULE VARIABLES ---
 Private m_blnInSetup                As Boolean  ' True while Setup is running its steps
@@ -69,6 +71,9 @@ Private m_strSetupInfo              As String   ' something a step did that the 
 '          Sheet renaming and unmerging are deliberately NOT part of setup (Jaq, 2026-09-14,
 '          2026-09-24). Each step can be switched off per user in Setup Case Settings (SCS);
 '          the step names below are the setting keys (modSetupSettings.SettingKeys).
+'          Since GitHub #19 (Jaq, 2026-10-23) the last steps add the level summary and open the bonus
+'          dock, and Setup finishes on L01 (else the case sheet) with the dock open beside it. Both run
+'          before Import Case Lambdas, which is chained after this command.
 Public Sub Setup()
 
     Dim wbCase As Workbook
@@ -79,6 +84,7 @@ Public Sub Setup()
     Dim blnScreen As Boolean
     Dim blnAlerts As Boolean
     Dim blnEvents As Boolean
+    Dim blnLanded As Boolean
 
     On Error GoTo ErrHandler
 
@@ -101,9 +107,15 @@ Public Sub Setup()
     RunSetupStep "CreateLevelSheets", strFailed, strNotes
     RunSetupStep "CreateBonusSheet", strFailed, strNotes
     RunSetupStep "CreateCaseInputsSheet", strFailed, strNotes
+    RunSetupStep "LevelSummary", strFailed, strNotes
+    ' Land first, then open the dock: the dock reads the active workbook, and the user starts on this sheet.
+    LandAfterSetup wbCase
+    blnLanded = True
+    RunSetupStep "OpenBonusDock", strFailed, strNotes
 
 Cleanup:
     On Error Resume Next
+    If Not blnLanded Then LandAfterSetup wbCase
     Application.Calculation = varCalc
     Application.ScreenUpdating = blnScreen
     Application.DisplayAlerts = blnAlerts
@@ -123,18 +135,6 @@ Cleanup:
     If Len(strNotes) > 0 Then strMsg = strMsg & " Skipped -" & strNotes
     Application.StatusBar = Left$(strMsg, m_MAX_STATUS)
     m_strSetupInfo = vbNullString
-
-    ' Land on a sheet ready to work: the bonus sheet if one was made, else Level 1.
-    ' Activate is deliberate here - putting the user on a sheet is the purpose.
-    If Not wbCase Is Nothing Then
-        ' Worksheet.Activate fails if another workbook's window is in front - bring the case forward first.
-        wbCase.Activate
-        If SheetNameTaken(wbCase, "B") Then
-            wbCase.Worksheets("B").Activate
-        ElseIf SheetNameTaken(wbCase, "L01") Then
-            wbCase.Worksheets("L01").Activate
-        End If
-    End If
     Exit Sub
 
 ErrHandler:
@@ -168,6 +168,8 @@ Private Sub RunSetupStep(ByVal strStep As String, ByRef strFailed As String, ByR
         Case "CreateLevelSheets":       CreateLevelSheets
         Case "CreateBonusSheet":        CreateBonusSheet
         Case "CreateCaseInputsSheet":   CreateCaseInputsSheet "detailed"
+        Case "LevelSummary":            LevelSummaryStep
+        Case "OpenBonusDock":           OpenBonusDockStep
     End Select
 
 Cleanup:
@@ -186,6 +188,133 @@ ErrHandler:
     If LogError(strStep, Err.Number, Err.Description) Then m_blnLogWritten = True
     Resume Cleanup
 End Sub
+
+' Purpose: The LevelSummary step (GitHub #19): each level's difficulty, points and bonus points as a table
+'          beside the case intro and below the bonuses on sheet B (modLevelSummary).
+Private Sub LevelSummaryStep()
+
+    ' --- CONSTANTS (local to function) ---
+    Const PROC_NAME As String = "LevelSummary"
+
+    Dim wb As Workbook
+    Dim ws As Worksheet
+    Dim strNote As String
+    Dim blnLogged As Boolean
+
+    On Error GoTo ErrHandler
+
+    Set wb = ActiveWorkbook
+    Set ws = GetCaseSheet(wb)
+    If ws Is Nothing Then Err.Raise m_ERR_CASE_SHEET, PROC_NAME, "Case sheet not found"
+
+    If modLevelSummary.AddLevelSummary(wb, ws, strNote, blnLogged) Then
+        m_strStepNote = strNote                 ' "" when written in full, else what was left out and why
+    Else
+        m_strStepError = strNote
+        If blnLogged Then m_blnLogWritten = True
+    End If
+
+Cleanup:
+    Exit Sub
+
+ErrHandler:
+    If m_DEBUG_MODE Then Stop: Resume
+    m_strStepError = Err.Number & ": " & Err.Description
+    If LogError(PROC_NAME, Err.Number, Err.Description) Then m_blnLogWritten = True
+    Resume Cleanup
+End Sub
+
+' Purpose: The OpenBonusDock step (Jaq, 2026-10-23): runs Show Bonus Dock (BQ) through OA Robot, so the case
+'          opens with its bonuses in view. OA Robot's RunCommandByName is the only way to show a task pane from
+'          VBA; it works from inside a running command (tested 2026-10-23).
+Private Sub OpenBonusDockStep()
+
+    ' --- CONSTANTS (local to function) ---
+    Const PROC_NAME As String = "OpenBonusDock"
+
+    Dim objRobot As Object
+
+    On Error GoTo ErrHandler
+
+    Set objRobot = CreateObject(m_ROBOT_PROGID)
+    objRobot.RunCommandByName m_DOCK_COMMAND
+
+Cleanup:
+    Set objRobot = Nothing
+    Exit Sub
+
+ErrHandler:
+    If m_DEBUG_MODE Then Stop: Resume
+    m_strStepError = Err.Number & ": " & Err.Description
+    If LogError(PROC_NAME, Err.Number, Err.Description) Then m_blnLogWritten = True
+    Resume Cleanup
+End Sub
+
+' Purpose: Put the user where the solve starts (Jaq, 2026-10-23): the first level sheet when Create Level Sheets
+'          made one, else the case sheet, whatever it is called. Never sheet B or the inputs sheet. Activate is
+'          deliberate here - putting the user on a sheet is the purpose. Never raises, never asks.
+Private Sub LandAfterSetup(ByVal wbCase As Workbook)
+
+    Dim wsLand As Worksheet
+
+    On Error GoTo ErrHandler
+
+    If wbCase Is Nothing Then GoTo Cleanup
+    If SheetNameTaken(wbCase, "L01") Then
+        Set wsLand = wbCase.Worksheets("L01")
+    Else
+        Set wsLand = QuietCaseSheet(wbCase)
+    End If
+    If wsLand Is Nothing Then GoTo Cleanup
+
+    ' Worksheet.Activate fails if another workbook's window is in front - bring the case forward first.
+    wbCase.Activate
+    wsLand.Activate
+
+Cleanup:
+    Exit Sub
+
+ErrHandler:
+    If m_DEBUG_MODE Then Stop: Resume
+    If LogError("LandAfterSetup", Err.Number, Err.Description) Then m_blnLogWritten = True
+    Resume Cleanup
+End Sub
+
+' Purpose: The case sheet without the "What is the case sheet called?" box: the name already given this Setup
+'          run, else Case / Case-Varsity / Task, else the sheet with the most level headings. Nothing if none.
+Private Function QuietCaseSheet(ByVal wb As Workbook) As Worksheet
+
+    Dim ws As Worksheet
+    Dim varName As Variant
+
+    On Error GoTo ErrHandler
+
+    If m_blnCaseAsked And Len(m_strCaseSheet) > 0 Then
+        ' Probe: the name was typed by the user.
+        On Error Resume Next
+        Set ws = wb.Worksheets(m_strCaseSheet)
+        On Error GoTo ErrHandler
+    End If
+    If ws Is Nothing Then
+        For Each varName In Array("Case", "Case-Varsity", "Task")
+            ' Probe: the sheet may simply not exist.
+            On Error Resume Next
+            Set ws = wb.Worksheets(CStr(varName))
+            On Error GoTo ErrHandler
+            If Not ws Is Nothing Then Exit For
+        Next varName
+    End If
+    If ws Is Nothing Then Set ws = modLevelSummary.LevelSourceSheet(wb)
+    Set QuietCaseSheet = ws
+
+Cleanup:
+    Exit Function
+
+ErrHandler:
+    If m_DEBUG_MODE Then Stop: Resume
+    Set QuietCaseSheet = Nothing
+    Resume Cleanup
+End Function
 
 ' Purpose: Setup's first step. Saves the case as a working copy (Save As, suffix m_COPY_SUFFIX) so
 '          every later step, and the solve, happen in the copy and the original file is never
@@ -1190,6 +1319,10 @@ Public Sub CreateBonusSheet()
     'create new worksheet for bonuses
     Set wsNew = wb.Sheets.Add(After:=wb.Sheets(ws.Index))
     wsNew.Name = "B"
+    ' A new sheet shows Excel's gridlines. The copied bonus rows hide them with their white fill, the rows below
+    ' (where the Dr. Kazza level table goes) did not (Jaq, 2026-10-23). The new sheet is the active one in its
+    ' window right now, which is what HideGridlines needs.
+    HideGridlines wsNew
 
     '____________________COPY DATA________________________________________________
     'copy rows to new worksheet - with their images, unless there are more than the cap (GitHub #14)
@@ -3509,6 +3642,7 @@ ErrHandler:
     If m_DEBUG_MODE Then Stop: Resume
     SafeText = vbNullString
 End Function
+
 
 
 

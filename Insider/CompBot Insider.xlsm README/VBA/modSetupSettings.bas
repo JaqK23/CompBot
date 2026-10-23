@@ -26,8 +26,8 @@ Private Const m_DEBUG_MODE          As Boolean = False
 Private Const m_SHEET_CODENAME      As String = "shtSetupSettings"   ' tab: Setup Settings
 Private Const m_FIRST_ROW           As Long = 11     ' first step row on the sheet
 Private Const m_CHOICE_COL          As Long = 3      ' column C: the yellow choices
-Private Const m_LIBRARY_ROW         As Long = 22     ' library file name; its full path is the row below
-Private Const m_SOLVE_ROW           As Long = 24     ' Solve folder name (SSF); its full path is the row below
+Private Const m_LIBRARY_ROW         As Long = 24     ' library file name; its full path is the row below
+Private Const m_SOLVE_ROW           As Long = 26     ' Solve folder name (SSF); its full path is the row below
 ' The Solve folder is a path on this machine, so like the lambda library it lives in the registry
 ' (HKCU\...\VB and VBA Program Settings\CompBot\Setup), not on the sheet: it survives every CompBot update.
 Private Const m_REG_APP             As String = "CompBot"
@@ -46,10 +46,12 @@ Private m_blnLoading                As Boolean       ' the sheet is being filled
 
 ' Purpose: the settings, in sheet order from m_FIRST_ROW. The step keys are Setup's own step names
 '          (modCaseSetup.RunSetupStep), so a step and its setting cannot drift apart; the last is the
-'          lambda winner.
+'          lambda winner. LevelSummary and OpenBonusDock added for GitHub #19 (2026-10-23): rows 17 and 18,
+'          which moved the library and Solve folder rows down two.
 Private Function SettingKeys() As Variant
     SettingKeys = Array("SaveCopy", "Backup", "NameAllUsedRanges", "CreateLevelSheets", "CreateBonusSheet", _
-                        "CreateCaseInputsSheet", "ImportLibrary", "ImportCompBot", m_WINNER_KEY)
+                        "CreateCaseInputsSheet", "LevelSummary", "OpenBonusDock", "ImportLibrary", "ImportCompBot", _
+                        m_WINNER_KEY)
 End Function
 
 
@@ -449,6 +451,7 @@ Private Function SettingsSheet() As Worksheet
         End If
     Next wsItem
 End Function
+
 
 
 

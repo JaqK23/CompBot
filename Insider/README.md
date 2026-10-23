@@ -38,9 +38,13 @@ Why it matters: spilled helpers cannot be filled down, because the spills collid
 cell, so a whole solve chain copies down like an ordinary row, and you still get to build and debug with
 visible spills.
 
-Version: 2026.10.5 Insider, built from CompBot 2026.10.5. Definitions: [CompBot Insider Readme](CompBot%20Insider.xlsm%20README/CompBot%20Insider.xlsm%20README.md).
+Version: 2026.10.6 Insider, built from CompBot 2026.10.6. Definitions: [CompBot Insider Readme](CompBot%20Insider.xlsm%20README/CompBot%20Insider.xlsm%20README.md).
 
-What changed: 2026.10.5 (22 Oct) Create Data Table finds every input column, including one the
+What changed: 2026.10.6 (23 Oct) Full Setup Case adds the Dr. Kazza level table (each level's
+difficulty, points and bonus points), lands on L01 with the bonus dock open, and sheet B has no
+gridlines (issue #19, thanks to Dr. Kazza); Run Data Table no longer writes #N/A for every game when
+Excel never reports a calculation as finished (issue #20, thanks to Chien Chi-He); new Convert to
+What-If Data Table (WDT) and Hardcode Data Table (HDT), a backup for RDT. 2026.10.5 (22 Oct) Create Data Table finds every input column, including one the
 example leaves blank but the games fill in (issue #15); Run Data Table keeps text answers such as
 2-5-00 as text (issue #16), recalculates the whole sheet for every game when a cell stays on an old
 value, and warns when every game gives the same answer (issue #17); Clear Unused Lambdas keeps a

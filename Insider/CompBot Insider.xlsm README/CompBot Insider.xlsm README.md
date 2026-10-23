@@ -2,7 +2,7 @@
 
 \*\*CompBot Insider.xlsm\*\* contains definitions for:
 
-[111 Robot Commands](#command-definitions)<BR>[33 Robot Texts](#text-definitions)<BR>
+[113 Robot Commands](#command-definitions)<BR>[33 Robot Texts](#text-definitions)<BR>
 
 <BR>
 
@@ -59,7 +59,7 @@
 | [Save Answer To Bonus 3](#save-answer-to-bonus-3) | Links the active cell (any sheet) into the Bonus 3 answer cell, goes there and copies it for the submission site. |
 | [Save Answer To Bonus 4](#save-answer-to-bonus-4) | Links the active cell (any sheet) into the Bonus 4 answer cell, goes there and copies it for the submission site. |
 | [Save Answer To Bonus 5](#save-answer-to-bonus-5) | Links the active cell (any sheet) into the Bonus 5 answer cell, goes there and copies it for the submission site. |
-| [Show Bonus Dock](#show-bonus-dock) | Shows the open bonus questions in a dock on the right; answered ones drop off |
+| [Show Bonus Dock](#show-bonus-dock) | Shows the open bonus questions in a dock on the right; answered ones drop off. Ends with the Dr. Kazza level table |
 | [Stop Walk Route](#stop-walk-route) | Ends a walk route by hand and writes it out, for when a diagonal click is awkward to reach |
 
 ### Color
@@ -78,7 +78,9 @@
 
 | Name | Description |
 | --- | --- |
+| [Convert to What\-If Data Table](#convert-to-what-if-data-table) | Backup for RDT: turns the level's data table block into an Excel What\-If data table (\=TABLE), so Excel fills every game itself |
 | [Create Data Table Here](#create-data-table-here) | Builds the level's data table block at the selected cell, else beside the inputs |
+| [Hardcode Data Table](#hardcode-data-table) | Replaces a What\-If data table's results with their values, so the workbook stops recalculating it |
 | [Link Answer Cell](#link-answer-cell) | Points the level's data table ANSWER cell at the active cell (your calculation's output); then run RDT |
 | [Link Side Cell](#link-side-cell) | Data table: adds a bonus SIDE column pointed at the active cell; RDT fills it |
 
@@ -178,13 +180,15 @@
 | [Backup Sheets in Workbook](#backup-sheets-in-workbook) | Copy all sheets in workbook for backup |
 | [Clear Lambda Library](#clear-lambda-library) | Forgets your saved lambda library, so ILL and Full Setup Case stop loading it |
 | [Clear Solve Folder](#clear-solve-folder) | Forgets your Solve folder, so Full Setup Case saves the \_Solve copy next to the case again |
+| [Convert to What\-If Data Table](#convert-to-what-if-data-table) | Backup for RDT: turns the level's data table block into an Excel What\-If data table (\=TABLE), so Excel fills every game itself |
 | [Create Blank Sheet](#create-blank-sheet) | Creates a blank sheet named based on cell value (Sht otherwise) |
 | [Create Bonus Sheet](#create-bonus-sheet) | Creates bonus sheet "B" with bonus questions |
 | [Create Case Inputs Sheet](#create-case-inputs-sheet) | Creates a case inputs sheet: one row per game with its Game and Level, then every input; names each level L01\_Inputs, L02\_Inputs, ... |
 | [Create Data Table](#create-data-table) | Builds (or finds) the data table block for the level you are in, beside its inputs, and lands on the last input; fill it with Run Data Table (RDT) |
 | [Create Data Table Here](#create-data-table-here) | Builds the level's data table block at the selected cell, else beside the inputs |
 | [Create Level Sheets](#create-level-sheets) | Creates a sheet for each level in the Case sheet |
-| [Full Setup Case](#full-setup-case) | Sets up the case: saves a \_Solve copy, backs up the sheets, creates the level, bonus and Case inputs sheets, then imports lambdas. Choose the steps with SCS |
+| [Full Setup Case](#full-setup-case) | Sets up the case: saves a \_Solve copy, backs up the sheets, creates the level, bonus and Case inputs sheets, adds the Dr. Kazza level table, opens the bonus dock on L01, then imports lambdas. Choose the steps with SCS |
+| [Hardcode Data Table](#hardcode-data-table) | Replaces a What\-If data table's results with their values, so the workbook stops recalculating it |
 | [Import Case Lambdas](#import-case-lambdas) | Your library (if set) and CompBot's lambdas, the winner first, into the active workbook. Chained after Full Setup Case |
 | [Import Lambda Library](#import-lambda-library) | Loads YOUR own lambda library (set once with SLL) into the active workbook: its lambdas and its stored values (named constants) |
 | [Import Lambdas From CompBot](#import-lambdas-from-compbot) | Loads CompBot's own lambdas into the active workbook, replacing older copies unless SCS says your library wins |
@@ -447,7 +451,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modCaseSetup.Backup](./VBA/modCaseSetup.bas#L429)()</code> |
+| Macro Expression | <code>[modCaseSetup.Backup](./VBA/modCaseSetup.bas#L558)()</code> |
 | Macro Workbook Connection | ThisWorkbook |
 | Launch Codes | <code>BU</code> |
 
@@ -465,7 +469,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modBonusDock.ClearBonusFromDock](./VBA/modBonusDock.bas#L176)({{bonus_to_clear}})</code> |
+| Macro Expression | <code>[modBonusDock.ClearBonusFromDock](./VBA/modBonusDock.bas#L194)({{bonus_to_clear}})</code> |
 | Parameters | <ol><li>[bonus_to_clear](#clear-bonus-from-dock--bonus_to_clear)</li></ol> |
 | Command After | [Show Bonus Dock](#show-bonus-dock) |
 | Launch Codes | <code>BQX</code> |
@@ -528,7 +532,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modSetupSettings.ClearSolveFolder](./VBA/modSetupSettings.bas#L135)()</code> |
+| Macro Expression | <code>[modSetupSettings.ClearSolveFolder](./VBA/modSetupSettings.bas#L137)()</code> |
 | Launch Codes | <code>CSF</code> |
 
 [^Top](#oa-robot-definitions)
@@ -545,7 +549,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modBonusDock.ClearBonusStatusBar](./VBA/modBonusDock.bas#L361)()</code> |
+| Macro Expression | <code>[modBonusDock.ClearBonusStatusBar](./VBA/modBonusDock.bas#L379)()</code> |
 | Launch Codes | <code>CSB</code> |
 
 [^Top](#oa-robot-definitions)
@@ -579,6 +583,23 @@
 | Property | Value |
 | --- | --- |
 | Macro Expression | <code>[modLambdas.ClearUnusedLambdas](./VBA/modLambdas.bas#L1577)(1)</code> |
+
+[^Top](#oa-robot-definitions)
+
+<BR>
+
+### Convert to What\-If Data Table
+
+*Backup for RDT: turns the level's data table block into an Excel What\-If data table (\=TABLE), so Excel fills every game itself*
+
+<sup>`@CompBot Insider.xlsm` `!VBA Macro Command` `#Prep` `#DataTable`</sup>
+
+> \*\*Note:\*\* For when Run Data Table (RDT) misbehaves on a machine. Run from any cell in a Create Data Table block: the range from the ANSWER row down to the last game becomes a real What\-If data table, \=TABLE(,input cell), with the Example\# cell as the column input. SIDE columns are included. Every head (ANSWER, SIDE) must be a formula. A game loaded with Load Game (LDT) is put back to its Example\# label first. A What\-If table recalculates with the workbook and can be slow, so once the answers are in, run Hardcode Data Table (HDT) to fix them as values. Under 'Automatic except for data tables' press F9 to refresh it. Added 2026\-10\-23 (GitHub \#20, Jaq).
+
+| Property | Value |
+| --- | --- |
+| Macro Expression | <code>[modDataTable.ConvertToWhatIfTable](./VBA/modDataTable.bas#L555)()</code> |
+| Launch Codes | <ol><li><code>WDT</code></li><li><code>DT</code></li></ol> |
 
 [^Top](#oa-robot-definitions)
 
@@ -625,7 +646,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modCaseSetup.CreateBonusSheet](./VBA/modCaseSetup.bas#L1092)()</code> |
+| Macro Expression | <code>[modCaseSetup.CreateBonusSheet](./VBA/modCaseSetup.bas#L1221)()</code> |
 | Launch Codes | <ol><li><code>BQC</code></li><li><code>CB</code></li></ol> |
 
 [^Top](#oa-robot-definitions)
@@ -642,7 +663,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modCaseSetup.CreateCaseInputsSheet](./VBA/modCaseSetup.bas#L1574)([[ActiveCell]])</code> |
+| Macro Expression | <code>[modCaseSetup.CreateCaseInputsSheet](./VBA/modCaseSetup.bas#L1707)([[ActiveCell]])</code> |
 | Launch Codes | <ol><li><code>CIS</code></li><li><code>IS</code></li></ol> |
 
 [^Top](#oa-robot-definitions)
@@ -659,7 +680,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modDataTable.CreateDataTable](./VBA/modDataTable.bas#L525)()</code> |
+| Macro Expression | <code>[modDataTable.CreateDataTable](./VBA/modDataTable.bas#L878)()</code> |
 | Launch Codes | <ol><li><code>CDT</code></li><li><code>DT</code></li></ol> |
 
 [^Top](#oa-robot-definitions)
@@ -676,7 +697,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modDataTable.CreateDataTableHere](./VBA/modDataTable.bas#L540)()</code> |
+| Macro Expression | <code>[modDataTable.CreateDataTableHere](./VBA/modDataTable.bas#L893)()</code> |
 | Launch Codes | <ol><li><code>CDTH</code></li><li><code>DT</code></li></ol> |
 
 [^Top](#oa-robot-definitions)
@@ -691,7 +712,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modCaseSetup.CreateLevelSheets](./VBA/modCaseSetup.bas#L786)()</code> |
+| Macro Expression | <code>[modCaseSetup.CreateLevelSheets](./VBA/modCaseSetup.bas#L915)()</code> |
 | Launch Codes | <ol><li><code>CL</code></li><li><code>CLS</code></li></ol> |
 
 [^Top](#oa-robot-definitions)
@@ -948,15 +969,15 @@
 
 ### Full Setup Case
 
-*Sets up the case: saves a \_Solve copy, backs up the sheets, creates the level, bonus and Case inputs sheets, then imports lambdas. Choose the steps with SCS*
+*Sets up the case: saves a \_Solve copy, backs up the sheets, creates the level, bonus and Case inputs sheets, adds the Dr. Kazza level table, opens the bonus dock on L01, then imports lambdas. Choose the steps with SCS*
 
 <sup>`@CompBot Insider.xlsm` `!VBA Macro Command` `#Prep`</sup>
 
-> \*\*Note:\*\* Steps, in order: save a working copy as \<name\>\_Solve (skipped if the file has never been saved or is already a \_Solve \/ \_Working copy), back up every sheet, name the used ranges, create the level sheets, the bonus sheet B and the Case inputs sheet; then Import Case Lambdas runs (your library and CompBot's, the winner first). Any step can be switched off per user with Setup Case Settings (SCS); a switched\-off step is reported as skipped. A failed step is reported on the status bar and the rest still run. Does NOT unmerge or rename sheets: run Unmerge Multi\-Row Merges, M2C or Rename Sheets (rs) yourself first if the case needs them. Save copy step added 2026\-09\-24 (Jaq); step switches added 2026\-09\-24.
+> \*\*Note:\*\* Steps, in order: save a working copy as \<name\>\_Solve (skipped if the file has never been saved or is already a \_Solve \/ \_Working copy), back up every sheet, name the used ranges, create the level sheets, the bonus sheet B and the Case inputs sheet, add the Dr. Kazza level table (each level's difficulty, points and bonus points, beside the case intro and below the bonuses on sheet B; only the Difficulty cell is coloured, a soft pastel per step; a level easier than an earlier one is bold with a down arrow), land on L01 (else the case sheet), open the bonus dock (Show Bonus Dock); then Import Case Lambdas runs (your library and CompBot's, the winner first). Any step can be switched off per user with Setup Case Settings (SCS); a switched\-off step is reported as skipped. A failed step is reported on the status bar and the rest still run. Does NOT unmerge or rename sheets: run Unmerge Multi\-Row Merges, M2C or Rename Sheets (rs) yourself first if the case needs them. Save copy step added 2026\-09\-24 (Jaq); step switches added 2026\-09\-24; Dr. Kazza level table, bonus dock and landing on L01 added 2026\-10\-23 (GitHub \#19, requested by Dr. Kazza).
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modCaseSetup.Setup](./VBA/modCaseSetup.bas#L72)()</code> |
+| Macro Expression | <code>[modCaseSetup.Setup](./VBA/modCaseSetup.bas#L77)()</code> |
 | Keyboard Shortcut | <code>^+g</code> |
 | Command After | [Import Case Lambdas](#import-case-lambdas) |
 | Launch Codes | <code>SC</code> |
@@ -990,7 +1011,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modDataTable.GoToExample](./VBA/modDataTable.bas#L902)()</code> |
+| Macro Expression | <code>[modDataTable.GoToExample](./VBA/modDataTable.bas#L1255)()</code> |
 | Launch Codes | <code>GE</code> |
 
 [^Top](#oa-robot-definitions)
@@ -1007,6 +1028,23 @@
 | --- | --- |
 | Macro Expression | <code>[modGoToSpecial.GotoSimilarBackgroundColor](./VBA/modGoToSpecial.bas#L17)()</code> |
 | Launch Codes | <code>SBC</code> |
+
+[^Top](#oa-robot-definitions)
+
+<BR>
+
+### Hardcode Data Table
+
+*Replaces a What\-If data table's results with their values, so the workbook stops recalculating it*
+
+<sup>`@CompBot Insider.xlsm` `!VBA Macro Command` `#Prep` `#DataTable`</sup>
+
+> \*\*Note:\*\* Run from a result cell of any Excel What\-If data table, or from any cell of a Create Data Table block after Convert to What\-If Data Table (WDT). The workbook is calculated first, then the results (the table body only: the ANSWER \/ formula row and the game column are left alone) are written back as plain values, errors included. Linked answer cells keep working. Refuses, changing nothing, when there is no What\-If table there. Added 2026\-10\-23 (GitHub \#20, Jaq).
+
+| Property | Value |
+| --- | --- |
+| Macro Expression | <code>[modDataTable.HardcodeDataTable](./VBA/modDataTable.bas#L707)()</code> |
+| Launch Codes | <ol><li><code>HDT</code></li><li><code>DT</code></li></ol> |
 
 [^Top](#oa-robot-definitions)
 
@@ -1157,7 +1195,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modDataTable.LinkAnswerCell](./VBA/modDataTable.bas#L976)()</code> |
+| Macro Expression | <code>[modDataTable.LinkAnswerCell](./VBA/modDataTable.bas#L1329)()</code> |
 | Launch Codes | <ol><li><code>ANS</code></li><li><code>DT</code></li></ol> |
 
 [^Top](#oa-robot-definitions)
@@ -1174,7 +1212,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modDataTable.LinkSideCell](./VBA/modDataTable.bas#L1068)()</code> |
+| Macro Expression | <code>[modDataTable.LinkSideCell](./VBA/modDataTable.bas#L1421)()</code> |
 | Launch Codes | <ol><li><code>LSC</code></li><li><code>BDT</code></li><li><code>DT</code></li></ol> |
 
 [^Top](#oa-robot-definitions)
@@ -1245,7 +1283,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modDataTable.LoadGameIntoCalculation](./VBA/modDataTable.bas#L418)()</code> |
+| Macro Expression | <code>[modDataTable.LoadGameIntoCalculation](./VBA/modDataTable.bas#L461)()</code> |
 | Launch Codes | <ol><li><code>LDT</code></li><li><code>LG</code></li><li><code>DT</code></li></ol> |
 
 [^Top](#oa-robot-definitions)
@@ -1496,7 +1534,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modBonusDock.StepBonusStatus](./VBA/modBonusDock.bas#L287)(1)</code> |
+| Macro Expression | <code>[modBonusDock.StepBonusStatus](./VBA/modBonusDock.bas#L305)(1)</code> |
 | Launch Codes | <code>BQN</code> |
 
 [^Top](#oa-robot-definitions)
@@ -1530,7 +1568,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modBonusDock.StepBonusStatus](./VBA/modBonusDock.bas#L287)(-1)</code> |
+| Macro Expression | <code>[modBonusDock.StepBonusStatus](./VBA/modBonusDock.bas#L305)(-1)</code> |
 | Launch Codes | <code>BQP</code> |
 
 [^Top](#oa-robot-definitions)
@@ -1581,7 +1619,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modCaseSetup.RenameSht](./VBA/modCaseSetup.bas#L302)()</code> |
+| Macro Expression | <code>[modCaseSetup.RenameSht](./VBA/modCaseSetup.bas#L431)()</code> |
 | Launch Codes | <code>rs</code> |
 
 [^Top](#oa-robot-definitions)
@@ -1598,7 +1636,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modBonusDock.RestoreClearedBonuses](./VBA/modBonusDock.bas#L245)()</code> |
+| Macro Expression | <code>[modBonusDock.RestoreClearedBonuses](./VBA/modBonusDock.bas#L263)()</code> |
 | Command After | [Show Bonus Dock](#show-bonus-dock) |
 | Launch Codes | <code>BQR</code> |
 
@@ -1665,7 +1703,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modDataTable.RunDataTable](./VBA/modDataTable.bas#L55)()</code> |
+| Macro Expression | <code>[modDataTable.RunDataTable](./VBA/modDataTable.bas#L65)()</code> |
 | Launch Codes | <ol><li><code>RDT</code></li><li><code>DT</code></li></ol> |
 
 [^Top](#oa-robot-definitions)
@@ -1839,7 +1877,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modCaseSetup.SaveAnswersToLeft](./VBA/modCaseSetup.bas#L1938)()</code> |
+| Macro Expression | <code>[modCaseSetup.SaveAnswersToLeft](./VBA/modCaseSetup.bas#L2071)()</code> |
 | Launch Codes | <code>SAL</code> |
 
 [^Top](#oa-robot-definitions)
@@ -1854,7 +1892,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modCaseSetup.SaveCopy](./VBA/modCaseSetup.bas#L2642)([[ActiveCell]])</code> |
+| Macro Expression | <code>[modCaseSetup.SaveCopy](./VBA/modCaseSetup.bas#L2775)([[ActiveCell]])</code> |
 | Launch Codes | <code>SA</code> |
 
 [^Top](#oa-robot-definitions)
@@ -1871,7 +1909,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modCaseSetup.SaveFromExample](./VBA/modCaseSetup.bas#L2171)()</code> |
+| Macro Expression | <code>[modCaseSetup.SaveFromExample](./VBA/modCaseSetup.bas#L2304)()</code> |
 | User Context Filter | ExcelActiveCellIsNotEmpty AND ExcelSelectionIsSingleCell |
 | Launch Codes | <code>SFE</code> |
 
@@ -1921,7 +1959,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modSetupSettings.SetSolveFolder](./VBA/modSetupSettings.bas#L86)()</code> |
+| Macro Expression | <code>[modSetupSettings.SetSolveFolder](./VBA/modSetupSettings.bas#L88)()</code> |
 | Launch Codes | <code>SSF</code> |
 
 [^Top](#oa-robot-definitions)
@@ -1938,7 +1976,7 @@
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modSetupSettings.ShowSetupSettings](./VBA/modSetupSettings.bas#L185)()</code> |
+| Macro Expression | <code>[modSetupSettings.ShowSetupSettings](./VBA/modSetupSettings.bas#L187)()</code> |
 | Launch Codes | <code>SCS</code> |
 
 [^Top](#oa-robot-definitions)
@@ -1947,15 +1985,15 @@
 
 ### Show Bonus Dock
 
-*Shows the open bonus questions in a dock on the right; answered ones drop off*
+*Shows the open bonus questions in a dock on the right; answered ones drop off. Ends with the Dr. Kazza level table*
 
 <sup>`@CompBot Insider.xlsm` `!VBA Macro Command` `#Bonus`</sup>
 
-> \*\*Note:\*\* Reads the active case workbook: 'Bonus 1' \/ 'Bonus A' labels in column B, header row above with Answer \/ Points \/ Question. Sheet B (Create Bonus Sheet) wins, else Case, else the active sheet. Answer sheets are never read. A bonus is answered when its answer cell holds a value or a real formula; a bare link to an empty cell (Case → B) counts as open. Answered on either B or Case counts. Hand\-cleared bonuses (Clear Bonus From Dock) go to the footer. Output: OA Robot's task pane, title 'Bonus Questions', Text content, wrapped at 55 characters by the VBA (HTML renders in a tiny fixed box, Markdown rendered blank; tested 2026\-09\-16). Re\-run to refresh; chain it with CommandAfter behind commands that save bonus answers. Moved into CompBot from the BonusDock collection 2026\-09\-22.
+> \*\*Note:\*\* Reads the active case workbook: 'Bonus 1' \/ 'Bonus A' labels in column B, header row above with Answer \/ Points \/ Question. Sheet B (Create Bonus Sheet) wins, else Case, else the active sheet. Answer sheets are never read. A bonus is answered when its answer cell holds a value or a real formula; a bare link to an empty cell (Case → B) counts as open. Answered on either B or Case counts. Hand\-cleared bonuses (Clear Bonus From Dock) go to the footer. Ends with the Dr. Kazza level table (2026\-10\-23, GitHub \#19): each level's difficulty marker (circle easy, square medium, diamond hard, ? for a tag CompBot does not know), points and bonus points; a level easier than an earlier one in bold with a down arrow. Output: OA Robot's task pane, title 'Bonus Questions', Text content, wrapped at 55 characters by the VBA (HTML renders in a tiny fixed box, Markdown rendered blank; tested 2026\-09\-16 and again 2026\-10\-23). Re\-run to refresh; chain it with CommandAfter behind commands that save bonus answers. Full Setup Case opens it as its last step. Moved into CompBot from the BonusDock collection 2026\-09\-22.
 
 | Property | Value |
 | --- | --- |
-| Macro Expression | <code>[modBonusDock.BonusDockText](./VBA/modBonusDock.bas#L76)()</code> |
+| Macro Expression | <code>[modBonusDock.BonusDockText](./VBA/modBonusDock.bas#L80)()</code> |
 | Outputs | Bonus dock pane |
 | Launch Codes | <code>BQ</code> |
 

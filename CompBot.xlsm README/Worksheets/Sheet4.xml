@@ -1282,7 +1282,7 @@
    </Row>
    <Row ss:AutoFitHeight="0" ss:Height="30">
     <Cell ss:StyleID="s49"/>
-    <Cell ss:StyleID="s50"><Data ss:Type="String">VERSION 2026.10.5</Data></Cell>
+    <Cell ss:StyleID="s50"><Data ss:Type="String">VERSION 2026.10.6</Data></Cell>
     <Cell ss:StyleID="s49"/>
     <Cell ss:StyleID="s49"/>
     <Cell ss:StyleID="s49"/>
@@ -1323,7 +1323,7 @@
    <Row ss:AutoFitHeight="0" ss:Height="12"/>
    <Row ss:AutoFitHeight="0" ss:Height="30">
     <Cell ss:StyleID="s51"/>
-    <Cell ss:StyleID="s52"><Data ss:Type="String">105 COMMANDS   •   77 LAMBDAS   •   CTRL+SHIFT+O OPENS THE PALETTE   •   BY JAQ KENNEDY</Data></Cell>
+    <Cell ss:StyleID="s52"><Data ss:Type="String">107 COMMANDS   •   77 LAMBDAS   •   CTRL+SHIFT+O OPENS THE PALETTE   •   BY JAQ KENNEDY</Data></Cell>
     <Cell ss:StyleID="s51"/>
     <Cell ss:StyleID="s51"/>
     <Cell ss:StyleID="s51"/>

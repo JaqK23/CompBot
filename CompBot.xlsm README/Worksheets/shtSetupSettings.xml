@@ -1251,7 +1251,7 @@
    ss:RefersTo="=LAMBDA(cell,[sheetname],LET(_a,ADDRESS(ROW(cell),COLUMN(cell),4,TRUE),IF(ISOMITTED(sheetname),_a,&quot;'&quot;&amp;sheetname&amp;&quot;'!&quot;&amp;_a)))"/>
  </Names>
  <Worksheet ss:Name="Setup Settings">
-  <Table ss:ExpandedColumnCount="26" ss:ExpandedRowCount="31"
+  <Table ss:ExpandedColumnCount="26" ss:ExpandedRowCount="33"
    ss:DefaultColumnWidth="90" ss:DefaultRowHeight="19.5">
    <Column ss:AutoFitWidth="0" ss:Width="240.75"/>
    <Column ss:Width="219"/>
@@ -1347,6 +1347,16 @@
     <Cell ss:StyleID="s39"><Data ss:Type="String">Create the Case inputs sheet</Data></Cell>
     <Cell ss:StyleID="s44"><Data ss:Type="Boolean">1</Data></Cell>
     <Cell ss:Index="4" ss:StyleID="s18"><Data ss:Type="String">The inputs on a sheet of their own (CIS).</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:StyleID="s39"><Data ss:Type="String">Add the Dr. Kazza level table</Data></Cell>
+    <Cell ss:StyleID="s44"><Data ss:Type="Boolean">1</Data></Cell>
+    <Cell ss:Index="4" ss:StyleID="s18"><Data ss:Type="String">Each level's difficulty, points and bonus points: beside the case intro, and below the bonuses on sheet B. Easier than an earlier level = bold.</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:StyleID="s39"><Data ss:Type="String">Open the bonus dock</Data></Cell>
+    <Cell ss:StyleID="s44"><Data ss:Type="Boolean">1</Data></Cell>
+    <Cell ss:Index="4" ss:StyleID="s18"><Data ss:Type="String">Opens Show Bonus Dock (BQ) at the end, so the bonuses and the Dr. Kazza level table are in view.</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:StyleID="s39"><Data ss:Type="String">Import your lambda library</Data></Cell>
