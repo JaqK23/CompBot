@@ -31,12 +31,6 @@
    <Font ss:FontName="Verdana" x:Family="Swiss" ss:Size="15" ss:Color="#0E2841"
     ss:Bold="1"/>
   </Style>
-  <Style ss:ID="s27" ss:Parent="s16">
-   <Alignment ss:Horizontal="CenterAcrossSelection" ss:Vertical="Bottom"/>
-  </Style>
-  <Style ss:ID="s29" ss:Parent="s18">
-   <Alignment ss:Horizontal="CenterAcrossSelection" ss:Vertical="Bottom"/>
-  </Style>
   <Style ss:ID="s34" ss:Parent="s16">
    <Alignment ss:Horizontal="CenterAcrossSelection" ss:Vertical="Bottom"/>
    <Borders/>
@@ -98,9 +92,234 @@
    <Alignment ss:Horizontal="Center" ss:Vertical="Bottom"/>
   </Style>
   <Style ss:ID="s53">
-   <Font ss:FontName="Verdana" x:Family="Swiss" ss:Size="16" ss:Color="#ED7D31"/>
+   <Font ss:FontName="Verdana" x:Family="Swiss" ss:Size="16" ss:Color="#000000"
+    ss:Bold="1"/>
   </Style>
-  <Style ss:ID="s55" ss:Parent="s22">
+  <Style ss:ID="s54">
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="2"
+     ss:Color="#8C8270"/>
+   </Borders>
+   <Font ss:FontName="Verdana" x:Family="Swiss" ss:Size="16" ss:Color="#2B2B2B"
+    ss:Bold="1"/>
+   <Interior ss:Color="#E6DCC8" ss:Pattern="Solid"/>
+  </Style>
+  <Style ss:ID="s55">
+   <Alignment ss:Horizontal="Right" ss:Vertical="Bottom"/>
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="2"
+     ss:Color="#8C8270"/>
+   </Borders>
+   <Font ss:FontName="Verdana" x:Family="Swiss" ss:Size="16" ss:Color="#2B2B2B"
+    ss:Bold="1"/>
+   <Interior ss:Color="#E6DCC8" ss:Pattern="Solid"/>
+  </Style>
+  <Style ss:ID="s56">
+   <Alignment ss:Horizontal="Center" ss:Vertical="Bottom"/>
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="2"
+     ss:Color="#8C8270"/>
+   </Borders>
+   <Font ss:FontName="Verdana" x:Family="Swiss" ss:Size="16" ss:Color="#2B2B2B"
+    ss:Bold="1"/>
+   <Interior ss:Color="#E6DCC8" ss:Pattern="Solid"/>
+  </Style>
+  <Style ss:ID="s57">
+   <Alignment ss:Horizontal="Left" ss:Vertical="Bottom"/>
+   <Font ss:FontName="Verdana" x:Family="Swiss" ss:Size="12" ss:Color="#2B2B2B"/>
+   <Interior ss:Color="#FAF6EE" ss:Pattern="Solid"/>
+   <NumberFormat ss:Format="@"/>
+  </Style>
+  <Style ss:ID="s58">
+   <Font ss:FontName="Verdana" x:Family="Swiss" ss:Size="12" ss:Color="#2B2B2B"/>
+   <Interior ss:Color="#FAF6EE" ss:Pattern="Solid"/>
+  </Style>
+  <Style ss:ID="s59">
+   <Alignment ss:Horizontal="Right" ss:Vertical="Bottom"/>
+   <Font ss:FontName="Verdana" x:Family="Swiss" ss:Size="12" ss:Color="#2B2B2B"/>
+   <Interior ss:Color="#FAF6EE" ss:Pattern="Solid"/>
+   <NumberFormat ss:Format="0.0"/>
+  </Style>
+  <Style ss:ID="s60">
+   <Alignment ss:Horizontal="Center" ss:Vertical="Bottom"/>
+   <Font ss:FontName="Verdana" x:Family="Swiss" ss:Size="12" ss:Color="#2B2B2B"/>
+   <Interior ss:Color="#FAF6EE" ss:Pattern="Solid"/>
+   <NumberFormat ss:Format="hh:mm:ss"/>
+  </Style>
+  <Style ss:ID="s61">
+   <Font ss:FontName="Verdana" x:Family="Swiss" ss:Size="12" ss:Color="#2B2B2B"/>
+   <Interior ss:Color="#FAF6EE" ss:Pattern="Solid"/>
+   <NumberFormat ss:Format="@"/>
+  </Style>
+  <Style ss:ID="s62">
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="2"
+     ss:Color="#8C8270"/>
+    <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#8C8270"/>
+   </Borders>
+   <Font ss:FontName="Verdana" x:Family="Swiss" ss:Size="16" ss:Color="#2B2B2B"
+    ss:Bold="1"/>
+   <Interior ss:Color="#E6DCC8" ss:Pattern="Solid"/>
+  </Style>
+  <Style ss:ID="s63">
+   <Alignment ss:Horizontal="Right" ss:Vertical="Bottom"/>
+   <Borders>
+    <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#8C8270"/>
+   </Borders>
+   <Font ss:FontName="Verdana" x:Family="Swiss" ss:Size="12" ss:Color="#2B2B2B"/>
+   <Interior ss:Color="#FAF6EE" ss:Pattern="Solid"/>
+  </Style>
+  <Style ss:ID="s64">
+   <Alignment ss:Horizontal="Right" ss:Vertical="Bottom"/>
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#8C8270"/>
+    <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#8C8270"/>
+    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#8C8270"/>
+   </Borders>
+   <Font ss:FontName="Verdana" x:Family="Swiss" ss:Size="12" ss:Color="#2B2B2B"
+    ss:Bold="1"/>
+   <Interior ss:Color="#FAF6EE" ss:Pattern="Solid"/>
+  </Style>
+  <Style ss:ID="s65">
+   <Alignment ss:Horizontal="Left" ss:Vertical="Bottom"/>
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#8C8270"/>
+    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#8C8270"/>
+   </Borders>
+   <Font ss:FontName="Verdana" x:Family="Swiss" ss:Size="12" ss:Color="#2B2B2B"
+    ss:Bold="1"/>
+   <Interior ss:Color="#FAF6EE" ss:Pattern="Solid"/>
+   <NumberFormat ss:Format="@"/>
+  </Style>
+  <Style ss:ID="s66">
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#8C8270"/>
+    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#8C8270"/>
+   </Borders>
+   <Font ss:FontName="Verdana" x:Family="Swiss" ss:Size="12" ss:Color="#2B2B2B"
+    ss:Bold="1"/>
+   <Interior ss:Color="#FAF6EE" ss:Pattern="Solid"/>
+  </Style>
+  <Style ss:ID="s67">
+   <Alignment ss:Horizontal="Right" ss:Vertical="Bottom"/>
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#8C8270"/>
+    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#8C8270"/>
+   </Borders>
+   <Font ss:FontName="Verdana" x:Family="Swiss" ss:Size="12" ss:Color="#2B2B2B"
+    ss:Bold="1"/>
+   <Interior ss:Color="#FAF6EE" ss:Pattern="Solid"/>
+   <NumberFormat ss:Format="0.0"/>
+  </Style>
+  <Style ss:ID="s68">
+   <Alignment ss:Horizontal="Center" ss:Vertical="Bottom"/>
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#8C8270"/>
+    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#8C8270"/>
+   </Borders>
+   <Font ss:FontName="Verdana" x:Family="Swiss" ss:Size="12" ss:Color="#2B2B2B"
+    ss:Bold="1"/>
+   <Interior ss:Color="#FAF6EE" ss:Pattern="Solid"/>
+   <NumberFormat ss:Format="hh:mm:ss"/>
+  </Style>
+  <Style ss:ID="s69">
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#8C8270"/>
+    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#8C8270"/>
+   </Borders>
+   <Font ss:FontName="Verdana" x:Family="Swiss" ss:Size="12" ss:Color="#2B2B2B"
+    ss:Bold="1"/>
+   <Interior ss:Color="#FAF6EE" ss:Pattern="Solid"/>
+   <NumberFormat ss:Format="@"/>
+  </Style>
+  <Style ss:ID="s70">
+   <Borders>
+    <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#8C8270"/>
+   </Borders>
+   <Font ss:FontName="Verdana" x:Family="Swiss" ss:Size="12" ss:Color="#2B2B2B"/>
+   <Interior ss:Color="#FAF6EE" ss:Pattern="Solid"/>
+  </Style>
+  <Style ss:ID="s71">
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#8C8270"/>
+    <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#8C8270"/>
+    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#8C8270"/>
+   </Borders>
+   <Font ss:FontName="Verdana" x:Family="Swiss" ss:Size="12" ss:Color="#2B2B2B"
+    ss:Bold="1"/>
+   <Interior ss:Color="#FAF6EE" ss:Pattern="Solid"/>
+  </Style>
+  <Style ss:ID="s72" ss:Parent="s16">
+   <Alignment ss:Horizontal="CenterAcrossSelection" ss:Vertical="Bottom"/>
+   <Borders/>
+   <Font ss:FontName="Verdana" x:Family="Swiss" ss:Size="22" ss:Color="#0E2841"
+    ss:Bold="1"/>
+  </Style>
+  <Style ss:ID="s73">
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="2"
+     ss:Color="#0E2841"/>
+   </Borders>
+   <Font ss:FontName="Verdana" x:Family="Swiss" ss:Size="18" ss:Color="#0E2841"
+    ss:Bold="1"/>
+  </Style>
+  <Style ss:ID="s74">
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="2"
+     ss:Color="#0E2841"/>
+   </Borders>
+  </Style>
+  <Style ss:ID="s75" ss:Parent="s22">
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"/>
+    <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1"/>
+    <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1"/>
+   </Borders>
+   <Font ss:FontName="Verdana" x:Family="Swiss" ss:Size="14" ss:Color="#FFFFFF"/>
+  </Style>
+  <Style ss:ID="s76">
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="2"
+     ss:Color="#8C8270"/>
+    <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#8C8270"/>
+   </Borders>
+   <Font ss:FontName="Verdana" x:Family="Swiss" ss:Size="16" ss:Color="#2B2B2B"
+    ss:Bold="1"/>
+   <Interior ss:Color="#E6DCC8" ss:Pattern="Solid"/>
+  </Style>
+  <Style ss:ID="s77">
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="2"
+     ss:Color="#0E2841"/>
+   </Borders>
+   <Font ss:FontName="Verdana" x:Family="Swiss" ss:Size="12" ss:Color="#5A5A5A"
+    ss:Italic="1"/>
+  </Style>
+  <Style ss:ID="s78">
+   <Font ss:FontName="Verdana" x:Family="Swiss" ss:Size="12" ss:Color="#5A5A5A"
+    ss:Italic="1"/>
+  </Style>
+  <Style ss:ID="s80" ss:Parent="s22">
    <Borders>
     <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"/>
     <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1"/>
@@ -1244,13 +1463,39 @@
   <NamedRange ss:Name="SCS_ImportLibrary" ss:RefersTo="='Setup Settings'!R19C2"/>
   <NamedRange ss:Name="SCS_LambdaWinner" ss:RefersTo="='Setup Settings'!R21C2"/>
   <NamedRange ss:Name="SCS_LevelSummary" ss:RefersTo="='Setup Settings'!R17C2"/>
-  <NamedRange ss:Name="SCS_LibraryFile" ss:RefersTo="='Setup Settings'!R24C2"/>
-  <NamedRange ss:Name="SCS_LibraryPath" ss:RefersTo="='Setup Settings'!R25C2"/>
+  <NamedRange ss:Name="SCS_LibraryFile" ss:RefersTo="='Setup Settings'!R25C2"/>
+  <NamedRange ss:Name="SCS_LibraryPath" ss:RefersTo="='Setup Settings'!R26C2"/>
+  <NamedRange ss:Name="SCS_Log_Backup" ss:RefersTo="='Setup Settings'!R42C2:R42C6"/>
+  <NamedRange ss:Name="SCS_Log_CalcRestore"
+   ss:RefersTo="='Setup Settings'!R52C2:R52C6"/>
+  <NamedRange ss:Name="SCS_Log_CreateBonusSheet"
+   ss:RefersTo="='Setup Settings'!R45C2:R45C6"/>
+  <NamedRange ss:Name="SCS_Log_CreateCaseInputsSheet"
+   ss:RefersTo="='Setup Settings'!R46C2:R46C6"/>
+  <NamedRange ss:Name="SCS_Log_CreateLevelSheets"
+   ss:RefersTo="='Setup Settings'!R44C2:R44C6"/>
+  <NamedRange ss:Name="SCS_Log_Env" ss:RefersTo="='Setup Settings'!R40C2:R40C6"/>
+  <NamedRange ss:Name="SCS_Log_ImportCompBot"
+   ss:RefersTo="='Setup Settings'!R47C2:R47C6"/>
+  <NamedRange ss:Name="SCS_Log_ImportLibrary"
+   ss:RefersTo="='Setup Settings'!R48C2:R48C6"/>
+  <NamedRange ss:Name="SCS_Log_LandCase"
+   ss:RefersTo="='Setup Settings'!R49C2:R49C6"/>
+  <NamedRange ss:Name="SCS_Log_LevelSummary"
+   ss:RefersTo="='Setup Settings'!R50C2:R50C6"/>
+  <NamedRange ss:Name="SCS_Log_NameAllUsedRanges"
+   ss:RefersTo="='Setup Settings'!R43C2:R43C6"/>
+  <NamedRange ss:Name="SCS_Log_OpenBonusDock"
+   ss:RefersTo="='Setup Settings'!R51C2:R51C6"/>
+  <NamedRange ss:Name="SCS_Log_SaveCopy"
+   ss:RefersTo="='Setup Settings'!R41C2:R41C6"/>
+  <NamedRange ss:Name="SCS_Log_Total" ss:RefersTo="='Setup Settings'!R53C2:R53C6"/>
+  <NamedRange ss:Name="SCS_ManualCalc" ss:RefersTo="='Setup Settings'!R22C2"/>
   <NamedRange ss:Name="SCS_NameAllUsedRanges" ss:RefersTo="='Setup Settings'!R13C2"/>
   <NamedRange ss:Name="SCS_OpenBonusDock" ss:RefersTo="='Setup Settings'!R18C2"/>
   <NamedRange ss:Name="SCS_SaveCopy" ss:RefersTo="='Setup Settings'!R11C2"/>
-  <NamedRange ss:Name="SCS_SolveFolder" ss:RefersTo="='Setup Settings'!R26C2"/>
-  <NamedRange ss:Name="SCS_SolvePath" ss:RefersTo="='Setup Settings'!R27C2"/>
+  <NamedRange ss:Name="SCS_SolveFolder" ss:RefersTo="='Setup Settings'!R27C2"/>
+  <NamedRange ss:Name="SCS_SolvePath" ss:RefersTo="='Setup Settings'!R28C2"/>
   <NamedRange ss:Name="SplitText_byHadynWiseman"
    ss:RefersTo="=LAMBDA(Text,[Groups],[Overlap],LET(t,CONCAT(Text),_groups,MAX(Groups,1),IF(Overlap,MID(t,SEQUENCE(LEN(t)-_groups+1),_groups),IF(ISOMITTED(Groups),TOCOL(REGEXEXTRACT(t,&quot;\X&quot;,1)),MID(t,SEQUENCE(ROUNDUP(LEN(t)/_groups,0),,,_groups),_groups)))))"/>
   <NamedRange ss:Name="TSPGreedy_byHadynWiseman"
@@ -1267,7 +1512,7 @@
    ss:RefersTo="=LAMBDA(cell,[sheetname],LET(_a,ADDRESS(ROW(cell),COLUMN(cell),4,TRUE),IF(ISOMITTED(sheetname),_a,&quot;'&quot;&amp;sheetname&amp;&quot;'!&quot;&amp;_a)))"/>
  </Names>
  <Worksheet ss:Name="Setup Settings">
-  <Table ss:ExpandedColumnCount="26" ss:ExpandedRowCount="33"
+  <Table ss:ExpandedColumnCount="21" ss:ExpandedRowCount="53"
    ss:DefaultColumnWidth="90" ss:DefaultRowHeight="19.5">
    <Column ss:AutoFitWidth="0" ss:Width="240.75"/>
    <Column ss:Width="219"/>
@@ -1278,17 +1523,16 @@
    <Column ss:AutoFitWidth="0" ss:Width="18.75"/>
    <Column ss:AutoFitWidth="0" ss:Width="101.25"/>
    <Column ss:AutoFitWidth="0" ss:Width="180"/>
-   <Column ss:Index="11" ss:Hidden="1" ss:AutoFitWidth="0" ss:Span="3"/>
-   <Column ss:Index="25" ss:Hidden="1" ss:AutoFitWidth="0" ss:Span="1"/>
+   <Column ss:Index="21" ss:Hidden="1" ss:AutoFitWidth="0"/>
    <Row ss:AutoFitHeight="0">
-    <Cell ss:Index="26"><Data ss:Type="String">CompBot</Data></Cell>
+    <Cell ss:Index="21"><Data ss:Type="String">CompBot</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
-    <Cell ss:Index="26"><Data ss:Type="String">Your library</Data></Cell>
+    <Cell ss:Index="21"><Data ss:Type="String">Your library</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0" ss:Span="1"/>
-   <Row ss:Index="5" ss:AutoFitHeight="0" ss:Height="21">
-    <Cell ss:StyleID="s34"><Data ss:Type="String">Setup Case Settings</Data></Cell>
+   <Row ss:Index="5" ss:AutoFitHeight="0" ss:Height="32.0625">
+    <Cell ss:StyleID="s72"><Data ss:Type="String">Setup Case Settings</Data></Cell>
     <Cell ss:StyleID="s34"/>
     <Cell ss:StyleID="s34"/>
     <Cell ss:StyleID="s34"/>
@@ -1298,8 +1542,6 @@
     <Cell ss:StyleID="s34"/>
     <Cell ss:StyleID="s34"/>
     <Cell ss:StyleID="s34"/>
-    <Cell ss:StyleID="s27"/>
-    <Cell ss:StyleID="s27"/>
    </Row>
    <Row ss:AutoFitHeight="0" ss:Height="20.25">
     <Cell ss:StyleID="s35"><Data ss:Type="String">Choose what Full Setup Case (SC, Ctrl+Shift+G) does. Tick or untick a step, or pick whose lambdas win.</Data></Cell>
@@ -1312,8 +1554,6 @@
     <Cell ss:StyleID="s35"/>
     <Cell ss:StyleID="s35"/>
     <Cell ss:StyleID="s35"/>
-    <Cell ss:StyleID="s29"/>
-    <Cell ss:StyleID="s29"/>
    </Row>
    <Row ss:AutoFitHeight="0" ss:Height="39">
     <Cell ss:StyleID="s36"><Data ss:Type="String">Kept in this copy of CompBot, so your choices go wherever it goes. Open CompBot for editing to keep a change; a CompBot update puts them back to all on.</Data></Cell>
@@ -1326,13 +1566,41 @@
     <Cell ss:StyleID="s35"/>
     <Cell ss:StyleID="s35"/>
     <Cell ss:StyleID="s35"/>
-    <Cell ss:StyleID="s29"/>
-    <Cell ss:StyleID="s29"/>
    </Row>
-   <Row ss:AutoFitHeight="0" ss:Span="1"/>
-   <Row ss:Index="10" ss:AutoFitHeight="0">
-    <Cell ss:Index="2"><Data ss:Type="String">Your choice</Data></Cell>
-    <Cell ss:Index="4"><Data ss:Type="String">What it does</Data></Cell>
+   <Row ss:AutoFitHeight="0"/>
+   <Row ss:AutoFitHeight="0" ss:Height="27">
+    <Cell ss:StyleID="s73"><Data ss:Type="String">Setup steps</Data></Cell>
+    <Cell ss:StyleID="s74"/>
+    <Cell ss:StyleID="s74"/>
+    <Cell ss:StyleID="s74"/>
+    <Cell ss:StyleID="s74"/>
+    <Cell ss:StyleID="s74"/>
+    <Cell ss:StyleID="s74"/>
+    <Cell ss:StyleID="s74"/>
+    <Cell ss:StyleID="s74"/>
+    <Cell ss:StyleID="s74"/>
+    <Cell ss:StyleID="s74"/>
+    <Cell ss:StyleID="s74"/>
+    <Cell ss:StyleID="s74"/>
+    <Cell ss:StyleID="s74"/>
+    <Cell ss:StyleID="s74"/>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:StyleID="s53"/>
+    <Cell ss:StyleID="s53"><Data ss:Type="String">Your choice</Data></Cell>
+    <Cell ss:StyleID="s53"/>
+    <Cell ss:StyleID="s53"><Data ss:Type="String">What it does</Data></Cell>
+    <Cell ss:StyleID="s53"/>
+    <Cell ss:StyleID="s53"/>
+    <Cell ss:StyleID="s53"/>
+    <Cell ss:StyleID="s53"/>
+    <Cell ss:StyleID="s53"/>
+    <Cell ss:StyleID="s53"/>
+    <Cell ss:StyleID="s53"/>
+    <Cell ss:StyleID="s53"/>
+    <Cell ss:StyleID="s53"/>
+    <Cell ss:StyleID="s53"/>
+    <Cell ss:StyleID="s53"/>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:StyleID="s39"><Data ss:Type="String">Save a _Solve copy</Data></Cell>
@@ -1400,19 +1668,39 @@
       ss:Name="SCS_LambdaWinner"/></Cell>
     <Cell ss:Index="4" ss:StyleID="s18"><Data ss:Type="String">CompBot or Your library. The winner replaces a lambda of the same name; the other never does. ILL and ILC follow it too.</Data></Cell>
    </Row>
-   <Row ss:AutoFitHeight="0"/>
    <Row ss:AutoFitHeight="0">
-    <Cell><Data ss:Type="String">Your lambda library and Solve folder</Data></Cell>
+    <Cell ss:StyleID="s39"><Data ss:Type="String">Calculate manually during setup</Data></Cell>
+    <Cell ss:StyleID="s44"><Data ss:Type="Boolean">0</Data><NamedCell
+      ss:Name="SCS_ManualCalc"/></Cell>
+    <Cell ss:Index="4" ss:StyleID="s18"><Data ss:Type="String">Calculation is manual while setup runs and put back at the end. Can make setup faster on a heavy case or a slow machine.</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0"/>
+   <Row ss:AutoFitHeight="0" ss:Height="27">
+    <Cell ss:StyleID="s73"><Data ss:Type="String">Your lambda library and Solve folder</Data></Cell>
+    <Cell ss:StyleID="s74"/>
+    <Cell ss:StyleID="s74"/>
+    <Cell ss:StyleID="s74"/>
+    <Cell ss:StyleID="s74"/>
+    <Cell ss:StyleID="s74"/>
+    <Cell ss:StyleID="s74"/>
+    <Cell ss:StyleID="s74"/>
+    <Cell ss:StyleID="s74"/>
+    <Cell ss:StyleID="s74"/>
+    <Cell ss:StyleID="s74"/>
+    <Cell ss:StyleID="s74"/>
+    <Cell ss:StyleID="s74"/>
+    <Cell ss:StyleID="s74"/>
+    <Cell ss:StyleID="s74"/>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:StyleID="s39"><Data ss:Type="String">Library file</Data></Cell>
-    <Cell ss:StyleID="s40"><Data ss:Type="String">none set</Data><NamedCell
+    <Cell ss:StyleID="s75"><Data ss:Type="String">none set</Data><NamedCell
       ss:Name="SCS_LibraryFile"/></Cell>
     <Cell ss:Index="4" ss:StyleID="s18"><Data ss:Type="String">Set with Set Lambda Library (SLL); forgotten with Clear Lambda Library (CLL). Shown here, not changed here.</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:StyleID="s39"><Data ss:Type="String">Full path</Data></Cell>
-    <Cell ss:MergeAcross="6" ss:StyleID="s55"><Data ss:Type="String">Run Set Lambda Library (SLL) to choose one</Data><NamedCell
+    <Cell ss:MergeAcross="6" ss:StyleID="s80"><Data ss:Type="String">Run Set Lambda Library (SLL) to choose one</Data><NamedCell
       ss:Name="SCS_LibraryPath"/></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
@@ -1423,13 +1711,29 @@
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:StyleID="s39"><Data ss:Type="String">Full path</Data></Cell>
-    <Cell ss:MergeAcross="6" ss:StyleID="s55"><Data ss:Type="String">Run Set Solve Folder (SSF) to choose one</Data><NamedCell
+    <Cell ss:MergeAcross="6" ss:StyleID="s80"><Data ss:Type="String">Run Set Solve Folder (SSF) to choose one</Data><NamedCell
       ss:Name="SCS_SolvePath"/></Cell>
    </Row>
    <Row ss:AutoFitHeight="0"/>
-   <Row>
-    <Cell><Data ss:Type="String">Your checklist: on a new or shared machine (the arena)</Data></Cell>
-    <Cell ss:Index="4" ss:StyleID="s53"><Data ss:Type="String">For you to tick as you go. Ticking a box does NOT run anything: run each command yourself.</Data></Cell>
+   <Row ss:AutoFitHeight="0" ss:Height="27">
+    <Cell ss:StyleID="s73"><Data ss:Type="String">Your checklist: on a new or shared machine (the arena)</Data></Cell>
+    <Cell ss:StyleID="s74"/>
+    <Cell ss:StyleID="s74"/>
+    <Cell ss:StyleID="s77"/>
+    <Cell ss:StyleID="s74"/>
+    <Cell ss:StyleID="s74"/>
+    <Cell ss:StyleID="s74"/>
+    <Cell ss:StyleID="s74"/>
+    <Cell ss:StyleID="s74"/>
+    <Cell ss:StyleID="s74"/>
+    <Cell ss:StyleID="s74"/>
+    <Cell ss:StyleID="s74"/>
+    <Cell ss:StyleID="s74"/>
+    <Cell ss:StyleID="s74"/>
+    <Cell ss:StyleID="s74"/>
+   </Row>
+   <Row ss:AutoFitHeight="0" ss:Height="18">
+    <Cell ss:StyleID="s78"><Data ss:Type="String">For you to tick as you go. Ticking a box does NOT run anything: run each command yourself.</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:StyleID="s39"><Data ss:Type="String">Excel's separators</Data></Cell>
@@ -1450,6 +1754,336 @@
     <Cell ss:StyleID="s39"><Data ss:Type="String">Your Solve folder</Data></Cell>
     <Cell ss:StyleID="s45"><Data ss:Type="Boolean">0</Data></Cell>
     <Cell ss:Index="4" ss:StyleID="s18"><Data ss:Type="String">Re-set it with Set Solve Folder (SSF): this machine's folders will differ.</Data></Cell>
+   </Row>
+   <Row ss:Index="37" ss:AutoFitHeight="0" ss:Height="27">
+    <Cell ss:StyleID="s73"><Data ss:Type="String">Setup log: last Full Setup Case run</Data></Cell>
+    <Cell ss:StyleID="s74"/>
+    <Cell ss:StyleID="s74"/>
+    <Cell ss:StyleID="s77"/>
+    <Cell ss:StyleID="s74"/>
+    <Cell ss:StyleID="s74"/>
+    <Cell ss:StyleID="s74"/>
+    <Cell ss:StyleID="s74"/>
+    <Cell ss:StyleID="s74"/>
+    <Cell ss:StyleID="s74"/>
+    <Cell ss:StyleID="s74"/>
+    <Cell ss:StyleID="s74"/>
+    <Cell ss:StyleID="s74"/>
+    <Cell ss:StyleID="s74"/>
+    <Cell ss:StyleID="s74"/>
+   </Row>
+   <Row ss:AutoFitHeight="0" ss:Height="18">
+    <Cell ss:StyleID="s78"><Data ss:Type="String">Filled in by Full Setup Case as each step ends. Also written to logs\CompBot\CompBot-setup.log beside CompBot.</Data></Cell>
+   </Row>
+   <Row ss:Height="20.25">
+    <Cell ss:StyleID="s62"><Data ss:Type="String">Step</Data></Cell>
+    <Cell ss:StyleID="s54"><Data ss:Type="String">Result</Data></Cell>
+    <Cell ss:StyleID="s54"/>
+    <Cell ss:StyleID="s55"><Data ss:Type="String">Seconds</Data></Cell>
+    <Cell ss:StyleID="s56"><Data ss:Type="String">Time</Data></Cell>
+    <Cell ss:StyleID="s54"><Data ss:Type="String">What happened</Data></Cell>
+    <Cell ss:StyleID="s54"/>
+    <Cell ss:StyleID="s54"/>
+    <Cell ss:StyleID="s54"/>
+    <Cell ss:StyleID="s54"/>
+    <Cell ss:StyleID="s54"/>
+    <Cell ss:StyleID="s54"/>
+    <Cell ss:StyleID="s54"/>
+    <Cell ss:StyleID="s54"/>
+    <Cell ss:StyleID="s76"/>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">Environment</Data></Cell>
+    <Cell ss:StyleID="s57"><Data ss:Type="String">INFO</Data><NamedCell
+      ss:Name="SCS_Log_Env"/></Cell>
+    <Cell ss:StyleID="s58"><NamedCell ss:Name="SCS_Log_Env"/></Cell>
+    <Cell ss:StyleID="s59"><NamedCell ss:Name="SCS_Log_Env"/></Cell>
+    <Cell ss:StyleID="s60"><Data ss:Type="DateTime">2026-10-30T10:39:12.000</Data><NamedCell
+      ss:Name="SCS_Log_Env"/></Cell>
+    <Cell ss:StyleID="s61"><Data ss:Type="String">Unprotected (no password): Case. | Excel 16.0 build 20618 64-bit | calc Automatic (manual during setup: off) | other workbooks open: 2 (+1 hidden), recalc before save on, 12 calc threads | CompBot: local, open for editing | case: local, AutoSave off </Data><NamedCell
+      ss:Name="SCS_Log_Env"/></Cell>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s70"/>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">Save a _Solve copy</Data></Cell>
+    <Cell ss:StyleID="s57"><Data ss:Type="String">PASS</Data><NamedCell
+      ss:Name="SCS_Log_SaveCopy"/></Cell>
+    <Cell ss:StyleID="s58"><NamedCell ss:Name="SCS_Log_SaveCopy"/></Cell>
+    <Cell ss:StyleID="s59"><Data ss:Type="Number">0.2</Data><NamedCell
+      ss:Name="SCS_Log_SaveCopy"/></Cell>
+    <Cell ss:StyleID="s60"><Data ss:Type="DateTime">2026-10-30T10:39:12.000</Data><NamedCell
+      ss:Name="SCS_Log_SaveCopy"/></Cell>
+    <Cell ss:StyleID="s61"><Data ss:Type="String">Successful</Data><NamedCell
+      ss:Name="SCS_Log_SaveCopy"/></Cell>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s70"/>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">Back up every sheet</Data></Cell>
+    <Cell ss:StyleID="s57"><Data ss:Type="String">PASS</Data><NamedCell
+      ss:Name="SCS_Log_Backup"/></Cell>
+    <Cell ss:StyleID="s58"><NamedCell ss:Name="SCS_Log_Backup"/></Cell>
+    <Cell ss:StyleID="s59"><Data ss:Type="Number">0.2</Data><NamedCell
+      ss:Name="SCS_Log_Backup"/></Cell>
+    <Cell ss:StyleID="s60"><Data ss:Type="DateTime">2026-10-30T10:39:12.000</Data><NamedCell
+      ss:Name="SCS_Log_Backup"/></Cell>
+    <Cell ss:StyleID="s61"><Data ss:Type="String">Successful</Data><NamedCell
+      ss:Name="SCS_Log_Backup"/></Cell>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s70"/>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">Name the used ranges</Data></Cell>
+    <Cell ss:StyleID="s57"><Data ss:Type="String">PASS</Data><NamedCell
+      ss:Name="SCS_Log_NameAllUsedRanges"/></Cell>
+    <Cell ss:StyleID="s58"><NamedCell ss:Name="SCS_Log_NameAllUsedRanges"/></Cell>
+    <Cell ss:StyleID="s59"><Data ss:Type="Number">0</Data><NamedCell
+      ss:Name="SCS_Log_NameAllUsedRanges"/></Cell>
+    <Cell ss:StyleID="s60"><Data ss:Type="DateTime">2026-10-30T10:39:12.000</Data><NamedCell
+      ss:Name="SCS_Log_NameAllUsedRanges"/></Cell>
+    <Cell ss:StyleID="s61"><Data ss:Type="String">Successful</Data><NamedCell
+      ss:Name="SCS_Log_NameAllUsedRanges"/></Cell>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s70"/>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">Create the level sheets</Data></Cell>
+    <Cell ss:StyleID="s57"><Data ss:Type="String">PASS</Data><NamedCell
+      ss:Name="SCS_Log_CreateLevelSheets"/></Cell>
+    <Cell ss:StyleID="s58"><NamedCell ss:Name="SCS_Log_CreateLevelSheets"/></Cell>
+    <Cell ss:StyleID="s59"><Data ss:Type="Number">1.8</Data><NamedCell
+      ss:Name="SCS_Log_CreateLevelSheets"/></Cell>
+    <Cell ss:StyleID="s60"><Data ss:Type="DateTime">2026-10-30T10:39:14.000</Data><NamedCell
+      ss:Name="SCS_Log_CreateLevelSheets"/></Cell>
+    <Cell ss:StyleID="s61"><Data ss:Type="String">Successful</Data><NamedCell
+      ss:Name="SCS_Log_CreateLevelSheets"/></Cell>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s70"/>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">Create the bonus sheet</Data></Cell>
+    <Cell ss:StyleID="s57"><Data ss:Type="String">PASS</Data><NamedCell
+      ss:Name="SCS_Log_CreateBonusSheet"/></Cell>
+    <Cell ss:StyleID="s58"><NamedCell ss:Name="SCS_Log_CreateBonusSheet"/></Cell>
+    <Cell ss:StyleID="s59"><Data ss:Type="Number">0.2</Data><NamedCell
+      ss:Name="SCS_Log_CreateBonusSheet"/></Cell>
+    <Cell ss:StyleID="s60"><Data ss:Type="DateTime">2026-10-30T10:39:14.000</Data><NamedCell
+      ss:Name="SCS_Log_CreateBonusSheet"/></Cell>
+    <Cell ss:StyleID="s61"><Data ss:Type="String">Successful</Data><NamedCell
+      ss:Name="SCS_Log_CreateBonusSheet"/></Cell>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s70"/>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">Create the Case inputs sheet</Data></Cell>
+    <Cell ss:StyleID="s57"><Data ss:Type="String">PASS</Data><NamedCell
+      ss:Name="SCS_Log_CreateCaseInputsSheet"/></Cell>
+    <Cell ss:StyleID="s58"><NamedCell ss:Name="SCS_Log_CreateCaseInputsSheet"/></Cell>
+    <Cell ss:StyleID="s59"><Data ss:Type="Number">0.2</Data><NamedCell
+      ss:Name="SCS_Log_CreateCaseInputsSheet"/></Cell>
+    <Cell ss:StyleID="s60"><Data ss:Type="DateTime">2026-10-30T10:39:14.000</Data><NamedCell
+      ss:Name="SCS_Log_CreateCaseInputsSheet"/></Cell>
+    <Cell ss:StyleID="s61"><Data ss:Type="String">Successful</Data><NamedCell
+      ss:Name="SCS_Log_CreateCaseInputsSheet"/></Cell>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s70"/>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">Import CompBot's lambdas</Data></Cell>
+    <Cell ss:StyleID="s57"><Data ss:Type="String">PASS</Data><NamedCell
+      ss:Name="SCS_Log_ImportCompBot"/></Cell>
+    <Cell ss:StyleID="s58"><NamedCell ss:Name="SCS_Log_ImportCompBot"/></Cell>
+    <Cell ss:StyleID="s59"><Data ss:Type="Number">0.7</Data><NamedCell
+      ss:Name="SCS_Log_ImportCompBot"/></Cell>
+    <Cell ss:StyleID="s60"><Data ss:Type="DateTime">2026-10-30T10:39:15.000</Data><NamedCell
+      ss:Name="SCS_Log_ImportCompBot"/></Cell>
+    <Cell ss:StyleID="s61"><Data ss:Type="String">86 added, 0 updated.</Data><NamedCell
+      ss:Name="SCS_Log_ImportCompBot"/></Cell>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s70"/>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">Import your lambda library</Data></Cell>
+    <Cell ss:StyleID="s57"><Data ss:Type="String">SKIPPED</Data><NamedCell
+      ss:Name="SCS_Log_ImportLibrary"/></Cell>
+    <Cell ss:StyleID="s58"><NamedCell ss:Name="SCS_Log_ImportLibrary"/></Cell>
+    <Cell ss:StyleID="s59"><Data ss:Type="Number">0</Data><NamedCell
+      ss:Name="SCS_Log_ImportLibrary"/></Cell>
+    <Cell ss:StyleID="s60"><Data ss:Type="DateTime">2026-10-30T10:39:15.000</Data><NamedCell
+      ss:Name="SCS_Log_ImportLibrary"/></Cell>
+    <Cell ss:StyleID="s61"><Data ss:Type="String">no library set (Set Lambda Library, SLL)</Data><NamedCell
+      ss:Name="SCS_Log_ImportLibrary"/></Cell>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s70"/>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">Back to the case</Data></Cell>
+    <Cell ss:StyleID="s57"><Data ss:Type="String">PASS</Data><NamedCell
+      ss:Name="SCS_Log_LandCase"/></Cell>
+    <Cell ss:StyleID="s58"><NamedCell ss:Name="SCS_Log_LandCase"/></Cell>
+    <Cell ss:StyleID="s59"><Data ss:Type="Number">0</Data><NamedCell
+      ss:Name="SCS_Log_LandCase"/></Cell>
+    <Cell ss:StyleID="s60"><Data ss:Type="DateTime">2026-10-30T10:39:15.000</Data><NamedCell
+      ss:Name="SCS_Log_LandCase"/></Cell>
+    <Cell ss:StyleID="s61"><Data ss:Type="String">back on L01, else the case sheet</Data><NamedCell
+      ss:Name="SCS_Log_LandCase"/></Cell>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s70"/>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">Add the Dr. Kazza level table</Data></Cell>
+    <Cell ss:StyleID="s57"><Data ss:Type="String">PASS</Data><NamedCell
+      ss:Name="SCS_Log_LevelSummary"/></Cell>
+    <Cell ss:StyleID="s58"><NamedCell ss:Name="SCS_Log_LevelSummary"/></Cell>
+    <Cell ss:StyleID="s59"><Data ss:Type="Number">0.1</Data><NamedCell
+      ss:Name="SCS_Log_LevelSummary"/></Cell>
+    <Cell ss:StyleID="s60"><Data ss:Type="DateTime">2026-10-30T10:39:15.000</Data><NamedCell
+      ss:Name="SCS_Log_LevelSummary"/></Cell>
+    <Cell ss:StyleID="s61"><Data ss:Type="String">Successful</Data><NamedCell
+      ss:Name="SCS_Log_LevelSummary"/></Cell>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s70"/>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">Open the bonus dock</Data></Cell>
+    <Cell ss:StyleID="s57"><Data ss:Type="String">PASS</Data><NamedCell
+      ss:Name="SCS_Log_OpenBonusDock"/></Cell>
+    <Cell ss:StyleID="s58"><NamedCell ss:Name="SCS_Log_OpenBonusDock"/></Cell>
+    <Cell ss:StyleID="s59"><Data ss:Type="Number">0.4</Data><NamedCell
+      ss:Name="SCS_Log_OpenBonusDock"/></Cell>
+    <Cell ss:StyleID="s60"><Data ss:Type="DateTime">2026-10-30T10:39:16.000</Data><NamedCell
+      ss:Name="SCS_Log_OpenBonusDock"/></Cell>
+    <Cell ss:StyleID="s61"><Data ss:Type="String">Successful</Data><NamedCell
+      ss:Name="SCS_Log_OpenBonusDock"/></Cell>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s70"/>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="s63"><Data ss:Type="String">Calculation put back</Data></Cell>
+    <Cell ss:StyleID="s57"><Data ss:Type="String">SKIPPED</Data><NamedCell
+      ss:Name="SCS_Log_CalcRestore"/></Cell>
+    <Cell ss:StyleID="s58"><NamedCell ss:Name="SCS_Log_CalcRestore"/></Cell>
+    <Cell ss:StyleID="s59"><Data ss:Type="Number">0</Data><NamedCell
+      ss:Name="SCS_Log_CalcRestore"/></Cell>
+    <Cell ss:StyleID="s60"><Data ss:Type="DateTime">2026-10-30T10:39:16.000</Data><NamedCell
+      ss:Name="SCS_Log_CalcRestore"/></Cell>
+    <Cell ss:StyleID="s61"><Data ss:Type="String">unticked above: calculation was left as it was</Data><NamedCell
+      ss:Name="SCS_Log_CalcRestore"/></Cell>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s58"/>
+    <Cell ss:StyleID="s70"/>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">Whole setup</Data></Cell>
+    <Cell ss:StyleID="s65"><Data ss:Type="String">PASS</Data><NamedCell
+      ss:Name="SCS_Log_Total"/></Cell>
+    <Cell ss:StyleID="s66"><NamedCell ss:Name="SCS_Log_Total"/></Cell>
+    <Cell ss:StyleID="s67"><Data ss:Type="Number">3.9</Data><NamedCell
+      ss:Name="SCS_Log_Total"/></Cell>
+    <Cell ss:StyleID="s68"><Data ss:Type="DateTime">2026-10-30T10:39:16.000</Data><NamedCell
+      ss:Name="SCS_Log_Total"/></Cell>
+    <Cell ss:StyleID="s69"><Data ss:Type="String">Setup 3.9 s: slowest Create the level sheets 1.8 s</Data><NamedCell
+      ss:Name="SCS_Log_Total"/></Cell>
+    <Cell ss:StyleID="s66"/>
+    <Cell ss:StyleID="s66"/>
+    <Cell ss:StyleID="s66"/>
+    <Cell ss:StyleID="s66"/>
+    <Cell ss:StyleID="s66"/>
+    <Cell ss:StyleID="s66"/>
+    <Cell ss:StyleID="s66"/>
+    <Cell ss:StyleID="s66"/>
+    <Cell ss:StyleID="s71"/>
    </Row>
   </Table>
  </Worksheet>

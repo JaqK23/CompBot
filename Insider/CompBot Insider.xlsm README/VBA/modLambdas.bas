@@ -18,6 +18,7 @@ Private Const m_SETTINGS_KEY     As String = "LibraryPath"
 ' Manager comment, so a later import can tell its own copy from a name the case defined itself
 ' (GitHub #5, Jaq, 2026-10-08: follow whose lambdas win, never overwrite the case's own).
 Private Const m_VALUE_TAG        As String = "[CompBot ILL]"
+Private Const m_ERR_CANCEL       As Long = 18    ' Esc under EnableCancelKey = xlErrorHandler (Full Setup Case)
 
 Private m_strScanErrors         As String
 ' How many lambdas ExpandKeepChain added that nothing DECLARED - reported by
@@ -26,6 +27,10 @@ Private m_strScanErrors         As String
 Private m_lngChainAdded         As Long
 Private Const m_REMOVED_SHEET   As String = "Lambdas Removed"
 Private Const m_PREVIEW_ONLY    As Boolean = False    ' False = actually delete
+' Timings of the last ImportFromLibrary, for Full Setup Case's step log (GitHub #29).
+Private m_dblOpenSecs           As Double
+Private m_dblCopySecs           As Double
+Private m_dblCloseSecs          As Double
 
 'function to list lambdas in this workbook
 Function ListLambdas() As Variant
@@ -282,14 +287,20 @@ End Sub
 '          WINNER goes first and replaces older copies; the other goes second and never overwrites, so where
 '          a name clashes the winner's version is the one left. CompBot wins unless SCS says otherwise
 '          (Jaq, 2026-09-24). Full Setup Case calls it as one of its steps (2026.10.7). Never raises.
+'          Each import is timed and logged as its own row of the setup step log (GitHub #29; modSetupLog does
+'          nothing outside a Full Setup Case run). After an Esc the second import does not run.
 Public Function CaseLambdasReport(ByVal wbTarget As Workbook) As String
 
     Dim strStatus   As String
     Dim strMine     As String
     Dim strCompBot  As String
+    Dim strPart     As String
     Dim blnMine     As Boolean
     Dim blnCompBot  As Boolean
     Dim blnCBWins   As Boolean
+    Dim blnLoggedCB As Boolean
+    Dim blnLoggedMine As Boolean
+    Dim dblStart    As Double
 
     On Error GoTo ErrHandler
 
@@ -310,12 +321,36 @@ Public Function CaseLambdasReport(ByVal wbTarget As Workbook) As String
     Else
         ' The winner first, replacing; the other second, skipping what is already there.
         If blnCBWins Then
-            If blnCompBot Then strCompBot = "CompBot: " & CopyLambdas(ThisWorkbook, wbTarget, True) & "  "
-            If blnMine Then strMine = "Yours: " & ImportFromLibrary(wbTarget, False, False) & "  "
+            If blnCompBot Then
+                dblStart = Timer
+                strPart = CopyLambdas(ThisWorkbook, wbTarget, True)
+                LogImport "ImportCompBot", dblStart, strPart, vbNullString
+                blnLoggedCB = True
+                strCompBot = "CompBot: " & strPart & "  "
+            End If
+            If blnMine And Not modLog.CancelKeySeen() Then
+                dblStart = Timer
+                strPart = ImportFromLibrary(wbTarget, False, False)
+                LogImport "ImportLibrary", dblStart, strPart, LibraryTimings()
+                blnLoggedMine = True
+                strMine = "Yours: " & strPart & "  "
+            End If
             strStatus = strCompBot & strMine
         Else
-            If blnMine Then strMine = "Yours (win): " & ImportFromLibrary(wbTarget, False, True) & "  "
-            If blnCompBot Then strCompBot = "CompBot: " & CopyLambdas(ThisWorkbook, wbTarget, False, False) & "  "
+            If blnMine Then
+                dblStart = Timer
+                strPart = ImportFromLibrary(wbTarget, False, True)
+                LogImport "ImportLibrary", dblStart, strPart, LibraryTimings()
+                blnLoggedMine = True
+                strMine = "Yours (win): " & strPart & "  "
+            End If
+            If blnCompBot And Not modLog.CancelKeySeen() Then
+                dblStart = Timer
+                strPart = CopyLambdas(ThisWorkbook, wbTarget, False, False)
+                LogImport "ImportCompBot", dblStart, strPart, vbNullString
+                blnLoggedCB = True
+                strCompBot = "CompBot: " & strPart & "  "
+            End If
             strStatus = strMine & strCompBot
         End If
         If Len(LibraryPath()) = 0 Then strStatus = strStatus & "(no library set)"
@@ -323,6 +358,25 @@ Public Function CaseLambdasReport(ByVal wbTarget As Workbook) As String
     End If
 
 Cleanup:
+    ' An import that did not run is SKIPPED with its reason; after an Esc it is left for the log's NOT RUN.
+    If Not modLog.CancelKeySeen() Then
+        If Not blnLoggedCB Then
+            If Not modSetupSettings.SetupStepOn("ImportCompBot") Then
+                modSetupLog.LogStep "ImportCompBot", "SKIPPED", 0, "unticked above, so not run"
+            Else
+                modSetupLog.LogStep "ImportCompBot", "SKIPPED", 0, strStatus
+            End If
+        End If
+        If Not blnLoggedMine Then
+            If Len(LibraryPath()) = 0 Then
+                modSetupLog.LogStep "ImportLibrary", "SKIPPED", 0, "no library set (Set Lambda Library, SLL)"
+            ElseIf Not modSetupSettings.SetupStepOn("ImportLibrary") Then
+                modSetupLog.LogStep "ImportLibrary", "SKIPPED", 0, "unticked above, so not run"
+            Else
+                modSetupLog.LogStep "ImportLibrary", "SKIPPED", 0, strStatus
+            End If
+        End If
+    End If
     CaseLambdasReport = strStatus
     Exit Function
 
@@ -331,6 +385,45 @@ ErrHandler:
     NoteError "CaseLambdasReport", Err.Number, Err.Description
     strStatus = Trim$(strStatus & " Lambdas FAILED: " & Err.Description)
     Resume Cleanup
+End Function
+
+
+' Purpose: log one lambda import as a step of the setup log (GitHub #29): CANCELLED after an Esc, FAIL when
+'          the report says it failed or could not run, else PASS. Never raises.
+Private Sub LogImport(ByVal strKey As String, ByVal dblStart As Double, ByVal strReport As String, _
+                      ByVal strDetail As String)
+
+    Dim strResult As String
+
+    On Error GoTo ErrHandler
+
+    If modLog.CancelKeySeen() Then
+        strResult = "CANCELLED"
+    ElseIf InStr(1, strReport, "FAILED", vbBinaryCompare) > 0 Or _
+           InStr(1, strReport, "stopped after", vbBinaryCompare) = 1 Or _
+           InStr(1, strReport, "could not read", vbBinaryCompare) = 1 Or _
+           InStr(1, strReport, "your lambda library is not", vbBinaryCompare) = 1 Then
+        strResult = "FAIL"
+    Else
+        strResult = "PASS"
+    End If
+    If Len(strDetail) > 0 And strResult = "PASS" Then strReport = strReport & " (" & strDetail & ")"
+    modSetupLog.LogStep strKey, strResult, modSetupLog.SecondsSince(dblStart), strReport
+
+Cleanup:
+    Exit Sub
+
+ErrHandler:
+    If m_DEBUG_MODE Then Stop: Resume
+    NoteError "LogImport", Err.Number, Err.Description
+    Resume Cleanup
+End Sub
+
+
+' Purpose: the last library import's three timings, e.g. "open 0.4 s, copy 1.2 s, close 0.1 s".
+Private Function LibraryTimings() As String
+    LibraryTimings = "open " & Format$(m_dblOpenSecs, "0.0") & " s, copy " & Format$(m_dblCopySecs, "0.0") & _
+                     " s, close " & Format$(m_dblCloseSecs, "0.0") & " s"
 End Function
 
 
@@ -348,9 +441,13 @@ Private Function ImportFromLibrary(ByVal wbTarget As Workbook, ByVal blnListSkip
     Dim blnOpened   As Boolean
     Dim blnEvents   As Boolean
     Dim strReport   As String
+    Dim dblStart    As Double
 
     On Error GoTo ErrHandler
     blnEvents = Application.EnableEvents
+    m_dblOpenSecs = 0
+    m_dblCopySecs = 0
+    m_dblCloseSecs = 0
 
     strPath = LibraryPath()
     If Len(strPath) = 0 Then
@@ -362,20 +459,26 @@ Private Function ImportFromLibrary(ByVal wbTarget As Workbook, ByVal blnListSkip
         GoTo Cleanup
     End If
 
+    dblStart = Timer
     Set wbLibrary = OpenWorkbookByName(FileNameOf(strPath))
     If wbLibrary Is Nothing Then
         Application.EnableEvents = False         ' the library's own Workbook_Open must not run
         Set wbLibrary = Workbooks.Open(Filename:=strPath, UpdateLinks:=0, ReadOnly:=True, AddToMru:=False)
         blnOpened = True
     End If
+    m_dblOpenSecs = modSetupLog.SecondsSince(dblStart)
 
     ' The library's stored values come too (GitHub #5); CompBot's own non-LAMBDA names are its
     ' locale settings and never leave it, so only this route passes True.
+    dblStart = Timer
     strReport = CopyLambdas(wbLibrary, wbTarget, blnOverwrite, blnListSkipped, True)
+    m_dblCopySecs = modSetupLog.SecondsSince(dblStart)
 
 Cleanup:
     On Error Resume Next                          ' closing must never raise out of here
+    dblStart = Timer
     If blnOpened Then wbLibrary.Close SaveChanges:=False
+    If blnOpened Then m_dblCloseSecs = modSetupLog.SecondsSince(dblStart)
     Application.EnableEvents = blnEvents
     On Error GoTo 0
     ImportFromLibrary = strReport
@@ -428,6 +531,7 @@ Private Function CopyLambdas(ByVal wbSource As Workbook, ByVal wbTarget As Workb
     Dim lngVSkipped As Long
     Dim lngVFailed  As Long
     Dim lngRanges   As Long
+    Dim lngErr      As Long
 
     On Error GoTo ErrHandler
 
@@ -484,7 +588,10 @@ Private Function CopyLambdas(ByVal wbSource As Workbook, ByVal wbTarget As Workb
         Set nmNew = Nothing
         On Error Resume Next                  ' narrow: one bad definition must not stop the rest
         Set nmNew = wbTarget.Names.Add(Name:=strName, RefersTo:=strRefers)
+        lngErr = Err.Number
         On Error GoTo ErrHandler
+        ' ...but an Esc does (GitHub #29): it is not a bad definition.
+        If lngErr = m_ERR_CANCEL Then Err.Raise m_ERR_CANCEL, "CopyLambdas", "Cancelled (Esc)"
 
         If nmNew Is Nothing Then
             If blnIsValue Then lngVFailed = lngVFailed + 1 Else lngFailed = lngFailed + 1
@@ -1841,10 +1948,12 @@ End Function
 '          Moved here from modUtilities (2026-09-17): m_strScanErrors is Private to this module, and the
 '          report's INCOMPLETE flag and ClearUnusedLambdas' refusal to delete both depend on it being filled.
 Private Sub NoteError(ByVal strProc As String, ByVal lngNumber As Long, ByVal strDescription As String)
+    If lngNumber = m_ERR_CANCEL Then modLog.NoteCancelKey      ' Full Setup Case stops after an Esc (#29)
     m_strScanErrors = m_strScanErrors & strProc & " (" & lngNumber & "): " & strDescription & ". "
     Debug.Print Format$(Now, "yyyy-mm-dd hh:nn:ss") & " | " & strProc & " | " & _
                 lngNumber & " | " & strDescription
 End Sub
+
 
 
 

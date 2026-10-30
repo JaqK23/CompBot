@@ -38,9 +38,18 @@ Why it matters: spilled helpers cannot be filled down, because the spills collid
 cell, so a whole solve chain copies down like an ordinary row, and you still get to build and debug with
 visible spills.
 
-Version: 2026.10.7 Insider, built from CompBot 2026.10.7. Definitions: [CompBot Insider Readme](CompBot%20Insider.xlsm%20README/CompBot%20Insider.xlsm%20README.md).
+Version: 2026.10.8 Insider, built from CompBot 2026.10.8. Definitions: [CompBot Insider Readme](CompBot%20Insider.xlsm%20README/CompBot%20Insider.xlsm%20README.md).
 
-What changed: 2026.10.7 (24 Oct) Full Setup Case loads your own lambda library again: it imports the
+What changed: 2026.10.8 (30 Oct) new Create Data Table From Last Level (CDTL) copies the last level's
+calculation beside this level's data table (issue #33); new Grow Bonus Dock (BQG) and Shrink Bonus Dock (BQS)
+set the length of the dock's lines, so a narrow dock no longer cuts the questions off (issue #23, thanks to
+Chien Chi-He for the idea); new Toggle Save Before Run (TSR) makes Run Data Table save your _Solve copy first;
+Full Setup Case logs every step on Setup Case Settings (issue #29, thanks to Dr. Kazza for reporting a slow
+setup, issue #26), uses the sheet you are on when no sheet has a known name (issue #30), works on French cases
+(issue #28) and unprotects a sheet that has no password (issues #31, #32); Create Data Table copes with merged
+cells (issue #27) and is much faster on levels with many inputs (issue #24, thanks to Chien Chi-He for reporting
+it); Run Data Table shows its progress on the status bar and Esc stops it cleanly (issue #22, thanks to Danny
+Whittaker for reporting the lock-up). 2026.10.7 (24 Oct) Full Setup Case loads your own lambda library again: it imports the
 lambdas itself, then adds the Dr. Kazza level table and opens the bonus dock (issue #21, thanks to
 Guy Diamant for reporting it). 2026.10.6 (23 Oct) Full Setup Case adds the Dr. Kazza level table (each level's
 difficulty, points and bonus points), lands on L01 with the bonus dock open, and sheet B has no

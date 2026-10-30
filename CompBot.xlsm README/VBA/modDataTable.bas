@@ -15,6 +15,8 @@ Private Const m_DEBUG_MODE          As Boolean = False
 Private Const m_MAX_STATUS          As Long = 250   ' Application.StatusBar rejects long strings
 Private Const m_BODY_OFFSET_ROWS    As Long = 4     ' first game row, below the input cell
 Private Const m_FORMULA_OFFSET_ROWS As Long = 3     ' the "ANSWER" formula cell, below the input cell
+Private Const m_MAX_MERGE_TRIES     As Long = 20    ' Create Data Table: times to move past a merged cell (#27)
+Private Const m_PROGRESS_SECS       As Double = 0.5 ' Run Data Table: status bar progress at most this often (#22)
 Private Const m_SCOPE_FULL          As Long = 0     ' Run Data Table recalc scopes
 Private Const m_SCOPE_SHEET         As Long = 1
 Private Const m_LABEL_PREFIX        As String = "RDT_Label_"   ' hidden names remembering Example# labels
@@ -118,6 +120,9 @@ Public Sub RunDataTable()
     Dim lngSettled As Long           ' games kept on the settled check: Excel never said the calculation finished
     Dim lngUnsettled As Long         ' games the settled check refused (written #N/A)
     Dim strUserMode As String        ' the user's calculation mode, for the CALC NEVER DONE note
+    Dim strSaveNote As String        ' whether the _Solve copy was saved before the run (#22)
+    Dim strCalcNote As String        ' the "calculation is off" note, shown while the run lasts
+    Dim dblShown As Double           ' Timer when the progress was last shown (#22)
 
     On Error GoTo ErrHandler
 
@@ -194,6 +199,10 @@ Public Sub RunDataTable()
         End If
     Next lngJ
 
+    ' GitHub #22 (Danny Whittaker; Jaq, 2026-10-29): a _Solve copy made by Full Setup Case is saved before the run,
+    ' so a crash or a lock-up part-way loses nothing. Any other workbook is never saved by Run Data Table.
+    strSaveNote = SaveSolveCopyFirst(wsCalc.Parent)
+
     ' One read for all game numbers. A single cell comes back as a scalar, not an array.
     If lngGames = 1 Then
         ReDim varGames(1 To 1, 1 To 1)
@@ -212,6 +221,8 @@ Public Sub RunDataTable()
     lngI = 0
 
     strUserMode = CalcModeText()      ' the user's own mode, before VBAInit changes it
+    strCalcNote = CalcOffNote()
+    If Len(strCalcNote) > 0 Then Application.StatusBar = "Run Data Table:" & strCalcNote
     VBAInit
     blnInit = True
     blnEvents = Application.EnableEvents
@@ -275,6 +286,11 @@ Public Sub RunDataTable()
     blnAllSame = True
     lngI = 1
     Do While lngI <= lngGames
+        ' Progress (GitHub #22): a long run must not look like a hang. At most every m_PROGRESS_SECS.
+        If Timer - dblShown >= m_PROGRESS_SECS Or Timer < dblShown Then
+            Application.StatusBar = "Run Data Table: game " & lngI & " of " & lngGames & " (Esc stops)." & strCalcNote
+            dblShown = Timer
+        End If
         rngInput.Value2 = varGames(lngI, 1)
         blnSettledGame = False
         blnDone = RecalcGame(wsCalc, rngInput, rngFormula, blnLive, blnSheetOnly, blnDirty, lngRechecked, blnSettledGame)
@@ -405,6 +421,7 @@ Public Sub RunDataTable()
         strMsg = strMsg & " CALC NEVER DONE (" & m_strNeverState & ", " & strUserMode & ", build " & _
                  Application.Build & "): " & lngSettled & " kept settled, " & lngUnsettled & " unsettled = #N/A."
     End If
+    If Len(strSaveNote) > 0 Then strMsg = strMsg & " " & strSaveNote
     ' Scope last, so it is what gets cut if the StatusBar text is too long - never the warnings.
     strMsg = strMsg & " Recalc: " & strScope & " (check " & Format$(dblCheckSecs, "0.00") & "s)."
 
@@ -446,6 +463,77 @@ ErrHandler:
     If LogError(PROC_NAME, Err.Number, strErr) Then strErr = strErr & " - see " & LogLocation()
     Resume Cleanup
 End Sub
+
+' Purpose: The status bar note for a command that switches calculation off while it runs (Jaq, 2026-10-30): if the
+'          run is interrupted, this says how to get calculation back. "" when calculation is not automatic, as the
+'          user's own mode is then not being changed. Call it BEFORE VBAInit. Never raises.
+Public Function CalcOffNote() As String
+    On Error Resume Next                          ' narrow: the mode can be unavailable with no workbook open
+    If Application.Calculation = xlCalculationAutomatic Then
+        CalcOffNote = " Calculation is off while this runs; if it is interrupted, turn it back on with Toggle " & _
+                      "Calculation Mode."
+    End If
+    On Error GoTo 0
+End Function
+
+' Purpose: GitHub #22: save the workbook before Run Data Table runs, when it is a _Solve copy made by Full Setup
+'          Case (modCaseSetup.IsSolveCopyName). Returns the status bar note: "Saved first." / "NOT SAVED FIRST: ..."
+'          for a _Solve copy, "" for any other workbook (never saved). Alerts are off for the save alone, as Full
+'          Setup Case's own save does. Never raises: a failed save is reported, and the run still goes ahead.
+Private Function SaveSolveCopyFirst(ByVal wb As Workbook) As String
+
+    Dim blnAlerts As Boolean
+    Dim varBeforeSave As Variant
+    Dim lngErr As Long
+    Dim strErr As String
+
+    On Error GoTo ErrHandler
+
+    blnAlerts = Application.DisplayAlerts
+    varBeforeSave = Empty
+    If wb Is Nothing Then GoTo Cleanup
+    If Not modCaseSetup.IsSolveCopyName(wb.Name) Then GoTo Cleanup
+    ' A save can be slow on a heavy workbook or a slow OneDrive, so it is off until asked for (Jaq, 2026-10-30).
+    If Not modSetupSettings.SaveBeforeRunOn() Then GoTo Cleanup
+    If wb.ReadOnly Or Len(wb.Path) = 0 Then
+        SaveSolveCopyFirst = "NOT SAVED FIRST: the _Solve copy is read-only or has no folder."
+        GoTo Cleanup
+    End If
+
+    Application.DisplayAlerts = False
+    ' Under manual calculation "recalculate before save" would recalculate every open workbook first (as Full Setup
+    ' Case guards): off for the save alone. Probe: the setting can be unavailable; then it is left alone.
+    On Error Resume Next
+    varBeforeSave = Application.CalculateBeforeSave
+    If Err.Number <> 0 Then varBeforeSave = Empty
+    Err.Clear
+    If Not IsEmpty(varBeforeSave) Then Application.CalculateBeforeSave = False
+    ' Probe: the save alone; a failure is reported, not raised.
+    Err.Clear
+    wb.Save
+    lngErr = Err.Number
+    strErr = Err.Description
+    On Error GoTo ErrHandler
+    Application.DisplayAlerts = blnAlerts
+    If lngErr = 0 Then
+        SaveSolveCopyFirst = "Saved first."
+    Else
+        LogError "SaveSolveCopyFirst", lngErr, strErr
+        SaveSolveCopyFirst = "NOT SAVED FIRST: " & lngErr & " " & strErr
+    End If
+
+Cleanup:
+    On Error Resume Next
+    Application.DisplayAlerts = blnAlerts
+    If Not IsEmpty(varBeforeSave) Then Application.CalculateBeforeSave = varBeforeSave
+    Exit Function
+
+ErrHandler:
+    If m_DEBUG_MODE Then Stop: Resume
+    LogError "SaveSolveCopyFirst", Err.Number, Err.Description
+    SaveSolveCopyFirst = "NOT SAVED FIRST: " & Err.Number & " " & Err.Description
+    Resume Cleanup
+End Function
 
 '--------------------------------------------< OA Robot >--------------------------------------------
 ' Command Name:           Load Game Into Calculation
@@ -897,7 +985,11 @@ End Sub
 ' Purpose: The work of Create Data Table and Create Data Table Here. blnHere: try the active cell as the
 '          block's input cell before the automatic placement (HereRefusal says when it cannot be).
 '          strCmd heads every status-bar message so the user sees the command they ran.
-Private Sub BuildLevelBlock(ByVal blnHere As Boolean)
+'          For Create Data Table From Last Level (GitHub #33): rngBuilt returns the block's input cell (built or
+'          found; Nothing when neither), blnExisted True when the block was already there, lngLevelNo the
+'          level's number in the case's order (L03 = 3; on the case sheet, its heading's place), 0 if unknown.
+Private Sub BuildLevelBlock(ByVal blnHere As Boolean, Optional ByRef rngBuilt As Range = Nothing, _
+                            Optional ByRef blnExisted As Boolean = False, Optional ByRef lngLevelNo As Long = 0)
 
     ' --- CONSTANTS (local to function) ---
     Const PROC_NAME As String = "BuildLevelBlock"
@@ -932,9 +1024,14 @@ Private Sub BuildLevelBlock(ByVal blnHere As Boolean)
     Dim strFound As String
     Dim strMsg As String
     Dim strErr As String
+    Dim lngMergeEnd As Long
+    Dim lngTries As Long
 
     On Error GoTo ErrHandler
 
+    ' Esc would give Excel's Continue / End / Debug box here: it is live only inside BuildDataTable, whose handler
+    ' puts everything back.
+    Application.EnableCancelKey = xlDisabled
     If blnHere Then strCmd = "Create Data Table Here" Else strCmd = "Create Data Table"
     If TypeName(ActiveSheet) <> "Worksheet" Then
         strMsg = strCmd & ": select a cell in a level first."
@@ -949,6 +1046,7 @@ Private Sub BuildLevelBlock(ByVal blnHere As Boolean)
     If Not LocateLevel(wsWork, strCmd, lngGameCol, lngExRow, lngTop, lngBottom, strWhere, strMsg) Then
         GoTo Cleanup
     End If
+    lngLevelNo = LevelNumberOf(wsWork, blnLevelSheet, lngTop)
 
     ' The level's games - the same rule BuildDataTable uses.
     Set colGames = LevelGameRows(wsWork, lngGameCol, lngExRow, lngBottom)
@@ -969,6 +1067,8 @@ Private Sub BuildLevelBlock(ByVal blnHere As Boolean)
         GoTo Cleanup
     End If
     If Not rngInput Is Nothing Then
+        Set rngBuilt = rngInput
+        blnExisted = True
         Set rngLand = LastInputCell(rngInput)
         ' Putting the user on the block is the purpose of the command, so Select is deliberate.
         rngLand.Select
@@ -1021,7 +1121,10 @@ Private Sub BuildLevelBlock(ByVal blnHere As Boolean)
         GoTo Cleanup
     End If
     If colIn.Count > 0 Then
-        lngFirstCol = colIn(colIn.Count) + 2
+        ' Two columns right of the END of the last input: a merged input (G:N, GitHub #27) ends at N.
+        With wsWork.Cells(lngExRow, colIn(colIn.Count)).MergeArea
+            lngFirstCol = .Column + .Columns.Count - 1 + 2
+        End With
     Else
         lngFirstCol = lngGameCol + 2
     End If
@@ -1033,6 +1136,19 @@ Private Sub BuildLevelBlock(ByVal blnHere As Boolean)
     End If
     If rngTarget Is Nothing Then
         Set rngTarget = BlockTarget(wsWork, lngExRow, lngFirstCol, lngWidth, colGames.Count)
+        ' A merged cell in the footprint (a merged blank row, GitHub #27) cannot take the block, and an empty
+        ' merged cell does not count as used to BlockTarget: move past the merge and look again.
+        Do While Not rngTarget Is Nothing And lngTries < m_MAX_MERGE_TRIES
+            lngMergeEnd = FootprintMergeEnd(wsWork, rngTarget.Row - 1, rngTarget.Column - 1, _
+                                            m_BODY_OFFSET_ROWS + colGames.Count + 1, lngWidth + 1)
+            If lngMergeEnd = 0 Then Exit Do
+            lngTries = lngTries + 1
+            Set rngTarget = BlockTarget(wsWork, lngExRow, lngMergeEnd + 2, lngWidth, colGames.Count)
+        Loop
+        If lngTries >= m_MAX_MERGE_TRIES And Not rngTarget Is Nothing Then
+            If FootprintMergeEnd(wsWork, rngTarget.Row - 1, rngTarget.Column - 1, _
+                                 m_BODY_OFFSET_ROWS + colGames.Count + 1, lngWidth + 1) > 0 Then Set rngTarget = Nothing
+        End If
     End If
     If rngTarget Is Nothing Then
         strMsg = strCmd & ": found no free space for the block to the right of the inputs on " & wsWork.Name & "."
@@ -1041,7 +1157,9 @@ Private Sub BuildLevelBlock(ByVal blnHere As Boolean)
 
     ' 5. Build it. BuildDataTable reports its own reason when it fails.
     Set rngInput = BuildDataTable(rngTarget, wsWork.Cells(lngExRow, lngGameCol))
+    Application.EnableCancelKey = xlDisabled      ' BuildDataTable hands Esc back as it ends
     If rngInput Is Nothing Then GoTo Cleanup
+    Set rngBuilt = rngInput
     Set rngLand = LastInputCell(rngInput)
     rngLand.Select
     ShowBlock rngInput, rngLand
@@ -1054,6 +1172,7 @@ Private Sub BuildLevelBlock(ByVal blnHere As Boolean)
 
 Cleanup:
     On Error Resume Next
+    Application.EnableCancelKey = xlInterrupt
     If Len(strErr) > 0 Then
         Application.StatusBar = Left$(strCmd & " failed - " & strErr, m_MAX_STATUS)
     ElseIf Len(strMsg) > 0 Then
@@ -1068,6 +1187,360 @@ ErrHandler:
     Resume Cleanup
 End Sub
 
+
+'--------------------------------------------< OA Robot >--------------------------------------------
+' Command Name:           Create Data Table From Last Level
+' Description:            Builds this level's data table and copies the last level's calculation beside it
+' Macro Expression:       modDataTable.CreateDataTableFromLast()
+' Generated:              2026-10-29 (GitHub #33, Jaq)
+'----------------------------------------------------------------------------------------------------
+' Purpose: GitHub #33 (Jaq, 2026-10-29): cases build from one level to the next on the same model, so carry the
+'          working forward. Builds (or finds) this level's block exactly as Create Data Table does, then finds the
+'          PREVIOUS level's block - on its L## sheet or in its rows on the case sheet, the kind of sheet the user is
+'          on first - and copies that block's calculation beside the new one (CopyLevelCalc). The new block's
+'          inputs are this level's own, never copied. No previous block: the new block only, and the status bar
+'          says so. This level already has a block: nothing is copied (the working there is the user's).
+'          Status bar for every outcome; a failure starts CREATE DATA TABLE FROM LAST LEVEL FAILED.
+Public Sub CreateDataTableFromLast()
+
+    ' --- CONSTANTS (local to function) ---
+    Const PROC_NAME As String = "CreateDataTableFromLast"
+    Const CMD_TITLE As String = "Create Data Table From Last Level"
+    Const FAILED_PREFIX As String = "CREATE DATA TABLE FROM LAST LEVEL FAILED: "
+    Const CDT_FAILED As String = "Create Data Table failed - "     ' BuildLevelBlock's error prefix
+    Const BUILD_FAILED As String = "BuildDataTable failed - "      ' BuildDataTable's error prefix
+
+    Dim wsWork As Worksheet
+    Dim rngNew As Range
+    Dim rngPrev As Range
+    Dim blnExisted As Boolean
+    Dim lngLevel As Long
+    Dim varStatus As Variant
+    Dim strBuilt As String
+    Dim strMsg As String
+    Dim strErr As String
+    Dim strCalcNote As String
+    Dim blnInit As Boolean
+    Dim blnEvents As Boolean
+
+    On Error GoTo ErrHandler
+
+    Application.EnableCancelKey = xlDisabled      ' live only around the writes, where the handler puts everything back
+    If TypeName(ActiveSheet) <> "Worksheet" Then
+        strMsg = FAILED_PREFIX & "select a cell in a level first."
+        GoTo Cleanup
+    End If
+    Set wsWork = ActiveSheet
+
+    ' 1. This level's block, as Create Data Table builds it. Its own status message is kept.
+    BuildLevelBlock False, rngNew, blnExisted, lngLevel
+    Application.EnableCancelKey = xlDisabled      ' BuildLevelBlock hands Esc back as it ends
+    varStatus = Application.StatusBar
+    If VarType(varStatus) = vbString Then strBuilt = CStr(varStatus)
+    If rngNew Is Nothing Then
+        ' Create Data Table's own message says why. Only its error is a failure; a refusal (the level is solved
+        ' on another sheet, no room) is passed on as it is.
+        If Left$(strBuilt, Len(CDT_FAILED)) = CDT_FAILED Then
+            strMsg = FAILED_PREFIX & Mid$(strBuilt, Len(CDT_FAILED) + 1)
+        ElseIf Left$(strBuilt, Len(BUILD_FAILED)) = BUILD_FAILED Then
+            strMsg = FAILED_PREFIX & Mid$(strBuilt, Len(BUILD_FAILED) + 1)
+        Else
+            strMsg = CMD_TITLE & ": no table built. " & strBuilt
+        End If
+        GoTo Cleanup
+    End If
+    If blnExisted Then
+        strMsg = CMD_TITLE & ": this level already has a data table at " & rngNew.Address(False, False) & _
+                 ", so nothing was copied (the working there is yours)."
+        GoTo Cleanup
+    End If
+
+    ' 2. The previous level's block.
+    If lngLevel = 0 Then
+        strMsg = CMD_TITLE & ": could not tell which level this is, so a plain table was made at " & _
+                 rngNew.Address(False, False) & "."
+        GoTo Cleanup
+    End If
+    If lngLevel = 1 Then
+        strMsg = CMD_TITLE & ": no level before this one, so a plain table was made at " & _
+                 rngNew.Address(False, False) & "."
+        GoTo Cleanup
+    End If
+    Set rngPrev = PreviousLevelBlock(wsWork, lngLevel - 1)
+    If rngPrev Is Nothing Then
+        strMsg = CMD_TITLE & ": level " & lngLevel - 1 & " has no data table (looked on L" & _
+                 Format$(lngLevel - 1, "00") & " and the case sheet), so a plain table was made at " & _
+                 rngNew.Address(False, False) & "."
+        GoTo Cleanup
+    End If
+
+    ' 3. Its calculation beside the new block, calculation off as in Create Data Table: every write would otherwise
+    '    recalculate the workbook, and the copy is several writes.
+    strCalcNote = CalcOffNote()
+    If Len(strCalcNote) > 0 Then Application.StatusBar = CMD_TITLE & ":" & strCalcNote
+    VBAInit
+    blnInit = True
+    ' As Create Data Table: no events on the writes, and Esc goes to the handler so everything is put back (#24).
+    blnEvents = Application.EnableEvents
+    Application.EnableEvents = False
+    Application.EnableCancelKey = xlErrorHandler
+    strMsg = CMD_TITLE & ": " & CopyLevelCalc(rngPrev, rngNew, lngLevel - 1)
+
+Cleanup:
+    On Error Resume Next
+    Application.EnableCancelKey = xlDisabled      ' no Esc while state is put back
+    If blnInit Then
+        Application.EnableEvents = blnEvents
+        VBAFin
+    End If
+    Application.EnableCancelKey = xlInterrupt
+    If Len(strErr) > 0 Then
+        Application.StatusBar = Left$(FAILED_PREFIX & strErr, m_MAX_STATUS)
+    ElseIf Len(strMsg) > 0 Then
+        Application.StatusBar = Left$(strMsg, m_MAX_STATUS)
+    End If
+    Exit Sub
+
+ErrHandler:
+    If m_DEBUG_MODE Then Stop: Resume
+    strErr = Err.Number & ": " & Err.Description
+    If LogError(PROC_NAME, Err.Number, strErr) Then strErr = strErr & " - see " & LogLocation()
+    Resume Cleanup
+End Sub
+
+' Purpose: GitHub #33: a level's number in the case's order, the numbering Create Level Sheets gives its sheets:
+'          on an L## sheet its number; on the case sheet, the place of the level heading at lngTop among the
+'          sheet's level headings (Contents lists ignored); else the place of the last heading above lngTop.
+'          0 when there is none. No handler of its own by design: errors propagate to BuildLevelBlock.
+Private Function LevelNumberOf(ByVal ws As Worksheet, ByVal blnLevelSheet As Boolean, ByVal lngTop As Long) As Long
+
+    Dim colRows As Collection
+    Dim lngI As Long
+
+    If blnLevelSheet Then
+        LevelNumberOf = CLng(Mid$(ws.Name, 2))
+        Exit Function
+    End If
+    Set colRows = LevelMarkerRows(ws)
+    If colRows Is Nothing Then Exit Function
+    For lngI = 1 To colRows.Count
+        If colRows(lngI) <= lngTop Then LevelNumberOf = lngI
+    Next lngI
+End Function
+
+' Purpose: GitHub #33: the input cell of level lngLevel's block, or Nothing: on its sheet L## (any block there),
+'          and in its rows on the case sheet (the lngLevel-th level heading down to the next). The kind of sheet
+'          wsWork is goes first. Never raises (a failure is logged and reads as no block).
+Private Function PreviousLevelBlock(ByVal wsWork As Worksheet, ByVal lngLevel As Long) As Range
+
+    ' --- CONSTANTS (local to function) ---
+    Const CMD_TITLE As String = "Create Data Table From Last Level"
+
+    Dim wb As Workbook
+    Dim wsSheet As Worksheet
+    Dim wsCase As Worksheet
+    Dim colRows As Collection
+    Dim rngFound As Range
+    Dim rngZone As Range
+    Dim varTry As Variant
+    Dim lngBottom As Long
+    Dim strFound As String
+    Dim blnFailed As Boolean
+
+    On Error GoTo ErrHandler
+
+    Set wb = wsWork.Parent
+    ' Probe: the level sheet may not exist.
+    On Error Resume Next
+    Set wsSheet = wb.Worksheets("L" & Format$(lngLevel, "00"))
+    On Error GoTo ErrHandler
+    Set wsCase = modCaseSetup.CaseSheetOf(wb)
+    If Not wsCase Is Nothing Then
+        If IsLevelSheetName(wsCase.Name) Then Set wsCase = Nothing      ' only a real case sheet
+    End If
+
+    For Each varTry In IIf(IsLevelSheetName(wsWork.Name), Array("sheet", "case"), Array("case", "sheet"))
+        Set rngFound = Nothing
+        If varTry = "sheet" And Not wsSheet Is Nothing Then
+            Set rngFound = FindInputCell(wsSheet, wsSheet.Cells(1, 1), CMD_TITLE, strFound, wsSheet.Cells, blnFailed)
+        ElseIf varTry = "case" And Not wsCase Is Nothing Then
+            Set colRows = LevelMarkerRows(wsCase)
+            If Not colRows Is Nothing Then
+                If colRows.Count >= lngLevel Then
+                    If colRows.Count > lngLevel Then
+                        lngBottom = colRows(lngLevel + 1) - 1
+                    Else
+                        lngBottom = wsCase.Cells(wsCase.Rows.Count, 2).End(xlUp).Row
+                    End If
+                    Set rngZone = wsCase.Range(wsCase.Cells(colRows(lngLevel), 1), _
+                                               wsCase.Cells(lngBottom, wsCase.Columns.Count))
+                    Set rngFound = FindInputCell(wsCase, wsCase.Cells(1, 1), CMD_TITLE, strFound, rngZone, blnFailed)
+                End If
+            End If
+        End If
+        If Not rngFound Is Nothing Then
+            Set PreviousLevelBlock = rngFound
+            GoTo Cleanup
+        End If
+    Next varTry
+
+Cleanup:
+    Exit Function
+
+ErrHandler:
+    If m_DEBUG_MODE Then Stop: Resume
+    LogError "PreviousLevelBlock", Err.Number, Err.Description
+    Set PreviousLevelBlock = Nothing
+    Resume Cleanup
+End Function
+
+' Purpose: GitHub #33: copy the calculation beside the previous level's block (rngPrev) to the same place beside the
+'          new block (rngNew) and point the new ANSWER at the same output. The calculation is every cell right of
+'          the previous block's last input, on the block's rows (its header row down to its last game), up to a
+'          gap of CALC_GAP empty columns. Range.Copy, so formats come too and relative references move with the
+'          copy (to the new block's inputs, at the same place). It goes after the new block's last input. When the
+'          two levels have a different number of inputs it is still copied (Jaq, 2026-10-29), and a red note above
+'          it (or beside it) says so: the references may point at the wrong inputs. Not copied, and said why, when
+'          the place it would go holds anything. Returns the status text. No handler of its own by design: errors
+'          propagate to CreateDataTableFromLast, which reports them.
+Private Function CopyLevelCalc(ByVal rngPrev As Range, ByVal rngNew As Range, ByVal lngPrevLevel As Long) As String
+
+    ' --- CONSTANTS (local to function) ---
+    Const CALC_GAP As Long = 3          ' empty columns that end the calculation (as Save From Example)
+    Const MAX_CALC_COLS As Long = 300
+    Const NOTE_RED As Long = 192        ' RGB(192, 0, 0): the inputs-changed note
+
+    Dim wsPrev As Worksheet
+    Dim wsNew As Worksheet
+    Dim rngPrevLast As Range
+    Dim rngNewLast As Range
+    Dim rngBand As Range
+    Dim rngSrc As Range
+    Dim rngDst As Range
+    Dim rngPrevAns As Range
+    Dim rngNewAns As Range
+    Dim rngTarget As Range
+    Dim rngNote As Range
+    Dim varVals As Variant
+    Dim varForm As Variant
+    Dim lngPrevIn As Long
+    Dim lngNewIn As Long
+    Dim lngGames As Long
+    Dim lngTop As Long
+    Dim lngBottom As Long
+    Dim lngFirst As Long
+    Dim lngLastUsed As Long
+    Dim lngGap As Long
+    Dim lngR As Long
+    Dim lngC As Long
+    Dim blnUsed As Boolean
+    Dim strBlocker As String
+    Dim strAns As String
+    Dim strHead As String
+    Dim strChanged As String
+
+    Set wsPrev = rngPrev.Worksheet
+    Set wsNew = rngNew.Worksheet
+    strHead = "table built at " & rngNew.Address(False, False) & "; "
+    Set rngPrevLast = LastInputCell(rngPrev)
+    Set rngNewLast = LastInputCell(rngNew)
+    lngPrevIn = rngPrevLast.Column - rngPrev.Column
+    lngNewIn = rngNewLast.Column - rngNew.Column
+    If lngPrevIn <> lngNewIn Then
+        strChanged = "Inputs changed: level " & lngPrevLevel & " had " & lngPrevIn & ", this level has " & _
+                     lngNewIn & ". Check the references."
+    End If
+
+    ' The previous block's rows: its header row down to its last game.
+    lngGames = CountGames(rngPrev.Offset(m_BODY_OFFSET_ROWS, 0))
+    lngTop = rngPrev.Row - 1
+    lngBottom = rngPrev.Row + m_BODY_OFFSET_ROWS - 1 + lngGames
+    lngFirst = rngPrevLast.Column + 1
+    If lngFirst + MAX_CALC_COLS - 1 > wsPrev.Columns.Count Then
+        Set rngBand = wsPrev.Range(wsPrev.Cells(lngTop, lngFirst), wsPrev.Cells(lngBottom, wsPrev.Columns.Count))
+    Else
+        Set rngBand = wsPrev.Range(wsPrev.Cells(lngTop, lngFirst), wsPrev.Cells(lngBottom, lngFirst + MAX_CALC_COLS - 1))
+    End If
+    varVals = rngBand.Value2
+    varForm = rngBand.Formula
+    For lngC = 1 To UBound(varVals, 2)
+        blnUsed = False
+        For lngR = 1 To UBound(varVals, 1)
+            If Not IsEmpty(varVals(lngR, lngC)) Or Len(CStr(varForm(lngR, lngC))) > 0 Then
+                blnUsed = True
+                Exit For
+            End If
+        Next lngR
+        If blnUsed Then
+            lngLastUsed = lngC
+            lngGap = 0
+        Else
+            lngGap = lngGap + 1
+            If lngGap >= CALC_GAP Then Exit For
+        End If
+    Next lngC
+    If lngLastUsed = 0 Then
+        CopyLevelCalc = strHead & "level " & lngPrevLevel & "'s table has no calculation beside it, so only the table was made."
+        Exit Function
+    End If
+
+    Set rngSrc = rngBand.Resize(, lngLastUsed)
+    Set rngDst = wsNew.Cells(rngNew.Row + lngTop - rngPrev.Row, rngNewLast.Column + 1).Resize(rngSrc.Rows.Count, _
+                                                                                             rngSrc.Columns.Count)
+    strBlocker = FootprintBlocker(wsNew, rngDst.Row, rngDst.Column, rngDst.Rows.Count, rngDst.Columns.Count)
+    If Len(strBlocker) > 0 Then
+        CopyLevelCalc = strHead & "level " & lngPrevLevel & "'s calculation NOT copied: " & strBlocker & _
+                        " is in the way of " & rngDst.Address(False, False) & "."
+        Exit Function
+    End If
+    rngSrc.Copy Destination:=rngDst
+
+    ' ANSWER: the same output cell of the copied calculation. A plain link (Link Answer Cell writes =$X$10) is
+    ' moved to the matching cell; any other formula is copied with its relative references.
+    Set rngPrevAns = rngPrev.Offset(m_FORMULA_OFFSET_ROWS, 1)
+    Set rngNewAns = rngNew.Offset(m_FORMULA_OFFSET_ROWS, 1)
+    If rngPrevAns.HasFormula Then
+        Set rngTarget = Nothing
+        ' Probe: the formula is a plain cell link on the same sheet, or it is not.
+        On Error Resume Next
+        Set rngTarget = wsPrev.Range(Mid$(rngPrevAns.Formula, 2))
+        On Error GoTo 0
+        If Not rngTarget Is Nothing Then
+            If rngTarget.Cells.Count = 1 And Not Intersect(rngTarget, rngSrc) Is Nothing Then
+                rngNewAns.Formula = "=" & rngDst.Cells(rngTarget.Row - rngSrc.Row + 1, _
+                                                       rngTarget.Column - rngSrc.Column + 1).Address(True, True)
+            Else
+                Set rngTarget = Nothing
+            End If
+        End If
+        If rngTarget Is Nothing Then rngNewAns.FormulaR1C1 = rngPrevAns.FormulaR1C1
+        strAns = ", ANSWER is " & rngNewAns.Formula
+    Else
+        strAns = ", ANSWER not pointed yet (it was not on level " & lngPrevLevel & ")"
+    End If
+    ' Inputs changed: a red note above the copy, else beside its top row, wherever the cell is empty.
+    If Len(strChanged) > 0 Then
+        Set rngNote = Nothing
+        If rngDst.Row > 1 Then
+            If IsEmpty(rngDst.Cells(1, 1).Offset(-1, 0).Value2) And _
+               Not rngDst.Cells(1, 1).Offset(-1, 0).HasFormula Then Set rngNote = rngDst.Cells(1, 1).Offset(-1, 0)
+        End If
+        If rngNote Is Nothing And rngDst.Column + rngDst.Columns.Count < wsNew.Columns.Count Then
+            If IsEmpty(rngDst.Cells(1, rngDst.Columns.Count + 1).Value2) Then _
+                Set rngNote = rngDst.Cells(1, rngDst.Columns.Count + 1)
+        End If
+        If Not rngNote Is Nothing Then
+            rngNote.Value2 = strChanged
+            rngNote.Font.Color = NOTE_RED
+            rngNote.Font.Bold = True
+            strChanged = strChanged & " (note at " & rngNote.Address(False, False) & ")"
+        End If
+        strChanged = " " & strChanged
+    End If
+    CopyLevelCalc = strHead & "level " & lngPrevLevel & "'s calculation copied from " & wsPrev.Name & "!" & _
+                    rngSrc.Address(False, False) & " to " & rngDst.Address(False, False) & strAns & "." & _
+                    strChanged & " Check it fits this level, then run RDT."
+End Function
 
 ' Purpose: Why the active cell cannot be the block's input cell for Create Data Table Here, or "" when
 '          it can: not the Example# label, on row 2 or lower (the header row goes above it), empty, and
@@ -1100,6 +1573,32 @@ ErrHandler:
     LogError "HereRefusal", Err.Number, Err.Description
     HereRefusal = "the selected cell could not be checked"
     Resume Cleanup
+End Function
+
+' Purpose: GitHub #27: the last column of any merged cell in the lngRows x lngCols block whose top-left cell is
+'          (lngTopRow, lngLeftCol), or 0 when there is none. One MergeCells test for the common case. No handler of
+'          its own by design: errors propagate to the caller's handler.
+Private Function FootprintMergeEnd(ByVal ws As Worksheet, ByVal lngTopRow As Long, ByVal lngLeftCol As Long, _
+                                   ByVal lngRows As Long, ByVal lngCols As Long) As Long
+
+    Dim rngBlock As Range
+    Dim rngCell As Range
+    Dim lngEnd As Long
+
+    If lngTopRow < 1 Then lngTopRow = 1
+    If lngLeftCol < 1 Then lngLeftCol = 1
+    If lngTopRow + lngRows - 1 > ws.Rows.Count Then lngRows = ws.Rows.Count - lngTopRow + 1
+    If lngLeftCol + lngCols - 1 > ws.Columns.Count Then lngCols = ws.Columns.Count - lngLeftCol + 1
+    Set rngBlock = ws.Cells(lngTopRow, lngLeftCol).Resize(lngRows, lngCols)
+    If Not IsNull(rngBlock.MergeCells) Then
+        If Not rngBlock.MergeCells Then Exit Function
+    End If
+    For Each rngCell In rngBlock.Cells
+        If rngCell.MergeCells Then
+            lngEnd = rngCell.MergeArea.Column + rngCell.MergeArea.Columns.Count - 1
+            If lngEnd > FootprintMergeEnd Then FootprintMergeEnd = lngEnd
+        End If
+    Next rngCell
 End Function
 
 ' Purpose: The address of the first cell holding a value or a formula in the lngRows x lngCols block
@@ -1136,6 +1635,10 @@ Private Function FootprintBlocker(ByVal ws As Worksheet, ByVal lngTopRow As Long
             End If
         Next lngC
     Next lngR
+    ' An empty merged cell is in the way too (GitHub #27): the block's cells must be single cells.
+    If FootprintMergeEnd(ws, lngTopRow, lngLeftCol, lngRows, lngCols) > 0 Then
+        FootprintBlocker = "a merged cell"
+    End If
 
 Cleanup:
     Exit Function
@@ -1878,9 +2381,13 @@ Private Sub ShowBlock(ByVal rngInput As Range, ByVal rngLand As Range)
     Dim rngSeen As Range
     Dim lngCol As Long
     Dim lngRow As Long
+    Dim lngCancelKey As Long
 
     On Error GoTo ErrHandler
 
+    ' A scroll lets Excel notice Esc, and this cosmetic step has nothing to stop: no Continue / End / Debug box.
+    lngCancelKey = Application.EnableCancelKey
+    Application.EnableCancelKey = xlDisabled
     Set ws = rngInput.Parent
     Set rngShow = ws.Range(ws.Cells(rngInput.Row - 1, rngInput.Column), _
                            ws.Cells(rngInput.Row + m_FORMULA_OFFSET_ROWS, rngLand.Column + 1))
@@ -1905,6 +2412,7 @@ Private Sub ShowBlock(ByVal rngInput As Range, ByVal rngLand As Range)
     End With
 
 Cleanup:
+    Application.EnableCancelKey = lngCancelKey
     Exit Sub
 
 ErrHandler:
@@ -3451,6 +3959,7 @@ ErrHandler:
     If m_DEBUG_MODE Then Stop: Resume
     SlowdownsIn = vbNullString
 End Function
+
 
 
 

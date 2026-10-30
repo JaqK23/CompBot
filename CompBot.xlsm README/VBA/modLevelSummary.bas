@@ -222,7 +222,7 @@ Public Function LevelSourceSheet(ByVal wbCase As Workbook) As Worksheet
 
     On Error GoTo ErrHandler
 
-    For Each varName In Array("Case", "Case-Varsity", "Task")
+    For Each varName In modCaseSetup.LabelWords("Case")
         Set wsEach = Nothing
         ' Probe: the sheet may simply not exist.
         On Error Resume Next
@@ -928,11 +928,16 @@ Private Function Astral(ByVal lngCode As Long) As String
 End Function
 
 
-' Purpose: "Level 3", "SECTION 3:" -> 3. The heading has already passed modCaseSetup.IsLevelMarker.
+' Purpose: "Level 3", "SECTION 3:", "Niveau 3" -> 3. The heading has already passed modCaseSetup.IsLevelMarker,
+'          whose words (modCaseSetup.LabelWords "LevelWord", GitHub #28) are the ones removed here.
 Private Function MarkerNumber(ByVal strMarker As String) As Long
     Dim strNum As String
+    Dim varWord As Variant
     strNum = UCase$(Replace(strMarker, Chr$(160), " "))
-    strNum = Trim$(Replace(Replace(Replace(strNum, "LEVEL", ""), "SECTION", ""), ":", ""))
+    For Each varWord In modCaseSetup.LabelWords("LevelWord")
+        strNum = Replace(strNum, CStr(varWord), "")
+    Next varWord
+    strNum = Trim$(Replace(strNum, ":", ""))
     If IsNumeric(strNum) Then MarkerNumber = CLng(strNum)
 End Function
 
@@ -984,4 +989,5 @@ Private Function SafeText(ByVal varValue As Variant) As String
         SafeText = CStr(varValue)
     End If
 End Function
+
 

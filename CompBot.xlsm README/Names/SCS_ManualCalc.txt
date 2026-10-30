@@ -1,0 +1,1 @@
+SCS_ManualCalc ='Setup Settings'!$C$22

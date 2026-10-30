@@ -263,6 +263,7 @@ Public Sub SaveAnswerToBonus(ByVal lngBonus As Long)
     Dim lngCol     As Long
     Dim lngErrNum  As Long
     Dim strErrDesc As String
+    Dim varWord    As Variant
 
     On Error GoTo ErrHandler
 
@@ -286,7 +287,13 @@ Public Sub SaveAnswerToBonus(ByVal lngBonus As Long)
             If FindWhole(wsTarget, strAltLabel) Is Nothing Then Set wsTarget = Nothing
         End If
     End If
-    If wsTarget Is Nothing Then Set wsTarget = SheetWithValue("Bonus Questions")
+    ' The bonus heading in any language of modCaseSetup.LabelWords ("Questions bonus", GitHub #28).
+    If wsTarget Is Nothing Then
+        For Each varWord In modCaseSetup.LabelWords("BonusHeading")
+            Set wsTarget = SheetWithValue(CStr(varWord))
+            If Not wsTarget Is Nothing Then Exit For
+        Next varWord
+    End If
     If wsTarget Is Nothing Then
         Application.StatusBar = strTitle & ": no 'Bonus Questions' block found"
         GoTo Cleanup
@@ -890,6 +897,7 @@ Private Function WorkbookNameExists(ByVal wb As Workbook, ByVal strName As Strin
     On Error GoTo 0
     If Not nmProbe Is Nothing Then WorkbookNameExists = (TypeName(nmProbe.Parent) = "Workbook")
 End Function
+
 
 
 

@@ -7,7 +7,10 @@ Option Explicit
 '          CommandAfter behind any command that saves a bonus answer).
 '
 ' Commands (BonusDock collection):
-'   Show Bonus Dock                 BonusDockText()            -> Excel Task Pane Output (Text)
+'   Show Bonus Dock                 BonusDockText()            -> Excel Task Pane Output (Text, broken at the user's
+'                                   dock width, modSetupSettings.DockWidth; GitHub #23)
+'   Grow Bonus Dock                 GrowBonusDock()            -> the same pane, lines m_WIDTH_STEP characters longer
+'   Shrink Bonus Dock               ShrinkBonusDock()          -> the same pane, lines m_WIDTH_STEP characters shorter
 '   Clear Bonus From Dock           ClearBonusFromDock(bonus)  -> then Show Bonus Dock
 '   Restore Cleared Bonuses         RestoreClearedBonuses()    -> then Show Bonus Dock
 '   Next Bonus In Status Bar        StepBonusStatus(1)
@@ -44,7 +47,7 @@ Private Const m_STATE_OPEN          As Long = 0
 Private Const m_STATE_ANSWERED      As Long = 1
 Private Const m_STATE_ERROR         As Long = 2
 Private Const m_RESULT_FAILED       As Long = -1
-Private Const m_WRAP_WIDTH          As Long = 55    ' OA Robot's Text pane does not wrap - lines are broken here
+Private Const m_WIDTH_STEP          As Long = 5     ' Grow / Shrink Bonus Dock: characters per run (#23)
 Private Const m_LABEL_PATTERN       As String = "*bonus*"
 Private Const m_MAX_MATCH_HOPS      As Long = 50    ' more "bonus" mentions than this: one array read instead
 
@@ -52,6 +55,7 @@ Private Const m_MAX_MATCH_HOPS      As Long = 50    ' more "bonus" mentions than
 Private m_objLinkRegex        As Object
 Private m_lngStatusPos        As Long
 Private m_strStatusBook       As String
+Private m_blnNoWrap           As Boolean    ' BonusDockMarkdown is building: the pane wraps, WrapText does not (#23)
 
 ' --- TYPES ---
 Private Type tBonus
@@ -181,6 +185,142 @@ ErrHandler:
     strErrText = Err.Description
     LogError PROC_NAME, lngErrNumber, strErrText
     strOut = "Bonus dock failed (" & lngErrNumber & ": " & strErrText & ") - see " & LogLocation() & "."
+    Resume Cleanup
+End Function
+
+
+'--------------------------------------------< OA Robot >--------------------------------------------
+' Command Name:           Show Bonus Dock (since 2026.10.8)
+' Macro Expression:       modBonusDock.BonusDockMarkdown()
+'----------------------------------------------------------------------------------------------------
+' NOT IN USE (Jaq, 2026-10-30): Show Bonus Dock is back on BonusDockText / Text. The Markdown pane wraps at a width
+' of its own, not the dock's, so a narrow dock still cut the text off. Kept for when OA Robot's pane follows the dock.
+' Purpose: The dock as Markdown (GitHub #23, Chien Chi-He): the same content as BonusDockText, without its hard
+'          line breaks at the dock width. OA Robot's Markdown pane wraps every line to the dock's width, so narrowing
+'          the dock wraps the text instead of cutting it off. Each line ends in a hard break (two spaces) so the
+'          dock's own line breaks stay; the rule line becomes a Markdown rule, which spans whatever width the dock
+'          has; MarkdownEscape makes each line show as typed (only * _ ~ are escaped; see it for why).
+'          Tested 29 Oct 2026: an HTML pane is a small fixed-size box that does not follow the dock's width, and
+'          shows the mid dot as A-circumflex, so HTML is not used. Never raises.
+Public Function BonusDockMarkdown() As String
+
+    Dim strText As String
+    Dim strRule As String
+    Dim strOut As String
+    Dim varLines As Variant
+    Dim lngLine As Long
+
+    On Error GoTo ErrHandler
+
+    strRule = String$(30, ChrW$(&H2501))         ' BonusDockText's rule line
+    m_blnNoWrap = True
+    strText = BonusDockText()
+    m_blnNoWrap = False
+
+    varLines = Split(Replace(strText, vbCr, vbNullString), vbLf)
+    For lngLine = LBound(varLines) To UBound(varLines)
+        If varLines(lngLine) = strRule Then
+            ' A blank line first, or Markdown reads "---" under text as a heading underline.
+            strOut = strOut & vbLf & "---" & vbLf & vbLf
+        ElseIf Len(varLines(lngLine)) = 0 Then
+            strOut = strOut & vbLf
+        Else
+            strOut = strOut & MarkdownEscape(CStr(varLines(lngLine))) & "  " & vbLf
+        End If
+    Next lngLine
+    BonusDockMarkdown = strOut
+
+Cleanup:
+    m_blnNoWrap = False
+    Exit Function
+
+ErrHandler:
+    If m_DEBUG_MODE Then Stop: Resume
+    LogError "BonusDockMarkdown", Err.Number, Err.Description
+    BonusDockMarkdown = "Bonus dock failed - see " & MarkdownEscape(LogLocation()) & "."
+    Resume Cleanup
+End Function
+
+
+' Purpose: Make one line of dock text show as typed in OA Robot's Markdown pane (GitHub #23). Measured 29 Oct 2026:
+'          the pane takes a backslash escape only before * _ ~ (before ` . - ( ) [ ] # | < > = & $ the backslash is
+'          SHOWN), so only those three are escaped. A zero-width space starts the line, so a question beginning
+'          "#", "-", "+", ">" or "1." is never read as a heading, bullet, quote or numbered list, and one goes
+'          between "](" so "[word](here)" is never made a link. Known limit: a PAIR of backticks shows as code
+'          (no escape for them works in this pane); rare in a bonus question. Pure string helper.
+Private Function MarkdownEscape(ByVal strText As String) As String
+
+    ' --- CONSTANTS (local to function) ---
+    Const MD_SPECIAL As String = "*_~"
+
+    Dim lngPos As Long
+    Dim strChar As String
+    Dim strOut As String
+
+    For lngPos = 1 To Len(strText)
+        strChar = Mid$(strText, lngPos, 1)
+        If InStr(1, MD_SPECIAL, strChar, vbBinaryCompare) > 0 Then strOut = strOut & Chr$(92)
+        strOut = strOut & strChar
+    Next lngPos
+    MarkdownEscape = ChrW$(&H200B) & Replace(strOut, "](", "]" & ChrW$(&H200B) & "(")
+End Function
+
+
+'--------------------------------------------< OA Robot >--------------------------------------------
+' Command Name:           Grow Bonus Dock
+' Description:            Makes the bonus dock's lines longer, for a wider dock
+' Macro Expression:       modBonusDock.GrowBonusDock()
+' Generated:              2026-10-30 (GitHub #23, Jaq)
+'----------------------------------------------------------------------------------------------------
+' Purpose: One step wider, then the dock's text, which the command's task pane output shows.
+Public Function GrowBonusDock() As String
+    GrowBonusDock = ResizeDock(m_WIDTH_STEP, "Grow Bonus Dock")
+End Function
+
+
+'--------------------------------------------< OA Robot >--------------------------------------------
+' Command Name:           Shrink Bonus Dock
+' Description:            Makes the bonus dock's lines shorter, for a narrower dock
+' Macro Expression:       modBonusDock.ShrinkBonusDock()
+' Generated:              2026-10-30 (GitHub #23, Jaq)
+'----------------------------------------------------------------------------------------------------
+' Purpose: One step narrower, then the dock's text, which the command's task pane output shows.
+Public Function ShrinkBonusDock() As String
+    ShrinkBonusDock = ResizeDock(-m_WIDTH_STEP, "Shrink Bonus Dock")
+End Function
+
+
+' Purpose: Move the dock width by lngStep, say so on the status bar, and return the dock's text at the new width.
+'          The user judges the width by eye: the pane cannot be measured from a command, so they run this until
+'          no line is cut off. Never raises; a failure leaves the width as it was and is on the status bar.
+Private Function ResizeDock(ByVal lngStep As Long, ByVal strCmd As String) As String
+
+    ' --- CONSTANTS (local to function) ---
+    Const PROC_NAME As String = "ResizeDock"
+
+    Dim lngWas As Long
+    Dim lngNow As Long
+    Dim strStatus As String
+
+    On Error GoTo ErrHandler
+
+    lngWas = modSetupSettings.DockWidth()
+    lngNow = modSetupSettings.SetDockWidth(lngWas + lngStep)
+    If lngNow = lngWas Then
+        strStatus = strCmd & ": already at " & lngNow & " characters, the limit."
+    Else
+        strStatus = strCmd & ": " & lngNow & " characters."
+    End If
+
+Cleanup:
+    ResizeDock = BonusDockText()
+    Application.StatusBar = Left$(strStatus, m_MAX_STATUS)
+    Exit Function
+
+ErrHandler:
+    If m_DEBUG_MODE Then Stop: Resume
+    strStatus = UCase$(strCmd) & " FAILED: " & Err.Number & " " & Err.Description
+    If LogError(PROC_NAME, Err.Number, Err.Description) Then strStatus = strStatus & " - see " & LogLocation()
     Resume Cleanup
 End Function
 
@@ -470,11 +610,13 @@ ErrHandler:
 End Function
 
 
-' Purpose: The level a relates-to cell names: 3, "3", "L3", "L03", "Level 3", "Section 3" -> 3. Anything else
+' Purpose: The level a relates-to cell names: 3, "3", "L3", "L03", "Level 3", "Section 3", "Niveau 3" -> 3. Anything else
 '          ("B", "N/A", "All levels", 2.5) -> 0.
 Private Function RelatesLevel(ByVal varValue As Variant) As Long
 
     Dim strKey As String
+    Dim varWord As Variant
+    Dim blnWord As Boolean
 
     If IsError(varValue) Or IsEmpty(varValue) Then Exit Function
     If VarType(varValue) = vbDouble Then
@@ -482,13 +624,15 @@ Private Function RelatesLevel(ByVal varValue As Variant) As Long
         Exit Function
     End If
     strKey = UCase$(Replace(Replace(SafeText(varValue), Chr$(160), ""), " ", ""))
-    If Left$(strKey, 5) = "LEVEL" Then
-        strKey = Mid$(strKey, 6)
-    ElseIf Left$(strKey, 7) = "SECTION" Then
-        strKey = Mid$(strKey, 8)
-    ElseIf Left$(strKey, 1) = "L" Then
-        strKey = Mid$(strKey, 2)
-    End If
+    ' Level, Section, Niveau (modCaseSetup.LabelWords, GitHub #28), else the L of "L3".
+    For Each varWord In modCaseSetup.LabelWords("LevelWord")
+        If Left$(strKey, Len(varWord)) = varWord Then
+            strKey = Mid$(strKey, Len(varWord) + 1)
+            blnWord = True
+            Exit For
+        End If
+    Next varWord
+    If Not blnWord And Left$(strKey, 1) = "L" Then strKey = Mid$(strKey, 2)
     If strKey Like "#" Or strKey Like "##" Then RelatesLevel = CLng(strKey)
 End Function
 
@@ -552,7 +696,7 @@ Private Function CollectBonuses(ByVal wbCase As Workbook, ByRef udtBonuses() As 
         ' Only the Case / B pair Create Bonus Sheet makes: any other sheet with bonus labels (a key in a
         ' language IsAnswerKeySheet does not know, a stray copy) must never mark a bonus as answered.
         If wsEach.Name <> wsPrimary.Name And _
-           (StrComp(wsEach.Name, "B", vbTextCompare) = 0 Or StrComp(wsEach.Name, "Case", vbTextCompare) = 0) Then
+           (StrComp(wsEach.Name, "B", vbTextCompare) = 0 Or modCaseSetup.IsLabel(wsEach.Name, "Case", True)) Then
             lngOther = ReadBonusBlock(wsEach, colRowsBy(wsEach.Name), udtOther)
             If lngOther = m_RESULT_FAILED Then GoTo Failed
             For lngO = 1 To lngOther
@@ -718,7 +862,7 @@ Private Function FindHeaderRow(ByVal varHeader As Variant, ByRef lngAnsCol As Lo
         For lngCol = 1 To UBound(varHeader, 2)
             strText = UCase$(Trim$(Replace(SafeText(varHeader(lngRow, lngCol)), Chr$(160), " ")))
             If Len(strText) > 0 And Len(strText) <= MAX_HEADER_LEN Then
-                If lngAns = 0 And InStr(1, strText, "ANSWER") > 0 And InStr(1, strText, "KEY") = 0 Then lngAns = lngCol
+                If lngAns = 0 And modCaseSetup.ContainsLabel(strText, "Answer") And InStr(1, strText, "KEY") = 0 Then lngAns = lngCol
                 If lngPts = 0 And Left$(strText, 5) = "POINT" Then lngPts = lngCol
                 If lngQ = 0 And lngCol > m_LABEL_COL And InStr(1, strText, "QUESTION") > 0 And InStr(1, strText, "#") = 0 Then lngQ = lngCol
             End If
@@ -968,7 +1112,7 @@ Private Function PickPrimarySheet(ByVal wbCase As Workbook, ByVal colSheets As C
     Next varSheet
     For Each varSheet In colSheets
         Set wsEach = varSheet
-        If StrComp(wsEach.Name, "Case", vbTextCompare) = 0 Then Set PickPrimarySheet = wsEach: GoTo Cleanup
+        If modCaseSetup.IsLabel(wsEach.Name, "Case", True) Then Set PickPrimarySheet = wsEach: GoTo Cleanup
     Next varSheet
     For Each varSheet In colSheets
         Set wsEach = varSheet
@@ -1182,8 +1326,9 @@ Private Function KeyListText(ByVal strList As String) As String
 End Function
 
 
-' Purpose: Break text into lines of at most m_WRAP_WIDTH characters at spaces (a longer single word is cut).
-'          Existing line breaks are kept. The task pane's Text view does not wrap on its own.
+' Purpose: Break text into lines of at most the user's dock width at spaces (a longer single word is cut).
+'          Existing line breaks are kept. The task pane's Text view does not wrap on its own; the Markdown dock
+'          (BonusDockMarkdown, #23) does, so while it builds the text comes back unchanged.
 Private Function WrapText(ByVal strText As String) As String
 
     Dim varLines As Variant
@@ -1193,7 +1338,13 @@ Private Function WrapText(ByVal strText As String) As String
     Dim strLine  As String
     Dim strWord  As String
     Dim strOut   As String
+    Dim lngWidth As Long
 
+    If m_blnNoWrap Then
+        WrapText = strText
+        Exit Function
+    End If
+    lngWidth = modSetupSettings.DockWidth()
     varLines = Split(Replace(strText, vbCr, vbNullString), vbLf)
     For lngLine = LBound(varLines) To UBound(varLines)
         If lngLine > LBound(varLines) Then strOut = strOut & vbLf
@@ -1201,14 +1352,14 @@ Private Function WrapText(ByVal strText As String) As String
         varWords = Split(varLines(lngLine), " ")
         For lngWord = LBound(varWords) To UBound(varWords)
             strWord = varWords(lngWord)
-            Do While Len(strWord) > m_WRAP_WIDTH
+            Do While Len(strWord) > lngWidth
                 If Len(strLine) > 0 Then strOut = strOut & strLine & vbLf: strLine = vbNullString
-                strOut = strOut & Left$(strWord, m_WRAP_WIDTH) & vbLf
-                strWord = Mid$(strWord, m_WRAP_WIDTH + 1)
+                strOut = strOut & Left$(strWord, lngWidth) & vbLf
+                strWord = Mid$(strWord, lngWidth + 1)
             Loop
             If Len(strLine) = 0 Then
                 strLine = strWord
-            ElseIf Len(strLine) + 1 + Len(strWord) <= m_WRAP_WIDTH Then
+            ElseIf Len(strLine) + 1 + Len(strWord) <= lngWidth Then
                 strLine = strLine & " " & strWord
             Else
                 strOut = strOut & strLine & vbLf
@@ -1236,6 +1387,7 @@ Private Function SafeText(ByVal varValue As Variant) As String
         SafeText = CStr(varValue)
     End If
 End Function
+
 
 
 

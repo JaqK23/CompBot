@@ -219,6 +219,21 @@
       ]
     },
     {
+      "Name": "Create Data Table From Last Level",
+      "Description": "Builds this level's data table and copies the last level's calculation beside it, ready to adjust and run RDT",
+      "Type": "VBAMacroCommand",
+      "Note": "For cases that build from one level to the next on the same model. Run from any cell in a level, as Create Data Table (CDT): it builds this level's block in the same place CDT would, with this level's own inputs. It then finds the PREVIOUS level's block, on its L## sheet or in its rows on the Case sheet, and copies the calculation beside it (every cell right of its last input, on the block's rows, up to a gap of 3 empty columns) to just after the new block's last input, with formats, and with relative references moving with the copy. ANSWER is pointed at the same output cell. When the two levels have a different number of inputs the calculation is still copied, and a red note above it says the inputs changed: check its references, which may point at the wrong inputs. Not copied, and the status bar says why, when the place it would go holds anything, or when the previous level has no block (then a plain table is made). If this level already has a block, nothing is built or copied. References to cells outside the calculation (the case's own cells, another sheet) are copied as they are: check them. Then run RDT. Added 2026-10-29 (GitHub #33, Jaq); copies on a changed input count since the same day (Jaq).",
+      "LaunchCodes": [
+        "CDTL",
+        "DT"
+      ],
+      "MacroExpression": "modDataTable.CreateDataTableFromLast()",
+      "Tags": [
+        "Prep",
+        "DataTable"
+      ]
+    },
+    {
       "Name": "Create Data Table Here",
       "Description": "Builds the level's data table block at the selected cell, else beside the inputs",
       "Type": "VBAMacroCommand",
@@ -501,6 +516,28 @@
       "MacroExpression": "modGoToSpecial.GotoSimilarBackgroundColor()",
       "Tags": [
         "GoTo"
+      ]
+    },
+    {
+      "Name": "Grow Bonus Dock",
+      "Description": "Makes the bonus dock's lines longer, for a wider dock",
+      "Type": "VBAMacroCommand",
+      "Outputs": [
+        {
+          "Name": "Bonus dock pane",
+          "Type": "ExcelTaskPaneOutput",
+          "TaskPaneTitle": "Bonus Questions",
+          "Scope": "Application"
+        }
+      ],
+      "Note": "The dock's pane cannot wrap text, so CompBot breaks its lines at a set length. Each run makes the lines 5 characters longer and refreshes the dock; the status bar gives the length. Run it until the lines fill your dock without being cut off, or Shrink Bonus Dock (BQS) to go the other way. Stops at 80. The default is 60, which fits the width the dock opens at. Your length is a per-user Windows setting, NOT inside CompBot, so it survives every update and works with CompBot read-only. BQW shows Grow and Shrink together, the last one run first; BQG is this one alone. Added 2026-10-30 (GitHub #23, Chien Chi-He).",
+      "LaunchCodes": [
+        "BQW",
+        "BQG"
+      ],
+      "MacroExpression": "modBonusDock.GrowBonusDock()",
+      "Tags": [
+        "Bonus"
       ]
     },
     {
@@ -1059,7 +1096,7 @@
       "Name": "Run Data Table",
       "Description": "Fills a Create Data Table block with static results game by game, recalculating only when run",
       "Type": "VBAMacroCommand",
-      "Note": "Replacement for Excel What-If data tables. Point the ANSWER cell at the example's output, then run from any cell on the sheet. Last-run time and any volatile-function warning go to the StatusBar.",
+      "Note": "Replacement for Excel What-If data tables. Point the ANSWER cell at the example's output, then run from any cell on the sheet. Last-run time and any volatile-function warning go to the StatusBar. Calculation is off while it runs and the status bar says so: if a run is interrupted, turn it back on with Toggle Calculation Mode (TC). To save a _Solve copy before each run, switch on Toggle Save Before Run (TSR).",
       "LaunchCodes": [
         "RDT",
         "DT"
@@ -1301,11 +1338,33 @@
           "Scope": "Application"
         }
       ],
-      "Note": "Reads the active case workbook: 'Bonus 1' / 'Bonus A' labels in column B, header row above with Answer / Points / Question. Sheet B (Create Bonus Sheet) wins, else Case, else the active sheet. Answer sheets are never read. A bonus is answered when its answer cell holds a value or a real formula; a bare link to an empty cell (Case → B) counts as open. Answered on either B or Case counts. Hand-cleared bonuses (Clear Bonus From Dock) go to the footer. Ends with the Dr. Kazza level table (2026-10-23, GitHub #19): each level's difficulty marker (circle easy, square medium, diamond hard, ? for a tag CompBot does not know), points and bonus points; a level easier than an earlier one in bold with a down arrow. Output: OA Robot's task pane, title 'Bonus Questions', Text content, wrapped at 55 characters by the VBA (HTML renders in a tiny fixed box, Markdown rendered blank; tested 2026-09-16 and again 2026-10-23). Re-run to refresh; chain it with CommandAfter behind commands that save bonus answers. Full Setup Case opens it as its last step. Moved into CompBot from the BonusDock collection 2026-09-22.",
+      "Note": "Reads the active case workbook: 'Bonus 1' / 'Bonus A' labels in column B, header row above with Answer / Points / Question. Sheet B (Create Bonus Sheet) wins, else Case, else the active sheet. Answer sheets are never read. A bonus is answered when its answer cell holds a value or a real formula; a bare link to an empty cell (Case → B) counts as open. Answered on either B or Case counts. Hand-cleared bonuses (Clear Bonus From Dock) go to the footer. Ends with the Dr. Kazza level table (2026-10-23, GitHub #19): each level's difficulty marker (circle easy, square medium, diamond hard, ? for a tag CompBot does not know), points and bonus points; a level easier than an earlier one in bold with a down arrow. Output: OA Robot's task pane, title 'Bonus Questions', Text content, broken by the VBA at the user's dock width: 60 characters by default, changed with Grow Bonus Dock (BQG) and Shrink Bonus Dock (BQS) (GitHub #23; a fixed 55 until 2026.10.7). The pane does not wrap Text. HTML renders in a tiny fixed box, and Markdown wraps at a width of its own, not the dock's (tested 2026-10-30), and has rendered blank. Re-run to refresh; chain it with CommandAfter behind commands that save bonus answers. Full Setup Case opens it as its last step. Moved into CompBot from the BonusDock collection 2026-09-22.",
       "LaunchCodes": [
         "BQ"
       ],
       "MacroExpression": "modBonusDock.BonusDockText()",
+      "Tags": [
+        "Bonus"
+      ]
+    },
+    {
+      "Name": "Shrink Bonus Dock",
+      "Description": "Makes the bonus dock's lines shorter, for a narrower dock",
+      "Type": "VBAMacroCommand",
+      "Outputs": [
+        {
+          "Name": "Bonus dock pane",
+          "Type": "ExcelTaskPaneOutput",
+          "TaskPaneTitle": "Bonus Questions",
+          "Scope": "Application"
+        }
+      ],
+      "Note": "Mirror of Grow Bonus Dock (BQG): each run makes the dock's lines 5 characters shorter and refreshes it. Stops at 25. BQW shows Grow and Shrink together; BQS is this one alone. Added 2026-10-30 (GitHub #23, Chien Chi-He).",
+      "LaunchCodes": [
+        "BQW",
+        "BQS"
+      ],
+      "MacroExpression": "modBonusDock.ShrinkBonusDock()",
       "Tags": [
         "Bonus"
       ]
@@ -1422,6 +1481,19 @@
       "MacroExpression": "modMisc.ToggleIterativeCalculation()",
       "Tags": [
         "Settings"
+      ]
+    },
+    {
+      "Name": "Toggle Save Before Run",
+      "Description": "Switches Run Data Table's save of the _Solve copy on or off",
+      "Type": "VBAMacroCommand",
+      "Note": "Off by default. When on, Run Data Table (RDT) saves the workbook before it runs if it is a _Solve copy made by Full Setup Case, so a crash or lock-up part-way loses nothing. Off because a save can be slow on a heavy workbook or a slow OneDrive. The status bar says which it now is. A per-user Windows setting, NOT inside CompBot, so it survives every update and works with CompBot read-only. Added 2026-10-30 (Jaq).",
+      "LaunchCodes": [
+        "TSR"
+      ],
+      "MacroExpression": "modSetupSettings.ToggleSaveBeforeRun()",
+      "Tags": [
+        "DataTable"
       ]
     },
     {

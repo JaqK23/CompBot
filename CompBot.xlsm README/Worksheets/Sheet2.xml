@@ -58,14 +58,6 @@
   <Style ss:ID="s33">
    <Alignment ss:Vertical="Top" ss:WrapText="1"/>
   </Style>
-  <Style ss:ID="s97">
-   <Alignment ss:Vertical="Top" ss:WrapText="1"/>
-   <Font ss:FontName="Verdana" x:Family="Swiss" ss:Size="16" ss:Color="#000000"/>
-  </Style>
-  <Style ss:ID="s98">
-   <Alignment ss:Vertical="Top"/>
-   <Font ss:FontName="Verdana" x:Family="Swiss" ss:Size="16" ss:Color="#000000"/>
-  </Style>
  </Styles>
  <Names>
   <NamedRange ss:Name="_xleta.ADDRESS" ss:RefersTo="=#NAME?" ss:Hidden="1"/>
@@ -1207,7 +1199,7 @@
    ss:RefersTo="=LAMBDA(cell,[sheetname],LET(_a,ADDRESS(ROW(cell),COLUMN(cell),4,TRUE),IF(ISOMITTED(sheetname),_a,&quot;'&quot;&amp;sheetname&amp;&quot;'!&quot;&amp;_a)))"/>
  </Names>
  <Worksheet ss:Name="Info_Commands">
-  <Table ss:ExpandedColumnCount="9" ss:ExpandedRowCount="114"
+  <Table ss:ExpandedColumnCount="9" ss:ExpandedRowCount="118"
    ss:DefaultColumnWidth="90" ss:DefaultRowHeight="19.5">
    <Column ss:StyleID="s32" ss:Width="297.75"/>
    <Column ss:StyleID="s32" ss:AutoFitWidth="0" ss:Width="173.25"/>
@@ -1261,7 +1253,7 @@
     <Cell ss:StyleID="s29"/>
    </Row>
    <Row>
-    <Cell ss:Formula="=ROWS(#REF!)"><Data ss:Type="Number">107</Data></Cell>
+    <Cell ss:Formula="=ROWS(#REF!)"><Data ss:Type="Number">111</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">Name</Data></Cell>
@@ -1349,12 +1341,12 @@
     <Cell ss:Index="6" ss:StyleID="s33"><Data ss:Type="String">Erik Oehm (Lambda Robot: Remove Unused Lambdas)</Data></Cell>
    </Row>
    <Row ss:Height="39">
-    <Cell ss:StyleID="s97"><Data ss:Type="String">Convert to What-If Data Table</Data></Cell>
-    <Cell ss:StyleID="s98"><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s97"><Data ss:Type="String">Backup for RDT: turns the level's data table block into an Excel What-If data table (=TABLE), so Excel fills every game itself</Data></Cell>
-    <Cell ss:StyleID="s97"/>
-    <Cell ss:StyleID="s98"><Data ss:Type="String">WDT, DT</Data></Cell>
-    <Cell ss:StyleID="s97"><Data ss:Type="String">Jaq Kennedy</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Convert to What-If Data Table</Data></Cell>
+    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Backup for RDT: turns the level's data table block into an Excel What-If data table (=TABLE), so Excel fills every game itself</Data></Cell>
+    <Cell ss:StyleID="s33"/>
+    <Cell><Data ss:Type="String">WDT, DT</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Jaq Kennedy</Data></Cell>
    </Row>
    <Row ss:Height="97.5">
     <Cell ss:StyleID="s33"><Data ss:Type="String">Copy Map And Fill From Legend</Data></Cell>
@@ -1394,6 +1386,14 @@
     <Cell ss:StyleID="s33"><Data ss:Type="String">Builds (or finds) the data table block for the level you are in, beside its inputs, and lands on the last input; fill it with Run Data Table (RDT)</Data></Cell>
     <Cell ss:StyleID="s33"/>
     <Cell><Data ss:Type="String">CDT, DT</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Jaq Kennedy</Data></Cell>
+   </Row>
+   <Row ss:Height="39">
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Create Data Table From Last Level</Data></Cell>
+    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Builds this level's data table and copies the last level's calculation beside it, ready to adjust and run RDT</Data></Cell>
+    <Cell ss:StyleID="s33"/>
+    <Cell><Data ss:Type="String">CDTL, DT</Data></Cell>
     <Cell ss:StyleID="s33"><Data ss:Type="String">Jaq Kennedy</Data></Cell>
    </Row>
    <Row ss:Height="58.5">
@@ -1546,13 +1546,21 @@
     <Cell><Data ss:Type="String">SBC</Data></Cell>
     <Cell ss:StyleID="s33"><Data ss:Type="String">Erik Oehm (MEWC Robot: Goto Similar Background Color)</Data></Cell>
    </Row>
+   <Row ss:Height="58.5">
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Grow Bonus Dock</Data></Cell>
+    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Makes the bonus dock's lines longer, for a wider dock</Data></Cell>
+    <Cell ss:StyleID="s33"/>
+    <Cell><Data ss:Type="String">BQW, BQG</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Jaq Kennedy; requested by Chien Chi-He</Data></Cell>
+   </Row>
    <Row ss:Height="39">
-    <Cell ss:StyleID="s97"><Data ss:Type="String">Hardcode Data Table</Data></Cell>
-    <Cell ss:StyleID="s98"><Data ss:Type="String">Jaq Kennedy</Data></Cell>
-    <Cell ss:StyleID="s97"><Data ss:Type="String">Replaces a What-If data table's results with their values, so the workbook stops recalculating it</Data></Cell>
-    <Cell ss:StyleID="s97"/>
-    <Cell ss:StyleID="s98"><Data ss:Type="String">HDT, DT</Data></Cell>
-    <Cell ss:StyleID="s97"><Data ss:Type="String">Jaq Kennedy</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Hardcode Data Table</Data></Cell>
+    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Replaces a What-If data table's results with their values, so the workbook stops recalculating it</Data></Cell>
+    <Cell ss:StyleID="s33"/>
+    <Cell><Data ss:Type="String">HDT, DT</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Jaq Kennedy</Data></Cell>
    </Row>
    <Row ss:Height="58.5">
     <Cell ss:StyleID="s33"><Data ss:Type="String">Import Case Lambdas</Data></Cell>
@@ -1961,6 +1969,14 @@
     <Cell ss:StyleID="s33"><Data ss:Type="String">Jaq Kennedy</Data></Cell>
    </Row>
    <Row ss:Height="58.5">
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Shrink Bonus Dock</Data></Cell>
+    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Makes the bonus dock's lines shorter, for a narrower dock</Data></Cell>
+    <Cell ss:StyleID="s33"/>
+    <Cell><Data ss:Type="String">BQW, BQS</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Jaq Kennedy; requested by Chien Chi-He</Data></Cell>
+   </Row>
+   <Row ss:Height="58.5">
     <Cell ss:StyleID="s33"><Data ss:Type="String">Split Text by Delimiter Above</Data></Cell>
     <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
     <Cell ss:StyleID="s33"><Data ss:Type="String">Splits the active cell's text DOWN into rows on the delimiter in the cell above (linked, so changing that cell re-splits), and trims each piece</Data></Cell>
@@ -2031,6 +2047,14 @@
     <Cell ss:StyleID="s33"/>
     <Cell><Data ss:Type="String">IC</Data></Cell>
     <Cell ss:StyleID="s33"><Data ss:Type="String">Erik Oehm (MEWC Robot: Enable Iterative Calculation)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Toggle Save Before Run</Data></Cell>
+    <Cell><Data ss:Type="String">Jaq Kennedy</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Switches Run Data Table's save of the _Solve copy on or off</Data></Cell>
+    <Cell ss:StyleID="s33"/>
+    <Cell><Data ss:Type="String">TSR</Data></Cell>
+    <Cell ss:StyleID="s33"><Data ss:Type="String">Jaq Kennedy</Data></Cell>
    </Row>
    <Row ss:Height="58.5">
     <Cell ss:StyleID="s33"><Data ss:Type="String">Unmerge Multi-Row Merges</Data></Cell>

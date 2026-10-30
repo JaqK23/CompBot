@@ -14,7 +14,8 @@ Option Explicit
 ' (OA Robot's normal on-demand open) keeps the change for this session only, and the status
 ' bar says so. A GitHub update replaces CompBot, so choices go back to the defaults: re-tick.
 '
-' An unreadable or missing choice reads as the default: every step Yes, CompBot wins.
+' An unreadable or missing choice reads as the default: every step Yes, CompBot wins, and
+' "Calculate manually during setup" No (GitHub #29, Jaq, 2026-10-29: a test switch for #26).
 ' Setup (modCaseSetup) and the lambda imports (modLambdas) read the sheet through
 ' SetupStepOn / CompBotLambdasWin. The lambda library's location stays in the registry
 ' (modLambdas): it is a path on this machine, not a preference. So does the Solve folder
@@ -38,11 +39,22 @@ Private Const m_SOLVE_PATH          As String = "SolvePath"
 Private Const m_REG_APP             As String = "CompBot"
 Private Const m_REG_SECTION         As String = "Setup"
 Private Const m_REG_SOLVE_KEY       As String = "SolveFolder"
+' Run Data Table's save first (Toggle Save Before Run). In the registry so the toggle never has to save CompBot, works
+' on a read-only CompBot and survives an update.
+Private Const m_REG_SAVE_KEY        As String = "SaveBeforeRun"
+' The bonus dock's line length (Grow / Shrink Bonus Dock, GitHub #23), kept the same way.
+Private Const m_REG_DOCK_KEY        As String = "DockWidth"
+Private Const m_DOCK_WIDTH_DEFAULT  As Long = 60     ' fits the width the dock opens at
+Private Const m_DOCK_WIDTH_MIN      As Long = 25
+Private Const m_DOCK_WIDTH_MAX      As Long = 80
 Private Const m_YES                 As String = "Yes"
 Private Const m_NO                  As String = "No"
 Private Const m_WINNER_KEY          As String = "LambdaWinner"
 Private Const m_WINNER_COMPBOT      As String = "CompBot"
 Private Const m_WINNER_LIBRARY      As String = "Your library"
+' Not a step: Full Setup Case switches calculation to manual while it runs and puts it back at the end.
+' Off unless ticked, so a missing cell (an older sheet) keeps the old behaviour.
+Private Const m_MANUAL_KEY          As String = "ManualCalc"
 Private Const m_MAX_STATUS          As Long = 250    ' Application.StatusBar rejects long strings
 
 ' --- MODULE VARIABLES ---
@@ -56,7 +68,7 @@ Private m_blnLoading                As Boolean       ' the sheet is being filled
 Private Function SettingKeys() As Variant
     SettingKeys = Array("SaveCopy", "Backup", "NameAllUsedRanges", "CreateLevelSheets", "CreateBonusSheet", _
                         "CreateCaseInputsSheet", "LevelSummary", "OpenBonusDock", "ImportLibrary", "ImportCompBot", _
-                        m_WINNER_KEY)
+                        m_WINNER_KEY, m_MANUAL_KEY)
 End Function
 
 
@@ -71,6 +83,13 @@ End Function
 '          library wins. The winner's import replaces a same-named lambda; the other never does.
 Public Function CompBotLambdasWin() As Boolean
     CompBotLambdasWin = (StrComp(ReadSetting(m_WINNER_KEY), m_WINNER_LIBRARY, vbTextCompare) <> 0)
+End Function
+
+
+' Purpose: True only when the user has ticked "Calculate manually during setup". Never raises: a missing
+'          or unreadable setting is No.
+Public Function ManualCalcOn() As Boolean
+    ManualCalcOn = (StrComp(ReadSetting(m_MANUAL_KEY), m_YES, vbTextCompare) = 0)
 End Function
 
 
@@ -167,6 +186,78 @@ ErrHandler:
     If m_DEBUG_MODE Then Stop: Resume
     LogError PROC_NAME, Err.Number, Err.Description
     strStatus = "Clear Solve Folder failed: " & Err.Description & " (see " & LogLocation() & ")."
+    Resume Cleanup
+End Sub
+
+
+' Purpose: the bonus dock's line length in characters. Never raises: not set, or a stored value outside the limits,
+'          is the default.
+Public Function DockWidth() As Long
+
+    Dim dblValue As Double
+
+    On Error Resume Next                          ' narrow: a missing registry key is simply "not set"
+    dblValue = Val(GetSetting(m_REG_APP, m_REG_SECTION, m_REG_DOCK_KEY, vbNullString))
+    On Error GoTo 0
+    If dblValue >= m_DOCK_WIDTH_MIN And dblValue <= m_DOCK_WIDTH_MAX Then
+        DockWidth = CLng(dblValue)
+    Else
+        DockWidth = m_DOCK_WIDTH_DEFAULT
+    End If
+End Function
+
+
+' Purpose: store the dock's line length, held to the limits, and return what was stored. A failed write raises, for
+'          the caller's handler.
+Public Function SetDockWidth(ByVal lngWidth As Long) As Long
+    If lngWidth < m_DOCK_WIDTH_MIN Then lngWidth = m_DOCK_WIDTH_MIN
+    If lngWidth > m_DOCK_WIDTH_MAX Then lngWidth = m_DOCK_WIDTH_MAX
+    SaveSetting m_REG_APP, m_REG_SECTION, m_REG_DOCK_KEY, CStr(lngWidth)
+    SetDockWidth = lngWidth
+End Function
+
+
+' Purpose: True only when the user has switched Run Data Table's save first on. Never raises: not set is No.
+Public Function SaveBeforeRunOn() As Boolean
+    On Error Resume Next                          ' narrow: a missing registry key is simply "not set"
+    SaveBeforeRunOn = (StrComp(GetSetting(m_REG_APP, m_REG_SECTION, m_REG_SAVE_KEY, m_NO), m_YES, vbTextCompare) = 0)
+    On Error GoTo 0
+End Function
+
+
+'--------------------------------------------< OA Robot >--------------------------------------------
+' Command Name:           Toggle Save Before Run
+' Description:            Switches Run Data Table's save of the _Solve copy on or off
+' Macro Expression:       modSetupSettings.ToggleSaveBeforeRun()
+' Generated:              2026-10-30 (Jaq)
+'----------------------------------------------------------------------------------------------------
+' Purpose: Run Data Table can save a _Solve copy before it runs (GitHub #22). That can be slow on a heavy workbook
+'          or a slow OneDrive, so it is off until the user switches it on. The status bar says which it now is.
+Public Sub ToggleSaveBeforeRun()
+
+    ' --- CONSTANTS (local to function) ---
+    Const PROC_NAME As String = "ToggleSaveBeforeRun"
+
+    Dim strStatus   As String
+
+    On Error GoTo ErrHandler
+
+    If SaveBeforeRunOn() Then
+        SaveSetting m_REG_APP, m_REG_SECTION, m_REG_SAVE_KEY, m_NO
+        strStatus = "Toggle Save Before Run: OFF. Run Data Table no longer saves the _Solve copy first."
+    Else
+        SaveSetting m_REG_APP, m_REG_SECTION, m_REG_SAVE_KEY, m_YES
+        strStatus = "Toggle Save Before Run: ON. Run Data Table saves the _Solve copy first."
+    End If
+
+Cleanup:
+    Application.StatusBar = Left$(strStatus, m_MAX_STATUS)
+    Exit Sub
+
+ErrHandler:
+    If m_DEBUG_MODE Then Stop: Resume
+    LogError PROC_NAME, Err.Number, Err.Description
+    strStatus = "TOGGLE SAVE BEFORE RUN FAILED: " & Err.Description & " (see " & LogLocation() & ")."
     Resume Cleanup
 End Sub
 
@@ -384,6 +475,8 @@ End Sub
 Private Function DisplayValue(ByVal strKey As String) As Variant
     If strKey = m_WINNER_KEY Then
         If CompBotLambdasWin() Then DisplayValue = m_WINNER_COMPBOT Else DisplayValue = m_WINNER_LIBRARY
+    ElseIf strKey = m_MANUAL_KEY Then
+        DisplayValue = ManualCalcOn()
     Else
         DisplayValue = SetupStepOn(strKey)
     End If
@@ -483,6 +576,8 @@ Private Function SettingsSheet() As Worksheet
         End If
     Next wsItem
 End Function
+
+
 
 
 

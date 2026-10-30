@@ -43,12 +43,18 @@ Private Const m_ROBOT_PROGID        As String = "OARobot.ExcelAddin"    ' OA Rob
 
 ' --- MODULE VARIABLES ---
 Private m_blnInSetup                As Boolean  ' True while Setup is running its steps
-Private m_blnCaseAsked              As Boolean  ' the case-sheet InputBox has been shown this Setup run
-Private m_strCaseSheet              As String   ' the answer given to it
+Private m_blnCaseAsked              As Boolean  ' the case sheet has been settled this Setup run (GitHub #30)
+Private m_strCaseSheet              As String   ' its name, used by every step of the run
+Private m_strCaseNote               As String   ' how it was found when not by name, or why there is none (#30)
+Private m_blnNoCase                 As Boolean  ' Setup found no case sheet and changed nothing (#30)
 Private m_strStepError              As String   ' last failure recorded by a step, read by Setup
 Private m_strStepNote               As String   ' a step that skipped itself on purpose, read by Setup
 Private m_blnLogWritten             As Boolean  ' LogError actually wrote a line this Setup run
 Private m_strSetupInfo              As String   ' something a step did that the user should know, read by Setup
+Private m_blnStepSkipped            As Boolean  ' the step chose not to run (its note says why), for the step log
+Private m_blnCancelled              As Boolean  ' Esc was pressed: the remaining steps do not run (GitHub #29)
+Private m_strCancelStep             As String   ' the step that was running when it was
+Private m_strProtectNote            As String   ' sheets unprotected / still protected this Setup run (GitHub #31)
 
 'general case setup
 '--------------------------------------------< OA Robot >--------------------------------------------
@@ -75,6 +81,11 @@ Private m_strSetupInfo              As String   ' something a step did that the 
 '          sheet) with the dock beside it. Until 2026.10.7 the lambdas came from Import Case Lambdas, chained
 '          after this command (CommandAfter), and the two #19 steps ran ahead of them; a user's own library
 '          stopped arriving (Guy Diamant, reported 2026-10-23). Jaq: no chained commands.
+'          STEP LOG (GitHub #29, 2026-10-29): every step writes its row of the "Last setup run" block on the Setup
+'          Settings sheet as it ends (modSetupLog), with the whole time and the slowest step on the status bar.
+'          Esc (EnableCancelKey = xlErrorHandler) stops setup cleanly: the step running is CANCELLED, the rest
+'          NOT RUN, and the user's settings are put back as usual. "Calculate manually during setup" (SCS) runs
+'          the steps with calculation manual and puts the user's mode back at the end, timed as its own row.
 Public Sub Setup()
 
     Dim wbCase As Workbook
@@ -87,6 +98,13 @@ Public Sub Setup()
     Dim blnEvents As Boolean
     Dim blnLanded As Boolean
     Dim strLambdas As String
+    Dim blnManual As Boolean
+    Dim dblStart As Double
+    Dim dblLandSecs As Double
+    Dim strOutcome As String
+    Dim strTiming As String
+    Dim varBeforeSave As Variant
+    Dim wsCase As Worksheet
 
     On Error GoTo ErrHandler
 
@@ -102,34 +120,123 @@ Public Sub Setup()
     m_strCaseSheet = vbNullString
     m_blnLogWritten = False
     m_strSetupInfo = vbNullString
+    m_blnCancelled = False
+    m_strCancelStep = vbNullString
+    m_strCaseNote = vbNullString
+    m_blnNoCase = False
+    modLog.ResetCancelKey
+
+    blnManual = modSetupSettings.ManualCalcOn()
+    modSetupLog.StartRun wbCase, varCalc, blnManual
+
+    ' THE CASE SHEET FIRST (GitHub #30, Jaq, 2026-10-29): by name (any language of LabelWords), else the active
+    ' sheet. Settled before any step runs, so a sheet a step makes (BU_, L01) can never be taken for it, and kept
+    ' for every step of the run. No prompt: the screen is locked while setup runs, so the user could not see the
+    ' tabs to answer one. None (the active sheet is one CompBot makes, or empty): stop, nothing changed.
+    Set wsCase = GetCaseSheet(wbCase)
+    If wsCase Is Nothing Then
+        m_blnNoCase = True
+        modSetupLog.AddNote "no case sheet: " & m_strCaseNote
+        GoTo Cleanup
+    End If
+    m_strCaseSheet = wsCase.Name
+    m_blnCaseAsked = True
+    If Len(m_strCaseNote) > 0 Then modSetupLog.AddNote m_strCaseNote
+    Application.EnableCancelKey = xlErrorHandler
+    If blnManual Then
+        Application.Calculation = xlCalculationManual
+        ' Under manual calculation Excel's "recalculate before save" would recalculate every open workbook at the
+        ' _Solve save (Jaq, 2026-10-29), so it is off while setup runs and put back after.
+        ' Probe: the setting can be unavailable; then it is simply left alone.
+        varBeforeSave = Empty
+        On Error Resume Next
+        varBeforeSave = Application.CalculateBeforeSave
+        If Err.Number <> 0 Then varBeforeSave = Empty
+        If Not IsEmpty(varBeforeSave) Then Application.CalculateBeforeSave = False
+        On Error GoTo ErrHandler
+    End If
 
     RunSetupStep "SaveCopy", strFailed, strNotes
+    ' A protected case sheet (no password) made the inputs sheet and the level table fail with 1004 (GitHub #31,
+    ' #32, ABC_5_Dasar). Unprotected here, in the working copy, before anything reads or writes it.
+    If IsSolveCopyName(ActiveWorkbook.Name) Then
+        m_strProtectNote = UnprotectSheets(ActiveWorkbook)
+    ElseIf IsSheetProtected(wsCase) Then
+        ' Not a _Solve copy (the copy was switched off, skipped or failed): the user's own file, so only the case
+        ' sheet the steps write to is unprotected, and said so.
+        If EnsureUnprotected(wsCase) Then
+            m_strProtectNote = "Unprotected (no password): " & wsCase.Name & "."
+        Else
+            m_strProtectNote = "Still protected (password): " & wsCase.Name & "."
+        End If
+    End If
+    If Len(m_strProtectNote) > 0 Then modSetupLog.AddNote m_strProtectNote
     RunSetupStep "Backup", strFailed, strNotes
     RunSetupStep "NameAllUsedRanges", strFailed, strNotes
     RunSetupStep "CreateLevelSheets", strFailed, strNotes
     RunSetupStep "CreateBonusSheet", strFailed, strNotes
     RunSetupStep "CreateCaseInputsSheet", strFailed, strNotes
     ' The lambdas, each import only if it is on in SCS. Never raises; the report goes on the status bar.
-    strLambdas = modLambdas.CaseLambdasReport(wbCase)
+    ' It logs its own two rows (ImportCompBot, ImportLibrary).
+    If Not (m_blnCancelled Or modLog.CancelKeySeen()) Then
+        Application.EnableCancelKey = xlErrorHandler
+        strLambdas = modLambdas.CaseLambdasReport(wbCase)
+        If modLog.CancelKeySeen() Then
+            m_blnCancelled = True
+            m_strCancelStep = "the lambda import"
+        End If
+    End If
     ' The library import opens and closes another workbook: put the case back in front before going on.
+    dblStart = Timer
     LandAfterSetup wbCase
+    dblLandSecs = modSetupLog.SecondsSince(dblStart)
     RunSetupStep "LevelSummary", strFailed, strNotes
     ' Land first, then open the dock: the dock reads the active workbook, and the user starts on this sheet.
+    dblStart = Timer
     LandAfterSetup wbCase
     blnLanded = True
+    modSetupLog.LogStep "LandCase", "PASS", dblLandSecs + modSetupLog.SecondsSince(dblStart), _
+                        "back on L01, else the case sheet"
     RunSetupStep "OpenBonusDock", strFailed, strNotes
 
 Cleanup:
     On Error Resume Next
-    If Not blnLanded Then LandAfterSetup wbCase
+    Application.EnableCancelKey = xlDisabled      ' no Esc while the user's settings are put back
+    If Not blnLanded And Not m_blnNoCase Then LandAfterSetup wbCase
+    dblStart = Timer
     Application.Calculation = varCalc
+    If Not IsEmpty(varBeforeSave) Then Application.CalculateBeforeSave = varBeforeSave
+    If m_blnNoCase Then
+        modSetupLog.LogStep "CalcRestore", "SKIPPED", 0, "setup stopped before any step: nothing to put back"
+    ElseIf blnManual Then
+        modSetupLog.LogStep "CalcRestore", "PASS", modSetupLog.SecondsSince(dblStart), _
+                            "calculation put back to how it was; the case recalculates here"
+    Else
+        modSetupLog.LogStep "CalcRestore", "SKIPPED", modSetupLog.SecondsSince(dblStart), _
+                            "unticked above: calculation was left as it was"
+    End If
     Application.ScreenUpdating = blnScreen
     Application.DisplayAlerts = blnAlerts
     Application.EnableEvents = blnEvents
+    Application.EnableCancelKey = xlInterrupt
     m_blnInSetup = False
     m_blnCaseAsked = False
     m_strCaseSheet = vbNullString
-    If Len(strFailed) = 0 Then
+    If m_blnCancelled Then
+        strOutcome = "CANCELLED"
+    ElseIf m_blnNoCase Then
+        strOutcome = "FAIL"
+    ElseIf Len(strFailed) > 0 Then
+        strOutcome = "FAIL"
+    Else
+        strOutcome = "PASS"
+    End If
+    strTiming = modSetupLog.FinishRun(strOutcome)
+    If m_blnCancelled Then
+        strMsg = "Full Setup Case: CANCELLED (Esc) during " & m_strCancelStep & ". Later steps did not run."
+    ElseIf m_blnNoCase Then
+        strMsg = "FULL SETUP CASE FAILED: " & m_strCaseNote & " Nothing was changed."
+    ElseIf Len(strFailed) = 0 Then
         strMsg = "Full Setup Case: all steps ran."
     ElseIf m_blnLogWritten Then
         ' Step names only - the detail is in the log, and the StatusBar has a length limit.
@@ -137,15 +244,26 @@ Cleanup:
     Else
         strMsg = "Full Setup Case: FAILED -" & strFailed & " Other steps ran."
     End If
+    If Len(m_strCaseNote) > 0 And Not m_blnNoCase Then strMsg = strMsg & " " & m_strCaseNote
+    m_strCaseNote = vbNullString
+    m_blnNoCase = False
     If Len(m_strSetupInfo) > 0 Then strMsg = strMsg & " " & m_strSetupInfo
+    If Len(m_strProtectNote) > 0 Then strMsg = strMsg & " " & m_strProtectNote
+    m_strProtectNote = vbNullString
     If Len(strLambdas) > 0 Then strMsg = strMsg & "  |  " & strLambdas & "  |"
     If Len(strNotes) > 0 Then strMsg = strMsg & " Skipped -" & strNotes
+    ' The timing first, so the status bar's length limit never cuts it off (GitHub #29).
+    If Len(strTiming) > 0 Then strMsg = strTiming & " (step log: SCS)  |  " & strMsg
     Application.StatusBar = Left$(strMsg, m_MAX_STATUS)
     m_strSetupInfo = vbNullString
     Exit Sub
 
 ErrHandler:
     If m_DEBUG_MODE Then Stop: Resume
+    If Err.Number = 18 Then                       ' Esc between steps
+        m_blnCancelled = True
+        If Len(m_strCancelStep) = 0 Then m_strCancelStep = "setup"
+    End If
     ' Capture first - LogError's own error handling resets Err.
     strMsg = Err.Number & ": " & Err.Description
     If LogError("Setup", Err.Number, Err.Description) Then m_blnLogWritten = True
@@ -155,19 +273,41 @@ End Sub
 
 ' Purpose: Run one setup step, isolated. Errors the step does not handle itself land here;
 '          errors it does handle are passed back through m_strStepError.
+'          Logs the step as it ends (GitHub #29): PASS / FAIL / SKIPPED / CANCELLED, its seconds and a
+'          message. After an Esc it does not run the step at all; the log shows it NOT RUN.
 Private Sub RunSetupStep(ByVal strStep As String, ByRef strFailed As String, ByRef strNotes As String)
+
+    Dim dblStart        As Double
+    Dim strResult       As String
+    Dim strMessage      As String
+    Dim varStatus       As Variant
+    Dim blnNotRun       As Boolean
 
     On Error GoTo ErrHandler
 
     m_strStepError = vbNullString
     m_strStepNote = vbNullString
+    m_blnStepSkipped = False
+    dblStart = Timer
+
+    If m_blnCancelled Or modLog.CancelKeySeen() Then
+        If Not m_blnCancelled Then m_strCancelStep = "setup"
+        m_blnCancelled = True
+        blnNotRun = True
+        GoTo Cleanup
+    End If
 
     ' Switched off in Setup Case Settings (SCS): skipped, and said so (Jaq, 2026-09-24).
     If Not modSetupSettings.SetupStepOn(strStep) Then
         m_strStepNote = "off in SCS"
+        m_blnStepSkipped = True
         GoTo Cleanup
     End If
 
+    ' Re-armed for every step: a step that restores xlInterrupt itself must not leave Esc unhandled.
+    Application.EnableCancelKey = xlErrorHandler
+    ' Cleared so whatever the step leaves on the status bar can be its log message.
+    Application.StatusBar = False
     Select Case strStep
         Case "SaveCopy":                SaveSolveCopy
         Case "Backup":                  Backup
@@ -181,12 +321,38 @@ Private Sub RunSetupStep(ByVal strStep As String, ByRef strFailed As String, ByR
 
 Cleanup:
     On Error Resume Next
+    If blnNotRun Then Exit Sub                    ' the log's FinishRun marks it NOT RUN
+    varStatus = Application.StatusBar
     If Len(m_strStepError) > 0 Then
         strFailed = strFailed & " " & strStep & " (" & m_strStepError & ");"
     End If
     If Len(m_strStepNote) > 0 Then
         strNotes = strNotes & " " & strStep & " (" & m_strStepNote & ");"
     End If
+
+    If modLog.CancelKeySeen() Or Left$(m_strStepError, 3) = "18:" Then
+        m_blnCancelled = True
+        m_strCancelStep = strStep
+        strResult = "CANCELLED"
+        strMessage = "Esc pressed"
+    ElseIf Len(m_strStepError) > 0 Then
+        strResult = "FAIL"
+        strMessage = m_strStepError
+    ElseIf m_blnStepSkipped Then
+        strResult = "SKIPPED"
+        strMessage = m_strStepNote
+        If strMessage = "off in SCS" Then strMessage = "unticked above, so not run"
+    Else
+        strResult = "PASS"
+        strMessage = m_strStepNote
+        ' The Solve-folder fallback note carries a path: the log says what happened, not where.
+        If strStep = "SaveCopy" And Len(m_strSetupInfo) > 0 Then strMessage = "Solve folder not found, so the copy is next to the case"
+        ' An empty status bar reads back as False (sometimes as the text "False"): that is no message.
+        If Len(strMessage) = 0 And VarType(varStatus) = vbString Then
+            If StrComp(CStr(varStatus), "False", vbTextCompare) <> 0 Then strMessage = CStr(varStatus)
+        End If
+    End If
+    modSetupLog.LogStep strStep, strResult, modSetupLog.SecondsSince(dblStart), strMessage
     Exit Sub
 
 ErrHandler:
@@ -212,7 +378,8 @@ Private Sub LevelSummaryStep()
 
     Set wb = ActiveWorkbook
     Set ws = GetCaseSheet(wb)
-    If ws Is Nothing Then Err.Raise m_ERR_CASE_SHEET, PROC_NAME, "Case sheet not found"
+    If ws Is Nothing Then Err.Raise m_ERR_CASE_SHEET, PROC_NAME, CaseSheetMessage()
+    If Not EnsureUnprotected(ws) Then Err.Raise m_ERR_NOT_FOUND, PROC_NAME, ProtectedMessage(ws)
 
     If modLevelSummary.AddLevelSummary(wb, ws, strNote, blnLogged) Then
         m_strStepNote = strNote                 ' "" when written in full, else what was left out and why
@@ -303,7 +470,7 @@ Private Function QuietCaseSheet(ByVal wb As Workbook) As Worksheet
         On Error GoTo ErrHandler
     End If
     If ws Is Nothing Then
-        For Each varName In Array("Case", "Case-Varsity", "Task")
+        For Each varName In LabelWords("Case")
             ' Probe: the sheet may simply not exist.
             On Error Resume Next
             Set ws = wb.Worksheets(CStr(varName))
@@ -345,14 +512,17 @@ Private Sub SaveSolveCopy()
     Set wb = ActiveWorkbook
     If wb Is Nothing Then
         m_strStepNote = "no active workbook"
+        m_blnStepSkipped = True
         GoTo Cleanup
     End If
     If Len(wb.Path) = 0 Then
         m_strStepNote = "never saved, so no copy made"
+        m_blnStepSkipped = True
         GoTo Cleanup
     End If
     If IsWorkingCopyName(wb.Name) Then
         m_strStepNote = "already a working copy"
+        m_blnStepSkipped = True
         GoTo Cleanup
     End If
 
@@ -383,6 +553,35 @@ ErrHandler:
     If LogError("SaveSolveCopy", Err.Number, Err.Description) Then m_blnLogWritten = True
     Resume Cleanup
 End Sub
+
+' Purpose: True if a file name is a _Solve copy made by Full Setup Case: its base ends "_Solve", optionally with
+'          SaveCopy's "_2".."_99" counter. Case-insensitive. Run Data Table saves such a file before it runs
+'          (GitHub #22, Jaq, 2026-10-29); any other file is never saved by it.
+Public Function IsSolveCopyName(ByVal strName As String) As Boolean
+
+    Dim strBase As String
+    Dim lngDot As Long
+
+    On Error GoTo ErrHandler
+
+    lngDot = InStrRev(strName, ".")
+    If lngDot > 0 Then
+        strBase = LCase$(Left$(strName, lngDot - 1))
+    Else
+        strBase = LCase$(strName)
+    End If
+    IsSolveCopyName = (strBase Like "*_" & LCase$(m_COPY_SUFFIX) Or _
+                       strBase Like "*_" & LCase$(m_COPY_SUFFIX) & "_#" Or _
+                       strBase Like "*_" & LCase$(m_COPY_SUFFIX) & "_##")
+
+Cleanup:
+    Exit Function
+
+ErrHandler:
+    If m_DEBUG_MODE Then Stop: Resume
+    IsSolveCopyName = False
+    Resume Cleanup
+End Function
 
 ' Purpose: True if a file name is already a working copy: its base ends "_Solve" or "_Working",
 '          optionally followed by SaveCopy's "_2".."_99" counter. Case-insensitive.
@@ -502,8 +701,7 @@ Private Function KeepSheetName(ByVal strName As String) As Boolean
         If Mid$(strName, lngU + 1) Like "#" Or Mid$(strName, lngU + 1) Like "##" Then strName = Left$(strName, lngU - 1)
     End If
 
-    If StrComp(strName, "Case", vbTextCompare) = 0 _
-       Or StrComp(strName, "Case-Varsity", vbTextCompare) = 0 _
+    If IsLabel(strName, "Case", True) _
        Or StrComp(strName, "Answers", vbTextCompare) = 0 _
        Or StrComp(Left$(strName, Len(m_BACKUP_PREFIX)), m_BACKUP_PREFIX, vbTextCompare) = 0 Then
         KeepSheetName = True
@@ -961,21 +1159,25 @@ Public Sub CreateLevelSheets()
     Dim blnObjSaved As Boolean
     Dim blnInit As Boolean
     Dim strErr As String
+    Dim varLabel As Variant
+    Dim varWord As Variant
 
     On Error GoTo ErrHandler
 
     'Initialize
     VBAInit
     blnInit = True
-    ' Initialize excluded headers as a dictionary
+    ' Initialize excluded headers as a dictionary: Answer, Level and Points in every language (GitHub #28)
     Set excludedHeaders = CreateObject("Scripting.Dictionary")
-    excludedHeaders.Add "Answer", True
-    excludedHeaders.Add "Level", True
-    excludedHeaders.Add "Points", True
+    For Each varLabel In Array("Answer", "Level", "Points")
+        For Each varWord In LabelWords(CStr(varLabel))
+            excludedHeaders(CStr(varWord)) = True
+        Next varWord
+    Next varLabel
     'set up workbook and worksheet
     Set wb = ActiveWorkbook
     Set ws = GetCaseSheet(wb)
-    If ws Is Nothing Then Err.Raise m_ERR_CASE_SHEET, PROC_NAME, "Case sheet not found"
+    If ws Is Nothing Then Err.Raise m_ERR_CASE_SHEET, PROC_NAME, CaseSheetMessage()
 
     '___________________worksheet exists_____________________
     'get current score cell - probe, it is only there in training files
@@ -1031,16 +1233,8 @@ Public Sub CreateLevelSheets()
         ' link answer cells to new cells in new sheet and mark input cells
         ' get column numbers for answers and inputs
 
-        ' Find the header row with "Answer", "Level", or "Points"
-        Set rngHdrRow = Nothing
-        For Each rngRow In wsNew.Rows(1 & ":" & lngEndRow - lngBegRow + 1)
-            Set rngHdrRow = rngRow.Find(What:="Answer", LookIn:=xlValues, LookAt:=xlWhole)
-            If Not rngHdrRow Is Nothing Then Exit For
-            Set rngHdrRow = rngRow.Find(What:="Level", LookIn:=xlValues, LookAt:=xlWhole)
-            If Not rngHdrRow Is Nothing Then Exit For
-            Set rngHdrRow = rngRow.Find(What:="Points", LookIn:=xlValues, LookAt:=xlWhole)
-            If Not rngHdrRow Is Nothing Then Exit For
-        Next rngRow
+        ' Find the header row with "Answer", "Level", or "Points" (any language of LabelWords, GitHub #28)
+        Set rngHdrRow = FindHeaderCell(wsNew.Rows(1 & ":" & lngEndRow - lngBegRow + 1))
 
         ' No header row found (e.g. a one-row block from a contents list): no input
         ' columns can be identified, so input marking is skipped for this sheet.
@@ -1053,7 +1247,7 @@ Public Sub CreateLevelSheets()
         If booHdrs Then
             For lngCol = 3 To wsNew.UsedRange.Columns.Count + 2 ' Start after column B
                 strHeader = SafeText(wsNew.Cells(rngHdrRow.Row, lngCol).Value2)
-                If strHeader = "Answer" Then lngACol = lngCol
+                If IsLabel(strHeader, "Answer") Then lngACol = lngCol
                 If Not excludedHeaders.Exists(strHeader) And strHeader <> "" Then
                     colColList.Add lngCol
                     If lngCol > lngEndCol Then
@@ -1268,7 +1462,7 @@ Public Sub CreateBonusSheet()
     'set up workbook and worksheet
     Set wb = ActiveWorkbook
     Set ws = GetCaseSheet(wb)
-    If ws Is Nothing Then Err.Raise m_ERR_CASE_SHEET, PROC_NAME, "Case sheet not found"
+    If ws Is Nothing Then Err.Raise m_ERR_CASE_SHEET, PROC_NAME, CaseSheetMessage()
 
     '___________________worksheet exists_____________________
     'get current score cell - probe, it is only there in training files
@@ -1298,16 +1492,14 @@ Public Sub CreateBonusSheet()
                 ' rows themselves ("Bonus 1", with level, points and the question beside them).
                 ' The exact phrase still matches unconditionally, so no layout that worked
                 ' before can stop working now.
-                If strCurrVal = "Bonus Questions" Then
+                If IsLabel(strCurrVal, "BonusHeading", True) Then
                     lngBegRow = objCell.Row
                 ElseIf StrComp(Left$(strCurrVal, 5), "Bonus", vbTextCompare) = 0 Then
                     If Application.WorksheetFunction.CountA(objCell.EntireRow) <= 1 Then
                         lngBegRow = objCell.Row
                     End If
                 End If
-            ElseIf strCurrVal = "Questions" Or strCurrVal = "Levels" Or _
-            (strCurrVal Like "Level *" And strCurrVal <> "Level Code" And _
-            IsNumeric(Trim(Replace(strCurrVal, "Level", "")))) Then
+            ElseIf strCurrVal = "Questions" Or strCurrVal = "Levels" Or IsLevelMarker(strCurrVal) Then
                 lngEndRow = objCell.Row - 1
                 Exit For
             End If
@@ -1349,15 +1541,8 @@ Public Sub CreateBonusSheet()
     ' link answer cells to new cells in new sheet
     ' get column numbers for answers
 
-    ' Find the header row with "Answer", "Level", or "Points"
-    For Each rngRow In wsNew.Rows(1 & ":" & lngEndRow - lngBegRow + 1)
-        Set rngHdrRow = rngRow.Find(What:="Answer", LookIn:=xlValues, LookAt:=xlWhole)
-        If Not rngHdrRow Is Nothing Then Exit For
-        Set rngHdrRow = rngRow.Find(What:="Level", LookIn:=xlValues, LookAt:=xlWhole)
-        If Not rngHdrRow Is Nothing Then Exit For
-        Set rngHdrRow = rngRow.Find(What:="Points", LookIn:=xlValues, LookAt:=xlWhole)
-        If Not rngHdrRow Is Nothing Then Exit For
-    Next rngRow
+    ' Find the header row with "Answer", "Level", or "Points" (any language of LabelWords, GitHub #28)
+    Set rngHdrRow = FindHeaderCell(wsNew.Rows(1 & ":" & lngEndRow - lngBegRow + 1))
 
     booHdrs = Not (rngHdrRow Is Nothing)
 
@@ -1366,7 +1551,7 @@ Public Sub CreateBonusSheet()
     If booHdrs Then
         For lngCol = 3 To wsNew.UsedRange.Columns.Count + 2 ' Start after column B
             strHeader = SafeText(wsNew.Cells(rngHdrRow.Row, lngCol).Value2)
-            If strHeader = "Answer" Then lngACol = lngCol
+            If IsLabel(strHeader, "Answer") Then lngACol = lngCol
         Next lngCol
     End If
 
@@ -1466,8 +1651,9 @@ Public Function BuildDataTable(ByVal rngTarget As Range, Optional ByVal rngExamp
     Dim lngQCnt As Long
     Dim lngCurrQ As Long
     Dim lngCol As Long
-    Dim strCol As String
-    Dim strGameCol As String
+    Dim lngRunStart As Long     ' first sheet column of the current run of side-by-side inputs (#24)
+    Dim lngRunFirst As Long     ' that column's place among the inputs (1 = the first input)
+    Dim lngPrevCol As Long
     Dim lngExRow As Long
     Dim lngHdRow As Long
     Dim lngACol As Long
@@ -1489,11 +1675,20 @@ Public Function BuildDataTable(ByVal rngTarget As Range, Optional ByVal rngExamp
     Dim rngWritten As Range     ' every cell written, so a failure clears exactly those
     Dim varOldAns() As Variant  ' answer-cell formulas before linking, restored on failure
     Dim blnLinking As Boolean
+    Dim strCalcNote As String
+    Dim blnEvents As Boolean
 
     On Error GoTo ErrHandler
 
+    strCalcNote = modDataTable.CalcOffNote()      ' before VBAInit changes the mode
+    If Len(strCalcNote) > 0 Then Application.StatusBar = "Create Data Table:" & strCalcNote
     VBAInit
     blnInit = True
+    ' Every copy and lookup is a write, and each would fire any add-in or workbook listening for changes (#24).
+    ' Esc raises error 18 into the handler, so events and calculation are put back however the run stops.
+    blnEvents = Application.EnableEvents
+    Application.EnableEvents = False
+    Application.EnableCancelKey = xlErrorHandler
 
     Set ws = rngTarget.Parent
     If rngExample Is Nothing Then
@@ -1530,7 +1725,6 @@ Public Function BuildDataTable(ByVal rngTarget As Range, Optional ByVal rngExamp
     End If
     If lngStopRow > lngExRow + MAX_SCAN_ROWS Then lngStopRow = lngExRow + MAX_SCAN_ROWS
     strLabel = SafeText(ws.Cells(lngExRow, lngGameCol).Value2)
-    strGameCol = Replace(Replace(ws.Cells(1, lngGameCol).Address, "1", ""), "$", "")
 
     ' 2. Game numbers below the example row (the shared rule Create Data Table also uses).
     Set colGames = LevelGameRows(ws, lngGameCol, lngExRow, lngStopRow)
@@ -1576,20 +1770,25 @@ Public Function BuildDataTable(ByVal rngTarget As Range, Optional ByVal rngExamp
     ' case writes it.
     Set rngWritten = rngTarget
     rngTarget.value = strLabel
+    ' Each input: its header and example cell (their look), and an XLOOKUP of the game. Done a run of side-by-side
+    ' input columns at a time (WriteInputRun): one Range.Copy per cell made a 200-input level take 12 s and more
+    ' (GitHub #24, Chien Chi-He).
     For Each varCol In colIn
         lngCol = varCol
-        strCol = Replace(Replace(ws.Cells(1, lngCol).Address, "1", ""), "$", "")
         lngInCnt = lngInCnt + 1
-        Set rngWritten = AddToRange(rngWritten, ws.Cells(rngTarget.Row - 1, rngTarget.Column + lngInCnt))
-        Set rngWritten = AddToRange(rngWritten, ws.Cells(rngTarget.Row, rngTarget.Column + lngInCnt))
-        ' header, then the example's own cell (its formatting) - Range.Copy with a
-        ' Destination does not touch the clipboard
-        ws.Cells(lngHdRow, lngCol).Copy Destination:=ws.Cells(rngTarget.Row - 1, rngTarget.Column + lngInCnt)
-        ws.Cells(lngExRow, lngCol).Copy Destination:=ws.Cells(rngTarget.Row, rngTarget.Column + lngInCnt)
-        'lookup data
-        ws.Cells(rngTarget.Row, rngTarget.Column + lngInCnt).Formula = "=XLOOKUP(" & _
-            rngTarget.Address(1, 1) & "," & strGameCol & ":" & strGameCol & "," & strCol & ":" & strCol & ",,0)"
+        If lngRunStart = 0 Then
+            lngRunStart = lngCol
+            lngRunFirst = lngInCnt
+        ElseIf lngCol <> lngPrevCol + 1 Then
+            WriteInputRun ws, rngTarget, lngHdRow, lngExRow, lngGameCol, lngRunStart, lngPrevCol, lngRunFirst, rngWritten
+            lngRunStart = lngCol
+            lngRunFirst = lngInCnt
+        End If
+        lngPrevCol = lngCol
     Next varCol
+    If lngRunStart > 0 Then
+        WriteInputRun ws, rngTarget, lngHdRow, lngExRow, lngGameCol, lngRunStart, lngPrevCol, lngRunFirst, rngWritten
+    End If
 
     'set up formula cell (and the Expected / Check label and value cells below the input)
     Set rngWritten = AddToRange(rngWritten, ws.Range(ws.Cells(rngTarget.Row + 1, rngTarget.Column), _
@@ -1669,6 +1868,7 @@ Public Function BuildDataTable(ByVal rngTarget As Range, Optional ByVal rngExamp
 
 Cleanup:
     On Error Resume Next
+    If blnInit Then Application.EnableCancelKey = xlDisabled   ' no Esc while the block is undone and state put back
     If Len(strErr) > 0 And blnWriting Then
         ' Undo the half-built block: exactly the cells written, and any answer links already changed.
         If blnLinking Then
@@ -1679,7 +1879,11 @@ Cleanup:
         If Not rngWritten Is Nothing Then rngWritten.Clear
         Set BuildDataTable = Nothing
     End If
-    If blnInit Then VBAFin
+    If blnInit Then
+        Application.EnableEvents = blnEvents
+        VBAFin
+        Application.EnableCancelKey = xlInterrupt
+    End If
     If Len(strErr) > 0 Then
         Application.StatusBar = Left$(PROC_NAME & " failed - " & strErr, m_MAX_STATUS)
     ElseIf Len(strMsg) > 0 Then
@@ -1696,6 +1900,55 @@ ErrHandler:
     End If
     Resume Cleanup
 End Function
+
+' Purpose: GitHub #24: BuildDataTable's header and input cells for one run of side-by-side input columns
+'          (lngFirstCol to lngLastCol, the lngFirstIn-th input onwards). The header and example cells' look in
+'          one Range.Copy per row (a Destination copy does not touch the clipboard); cell by cell through
+'          CopyCellLook when the run holds a merged cell, which is never copied as a merge (GitHub #27). Then the
+'          run's XLOOKUPs in one assignment: the same R1C1 formula, each reading its own input column. Adds the
+'          cells to rngWritten. No handler of its own by design: errors propagate to BuildDataTable, which
+'          clears what was written.
+Private Sub WriteInputRun(ByVal ws As Worksheet, ByVal rngTarget As Range, ByVal lngHdRow As Long, _
+                          ByVal lngExRow As Long, ByVal lngGameCol As Long, ByVal lngFirstCol As Long, _
+                          ByVal lngLastCol As Long, ByVal lngFirstIn As Long, ByRef rngWritten As Range)
+
+    Dim rngHdSrc As Range
+    Dim rngExSrc As Range
+    Dim rngDst As Range
+    Dim lngWidth As Long
+    Dim lngDstCol As Long
+    Dim lngOffset As Long
+    Dim lngI As Long
+    Dim strInCol As String
+
+    lngWidth = lngLastCol - lngFirstCol + 1
+    lngDstCol = rngTarget.Column + lngFirstIn
+    Set rngHdSrc = ws.Range(ws.Cells(lngHdRow, lngFirstCol), ws.Cells(lngHdRow, lngLastCol))
+    Set rngExSrc = ws.Range(ws.Cells(lngExRow, lngFirstCol), ws.Cells(lngExRow, lngLastCol))
+    Set rngDst = ws.Range(ws.Cells(rngTarget.Row - 1, lngDstCol), ws.Cells(rngTarget.Row, lngDstCol + lngWidth - 1))
+    Set rngWritten = AddToRange(rngWritten, rngDst)
+
+    ' MergeCells is False only when no cell of the range is merged (True or Null otherwise).
+    If rngHdSrc.MergeCells = False And rngExSrc.MergeCells = False Then
+        rngHdSrc.Copy Destination:=rngDst.Rows(1)
+        rngExSrc.Copy Destination:=rngDst.Rows(2)
+    Else
+        For lngI = 0 To lngWidth - 1
+            CopyCellLook ws.Cells(lngHdRow, lngFirstCol + lngI), ws.Cells(rngTarget.Row - 1, lngDstCol + lngI)
+            CopyCellLook ws.Cells(lngExRow, lngFirstCol + lngI), ws.Cells(rngTarget.Row, lngDstCol + lngI)
+        Next lngI
+    End If
+
+    ' The input column, relative to each lookup cell: the same distance for the whole run.
+    lngOffset = lngFirstCol - lngDstCol
+    If lngOffset = 0 Then
+        strInCol = "C"
+    Else
+        strInCol = "C[" & lngOffset & "]"
+    End If
+    rngDst.Rows(2).FormulaR1C1 = "=XLOOKUP(R" & rngTarget.Row & "C" & rngTarget.Column & ",C" & lngGameCol & _
+                                 "," & strInCol & ",,0)"
+End Sub
 
 '--------------------------------------------< OA Robot >--------------------------------------------
 ' Command Name:           Create Case Inputs Sheet
@@ -1721,6 +1974,7 @@ Public Sub CreateCaseInputsSheet(Optional ByVal strDetailed As String = "")
     Dim wsNew As Worksheet
     Dim booDetailed As Boolean
     Dim blnInit As Boolean
+    Dim blnWasProtected As Boolean
     Dim strErr As String
 
     On Error GoTo ErrHandler
@@ -1730,7 +1984,10 @@ Public Sub CreateCaseInputsSheet(Optional ByVal strDetailed As String = "")
 
     Set wb = ActiveWorkbook
     Set ws = GetCaseSheet(wb)
-    If ws Is Nothing Then Err.Raise m_ERR_CASE_SHEET, PROC_NAME, "Case sheet not found"
+    If ws Is Nothing Then Err.Raise m_ERR_CASE_SHEET, PROC_NAME, CaseSheetMessage()
+    ' A protected sheet refuses .Formula (1004) and its Find returns the wrong last cell (GitHub #31).
+    blnWasProtected = IsSheetProtected(ws)
+    If Not EnsureUnprotected(ws) Then Err.Raise m_ERR_NOT_FOUND, PROC_NAME, ProtectedMessage(ws)
     booDetailed = (Len(strDetailed) > 0)
     If SheetNameTaken(wb, "CaseInputs") Then Err.Raise m_ERR_NOT_FOUND, PROC_NAME, "Sheet CaseInputs already exists - inputs sheet not created"
 
@@ -1756,6 +2013,9 @@ Cleanup:
     If Len(strErr) > 0 Then
         m_strStepError = strErr
         Application.StatusBar = Left$(PROC_NAME & " failed - " & strErr, m_MAX_STATUS)
+    ElseIf blnWasProtected And Not m_blnInSetup Then
+        Application.StatusBar = "Create Case Inputs Sheet: done. '" & ws.Name & _
+                                "' was protected (no password) and is now unprotected."
     End If
     Exit Sub
 
@@ -1869,7 +2129,7 @@ Private Sub DetailedInputs(ByVal ws As Worksheet, ByVal wsNew As Worksheet)
             ' anything right of it is an input, whatever it happens to be called.
             lngHdrAnsCol = 0
             For lngScan = 3 To lngEndCol
-                If SafeText(varData(lngHdrRow, lngScan)) = "Answer" Then
+                If IsLabel(SafeText(varData(lngHdrRow, lngScan)), "Answer") Then
                     lngHdrAnsCol = lngScan
                     Exit For
                 End If
@@ -1880,7 +2140,7 @@ Private Sub DetailedInputs(ByVal ws As Worksheet, ByVal wsNew As Worksheet)
             ' no Level column gets no level at all - not a guess (Jaq): Level Inputs then says so.
             lngLevelCol = 0
             For lngScan = 3 To lngHdrAnsCol - 1
-                If SafeText(varData(lngHdrRow, lngScan)) = "Level" Then
+                If IsLabel(SafeText(varData(lngHdrRow, lngScan)), "Level") Then
                     lngLevelCol = lngScan
                     Exit For
                 End If
@@ -1900,7 +2160,7 @@ Private Sub DetailedInputs(ByVal ws As Worksheet, ByVal wsNew As Worksheet)
                 ' input kept or lost on the author's choice of word. Now only the REAL preamble
                 ' columns are excluded: those at or left of this level's Answer column.
                 booSkip = False
-                If strHdr = "Level" Or strHdr = "Points" Or strHdr = "Answer" Then
+                If IsLabel(strHdr, "Level") Or IsLabel(strHdr, "Points") Or IsLabel(strHdr, "Answer") Then
                     If lngHdrAnsCol = 0 Or lngCol <= lngHdrAnsCol Then booSkip = True
                 End If
                 If strCV <> "" And Left$(SafeText(varFormulas(1, lngCol)), 1) <> "=" _
@@ -2924,48 +3184,179 @@ End Function
 '  Private helpers
 ' ====================================================================================================
 
-' Purpose: Return the case sheet - "Case", else "Case-Varsity", else "Task" (the MEWC qualification
-'          rounds of 2022/2024 call it that; added 2026-09-25, Jaq), else ask for its name.
-'          During a Setup run the question is asked at most once and the answer reused by
-'          every later step. Returns Nothing if no such sheet exists; callers raise.
+' Purpose: Unprotect a worksheet that is protected WITHOUT a password, so CompBot can read and write it (GitHub #31,
+'          #32: ABC_5_Dasar's case sheet is protected; .Formula then raises 1004, Find returns the wrong last
+'          cell and Font.Bold raises "Unable to set the Bold property"). True when the sheet is unprotected
+'          afterwards; False when it has a password, which is left alone. Never raises.
+Public Function EnsureUnprotected(ByVal ws As Worksheet) As Boolean
+
+    On Error GoTo ErrHandler
+
+    If Not IsSheetProtected(ws) Then
+        EnsureUnprotected = True
+        GoTo Cleanup
+    End If
+    ' Probe: an EMPTY password raises when the sheet has one. Unprotect with no argument at all would show
+    ' Excel's password prompt instead (found in testing, 29 Oct), so the "" is essential.
+    On Error Resume Next
+    ws.Unprotect Password:=""
+    On Error GoTo ErrHandler
+    EnsureUnprotected = Not IsSheetProtected(ws)
+
+Cleanup:
+    Exit Function
+
+ErrHandler:
+    If m_DEBUG_MODE Then Stop: Resume
+    EnsureUnprotected = False
+    Resume Cleanup
+End Function
+
+' Purpose: True when any part of the sheet's protection is on (contents, objects or scenarios).
+Private Function IsSheetProtected(ByVal ws As Worksheet) As Boolean
+    IsSheetProtected = (ws.ProtectContents Or ws.ProtectDrawingObjects Or ws.ProtectScenarios)
+End Function
+
+' Purpose: The message for a sheet protected with a password, which CompBot does not try to get round.
+Private Function ProtectedMessage(ByVal ws As Worksheet) As String
+    ProtectedMessage = "sheet '" & ws.Name & "' is protected with a password: unprotect it, then run again"
+End Function
+
+' Purpose: Full Setup Case, straight after the _Solve copy (GitHub #31): unprotect every worksheet protected
+'          without a password. Returns the status bar note, e.g. "Unprotected (no password): Case." plus any
+'          sheet left protected because it has one; "" when nothing was protected. Never raises.
+Private Function UnprotectSheets(ByVal wb As Workbook) As String
+
+    Dim ws As Worksheet
+    Dim strDone As String
+    Dim strLeft As String
+
+    On Error GoTo ErrHandler
+
+    If wb Is Nothing Then GoTo Cleanup
+    For Each ws In wb.Worksheets
+        If IsSheetProtected(ws) Then
+            If EnsureUnprotected(ws) Then
+                strDone = strDone & ", " & ws.Name
+            Else
+                strLeft = strLeft & ", " & ws.Name
+            End If
+        End If
+    Next ws
+    If Len(strDone) > 0 Then UnprotectSheets = "Unprotected (no password): " & Mid$(strDone, 3) & "."
+    If Len(strLeft) > 0 Then
+        UnprotectSheets = Trim$(UnprotectSheets & " Still protected (password): " & Mid$(strLeft, 3) & ".")
+    End If
+
+Cleanup:
+    Exit Function
+
+ErrHandler:
+    If m_DEBUG_MODE Then Stop: Resume
+    If LogError("UnprotectSheets", Err.Number, Err.Description) Then m_blnLogWritten = True
+    Resume Cleanup
+End Function
+
+' Purpose: Return the case sheet: during a Setup run, the one Setup settled at its start; else a sheet
+'          named as LabelWords("Case") lists (Case, Case-Varsity, Task - the MEWC qualification rounds of
+'          2022/2024 -, Cas - French, GitHub #28); else the active sheet, unless it is one CompBot makes or is
+'          empty (GitHub #30, Jaq, 2026-10-29). Until 2026.10.8 an InputBox asked for the name, behind a locked
+'          screen. Returns Nothing when there is none; m_strCaseNote then says why. Callers raise.
 Private Function GetCaseSheet(ByVal wb As Workbook) As Worksheet
 
     Dim ws As Worksheet
-    Dim strWS As String
+    Dim varName As Variant
 
     On Error GoTo ErrHandler
 
-    ' Probes: the sheet may simply not exist.
-    On Error Resume Next
-    Set ws = wb.Worksheets("Case")
-    If ws Is Nothing Then Set ws = wb.Worksheets("Case-Varsity")
-    If ws Is Nothing Then Set ws = wb.Worksheets("Task")
-    On Error GoTo ErrHandler
-
-    If ws Is Nothing Then
-        If m_blnInSetup And m_blnCaseAsked Then
-            strWS = m_strCaseSheet
-        Else
-            strWS = InputBox("What is the case sheet called?")
-            If m_blnInSetup Then
-                m_blnCaseAsked = True
-                m_strCaseSheet = strWS
-            End If
-        End If
-
-        If Len(strWS) > 0 Then
-            On Error Resume Next
-            Set ws = wb.Worksheets(strWS)
-            On Error GoTo ErrHandler
-        End If
+    If m_blnInSetup And m_blnCaseAsked And Len(m_strCaseSheet) > 0 Then
+        ' Probe: the settled sheet may have been deleted by a step.
+        On Error Resume Next
+        Set ws = wb.Worksheets(m_strCaseSheet)
+        On Error GoTo ErrHandler
     End If
 
+    If ws Is Nothing Then
+        For Each varName In LabelWords("Case")
+            ' Probe: the sheet may simply not exist.
+            On Error Resume Next
+            Set ws = wb.Worksheets(CStr(varName))
+            On Error GoTo ErrHandler
+            If Not ws Is Nothing Then Exit For
+        Next varName
+    End If
+
+    If ws Is Nothing Then Set ws = ActiveSheetAsCase(wb)
     Set GetCaseSheet = ws
     Exit Function
 
 ErrHandler:
     If m_DEBUG_MODE Then Stop: Resume
     Set GetCaseSheet = Nothing
+End Function
+
+' Purpose: GitHub #30: the active sheet as the case sheet, when no sheet has a case-sheet name. Not a sheet
+'          CompBot makes (L01..., B, CaseInputs, a BU_ backup), not an empty one, not a chart. Sets m_strCaseNote
+'          either way: which sheet was used, or why none was. Never raises.
+Private Function ActiveSheetAsCase(ByVal wb As Workbook) As Worksheet
+
+    Dim ws As Worksheet
+    Dim colRows As Collection
+    Dim strWhy As String
+
+    On Error GoTo ErrHandler
+
+    If wb Is Nothing Then GoTo Cleanup
+    If TypeName(wb.ActiveSheet) <> "Worksheet" Then
+        strWhy = "is not a worksheet"
+    Else
+        Set ws = wb.ActiveSheet
+        If IsLevelSheetName(ws.Name) Or StrComp(ws.Name, "B", vbTextCompare) = 0 _
+           Or StrComp(ws.Name, "CaseInputs", vbTextCompare) = 0 _
+           Or StrComp(Left$(ws.Name, Len(m_BACKUP_PREFIX)), m_BACKUP_PREFIX, vbTextCompare) = 0 Then
+            strWhy = "is a sheet CompBot makes"
+        ElseIf Application.WorksheetFunction.CountA(ws.Cells) = 0 Then
+            strWhy = "is empty"
+        ElseIf Not m_blnInSetup Then
+            ' A command run on its own takes the active sheet only when it has level headings, so an Instructions
+            ' or Answers sheet is never used without a word (Setup says which sheet it took on the status bar).
+            Set colRows = LevelMarkerRows(ws)
+            If colRows Is Nothing Then
+                strWhy = "could not be read"
+            ElseIf colRows.Count = 0 Then
+                strWhy = "has no level headings"
+            End If
+        End If
+    End If
+
+    If Len(strWhy) = 0 Then
+        Set ActiveSheetAsCase = ws
+        m_strCaseNote = "Case sheet not found by name: using the active sheet '" & ws.Name & "'."
+    ElseIf ws Is Nothing Then
+        m_strCaseNote = "no sheet named " & Join(LabelWords("Case"), ", ") & ", and the active sheet " & strWhy & _
+                        ". Go to the case sheet and run again."
+    Else
+        m_strCaseNote = "no sheet named " & Join(LabelWords("Case"), ", ") & ", and the active sheet '" & ws.Name & _
+                        "' " & strWhy & ". Go to the case sheet and run again."
+    End If
+
+Cleanup:
+    Exit Function
+
+ErrHandler:
+    If m_DEBUG_MODE Then Stop: Resume
+    Set ActiveSheetAsCase = Nothing
+    m_strCaseNote = "could not read the active sheet (" & Err.Number & ": " & Err.Description & ")."
+    Resume Cleanup
+End Function
+
+' Purpose: The error text when a command finds no case sheet: why (m_strCaseNote, GitHub #30).
+Private Function CaseSheetMessage() As String
+    If Len(m_strCaseNote) > 0 Then
+        CaseSheetMessage = "Case sheet not found: " & m_strCaseNote
+    Else
+        CaseSheetMessage = "Case sheet not found"
+    End If
 End Function
 
 ' Purpose: The start row of every level on a case sheet, top to bottom: column B cells reading
@@ -3004,10 +3395,11 @@ ErrHandler:
     Resume Cleanup
 End Function
 
-' Purpose: True for a level heading: "Level 3", "LEVEL 3", "Section 3", "Level 3:" (not "Level Code").
+' Purpose: True for a level heading: "Level 3", "LEVEL 3", "Section 3", "Level 3:", "Niveau 3" (not "Level Code").
 Public Function IsLevelMarker(ByVal varValue As Variant) As Boolean
 
     Dim strText As String
+    Dim varWord As Variant
 
     On Error GoTo ErrHandler
 
@@ -3015,8 +3407,13 @@ Public Function IsLevelMarker(ByVal varValue As Variant) As Boolean
     strText = UCase$(Trim$(Replace(varValue, Chr$(160), " ")))
     If Right$(strText, 1) = ":" Then strText = Left$(strText, Len(strText) - 1)
     If strText = "LEVEL CODE" Then GoTo Cleanup
-    If Not (strText Like "LEVEL *" Or strText Like "SECTION *") Then GoTo Cleanup
-    IsLevelMarker = IsNumeric(Trim$(Replace(Replace(strText, "LEVEL", ""), "SECTION", "")))
+    ' The heading words of LabelWords("LevelWord"): Level, Section, Niveau (GitHub #28).
+    For Each varWord In LabelWords("LevelWord")
+        If strText Like CStr(varWord) & " *" Then
+            IsLevelMarker = IsNumeric(Trim$(Mid$(strText, Len(varWord) + 1)))
+            GoTo Cleanup
+        End If
+    Next varWord
 
 Cleanup:
     Exit Function
@@ -3056,6 +3453,111 @@ End Function
 '
 '          The caller must NEVER assume the prefix is 7 characters, even though all three words
 '          happen to be. Use the returned length - the next language added will break a hardcoded 7.
+' Purpose: The words a case may use for one of its labels, English first (GitHub #28: a French case, "Cas").
+'          ADD A LANGUAGE HERE AND NOWHERE ELSE, as for m_EXAMPLE_WORDS: every label test in CompBot goes
+'          through LabelWords / IsLabel / ContainsLabel. Accented letters are built with ChrW$ so the module
+'          source stays ASCII (CompBot is opened on machines with other code pages).
+'            "Case"          the case sheet's name           "Answer"   the answer column's header
+'            "Level"         the level column's header       "Points"   the points column's header
+'            "Game"          the game-number column header   "BonusHeading"  the bonus section's heading
+'            "LevelWord"     the word of a level heading ("Level 3", "Niveau 3"), upper case
+'          French from the 2023 U-Excel Belote case (Belote_FR): Cas, Partie #, Niveau, Points, Reponse with an
+'          e acute, "Questions bonus", "Niveau 1". Unknown names give an empty list.
+Public Function LabelWords(ByVal strLabel As String) As Variant
+
+    Dim strEAcute As String
+
+    strEAcute = ChrW$(&HE9)
+    Select Case strLabel
+        Case "Case":            LabelWords = Array("Case", "Case-Varsity", "Task", "Cas")
+        Case "Answer":          LabelWords = Array("Answer", "R" & strEAcute & "ponse")
+        Case "Level":           LabelWords = Array("Level", "Niveau")
+        Case "Points":          LabelWords = Array("Points")
+        Case "Game":            LabelWords = Array("Game #", "Partie #")
+        Case "BonusHeading":    LabelWords = Array("Bonus Questions", "Questions bonus")
+        Case "LevelWord":       LabelWords = Array("LEVEL", "SECTION", "NIVEAU")
+        Case Else:              LabelWords = Split(vbNullString)
+    End Select
+End Function
+
+' Purpose: True when varText is exactly one of LabelWords(strLabel), spaces (and non-breaking spaces) trimmed.
+'          Case-sensitive, like the English tests it replaced ("Answer" as the cases write it), unless
+'          blnAnyCase. Not text: False. Never raises.
+Public Function IsLabel(ByVal varText As Variant, ByVal strLabel As String, _
+                        Optional ByVal blnAnyCase As Boolean = False) As Boolean
+
+    Dim varWord As Variant
+    Dim strText As String
+    Dim lngCompare As Long
+
+    On Error GoTo ErrHandler
+
+    If VarType(varText) <> vbString Then GoTo Cleanup
+    strText = Trim$(Replace(varText, Chr$(160), " "))
+    If blnAnyCase Then lngCompare = vbTextCompare Else lngCompare = vbBinaryCompare
+    For Each varWord In LabelWords(strLabel)
+        If StrComp(strText, CStr(varWord), lngCompare) = 0 Then
+            IsLabel = True
+            GoTo Cleanup
+        End If
+    Next varWord
+
+Cleanup:
+    Exit Function
+
+ErrHandler:
+    If m_DEBUG_MODE Then Stop: Resume
+    IsLabel = False
+    Resume Cleanup
+End Function
+
+' Purpose: True when strText CONTAINS one of LabelWords(strLabel), any case (for header cells such as
+'          "Your Answer"). Never raises.
+Public Function ContainsLabel(ByVal strText As String, ByVal strLabel As String) As Boolean
+
+    Dim varWord As Variant
+
+    On Error GoTo ErrHandler
+
+    For Each varWord In LabelWords(strLabel)
+        If InStr(1, strText, CStr(varWord), vbTextCompare) > 0 Then
+            ContainsLabel = True
+            GoTo Cleanup
+        End If
+    Next varWord
+
+Cleanup:
+    Exit Function
+
+ErrHandler:
+    If m_DEBUG_MODE Then Stop: Resume
+    ContainsLabel = False
+    Resume Cleanup
+End Function
+
+' Purpose: The first cell, row by row, reading exactly a header word: Answer, else Level, else Points, in any
+'          language of LabelWords (GitHub #28). Nothing when no row has one. Shared by Create Level Sheets and
+'          Create Bonus Sheet. No handler of its own by design: a failed Find propagates to the caller's handler.
+Private Function FindHeaderCell(ByVal rngRows As Range) As Range
+
+    Dim rngRow As Range
+    Dim rngHit As Range
+    Dim varLabel As Variant
+    Dim varWord As Variant
+
+    For Each rngRow In rngRows.Rows
+        For Each varLabel In Array("Answer", "Level", "Points")
+            For Each varWord In LabelWords(CStr(varLabel))
+                Set rngHit = rngRow.Find(What:=CStr(varWord), LookIn:=xlValues, LookAt:=xlWhole)
+                If Not rngHit Is Nothing Then
+                    Set FindHeaderCell = rngHit
+                    Exit Function
+                End If
+            Next varWord
+        Next varLabel
+    Next rngRow
+End Function
+
 ' Purpose: The accepted example words as an array, for code that must SEARCH for them (Range.Find)
 '          rather than test a string it already has. Same single list as ExamplePrefixLen.
 Public Function ExampleWords() As Variant
@@ -3162,7 +3664,7 @@ Public Function IsSectionBreak(ByVal strText As String) As Boolean
     strUpper = UCase$(Trim$(Replace(strText, Chr$(160), " ")))
     If Len(strUpper) = 0 Then GoTo Cleanup
     IsSectionBreak = IsExampleLabel(strText) Or IsLevelMarker(strText) _
-                     Or strUpper = "GAME #" Or strUpper = "LEVEL CODE" _
+                     Or IsLabel(strText, "Game", True) Or strUpper = "LEVEL CODE" _
                      Or IsBonusHeading(strUpper)
 
 Cleanup:
@@ -3182,6 +3684,11 @@ Private Function IsBonusHeading(ByVal strText As String) As Boolean
 
     On Error GoTo ErrHandler
 
+    ' A heading of LabelWords("BonusHeading") in any language ("Questions bonus", GitHub #28).
+    If IsLabel(strText, "BonusHeading", True) Then
+        IsBonusHeading = True
+        GoTo Cleanup
+    End If
     strUpper = UCase$(Trim$(strText))
     If Not (strUpper Like "BONUS*") Then GoTo Cleanup
     IsBonusHeading = Not IsNumeric(Mid$(strUpper, 6))
@@ -3292,7 +3799,9 @@ Public Function LevelInputColumns(ByVal ws As Worksheet, ByVal lngGameCol As Lon
     lngACol = 2
     lngHdRow = HeaderRowFor(ws, lngExRow)
     If lngHdRow >= 1 Then
-        lngEndCol = ws.Cells(lngExRow, ws.Columns.Count).End(xlToLeft).Column
+        ' The last used column of the row, to the END of a merged cell (GitHub #27: End(xlToLeft) stops on a
+        ' merge's first cell, while SpecialCells below returns the whole merged area).
+        lngEndCol = RowEndColumn(ws, lngExRow)
         ' The games, and the furthest column any of them uses: a game can reach past the example (#15).
         lngStop = ws.Cells(ws.Rows.Count, lngGameCol).End(xlUp).Row
         If lngStop > lngExRow + MAX_SCAN_ROWS Then lngStop = lngExRow + MAX_SCAN_ROWS
@@ -3300,7 +3809,7 @@ Public Function LevelInputColumns(ByVal ws As Worksheet, ByVal lngGameCol As Lon
         Set dicGameRows = CreateObject("Scripting.Dictionary")
         For Each varGameRow In colGames
             dicGameRows(CLng(varGameRow)) = True
-            lngCol = ws.Cells(varGameRow, ws.Columns.Count).End(xlToLeft).Column
+            lngCol = RowEndColumn(ws, CLng(varGameRow))
             If lngCol > lngEndCol Then lngEndCol = lngCol
         Next varGameRow
         ReDim blnGameCol(1 To lngEndCol)
@@ -3317,7 +3826,7 @@ Public Function LevelInputColumns(ByVal ws As Worksheet, ByVal lngGameCol As Lon
                 For Each rngArea In rngConst.Areas
                     For Each rngCell In rngArea.Cells
                         ' An error value is never an input (the example row reads errors as blank, SafeText).
-                        If dicGameRows.Exists(rngCell.Row) Then
+                        If dicGameRows.Exists(rngCell.Row) And rngCell.Column <= lngEndCol Then
                             If Not IsError(rngCell.Value2) Then blnGameCol(rngCell.Column) = True
                         End If
                     Next rngCell
@@ -3329,10 +3838,14 @@ Public Function LevelInputColumns(ByVal ws As Worksheet, ByVal lngGameCol As Lon
             strVal = SafeText(ws.Cells(lngExRow, lngCol).Value2)
             ' A data table block's input cell holds the Example# label: the block is never an input.
             If IsExampleLabel(strVal) Then Exit For
-            If strHdr = "Answer" Then lngACol = lngCol
+            If IsLabel(strHdr, "Answer") Then lngACol = lngCol
             If lngACol > 2 And lngCol = lngACol + 1 Then
                 ' the Score column
-            ElseIf strHdr <> "Level" And strHdr <> "Points" And strHdr <> "Answer" And strHdr <> "Game #" Then
+            ElseIf IsMergeTail(ws.Cells(lngExRow, lngCol)) Then
+                ' the rest of a merged input: one input, in the merge's first column (GitHub #27, G:N on Clock
+                ' Solitaire L4). Neither an input of its own nor a blank column.
+            ElseIf Not (IsLabel(strHdr, "Level") Or IsLabel(strHdr, "Points") Or IsLabel(strHdr, "Answer") _
+                        Or IsLabel(strHdr, "Game")) Then
                 If strVal <> "" Or blnGameCol(lngCol) Then
                     lngBlnk = 0
                     colCols.Add lngCol
@@ -3354,6 +3867,53 @@ ErrHandler:
     Set LevelInputColumns = Nothing
     Resume Cleanup
 End Function
+
+' Purpose: True for a cell inside a merged area other than its first column (GitHub #27).
+Private Function IsMergeTail(ByVal rngCell As Range) As Boolean
+    If rngCell.MergeCells Then IsMergeTail = (rngCell.MergeArea.Column <> rngCell.Column)
+End Function
+
+' Purpose: The last used column of row lngRow, to the end of a merged cell there (GitHub #27). 1 when the row
+'          is empty. No handler of its own by design: errors propagate to the caller's handler.
+Private Function RowEndColumn(ByVal ws As Worksheet, ByVal lngRow As Long) As Long
+
+    Dim rngEnd As Range
+
+    Set rngEnd = ws.Cells(lngRow, ws.Columns.Count).End(xlToLeft)
+    RowEndColumn = rngEnd.MergeArea.Column + rngEnd.MergeArea.Columns.Count - 1
+End Function
+
+' Purpose: Copy a header or example cell into the data table block: value and formatting with Range.Copy, unless the
+'          source is part of a merged cell (GitHub #27). Then only its value and look go across - number format,
+'          font, fill, alignment - so the block cell stays a single cell and the block's other columns are never
+'          overwritten by the merge. No handler of its own by design: errors propagate to BuildDataTable, which
+'          clears the half-built block.
+Private Sub CopyCellLook(ByVal rngSrc As Range, ByVal rngDst As Range)
+
+    Dim rngTop As Range
+
+    If Not rngSrc.MergeCells Then
+        rngSrc.Copy Destination:=rngDst
+        Exit Sub
+    End If
+    Set rngTop = rngSrc.MergeArea.Cells(1, 1)
+    rngDst.Value2 = rngTop.Value2
+    rngDst.NumberFormat = rngTop.NumberFormat
+    rngDst.HorizontalAlignment = rngTop.HorizontalAlignment
+    rngDst.VerticalAlignment = rngTop.VerticalAlignment
+    With rngDst.Font
+        .Name = rngTop.Font.Name
+        .Size = rngTop.Font.Size
+        .Bold = rngTop.Font.Bold
+        .Italic = rngTop.Font.Italic
+        .Color = rngTop.Font.Color
+    End With
+    If rngTop.Interior.ColorIndex = xlColorIndexNone Then
+        rngDst.Interior.ColorIndex = xlColorIndexNone
+    Else
+        rngDst.Interior.Color = rngTop.Interior.Color
+    End If
+End Sub
 
 ' Purpose: True if row lngRow holds a cell reading exactly "Answer" (case as the cases write it).
 '          Reads the row as an array - no Range.Find, so the user's Find dialog settings are untouched.
@@ -3384,11 +3944,9 @@ Public Function AnswerColumn(ByVal ws As Worksheet, ByVal lngRow As Long) As Lon
     If lngLastCol < 2 Then GoTo Cleanup
     varRow = ws.Range(ws.Cells(lngRow, 1), ws.Cells(lngRow, lngLastCol)).Value2
     For lngCol = 1 To lngLastCol
-        If VarType(varRow(1, lngCol)) = vbString Then
-            If StrComp(Trim$(varRow(1, lngCol)), "Answer", vbBinaryCompare) = 0 Then
-                AnswerColumn = lngCol
-                GoTo Cleanup
-            End If
+        If IsLabel(varRow(1, lngCol), "Answer") Then
+            AnswerColumn = lngCol
+            GoTo Cleanup
         End If
     Next lngCol
 
@@ -3559,7 +4117,7 @@ ErrHandler:
 End Function
 
 ' Purpose: The case sheet of the active workbook (for Solve Level). Public wrapper over the
-'          private lookup; may show the "What is the case sheet called?" InputBox (kept by choice).
+'          private lookup: by name, else the active sheet (GitHub #30; no InputBox since 2026.10.8).
 Public Function CaseSheetOf(ByVal wb As Workbook) As Worksheet
 
     On Error GoTo ErrHandler
@@ -3649,6 +4207,8 @@ ErrHandler:
     If m_DEBUG_MODE Then Stop: Resume
     SafeText = vbNullString
 End Function
+
+
 
 
 
